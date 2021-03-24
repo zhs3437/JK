@@ -1,0 +1,24 @@
+<apex:component controller="InventoryList">
+<apex:attribute name="warehouse" assignTo="{!warehouse}" description="warehouse name" type="String" required="true"/>
+<apex:attribute name="ProductType" assignTo="{!ProductType}" description="ProductType name" type="String" required="true"/>
+<apex:attribute name="applyid" description="apply id" type="String"/>
+<apex:attribute name="apply" description="apply inventory id" type="String"/>
+<apex:attribute name="quantity" description="quantity" type="integer"/>
+<apex:pageBlock title="Provided Inventory">
+    <apex:pageBlockTable value="{!Inventorys}" var="Inv">
+        <apex:column headerValue="Action">
+         <apex:outputLink value="/a0C/e?CF00N90000002xylC={!apply}&CF00N90000002xylC_lkid={!applyid}&CF00N90000002xylD={!Inv.name}&00N90000002xylS={!quantity}" target="__self">Distribute</apex:outputLink>
+
+        </apex:column>
+        <apex:column value="{!Inv.name}"/>
+        <apex:column value="{!Inv.Warehouse__c}"/>
+        <apex:column value="{!Inv.BL_NO__c}"/>
+        <apex:column value="{!Inv.Product_Type__c}"/>    
+        <apex:column value="{!Inv.Expected_Time_Of_Arrival__c}"/>
+        <apex:column value="{!Inv.Expected_Time_Of_Delivery__c}"/>
+        <apex:column value="{!Inv.Remaining_Quantity__c}"/>
+        <apex:column value="{!Inv.Booked_Quantity__c}"/>
+        <apex:column value="{!Inv.Container_Type__c}"/>
+    </apex:pageBlockTable>
+</apex:pageBlock>
+</apex:component>

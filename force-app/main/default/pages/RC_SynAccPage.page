@@ -1,0 +1,296 @@
+<apex:page standardController="Account" extensions="RC_SyncAccCtrl" sidebar="false" showHeader="false" standardStylesheets="true" action="{!modeBasicData}" id="thePage">
+    
+    <html>
+        <head>
+            <style>
+                
+                body {
+                width: 95%;
+                margin: auto 40px;
+                font-family: 'trebuchet MS', 'Lucida sans', Arial;
+                font-size: 14px;
+                color: #444;
+                }
+                
+                table {
+                *border-collapse: collapse; /* IE7 and lower */
+                border-spacing: 0;
+                width: 100%;    
+                }
+                
+                .bordered {
+                border: solid #ccc 1px;
+                -moz-border-radius: 6px;
+                -webkit-border-radius: 6px;
+                border-radius: 6px;
+                -webkit-box-shadow: 0 1px 1px #ccc; 
+                -moz-box-shadow: 0 1px 1px #ccc; 
+                box-shadow: 0 1px 1px #ccc;         
+                }
+                
+                .bordered tr:hover {
+                background: #fbf8e9;
+                -o-transition: all 0.1s ease-in-out;
+                -webkit-transition: all 0.1s ease-in-out;
+                -moz-transition: all 0.1s ease-in-out;
+                -ms-transition: all 0.1s ease-in-out;
+                transition: all 0.1s ease-in-out;     
+                }    
+                
+                .bordered td, .bordered th {
+                border-left: 1px solid #ccc;
+                border-top: 1px solid #ccc;
+                padding: 10px;
+                text-align: left;    
+                }
+                
+                .bordered th {
+                background-color: #dce9f9;
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+                background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+                -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+                -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+                box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+                border-top: none;
+                text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+                }
+                
+                .bordered td:first-child, .bordered th:first-child {
+                border-left: none;
+                }
+                
+                .bordered th:first-child {
+                -moz-border-radius: 6px 0 0 0;
+                -webkit-border-radius: 6px 0 0 0;
+                border-radius: 6px 0 0 0;
+                }
+                
+                .bordered th:last-child {
+                -moz-border-radius: 0 6px 0 0;
+                -webkit-border-radius: 0 6px 0 0;
+                border-radius: 0 6px 0 0;
+                }
+                
+                .bordered th:only-child{
+                -moz-border-radius: 6px 6px 0 0;
+                -webkit-border-radius: 6px 6px 0 0;
+                border-radius: 6px 6px 0 0;
+                }
+                
+                .bordered tr:last-child td:first-child {
+                -moz-border-radius: 0 0 0 6px;
+                -webkit-border-radius: 0 0 0 6px;
+                border-radius: 0 0 0 6px;
+                }
+                
+                .bordered tr:last-child td:last-child {
+                -moz-border-radius: 0 0 6px 0;
+                -webkit-border-radius: 0 0 6px 0;
+                border-radius: 0 0 6px 0;
+                }
+                
+                
+                
+                /*----------------------*/
+                
+                .zebra td, .zebra th {
+                padding: 10px;
+                border-bottom: 1px solid #f2f2f2;    
+                }
+                
+                .zebra tbody tr:nth-child(even) {
+                background: #f5f5f5;
+                -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+                -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+                box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+                }
+                
+                .zebra th {
+                text-align: left;
+                text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+                border-bottom: 1px solid #ccc;
+                background-color: #eee;
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#eee));
+                background-image: -webkit-linear-gradient(top, #f5f5f5, #eee);
+                background-image:    -moz-linear-gradient(top, #f5f5f5, #eee);
+                background-image:     -ms-linear-gradient(top, #f5f5f5, #eee);
+                background-image:      -o-linear-gradient(top, #f5f5f5, #eee); 
+                background-image:         linear-gradient(top, #f5f5f5, #eee);
+                }
+                
+                .zebra th:first-child {
+                -moz-border-radius: 6px 0 0 0;
+                -webkit-border-radius: 6px 0 0 0;
+                border-radius: 6px 0 0 0;  
+                }
+                
+                .zebra th:last-child {
+                -moz-border-radius: 0 6px 0 0;
+                -webkit-border-radius: 0 6px 0 0;
+                border-radius: 0 6px 0 0;
+                }
+                
+                .zebra th:only-child{
+                -moz-border-radius: 6px 6px 0 0;
+                -webkit-border-radius: 6px 6px 0 0;
+                border-radius: 6px 6px 0 0;
+                }
+                
+                .zebra tfoot td {
+                border-bottom: 0;
+                border-top: 1px solid #fff;
+                background-color: #f1f1f1;  
+                }
+                
+                .zebra tfoot td:first-child {
+                -moz-border-radius: 0 0 0 6px;
+                -webkit-border-radius: 0 0 0 6px;
+                border-radius: 0 0 0 6px;
+                }
+                
+                .zebra tfoot td:last-child {
+                -moz-border-radius: 0 0 6px 0;
+                -webkit-border-radius: 0 0 6px 0;
+                border-radius: 0 0 6px 0;
+                }
+                
+                .zebra tfoot td:only-child{
+                -moz-border-radius: 0 0 6px 6px;
+                -webkit-border-radius: 0 0 6px 6px
+                border-radius: 0 0 6px 6px
+                }
+
+            </style>
+        </head>
+        
+        <body>
+            <apex:pageMessages />
+           
+            <br/>
+            <h1>【新建客户详细信息】</h1><br/><br/>
+            <table class="bordered" border="1">
+                <apex:form >               
+                 <apex:inputHidden value="{!requestId}"  id="requestId"/>
+                        <tr style="margin:auto 40px;">
+                            <td colspan="3" style="text-align: center;">  
+                                <apex:commandButton action="{!SaveMe}" value="保存" style="margin-left:15px;"/>
+                                <apex:commandButton value="退出" oncomplete="Close()"  style="margin-left:15px;"/> 
+                            </td>
+                        </tr>
+                    <apex:outputPanel rendered="{!!isSave}">
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>标题: &nbsp; &nbsp;<apex:inputField value="{!acc.Title__c}"/></td>
+                            <td colspan="2">紧急程度: &nbsp; &nbsp;<apex:inputField value="{!acc.Emergency_level__c}"/></td>                                       
+                        </tr>
+                    </apex:outputPanel>                   
+                    <tr style="margin:auto 40px; ">
+                        <td colspan="3" style=" font-weight: bold;">
+                            【客户信息】
+                        </td>
+                        
+                    </tr>
+                    <tr style="margin:auto 40px;">
+                        <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>客户名称: &nbsp; &nbsp;<apex:outputField value="{!acc.Name}"  /></td>
+                        <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>国家: &nbsp; &nbsp;<apex:outputField value="{!acc.Country__c}"/></td>
+                        <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>电话: &nbsp; &nbsp;<apex:outputField value="{!acc.Phone}"/></td>
+                    </tr>
+                    <apex:outputPanel rendered="{!!isSave}">
+                        <tr style="margin:auto 40px;">
+                            <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>账套名称: &nbsp; &nbsp;<apex:inputField value="{!acc.Ledger_Name__c}"/></td>
+                            <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>科目组: &nbsp; &nbsp;<apex:inputField value="{!acc.Subject_Group__c}"/></td>
+                            <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>搜索条件: &nbsp; &nbsp;<apex:inputField value="{!acc.Search__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>街道/房号: &nbsp; &nbsp;<apex:inputField value="{!acc.Street_Room_Number__c}"/></td>
+                            <td>销售组织: &nbsp; &nbsp;<apex:inputField value="{!acc.Sales_Org__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>分销渠道: &nbsp; &nbsp;<apex:inputField value="{!acc.Distribution_channel__c}"/></td> 
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>产品组: &nbsp; &nbsp;<apex:inputField value="{!acc.Product_Group__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>销售地区: &nbsp; &nbsp;<apex:inputField value="{!acc.Sales_Region__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>销售部门: &nbsp; &nbsp;<apex:inputField value="{!acc.Sales_Dept__c}"/></td> 
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>销售组: &nbsp; &nbsp;<apex:inputField value="{!acc.Sales_Group__c}"/></td>
+                            <td>客户组: &nbsp; &nbsp;<apex:inputField value="{!acc.Account_Group__c}"/></td> 
+                            <td><span style="font-weight: bold; color: Red">||</span>纳税人识别号: &nbsp; &nbsp;<apex:inputField value="{!acc.Taxpayer_Identification_No__c}"/></td> 
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td ><span style="font-weight: bold; color: Red">||</span>OA 账户名: &nbsp; &nbsp;<apex:inputField value="{!acc.OA_UserName__c}"/></td>
+                            <td ><span style="font-weight: bold; color: Red">||</span>账户分配组: &nbsp; &nbsp;<apex:inputField value="{!acc.Account_Allocation_Group__c}"/></td>
+                            <td >VAT NO: &nbsp; &nbsp;<apex:inputField value="{!acc.VAT_NO__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;display:{!IF(acc.Country__c =='India','run-in','none')};">
+                            <td colspan="1"><span style="font-weight: bold; color: Red">||</span>GST 分类地区: &nbsp; &nbsp;<apex:inputField value="{!acc.GST_Classification_Region__c}"/></td>
+                              
+                        </tr>
+                    </apex:outputPanel>
+
+                    <tr style="margin:auto 40px;">
+                        <td colspan="3" style=" font-weight: bold;">
+                            【银行信息】
+                        </td>
+                        
+                    </tr>                
+                    <apex:outputPanel rendered="{!!isSave}">
+                        <tr style="margin:auto 40px;">    
+                            <td>国家: &nbsp; &nbsp;<apex:inputField value="{!acc.Bank_Country__c}"/></td>  
+                            <td><span style="font-weight: bold; color: Red">||</span>银行代码: &nbsp; &nbsp;<apex:inputField value="{!acc.Bank_Code__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>银行名称(全称): &nbsp; &nbsp;<apex:inputField value="{!acc.Bank_Name__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td>地区: &nbsp; &nbsp;<apex:inputField value="{!acc.Bank_Region__c}"/></td>
+                            <td>街道: &nbsp; &nbsp;<apex:inputField value="{!acc.Bank_Street__c}"/></td>
+                            <td>城市: &nbsp; &nbsp;<apex:inputField value="{!acc.Bank_City__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td>SWIFT 码: &nbsp; &nbsp;<apex:inputField value="{!acc.SWIFT_Code__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>银行账户: &nbsp; &nbsp;<apex:inputField value="{!acc.Bank_Account__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>开户人: &nbsp; &nbsp;<apex:inputField value="{!acc.Account_Holder__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">                            
+                            <td>国家分类: &nbsp; &nbsp;<apex:inputField value="{!acc.Country_Scope__c}"/></td>
+                            <td>IBAN 码: &nbsp; &nbsp;<apex:inputField value="{!acc.IBAN_Code__c}"/></td>           
+                            <td>个人ID : &nbsp; &nbsp;<apex:inputField value="{!acc.Tax_No__c}"/></td>         
+                        </tr>
+                    </apex:outputPanel>                    
+
+                    <tr style="margin:auto 40px;">
+                        <td colspan="3" style=" font-weight: bold;">
+                            【客户公司信息】
+                        </td>
+                        
+                    </tr>                
+                    <apex:outputPanel rendered="{!!isSave}">
+                        <tr style="margin:auto 40px;">                            
+                            <td><span style="font-weight: bold; color: Red">||</span>国家分类: &nbsp; &nbsp;<apex:inputField value="{!acc.Country_Scope__c}"/></td>
+                            <td>Routing Number（ABA）: &nbsp; &nbsp;<apex:inputField value="{!acc.Routing_Number_ABA__c}"/></td>
+                            <td>BSB Number: &nbsp; &nbsp;<apex:inputField value="{!acc.BSB_Number__c}"/></td>
+                        </tr>
+
+                        <tr style="margin:auto 40px;">                            
+                            <td>SC清算号: &nbsp; &nbsp;<apex:inputField value="{!acc.SC_No__c}"/></td>
+                            <td>CC清算号: &nbsp; &nbsp;<apex:inputField value="{!acc.CC_No__c}"/></td>
+                            <td>公司注册号: &nbsp; &nbsp;<apex:inputField value="{!acc.Company_Registration_No__c}"/></td>
+                        </tr>
+                    </apex:outputPanel>
+                </apex:form>
+            </table>
+            
+        </body>
+          
+        <script>
+            function Close(){
+                if (window.location.href.lastIndexOf(".lightning.force.com") != -1) sforce.one.navigateToURL("/{!requestId}");
+                window.opener.location.href = "/{!requestId}";
+                window.top.close();
+            } 
+        </script>
+   
+    </html>
+
+</apex:page>

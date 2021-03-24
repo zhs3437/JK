@@ -1,0 +1,37 @@
+<apex:component access="global" controller="paymentVCctrl" >
+    <apex:attribute access="global" Id="requestId" name="paymentId" assignTo="{!requestId}" description="Payment" type="String" required="true"/>
+      <TABLE border="1" width="600px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;"  >
+            <TBODY>
+                <tr>
+                    <TD  colSpan="6" align="left" ><FONT color="#000000" style="font-size:7.5pt">Payment Detail</FONT></TD>
+                </tr>
+                
+                
+                <tr >
+                    <td align="center" >Percentage</td>
+                    <td align="center" >Amount</td>
+                    <td align="center" >Down/ Balance Payment</td>
+                    <td align="center" >Payment Method</td>
+                    <td align="center" > Days</td>
+                    <td align="center" >Payment Term</td>
+                </tr>
+                
+                
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!paylst}" var="line" >
+                    <apex:variable var="index" value="{!index+1}" />
+                    <TR >
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Percentage__c}</TD>
+  <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Amount__c}</TD>
+                          <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Down_Balance_Payment__c}</TD>
+                          <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Payment_Method__c}</TD>
+                          <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Days__c}</TD>
+                          <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Payment_Term__c}</TD>
+                    </TR>        
+                </apex:repeat>
+                  
+
+                         
+
+            </TBODY></TABLE>
+</apex:component>

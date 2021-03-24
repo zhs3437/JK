@@ -1,0 +1,71 @@
+<apex:page >
+	<script type="text/javascript">
+    
+     function clearDefaultProductName() {
+        if ( $("#AddProductName").val() == "Product Name" ) {
+            $("#AddProductName").val("");
+        }
+    }
+    
+    function setupLookup(IDform,IDinputField) {
+        // Setup an input field to do a openLookup call
+        
+        IDform       = escapeUTF(IDform);
+        IDinputField = escapeUTF(IDinputField);
+        var filterParams = "&col0=00NE0000000bu1h&oper0=u&fval0=" + escapeUTF(PriceBookName);
+        var url = '/_ui/common/data/LookupPage?' + 
+                   'lkfm='  + IDform + 
+                   '&lknm=' + IDinputField +
+                   filterParams +
+                   '&lktp=' + $(document.getElementById(IDinputField +"_lktp")).val();
+
+           console.log('--------->>>' + $(document.getElementById(IDinputField +"_lktp")).val());
+           console.log('--------->>>' + url);
+
+        var searchParam = '&lksrch=' + escapeUTF($(document.getElementById(IDinputField)).val());
+
+        console.log('=========>>1.' + searchParam );
+
+        var encodedFunction = escapeUTF("openLookup('" + url + "',640,'1','" + searchParam + "')");
+
+        console.log('=========>>2.' + encodedFunction );
+        encodedFunction.replace = encodedFunction.replace("/","%2F");
+        console.log('=========>>3.' + encodedFunction.replace );
+        $(document.getElementById(IDinputField +"_lkwgt")).attr("href","javascript:%20" + encodedFunction); 
+        console.log('=========>>4.' + $(document.getElementById(IDinputField +"_lkwgt")).attr("href","javascript:%20" + encodedFunction));                 
+    }
+    
+    function makeAutocomplete(IDform, IDinputName) {
+        // Takes an input field and makes it an autocomplete for the products
+       var str = JSON.stringify(products);
+
+        console.log('-------> : ' + str);
+        
+       $(document.getElementById(IDinputName)).autocomplete({
+
+            minLength: 0,
+                    source: products,
+                    focus: function( event, ui ) {
+                        $( document.getElementById(IDinputName) ).val( ui.item.label );
+                        console.log("======>>" + $( document.getElementById(IDinputName) ).val( ui.item.label ).value);
+                        return false;
+                    },
+                    select: function( event, ui ) {
+                        $( document.getElementById(IDinputName) ).val( ui.item.label );
+                        $( document.getElementById(IDinputName+ "_lkold" ) ).val( ui.item.label );
+                        $( document.getElementById(IDinputName + "_lkid" )).val( ui.item.value );
+                        //$( "#product-description" ).html( ui.item.desc );
+                        //setupLookup(IDform, IDinputName);
+                        return false;
+                    }
+                })
+            .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                    .data( "item.autocomplete", item )
+                    .append( "<a>" + item.label + " : " + item.desc + "</a>" )
+                    .appendTo( ul );
+            };
+            
+    }
+    </script>
+    </apex:page>

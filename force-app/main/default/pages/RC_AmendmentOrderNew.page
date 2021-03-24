@@ -1,0 +1,25 @@
+<apex:page standardController="Agreement__c" showHeader="false" sidebar="false" extensions="RC_AmendmentOrderNewCtrl">
+<apex:messages style="font-size:20px;"/>
+<apex:form style="background:#CADEF1 ; color:#EE2C2C">
+
+
+<pre align="center" style="font-size:15px ;color:red ;">如果您想要创建补充协议，请点击[补充协议]。</pre>
+<pre align="center" style="font-size:15px ;color:red ;">如果您想要创建终止协议，请点击[终止协议]。</pre>
+<apex:commandButton value="补充协议"  style="margin-left:15px;" action="{!Action1}"/>
+<apex:commandButton value="终止协议"  style="margin-left:15px;" action="{!terminateAgreement}"/>
+<apex:commandButton value="退出" oncomplete="Close()"  style="margin-left:15px;"/> 
+</apex:form>
+     <!-- <c:SpecialPriceBusinessLicense Powerbookid="{!opp.id}"> </c:SpecialPriceBusinessLicense>-->
+<script>
+function Close(){
+
+    window.top.close();
+}       
+function SaveRequest(){    
+        if (confirm("Please note: this opportunity had commission application before, if you go NEXT step, previously CFO/CMO/Finance VP approval will go back to PENDING. Or you can click on CANCEL to close the window.")){   
+        }else{
+           return false;
+        }      
+    }        
+</script>
+</apex:page>

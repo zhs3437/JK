@@ -1,0 +1,51 @@
+<apex:page showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" controller="QW_FormViewController">
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>项目管理</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Import the Design System style sheet -->
+        <apex:slds />
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="slds-scope" style="height: 100%; position: absolute; bottom: 0;right: 0;left: 0;top: 0; ">
+                <div class="weui-tab">
+                    <div class="weui-tab__panel">
+                    </div>
+                    <div class="weui-tabbar slds-p-vertical_small">
+                        <a href="javascript:void(0)void(0)" class="weui-tabbar__item">
+                            <p style="font-size: initial;" class="weui-tabbar__label">客户</p>
+                        </a>
+                        <a href="javascript:void(0)void(0)" class="weui-tabbar__item">
+                            <p style="font-size: initial;" class="weui-tabbar__label">项目</p>
+                        </a>
+                        <a href="javascript:void(0)void(0)" class="weui-tabbar__item">
+                            <p style="font-size: initial;" class="weui-tabbar__label">报表</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="/soap/ajax/48.0/connection.js" type="text/javascript"></script>
+        <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui-for-work.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/QW_GlobalStyle.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.QW, 'js/weui.min.js')}" />
+
+        <script>
+            (function () {
+                debugger;
+            })()
+        </script>
+    </body>
+
+    </html>
+
+</apex:page>

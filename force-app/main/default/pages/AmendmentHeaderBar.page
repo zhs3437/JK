@@ -1,0 +1,12 @@
+<apex:page standardController="Amendment__c" showheader="false" sidebar="false" >
+		<div align="center" style="font-size: 18px;color: red;">
+            Dear users:&nbsp;&nbsp;please upload the original contract and all its amendments (if any) into system. legal needs to refer it.<BR/>
+            <apex:outputPanel rendered="{!IF(Amendment__c.Amendment_Point__c == null || Amendment__c.Amendment1__c == null,true,false)}">
+            	<apex:outputText >
+                    Tips: please fill in Amendment point &amp;&amp; Amendment Details before you submit for review.
+                </apex:outputText>
+                
+            </apex:outputPanel>
+		</div>
+    	
+</apex:page>

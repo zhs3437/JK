@@ -1,0 +1,249 @@
+<apex:page standardController="Agreement__c" id="addAmendmentOrder" extensions="RC_AddAmendmentOrderCtrl" showHeader="false">
+    <script>
+        function returnPage() {
+            window.location.href = '/apex/RC_AmendmentOrder?id={!requestId}';
+        }
+ 
+    </script>
+
+    <apex:form Id="ProductLineForm">
+        <apex:inputHidden value="{!deleteID}" id="deleteID" />
+
+        <apex:pageBlock id="Product_Line_Block">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="保存" action="{!SelectDailyDetail}" onclick="SaveAll()" />
+                <apex:commandButton value="返回订单" action="{!Cancel}" />
+                <apex:commandButton value="重置" oncomplete="returnPage()" />
+            </apex:pageBlockButtons>
+            <apex:messages style=" color:#EE2C2C" />
+            <apex:pageBlockSection title="订单详情" columns="4">
+                <table border="0" width="150%" style="border-collapse: collapse;margin:10px auto;">
+                    <apex:outputPanel >
+                       <!-- <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle">合同所有人</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Contract_Owner__c}" required="false" /> </td>
+                            <td colspan="1" width="25%" align="center" valign="middle">项目</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Project__c}" required="false" />
+                            </td>
+                        </tr>-->
+
+                        <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle">实际销售人员名称</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Actual_Sales_Name__c}" required="false" />
+                            </td>
+                              <td colspan="1" width="25%" align="center" valign="middle">总价格</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Total_Price__c}" required="false" />
+                            </td>
+                            
+                        </tr>
+                                           
+                            
+
+                        <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle">合同编号</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Contract_NO__c}" required="false" />
+                            </td>
+                            <td colspan="1" width="25%" align="center" valign="middle">卖方</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Seller__c}" required="false" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle"></td>
+                            <td colspan="1" width="25%" align="center" valign="middle"></td>
+                            <td colspan="1" width="25%" align="center" valign="middle">客户名称</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Account__c}" required="false" />
+                            </td>
+                            
+                        </tr>
+                       
+
+                        <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle">贸易方式</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Trade_term__c}" required="false" />
+                            </td>
+                             <td colspan="1" width="25%" align="center" valign="middle">总价格（Tax）</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Total_Price_Tax__c}" required="false" />
+                            </td>
+                        </tr>
+                        
+
+                        <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle">目的地国家</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Destination_Country__c}" required="false" />
+                            </td>
+                         
+                            <td colspan="1" width="25%" align="center" valign="middle">总瓦数(MW)</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Total_Power_MW__c}" required="false" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle">总数量</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Total_Quantity__c}" required="false" />
+                            </td>
+                             <td colspan="1" width="25%" align="center" valign="middle">保险</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Warranty_Insurance__c}" required="false" />
+                            </td>
+                        </tr>
+
+                         
+                           
+                        
+                           
+
+                        <tr>
+                            
+                           
+                             <td colspan="1" width="25%" align="center" valign="middle">出货工厂</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:20px" value="{!Orderlst[0].Departure_Factory__c}" required="false" />
+                            </td>
+                             <td colspan="1" width="25%" align="center" valign="middle">质保年限</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Warranty_On_Material_and_Workmanship__c}" required="false" />
+                            </td>
+                        </tr>
+
+                        
+                        <tr>
+                            <td colspan="1" width="25%" align="center" valign="middle">VAT NO</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].VAT_NO__c}" required="false" />
+                            </td>
+                            <td colspan="1" width="25%" align="center" valign="middle">评论汇总</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Summary_Comments__c}" required="true" />
+                            </td>
+                            
+                        </tr>
+                         <tr>
+                            
+                            <td colspan="1" width="25%" align="center" valign="middle">补充协议类型</td>
+                            <td colspan="1" width="25%" align="center" valign="middle">
+                                <apex:inputField style="width:200px" value="{!Orderlst[0].Amendment_Agreement_Types__c}" required="true" />
+                            </td>
+                            
+                        </tr>
+                       
+
+
+
+                    </apex:outputPanel>
+                </table>
+            </apex:pageBlockSection>
+
+            
+            
+
+            <apex:pageBlockSection title="付款方式" columns="4">
+                <apex:commandButton value="新建" action="{!addPayment}" />
+                <apex:pageBlockTable value="{!aps}" var="P" rowClasses="odd,even" styleClass="list" width="100%" rules="rows">
+                    <apex:column headerValue="操作" width="120px">
+                        <apex:commandButton action="{!DeletePay}" onclick="deletePayment('{!P.Requested_Number__c}');" value="Delete" />
+                    </apex:column>
+                    <apex:column headerValue="百分比">
+                        <apex:inputField value="{!P.Percentage__c}" />
+                    </apex:column>
+                    <apex:column headerValue="付款阶段">
+                        <apex:inputField value="{!P.Payment_Stage_China__c}" />
+                    </apex:column>
+                   
+                    <apex:column headerValue="付款方式">
+                        <apex:inputField value="{!P.Payment_Method_China__c}" />
+                    </apex:column>
+                    <apex:column headerValue="天数">
+                        <apex:inputField value="{!P.Days__c}" />
+                    </apex:column>
+                    <apex:column headerValue="付款形式">
+                        <apex:inputField value="{!P.Payment_Term_China__c}" />
+                    </apex:column>
+                    <apex:column headerValue="信用证有效">
+                        <apex:inputField value="{!P.Credit_Valid__c}" />
+                    </apex:column>
+                    <apex:column headerValue="付款方式描述">
+                        <apex:inputField value="{!P.PaymentDescription__c}" />
+                    </apex:column>
+                    <apex:column headerValue="评论">
+                        <apex:inputField value="{!P.Comments__c}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+
+
+
+            <apex:pageBlockSection title="订单产品" columns="4">
+                <apex:commandButton value="新建" action="{!addOrderItem}" />
+                <apex:pageBlockTable value="{!aop}" var="Os" rowClasses="odd,even" styleClass="list" width="100%" rules="rows">
+                    <apex:column headerValue="操作" width="120px">
+                        <apex:commandButton action="{!DeleteiTEM}" onclick="deletePayment('{!Os.Request_No__c}');" value="Delete" />
+                    </apex:column>
+                    <apex:column headerValue="产品名称">
+                        <apex:inputField value="{!Os.Product__c}" />
+                    </apex:column>
+                    <apex:column headerValue="数量">
+                        <apex:inputField value="{!Os.Quantity__c}" />
+                    </apex:column>
+                    <apex:column headerValue="单价">
+                        <apex:inputField value="{!Os.Sales_Price__c}" />
+                    </apex:column>
+                    <apex:column headerValue="电池类型">
+                        <apex:inputField value="{!Os.Battery_Type__c}" />
+                    </apex:column>
+                    <apex:column headerValue="边框高度">
+                        <apex:inputField value="{!Os.Frame_B_Side_Height__c}" />
+                    </apex:column>
+                    <apex:column headerValue="M/P">
+                        <apex:inputField value="{!Os.MP__c}" />
+                    </apex:column>
+                    <apex:column headerValue="预计交货日期">
+                        <apex:inputField value="{!Os.Expected_Delivery_Date__c}" />
+                    </apex:column>
+                    <apex:column headerValue="保证交货日期">
+                        <apex:inputField value="{!Os.Guaranteed_Delivery_Date__c}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <script>
+        function SaveAll() {
+            if (confirm("Are you sure Save?")) {
+
+
+
+            }
+        }
+        function deletePayment(payid) {
+            if (confirm("Are you sure Delete?")) {
+
+                var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+                hidden1.value = payid;
+
+            }
+        }
+        function deleteItem(itemid) {
+            if (confirm("Are you sure Delete?")) {
+
+                var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+                hidden1.value = itemid;
+
+            }
+        }
+    </script>
+</apex:page>

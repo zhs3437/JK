@@ -1,0 +1,914 @@
+<apex:page Controller="RC_ComponentTaskBookController" sidebar="false"  showHeader="false" standardStylesheets="false" renderAs="PDF" >
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <style>
+            body{
+            font-family:'Calibri';
+            font-size:15pt;
+            }
+            .div{
+            text-align:center;
+            margin:auto 0;
+            width:700px;
+            }
+            .hid_div{
+            display:hidden;
+            }
+        </style>
+        
+    </head>
+    <body style="font-family:Arial Unicode MS">
+        <div class="div">      
+            
+            <p style="font-size:15pt; line-height:150%; margin:0pt; orphans:0; text-align:center;"><span>组件设计（变更）任务书</span></p>
+            <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:0pt;border:1px solid #ccc">
+                <tbody>
+                    <tr style="height:28.65pt">
+                        <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:130pt"><p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                            订单号:<span style="font-family:宋体; font-size:10.5pt">&nbsp;{!ctb.Name} &nbsp;</span>
+                        <!--<span style="font-family:'Times New Roman';text-align:left;  font-size:10.5pt; display:{!IF(ctb.Contract__c == null ,'run-in','none')}; ">MDA NO:</span><span style="font-family:宋体; font-size:10.5pt">&nbsp;{!ctb.name} &nbsp;</span>--></p></td>
+                        <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:350pt"><p style="margin:0pt; orphans:0; text-align:justify; widows:0">业务代表（签字）:<span style="font-size:10.5pt">&nbsp; {!ctb.iContract__r.Actual_Sales_Name__c}</span></p>
+                        <p style="margin:0pt; orphans:0; text-align:justify; widows:0">联系电话:<span style="font-family:宋体; font-size:10.5pt">&nbsp; {!ctb.iContract__r.Actual_Sales__r.MobilePhone}</span></p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:10.5pt">E-mail :</span><span style="font-family:宋体; font-size:10.5pt">&nbsp;{!ctb.iContract__r.Actual_Sales__r.Email} </span></p></td>
+                        
+                        
+                        
+                        <td style="width:50pt; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt;  border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt;  "><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span>提交日期</span></p></td>
+                        <td style="width:100pt; font-family:'Times New Roman'; font-size:10.5pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; text-align:left; ">
+                        {!TEXT(YEAR(tod))& "-" & TEXT(MONTH(tod))& "-" & TEXT(DAY(tod))}</td>
+                    
+                    </tr>
+                    <tr style="height:18.25pt;  ">
+                        <td rowspan="1" colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle;width:630pt;"><p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                          <span style="font-size:8.5pt">客户名称</span>
+                          <span style="font-family:'font-size:10.5pt">:</span>
+                          <span style="font-size:10.5pt">{!ctb.Client_Name__c}</span></p>
+                          <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                            <span style="font-size:8.5pt">订单数量</span>
+                            <span style="font-size:10.5pt">:</span><span style="font-size:10.5pt">
+                            </span><span style="color:#000000;font-size:10.5pt">{!ctb.Order_Quantities__c}</span>
+                          </p>
+                        </td>
+                    </tr>
+                    
+                    
+                     <tr style="height:10.45pt"> 
+                        
+                        <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle; width:454.25pt">
+                            <div style="text-align:center">
+                                <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin:0 auto">
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">产品名称</span></p></td>
+            
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">电池数量</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">电池类型</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">组件类型</span></p></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt">
+                                                <p style="margin:0pt; orphans:0; text-align:center; widows:0">
+                                                    <span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                        <apex:outputLabel rendered="{!IF(ctb.ModuleType1__c != null,true,false)}" value="{!ctb.ModuleType1__r.Name}" />
+                                                        <apex:outputLabel rendered="{!IF(ctb.ModuleType1__c != null,false,true)}" value="{!ctb.iModule_Type1__r.Name}" />
+                                                    </span>
+                                                </p>
+                                            </td>
+    
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity1__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Quantity1__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity1_Text__c <> 0 ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Cell_Quantity1_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Type1__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type1__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Type1_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type1_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            
+                                            
+                                            
+                                            
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Series1__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Series1__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Category1_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Category1_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            
+                                        </tr>
+                                        <apex:outputText rendered="{!IF(ctb.iModule_Type2__c != null || ctb.Module_Type2__c != null ,true,false)}">
+                                            <tr>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt">
+                                                    <p style="margin:0pt; orphans:0; text-align:center; widows:0">
+                                                        <span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                            <apex:outputLabel rendered="{!IF(ctb.ModuleType1__c != null,true,false)}" value="{!ctb.Module_Type2__r.Name}" />
+                                                            <apex:outputLabel rendered="{!IF(ctb.ModuleType1__c != null,false,true)}" value="{!ctb.iModule_Type2__r.Name}" />
+                                                        </span>
+                                                    </p>
+                                                </td>
+                            
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity2__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Quantity2__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity2_Text__c != 0 ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Cell_Quantity2_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type2__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type2__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type2_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type2_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Series2__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Series2__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Category2_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Category2_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            </tr>
+                                        </apex:outputText>   
+                                        <apex:outputText rendered="{!IF(ctb.iModule_Type3__c != null || ctb.Module_Type3__c != null ,true,false)}">
+                                            <tr>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt">
+                                                    <p style="margin:0pt; orphans:0; text-align:center; widows:0">
+                                                        <span style="color:#000000; font-size:10pt">
+                                                            <apex:outputLabel rendered="{!IF(ctb.ModuleType1__c != null,true,false)}" value="{!ctb.Module_Type3__r.Name}" />
+                                                            <apex:outputLabel rendered="{!IF(ctb.ModuleType1__c != null,false,true)}" value="{!ctb.iModule_Type3__r.Name}" />
+                                                        </span>
+                                                    </p>
+                                                </td>
+                                 
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity3__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Quantity3__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity3_Text__c != 0 ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Cell_Quantity3_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type3__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type3__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type3_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type3_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Series3__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Series3__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Category3_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Category3_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            </tr>
+                                        </apex:outputText>
+                                        
+                                       
+                                    </tbody>
+                                </table>
+                            </div><p style="margin:0pt; orphans:0; text-align:justify; widows:0"></p>
+                        </td>
+                    </tr>                    
+                     <!-- FF填充因子  已完成  -->
+                    <tr style="display:{!IF(ctb.FF__c !='其他','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">填充因子FF:{!ctb.FF__c}</span>
+                        </td>
+                    </tr>                    
+                       <tr style="display:{!IF(ctb.FF_Text__c !='','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">填充因子FF:{!ctb.FF_Text__c}</span>
+                        </td>
+                    </tr>   
+                    
+                    
+                    
+                    
+                    
+                    
+                    <tr>
+                        <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt"><p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-size:10pt">技术要求：</span></p>
+                                                      
+                        </td>
+                    </tr>
+                   
+                    
+                    <!-- 产品认证  已完成  -->
+                    <tr style="display:{!IF(ctb.Product_Certificate__c !='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:&nbsp;{!ctb.Product_Certificate__c} </span>
+                        </td>
+                    </tr>    
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:&nbsp;{!ctb.Product_Certificate_Text__c}</span>
+                        </td>
+                    </tr>
+                    
+                    <!-- 附加认证 验证规则已解决  -->
+                    <tr style="display:{!IF(ctb.Additional_Certificate__c !='Other','run-in','none')};">
+                   <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.附加认证:&nbsp; {!ctb.Additional_Certificate__c}</span>
+                        </td>
+                        </TR>
+                        <TR style="display:{!IF(ctb.Additional_Certificate__c =='Other','run-in','none')};">
+                          <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                  
+                         <span style="font-size:10.5pt">2.附加认证:&nbsp;{!ctb.Additional_Certificate_other__c}</span>
+                         </TD>
+                    </TR>
+
+                    <!-- 强制性认证/列表 验证规则已解决  -->
+                    <tr style="display:{!IF(ctb.Additional_Certificate__c != null,'run-in','none')};">
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                           <span style="font-size:10.5pt">3.强制性认证/列表: &nbsp;{!ctb.Additional_Certificate__c}</span>
+                           </td>
+                    </TR>
+                    <TR style="display:{!IF(ctb.Additional_Certificate__c ==null,'run-in','none')};">
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                     
+                      <span style="font-size:10.5pt">3.强制性认证/列表:不需要</span>
+                      </TD>
+                    </TR>
+                       
+                    
+                    <!-- 4、系统电压 已完成 -->
+                    <tr style="display:{!IF(ctb.System_Voltage__c !='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.系统电压:&nbsp;{!ctb.System_Voltage__c} </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.System_Voltage__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.系统电压:&nbsp;{!ctb.System_Voltage_Text__c}</span>
+                        </td>
+                    </tr>  
+                   <!-- 5、组件功率公差 已完成--> 
+                    <tr style="display:{!IF(ctb.Power_Tolerance__c =='Each module: 0~+3%','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件功率公差:{!ctb.Power_Tolerance__c}</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Power_Tolerance__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件功率公差:&nbsp;{!ctb.Power_Tolerance_Text__c}</span>
+                        </td>
+                    </tr>
+                    <!-- 额外功率 已完成--> 
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                          <span style="font-size:10.5pt">6.额外功率:&nbsp;{!ctb.Additional_power__c}</span>
+                          <apex:outputPanel rendered="{!IF(ctb.Additional_power_Text__c != null ,true,false)}" style="font-family: Arial Unicode MS">
+                                ,{!ctb.Additional_power_Text__c} W
+                          </apex:outputPanel>
+                          </td>
+                      </tr>                    
+                  <!-- 7、   组件质保   已完成 -->
+                   <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.组件质保:晶科标准&nbsp;{!ctb.Warranty__c}</span>
+                        </td>
+                  </tr> 
+               <!-- 第二部分，物料要求 -->     
+                    
+                 <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid;border-top-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">物料要求</span>
+                    </td>
+                 </tr>        
+                    
+                <!-- 1、 BOM      已完成-->    
+                  <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.BOM:晶科标准 </span>
+                        <apex:outputPanel rendered="{!IF(ctb.BOM__c == 'Standard Certified BOM',true,false)}">1.BOM: <apex:outputField value="{!ctb.BOM__c}" rendered="{!IF(ctb.BOM__c == 'Standard Certified BOM',true,false)}"/></apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.BOM_Fixed_Text__c != null,true,false)}">1.BOM 固定: <apex:outputField value="{!ctb.BOM_Fixed_Text__c}" rendered="{!IF(ctb.BOM_Fixed_Text__c != null,true,false)}"/></apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.BOM_Material_Fixed_Text__c != null,true,false)}">1.BOM材料固定 : <apex:outputField value="{!ctb.BOM_Material_Fixed_Text__c}" rendered="{!IF(ctb.BOM_Material_Fixed_Text__c != null,true,false)}"/></apex:outputPanel>
+                      </td>
+                    </tr> 
+              <!-- 2、   电池类型   已完成  列表值和组件任务书不一致,以及该选项值有三个-->      
+                    <tr style="display:{!IF(ctb.Cell_Type1__c !='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.电池类型:&nbsp;{!ctb.Cell_Type1__c}</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Cell_Type1__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.电池类型:&nbsp;{!ctb.Cell_Type1_Text__c}</span>
+                        </td>  
+                    </tr>
+
+                  <!-- 3、  玻璃类型 已完成，页面需要必填 -->  
+                   <tr style="display:{!IF(ctb.Front_Glass__c != 'Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.玻璃类型:&nbsp;{!ctb.Front_Glass__c}</span>
+                        </td>
+                    </tr>                    
+                     <tr style="display:{!IF(ctb.Front_Glass_Text__c != null,'run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.玻璃类型:&nbsp;{!ctb.Front_Glass_Text__c} </span>
+                        </td> 
+                    </tr>
+                    
+                    
+                   
+                    <!-- 4.玻璃厚度             已完成 -->  
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.玻璃厚度:&nbsp;{!ctb.Glass_Thickness__c}</span>
+                        </td>
+                    </tr>                    
+                    <!-- 5.发货标记    已完成   -->
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.发货标记:&nbsp;{!ctb.Shipping_Mark__c}</span>
+                        </td>
+                    </tr>   
+            
+                    
+                    <!-- 6.接线盒品牌、型号 值不统一  已完成  -->
+                     <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                      <span style="font-size:10.5pt">6.接线盒品牌、型号: </span>
+                            <apex:outputPanel rendered="{!IF(ctb.Junction_Box_brand__c   != 'Other',true,false)}">
+                                    {!ctb.Junction_Box_brand__c }
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(ctb.Junction_Box_brand_Text__c != null ,true,false)}" style="font-family: Arial Unicode MS">
+                                    {!ctb.Junction_Box_brand_Text__c}
+                            </apex:outputPanel>
+                        </td>
+                    </tr>                    
+                
+                    
+                    
+                    <!-- 7、接线盒电缆线长度（含接插件）   已完成-->
+                    
+                    <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000;  border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">7.接线盒电缆线长度（含接插件）： </span>
+                        <apex:outputPanel rendered="{!IF(ctb.Junction_Box_Cable_Length__c != 'Other',true,false)}">
+                                {!ctb.Junction_Box_Cable_Length__c}
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Junction_Box_Cable_Length_Text__c != null ,true,false)}" style="font-family: Arial Unicode MS">
+                                {!ctb.Junction_Box_Cable_Length_Text__c}
+                        </apex:outputPanel>
+                        </td>
+                    </tr>  
+                    
+                    <!-- 8、连接器品牌、型号 已完成-->
+                    <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">8.连接器品牌、型号: </span>
+                            <apex:outputPanel rendered="{!IF(ctb.Junction_Box_Connector__c != 'Other',true,false)}">
+                                    {!ctb.Junction_Box_Connector__c}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(ctb.Junction_Box_Connector_Text__c  != null ,true,false)}" style="font-family: Arial Unicode MS">
+                                    {!ctb.Junction_Box_Connector_Text__c    }
+                            </apex:outputPanel>
+                        </td>
+                    </tr>                    
+                 
+                    
+                   <!-- 9.背板型号 需复查前面所有行的值是否正确    已完成--> 
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">9.背板型号:</span>
+                            <apex:outputPanel rendered="{!IF(ctb.Rear_cover__c != 'Other',true,false)}">
+                                    {!ctb.Rear_cover__c}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(ctb.Rear_cover_Text__c != null ,true,false)}" style="font-family: Arial Unicode MS">
+                                    {!ctb.Rear_cover_Text__c}
+                            </apex:outputPanel>
+                        </td>
+                    </tr> 
+
+                   <!-- 10.背板型号 需复查前面所有行的值是否正确    已完成--> 
+                   <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">10.后盖材料:</span>
+                            <apex:outputPanel >
+                                    {!ctb.Rear_Cover_Material__c}
+                            </apex:outputPanel>
+                        </td>
+                    </tr>   
+                    
+                 <!-- 11.EVA类型 已完成-->   
+                                       
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">11.EVA类型: </span>
+                            <apex:outputPanel rendered="{!IF(ctb.EVA__c != 'Other',true,false)}">
+                                    {!ctb.EVA__c}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(ctb.EVA_Text__c != null ,true,false)}" style="font-family: Arial Unicode MS">
+                                    {!ctb.EVA_Text__c}
+                            </apex:outputPanel>
+                        </td> 
+                    </tr> 
+                    <!-- 12.是否使用LRF 已完成 需要页面必填 -->
+                    <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">12.是否使用LRF: </span>
+                        <apex:outputPanel >
+                                {!ctb.LRF__c}
+                        </apex:outputPanel>
+                        </td>
+                    </tr>                    
+                    
+                    
+                    <!-- 13.边框高度 LCR  已完成 需要页面必填-->
+                    
+                    <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">13.边框高度： </span>
+                            <apex:outputPanel rendered="{!IF(ctb.Frame_B_side_Height__c != 'Others' && ctb.Frame_B_side_Height__c != '无边框' ,true,false)}" >
+                                <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Frame_B_side_Height__c}</span>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(ctb.Frame_B_side_Height_Text__c != null,true,false)}" >
+                                <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Frame_B_side_Height_Text__c}</span>
+                            </apex:outputPanel>
+                        </td>
+                    </tr>       
+                    
+                     <!-- 14.边框颜色 已完成 需要页面必填-->
+                    
+                     <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">14.边框颜色: </span>
+                            <apex:outputPanel >
+                                    {!ctb.Frame_Color__c}
+                            </apex:outputPanel>
+                          </td>
+                      </tr>       
+                    
+                     <!-- 15.边框类型 已完成 需要页面必填-->
+                    
+                     <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">15.边框类型: </span>
+                            <apex:outputPanel >
+                                    {!ctb.Frame_Type__c}
+                            </apex:outputPanel>
+                          </td>
+                      </tr>          
+
+                     <!-- 16.边框短边C面结构 已完成 需要页面必填-->
+                    
+                     <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">16.边框短边C面结构: </span>
+                            <apex:outputPanel >
+                                    {!ctb.C_side_type_of_short_frame__c}
+                            </apex:outputPanel>
+                          </td>
+                      </tr>     
+                      
+                    <!-- 17.唛头 已完成 需要页面必填-->
+                    
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">17.唛头: </span>
+                        <apex:outputPanel >
+                          {!ctb.Shipping_Mark__c}
+                        </apex:outputPanel>
+                      </td>
+                    </tr>
+                    
+                     <!-- 18.铭牌 已完成 需要页面必填-->
+                    
+                     <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">18.铭牌样式: </span>
+                        <apex:outputPanel >
+                          {!ctb.Nameplate__c}
+                        </apex:outputPanel>
+                      </td>
+                    </tr> 
+
+                    
+                      <!-- 19.是否为分销订单 已完成 需要页面必填-->
+                    
+                      <tr>
+                        <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                           <span style="font-size:10.5pt">19.是否为分销订单: </span>
+                           <apex:outputPanel rendered="{!IF(ctb.Distribution_order_or_not__c== '是',true,false)}">
+                            <span style="font-size:10.5pt">是 </span>
+                          </apex:outputPanel>
+                          <apex:outputPanel rendered="{!IF(ctb.Distribution_order_or_not__c== '否' ,true,false)}" >
+                            <span style="font-size:10.5pt">否 &nbsp;&nbsp; </span>
+                          </apex:outputPanel>
+                        </td>
+                      </tr>   
+                    
+                    
+                    <!-- 20.包装 已完成 需要页面必填-->
+                    
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">20.包装: </span>
+                        <apex:outputPanel rendered="{!IF(ctb.Package__c != 'Other',true,false)}">
+                                    {!ctb.Package__c}
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Package_Text__c != null ,true,false)}" style="font-family: Arial Unicode MS">
+                                    {!ctb.Package_Text__c}
+                        </apex:outputPanel>
+                      </td>
+                    </tr>   
+                 
+                    
+                     <!-- 21.每托组件是否需要合格证 已完成 需要页面必填-->
+                    
+                     <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">21.每托组件是否需要合格证: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.Module_Certificate__c== '需要，晶科标准',true,false)}">
+                          <span style="font-size:10.5pt">需要，晶科标准 </span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Module_Certificate__c== '不需要' ,true,false)}" >
+                          <span style="font-size:10.5pt">不需要 &nbsp;&nbsp; </span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Module_Certificate__c== '需要，客户标准' ,true,false)}">
+                          <span style="font-size:10.5pt">需要，客户标准{!ctb.Module_Certificate_Text__c} &nbsp;&nbsp; </span>
+                        </apex:outputPanel>
+                      </td>
+                    </tr> 
+                    <!-- 22.电流分档 已完成 需要页面必填-->
+                    
+                     <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">22.电流分档: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.Current_Sorting__c!= '客户标准',true,false)}">
+                          <span style="font-size:10.5pt"> {!ctb.Current_Sorting__c} </span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Current_Sorting__c== '客户标准' ,true,false)}" >
+                          <span style="font-size:10.5pt">{!ctb.Current_Sorting__c}:{!ctb.Current_Sorting_Text__c} </span>
+                        </apex:outputPanel>
+                      
+                      </td>
+                    </tr>   
+    
+                   <!-- 23.电流分档包装 已完成 需要页面必填-->
+                    
+                     <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">23.电流分档包装: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.Current_Sorting_Style__c== 'Yes, Mixed current sorting allowed for the balance modules',true,false)}">
+                          <span style="font-size:10.5pt">允许尾数混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Current_Sorting_Style__c== 'Yes, Mixed current sorting allowed for the balance modules of every 7MW' ,true,false)}" >
+                          <span style="font-size:10.5pt">允许每7兆瓦尾数混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Current_Sorting_Style__c== 'Not acceptable',true,false)}">
+                          <span style="font-size:10.5pt">不混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Current_Sorting_Style__c== '客户标准' ,true,false)}" >
+                          <span style="font-size:10.5pt">是，允许每{!ctb.Current_Sorting_Style_Text__c}MW尾数混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Current_Sorting_Style__c== 'No Need' ,true,false)}" >
+                          <span style="font-size:10.5pt">否</span>
+                        </apex:outputPanel>
+                      </td>
+                    </tr>   
+
+                    <!-- 24.颜色分档包装 已完成 需要页面必填-->
+                    
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">24.颜色分档包装: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.Color_Sorting_style__c== 'Yes, Mixed color sorting allowed for the balance modules',true,false)}">
+                          <span style="font-size:10.5pt">允许尾数混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Color_Sorting_style__c== 'Yes, Mixed color sorting allowed for the balance modules of every 7MW' ,true,false)}" >
+                          <span style="font-size:10.5pt">允许每7兆瓦尾数混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Color_Sorting_style__c== 'Not acceptable',true,false)}">
+                          <span style="font-size:10.5pt">不混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Color_Sorting_style__c== '客户标准' ,true,false)}" >
+                          <span style="font-size:10.5pt">是，允许每{!ctb.Color_Sorting_style_text__c}MW尾数混装</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Color_Sorting_style__c== 'No Need' ,true,false)}" >
+                          <span style="font-size:10.5pt">否</span>
+                        </apex:outputPanel>
+                      </td>
+                    </tr>   
+
+
+                    <!-- 25.颜色标签 已完成 需要页面必填-->
+                    
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">25.颜色标签: </span>
+                         <apex:outputPanel >
+                          <span style="font-size:10.5pt">{!ctb.Additional_Shipping_Mark_Color_Label__c}</span>
+                        </apex:outputPanel>
+                       
+                      </td>
+                    </tr>   
+                    <!-- 26.是否需使用缠绕膜 已完成 需要页面必填-->
+                    
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">26.是否需使用缠绕膜: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.Wrapping_film__c== '不需要',true,false)}">
+                          <span style="font-size:10.5pt">不需要</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Wrapping_film__c== '需要，无缠绕层数要求' ,true,false)}" >
+                          <span style="font-size:10.5pt">需要，无缠绕层数要求</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Wrapping_film__c== '需要，客户指定缠绕层数',true,false)}">
+                          <span style="font-size:10.5pt">需要，客户指定缠绕层数{!ctb.Wrapping_film_text__c}层</span>
+                        </apex:outputPanel>
+                       
+                      </td>
+                    </tr>   
+
+
+                      <!-- 27.运输方式 已完成 需要页面必填-->
+                    
+                      <tr>
+                        <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                           <span style="font-size:10.5pt">27.组件运输方式: </span>
+                           <apex:outputPanel rendered="{!IF(ctb.Transportation_style__c== '物流',true,false)}">
+                            <span style="font-size:10.5pt">物流</span>
+                          </apex:outputPanel>
+                          <apex:outputPanel rendered="{!IF(ctb.Transportation_style__c== '高低平板车' ,true,false)}" >
+                            <span style="font-size:10.5pt">高低平板车</span>
+                          </apex:outputPanel>
+                          <apex:outputPanel rendered="{!IF(ctb.Transportation_style__c== 'Land',true,false)}">
+                            <span style="font-size:10.5pt">{!ctb.Transportation_style_Text__c}</span>
+                          </apex:outputPanel>
+                         
+                        </td>
+                      </tr>   
+                    
+                    <!-- 第三部分，工艺流程设计： -->
+                        
+                    
+               <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000;border-top-style:solid; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">组件检验标准及验货要求：</span>
+                    </td>
+                 </tr>   
+                    <!-- 1、组件外观标准   Component_appearance_standard__c    Component_appearance_standard_text__c  已完成 -->
+                     <tr>
+                        <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                           <span style="font-size:10.5pt">1.组件外观标准: </span>
+                           <apex:outputPanel rendered="{!IF(ctb.Component_appearance_standard__c== '晶科标准',true,false)}">
+                            <span style="font-size:10.5pt">晶科标准</span>
+                          </apex:outputPanel>
+                          <apex:outputPanel rendered="{!IF(ctb.Component_appearance_standard__c== '客户标准' ,true,false)}" >
+                            <span style="font-size:10.5pt">客户标准:{!ctb.Component_appearance_standard_text__c}</span>
+                          </apex:outputPanel>
+                         
+                        </td>
+                      </tr>   
+                   
+                    
+                    
+                    <!-- 2.组件EL标准 EL_standard__c   EL_standard_text__c   已完成-->
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">2.组件EL标准: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.EL_standard__c== '晶科标准',true,false)}">
+                          <span style="font-size:10.5pt">晶科标准</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.EL_standard__c== '客户标准' ,true,false)}" >
+                          <span style="font-size:10.5pt">客户标准:{!ctb.EL_standard_text__c}</span>
+                        </apex:outputPanel>
+                       
+                      </td>
+                    </tr>   
+
+
+                    <!-- 3. 组件EL照片是否需要    EL_photo__c   已完成，需要页面必填 -->
+
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">3.组件EL照片是否需要: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.EL_photo__c== '需要EL照片',true,false)}">
+                          <span style="font-size:10.5pt">需要EL照片</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.EL_photo__c== '不需要EL照片' ,true,false)}" >
+                          <span style="font-size:10.5pt">不需要EL照片</span>
+                        </apex:outputPanel>
+                       
+                      </td>
+                    </tr>   
+
+ 
+                    <!-- 4.组件功率测试标准板    Component_power_test__c 已完成，需要页面必填-->
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">4.组件功率测试标准板: </span>
+                         <apex:outputPanel >
+                          <span style="font-size:10.5pt">{!ctb.Component_power_test__c}</span>
+                        </apex:outputPanel>                       
+                      </td>
+                    </tr>   
+
+                  
+                    
+                    <!-- 5.组件是否需要外送做可靠性测试   Lab_tests__c -->
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">5.实验测试: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.Lab_tests__c== '3rd Party lab',true,false)}">
+                          <span style="font-size:10.5pt">是{!ctb.Lab_tests_text__c}</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Lab_tests__c== 'Jinko laboratory' ,true,false)}" >
+                          <span style="font-size:10.5pt">否，晶科实验室</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Lab_tests__c== 'No Need' ,true,false)}" >
+                          <span style="font-size:10.5pt">不做可靠性测试</span>
+                        </apex:outputPanel>
+                       
+                      </td>
+                    </tr> 
+
+                   
+                    <!-- 6.组件是否需要外送做功率及EL测试   EL_Test__c    EL_Test_Text__c 完成 -->
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">6.组件是否需要外送做功率及EL测试: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.EL_Test__c== '是',true,false)}">
+                          <span style="font-size:10.5pt">是{!ctb.EL_Test_Text__c}</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.EL_Test__c== '否，晶科实验室' ,true,false)}" >
+                          <span style="font-size:10.5pt">否，晶科实验室</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.EL_Test__c== '不做测试' ,true,false)}" >
+                          <span style="font-size:10.5pt">不做测试</span>
+                        </apex:outputPanel>
+                       
+                      </td>
+                    </tr> 
+                    <!-- 7.客户是否验货或驻厂监造   Inspection_or_supervision__c   Inspection_or_supervision_time__c  -->
+                    <tr>
+                      <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                         <span style="font-size:10.5pt">7.客户提前验货或驻场监造: </span>
+                         <apex:outputPanel rendered="{!IF(ctb.Inspection_or_supervision__c== '客户验货',true,false)}">
+                          <span style="font-size:10.5pt">客户验货</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Inspection_or_supervision__c== '客户驻厂监造' ,true,false)}" >
+                          <span style="font-size:10.5pt">客户驻厂监造</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(ctb.Inspection_or_supervision__c== '无此要求' ,true,false)}" >
+                          <span style="font-size:10.5pt">无此要求</span>
+                        </apex:outputPanel>
+                       
+                      </td>
+                    </tr> 
+                    
+                    <!-- 8.如需验货，客户验货抽检比例、测试项目、允收标准、惩罚措施：详见合同差异表（最终确认） -->
+               <!-- </tbody></table> -->
+               
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.如需验货，客户验货抽检比例、测试项目、允收标准、惩罚措施：详见合同差异表（最终确认）</span>
+                            
+                        </td> 
+                    </tr>
+       
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.技术规格书:{!ctb.DS_Version_in_the_Contract_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    <tr>
+                      <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                          <span style="color:#000000; font-size:10pt">订单概要:</span>
+                          <apex:outputPanel style="font-family: Arial Unicode MS">
+                              {!ctb.Note__c}
+                          </apex:outputPanel>
+                      </td>
+                  </tr>
+                  
+                    
+               
+                 
+              
+            
+   
+                    
+                    
+                    
+                    <tr style="height:10.65pt">
+                        <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                            <span style="font-size:10.5pt">销售总监意见: &nbsp;</span>                            
+                            <span style="font-size:10.5pt">{!ctb.Sales_director_opinions__c}</span>
+                        </td>
+                        <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:200pt">
+                            <span style="font-size:10.5pt">签名: &nbsp; </span> 
+                            <span style="font-size:10.5pt">{!ctb.Director_Signature__c}</span>
+                        </td>
+                        <td style="width:30pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt;  border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;">
+                            <p style="margin:0pt; orphans:0; text-align:center;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Date:&nbsp; </span>
+                            </p>
+                        </td>
+                        <td style="width:100pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;"> 
+                            <p style="margin:0pt; orphans:0; text-align:left;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">{!TEXT(YEAR(approveDate))& "-" & TEXT(MONTH(approveDate))& "-" & TEXT(DAY(approveDate))}</span> &nbsp;
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height:10.65pt">
+                        <td colspan="3" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                            <span style="font-size:10.5pt">技术服务部经理意见: &nbsp;</span>                            
+                            <span style="font-size:10.5pt">{!ctb.Technical_manager_Shanghai__c}</span>
+                        </td>
+                        <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:200pt">
+                            <span style="font-size:10.5pt">签名: &nbsp; </span> 
+                            <span style="font-size:10.5pt">{!ctb.Signature__c}</span>
+                        </td>
+                        <td style="width:30pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt;  border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;">
+                            <p style="margin:0pt; orphans:0; text-align:center;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Date:&nbsp; </span>
+                            </p>
+                        </td>
+                        <td style="width:100pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;"> 
+                            <p style="margin:0pt; orphans:0; text-align:left;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">{!TEXT(YEAR(approveDate))& "-" & TEXT(MONTH(approveDate))& "-" & TEXT(DAY(approveDate))}</span> &nbsp;
+                            </p>
+                        </td>
+                    </tr>
+                   
+                   <!-- <tr style="height:9.35pt">
+                        <td colspan="6" style="width:630pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle;">
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Technical manager assigns tasks:&nbsp;</span>
+                                <span style="font-family:Arial Unicode MS ; font-size:10.5pt">
+                                    {!ctb.Technical_manager_assigns_tasks__c}
+                                </span>
+                            </p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Designer:&nbsp;</span>
+                                <span style="font-family:Arial Unicode MS ; font-size:10.5pt">
+                                    {!ctb.Designer__c}
+                                </span>
+                            </p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Designing dead line:&nbsp;</span>
+                                <span style="font-family:Arial Unicode MS ; font-size:10.5pt">
+                                    {!ctb.Designing_dead_line__c}
+                                </span>
+                            </p>
+                        </td>
+                    </tr>-->
+                     <tr>
+                        <td colspan="3"  style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                            <span style="font-family: Arial Unicode MS; font-size:10.5pt">{!ctb.Deviation_sheet__c}</span>
+                          
+                        </td>
+                    </tr>
+                    
+                    <tr style="height:9.35pt">
+                        <td colspan="6" style="width:630pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle;">
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-size:10.5pt">技术服务部经理审批意见:&nbsp;</span>
+                                <span style="font-size:10.5pt">
+                                    {!ctb.Technical_manager_Shanghai_Comments__c}
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <!--
+                    <tr style="height:0pt">
+                        <td style="width:70.35pt; border:none"></td>
+                        <td style="width:68.9pt; border:none"></td>
+                        <td style="width:169.35pt; border:none"></td>
+                        <td style="width:15.4pt; border:none"></td>
+                        <td style="width:211.4pt; border:none"></td>
+                        <td style="width:211.4pt; border:none"></td>
+                    </tr>
+                         -->
+                
+                </tbody>
+            </table>
+            <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">Note：&nbsp;</span><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">1&nbsp;The assignment paper is filled and distributed by the sales department or technical department</span></p>
+            <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 &nbsp;Pls salesman make sure that the information in this sheet is consistent with the information in “order notice”in order to different department in factory have the same information from sales department to avoid misunderstanding</span></p>
+            -->
+            <!--
+<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">&nbsp;</span></p>
+<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">&nbsp;</span></p>
+-->
+            <!--
+<p style="margin:0pt; orphans:0; text-align:right; widows:0"><span style="width:21pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'Times New Roman'; font-size:9pt">JKM-TN-015A</span></p>
+-->
+        </div>
+    </body>
+    
+</apex:page>

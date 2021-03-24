@@ -1,0 +1,63 @@
+<apex:page standardController="Opportunity" extensions="NewProjectCtrl" 
+  sidebar="false" action="{!getLoginToken}">
+            <apex:pageMessages />
+    
+   
+    <apex:form >
+        <div style="text-align:center">
+        <apex:commandButton value="Save" action="{!save}" />
+        <apex:commandButton VALUE="Cancel" onClick="window.close()"/>
+        </div>
+        <table border="1" width="800px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;">
+            <tr>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Project Name:<apex:inputField value="{!pj.name}" required="true" ></apex:inputField></td>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Project Location	:<apex:inputField value="{!pj.Project_Location__c}" required="true"></apex:inputField></td>
+            </tr>
+            
+            <tr>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Total Project Size (MW)	:<apex:inputField value="{!pj.Total_Project_Size_MW__c}" required="true"></apex:inputField></td>
+
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Sales Sub Type	:<apex:inputField value="{!pj.Project_Type__c}" required="true"></apex:inputField></td>
+            </tr>
+            <tr>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Priority:<apex:inputField value="{!pj.Priority__c}" required="true" ></apex:inputField></td>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Completion time:<apex:inputField value="{!pj.Planned_Project_Close_Date__c}"  required="true"></apex:inputField></td>
+            </tr>
+            <tr>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Currency:<apex:inputField value="{!pj.CurrencyIsoCode}" required="true" ></apex:inputField></td>
+                <td>ComponentSupplier:<apex:inputField value="{!pj.ComponentSupplier__c}"  ></apex:inputField></td>
+            </tr>
+            <tr>
+                <td>Created By QWUser:<apex:inputField value="{!pj.CreatedByQWUser__c}"  ></apex:inputField></td>
+                <td>EPC:<apex:inputField value="{!pj.EPC__c}"></apex:inputField></td>
+            </tr>
+            <tr>
+                <td>ComponentType:<apex:inputField value="{!pj.ComponentType__c}"  ></apex:inputField></td>
+                <td>InstalledQuantity:<apex:inputField value="{!pj.InstalledQuantity__c}"  ></apex:inputField></td>
+            </tr>
+            <tr>
+                <td>IsDone:<apex:inputField value="{!pj.IsDone__c}" ></apex:inputField></td>
+                <td>Last Modified By QWUser	:<apex:inputField value="{!pj.LastModifiedByQWUser__c}"></apex:inputField></td>
+            </tr>
+            <tr>
+                <td>MajorInvestor:<apex:inputField value="{!pj.MajorInvestor__c}"  ></apex:inputField></td>
+                <td>ProjcetType:<apex:inputField value="{!pj.ProjcetType__c}" ></apex:inputField></td>
+            </tr>
+            <tr>
+                <td>ProjectCapacity:<apex:inputField value="{!pj.ProjectCapacity__c}"  ></apex:inputField></td>
+                <td>RegionAccount:<apex:inputField value="{!pj.RegionAccount__c}" ></apex:inputField></td>
+            </tr>
+            <tr>
+                <td>ProjectOwner:<apex:inputField value="{!pj.ProjectOwner__c}"  ></apex:inputField></td>
+                <td>Remarks:<apex:inputField value="{!pj.Remarks__c}"  ></apex:inputField></td>
+            </tr>
+            <tr>
+                <td>ProjectPlace:<apex:inputField value="{!pj.ProjectPlace__c}"  ></apex:inputField></td>
+                <td>ImportantLevel:<apex:inputField value="{!pj.ImportantLevel__c}"  ></apex:inputField></td>
+            </tr>
+            
+            
+            
+        </table>
+        </apex:form>
+</apex:page>

@@ -1,0 +1,247 @@
+<apex:page standardcontroller="Agreement__c" extensions="RC_OrderNoticeController" sidebar="false" showheader="false" 
+           standardstylesheets="false" contenttype="application/vnd.ms-excel#ProductionOrderNotice.xls">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+         <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+        </style>
+    </head>
+    <style type="text/css">
+  body {
+    font-family: arial;
+  }
+
+  table {
+    border: 1px solid #ccc;
+    width: 80%;
+    margin:0;
+    padding:0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0 auto;
+  }
+
+  table tr {
+    border: 1px solid #ddd;
+    padding: 5px;
+  }
+
+  table th, table td {
+    padding: 10px;
+    text-align: center;
+  }
+
+  table th {
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  @media screen and (max-width: 600px) {
+
+    table {
+      border: 0;
+    }
+
+    table thead {
+      display: none;
+    }
+
+    table tr {
+      margin-bottom: 10px;
+      display: block;
+      border-bottom: 2px solid #ddd;
+    }
+
+    table td {
+      display: block;
+      text-align: right;
+      font-size: 13px;
+      border-bottom: 1px dotted #ccc;
+    }
+
+    table td:last-child {
+      border-bottom: 0;
+    }
+
+    table td:before {
+      content: attr(data-label);
+      float: left;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+
+.note{max-width: 80%; margin: 0 auto;}
+
+    </style>
+    <body style="width:100%;backgrount-color:blue; weight:bold;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;table-layout:fixed;width:800px;height:140px">
+            <tr>
+                <td rowspan="3"  align="left" valign="top">
+                    <img width="200" height="100" src="https://c.ap1.content.force.com/servlet/servlet.ImageServer?id=01590000000B873&oid=00D90000000b4ZI&lastMod=1320902785000"/>
+                </td>
+            </tr>
+            <tr><td colspan="7" align="center" style="font-weight:bold;font-size:36px">Production Order Notice</td></tr>
+            <tr><td colspan="7" align="center" style="font-weight:bold;font-size:36px">生产订单通知书</td></tr>
+            
+            <tr>
+                <td></td>
+                <td  align="center" style="font-weight:bold">SH/SR: </td>
+                <td colspan="2">{!Order.Actual_Sales__r.BMO_specialist__c}</td>
+                <td></td>
+                <td></td>
+                <td align="right" style="font-weight:bold">Date 下单时间:</td>
+                <td align="center">{! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</td>
+            </tr>
+        </table>
+        
+        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse:collapse;table-layout:fixed;width:800px;height:450px">
+            <tr>
+                <td  align="center" style="font-weight:bold;">（<apex:outputText value="√ "  rendered="{!IF(Order.Normal__c ,true,false)}"/>）Normal 正常下单</td>
+                <td rowspan="1" colspan="3" align="center" style="font-weight:bold;">（<apex:outputText value="√ "  rendered="{!IF(Order.Special__c ,true,false)}"/>）Special 特批下单</td>
+                <td  style="font-weight:bold;">SAP订单号</td>
+                <td rowspan="1" colspan="3" align="center" style="weight:bold">{!Order.SAP_Order_ID__c}</td>
+            </tr>
+           
+             <tr>
+                 <td style="font-weight:bold;">Application remark &amp; Regional Head`s comments申请说明及大区经理意见 </td>
+                <td colspan="3" style="weight:bold"></td>
+                <td style="font-weight:bold;"> Special Approvals  特批</td>
+                <td colspan="3" style="weight:bold">{!Order.Special_Approvals__c}</td>
+            </tr>
+            <tr>
+                <td style="font-weight:bold;">Buyer 买方</td>
+                <td colspan="2" style="weight:bold">{!Order.Account__r.Name}</td>
+                 <td style="font-weight:bold;">Contract No.<BR/>合同号</td>
+                <td  style="weight:bold">{!Order.Contract_No__c}</td>
+                <td style="font-weight:bold;">Sales Person销售人员</td>
+                <td colspan="2" style="weight:bold">{!Order.Actual_Sales_Name__c}</td>
+            </tr>
+            <tr> 
+                <td style="font-weight:bold;">Seller卖方</td>
+                <td colspan="2" style="weight:bold">{!Order.seller__c}</td>
+                <td style="font-weight:bold;">Intercompany<BR/> Seller &amp; POs 内部交易信息</td>
+                <td colspan="4" style="weight:bold">{!Order.Intercompany_Seller_POs__c}</td>
+               
+            </tr>
+            <tr>
+                <td style="font-weight:bold;">Destination Region<br/>目的地区域</td>
+                <td colspan="2"  style="weight:bold">
+                <apex:outputText value="欧洲 "  rendered="{!IF(Order.Destination_Region__c== 'EU(Union)' || Order.Destination_Region__c=='EU(Non-Eu)' ,true,false)}"/> 
+                    <apex:outputText value="ROA"  rendered="{!IF(Order.Destination_Region__c== 'ROA' ,true,false)}"/>
+                    <apex:outputText value="北亚"  rendered="{!IF(Order.Destination_Region__c== 'North Asia' ,true,false)}"/>
+                    <apex:outputText value="南亚"  rendered="{!IF(Order.Destination_Region__c== 'South Asia' ,true,false)}"/>
+                    <apex:outputText value="北美"  rendered="{!IF(Order.Destination_Region__c== 'North America' ,true,false)}"/>
+                     <apex:outputText value="非洲及中东"  rendered="{!IF(Order.Destination_Region__c== 'Middle East&Africa'||Order.Destination_Region__c == 'MENA'||Order.Destination_Region__c == 'SSA' ,true,false)}"/> 
+                    <apex:outputText value="拉美及意大利"  rendered="{!IF(Order.Destination_Region__c== 'Latin America&Italy' ,true,false)}"/>
+                    <apex:outputText value="中亚"  rendered="{!IF(Order.Destination_Region__c== 'Central Asia' ,true,false)}"/>
+                    <apex:outputText value="中国"  rendered="{!IF(Order.Destination_Region__c== 'CN' ,true,false)}"/>
+                </td>
+                <td style="font-weight:bold;" rowspan="2" >Shipping Methods<BR/>运输方式</td>
+                <td align="center" style="weight:bold;" rowspan="2" >
+                    <apex:outputText value="A"  rendered="{!IF(Order.Shipping_Type__c == 'Ocean transportation' ,true,false)}"/> 
+                    <apex:outputText value="B"  rendered="{!IF(Order.Shipping_Type__c == 'Land transportation' ,true,false)}"/>
+                    <apex:outputText value="C"  rendered="{!IF(Order.Shipping_Type__c == 'Air transportation' ,true,false)}"/>
+                    <apex:outputText value="C"  rendered="{!IF(Order.Shipping_Type__c == 'Express delivery' ,true,false)}"/>
+                    <apex:outputText value="B"  rendered="{!IF(Order.Shipping_Type__c == 'Railway transportation' ,true,false)}"/>
+                </td>
+                <td colspan="3" style="font-weight:bold;" rowspan="2" >A.  By sea 海运 &nbsp; B. By Truck 公路<br/>C. By Express or Air 快递或空运 </td>
+            </tr>
+            <tr> 
+                <td  style="font-weight:bold;">Destination Country<br/>目的地城市</td>
+                <td  style="weight:bold" colspan="2" >{!Order.Destination_Country__c}</td>
+            </tr>
+                        <tr> 
+                <td colspan="2" style="font-weight:bold;">收货地址（或贸易术语加目的港口）</td>
+                <td colspan="6"  style="weight:bold ;">
+                <apex:outputText value="{!Order.Trade_term__c}&nbsp;{!Order.Destination_Port__c}" rendered="{!IF(Order.Trade_Term__c!= 'CPT' ,true,false)}"/>
+               <apex:outputText value="{!Order.Trade_term__c}&nbsp;{!Order.Destination__c}" rendered="{!IF(Order.Trade_Term__c== 'CPT' ,true,false)}"/>
+               
+                </td>
+            </tr>
+            
+            <tr> 
+                <td style="font-weight:bold;">Requested supplier<BR/>要求供货方</td>
+                <td colspan="2" style="weight:bold">{!Order.Requested_supplier__c}</td>
+                <td style="font-weight:bold;">PMC confirm<BR/>生产确认</td>
+                <td colspan="4" align="center" style="weight:bold">{!Order.PMC_confirm__c}</td> 
+            </tr>
+
+            <tr >
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><br/><br/>Product<br/> 产品名称 </td>
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><br/><br/>Type <br/>型号</td>
+                
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><br/><br/>PCS <br/>块数</td>
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><br/><br/>MW <br/>兆瓦数</td>
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><p>单价</p></td>
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><p>单晶/多晶</p></td>
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><p> 交货日期</p></td>
+                
+                <td rowspan="1" style="font-weight:bold" whidth = "50"><br/><br/>Remarks<br/>备注</td>
+            </tr>
+           
+            <!-- 订单产品 -->
+            <apex:repeat value="{!orderItemList}" var="item" >
+            <tr >
+                 <td>
+                    {!item.Product_Name__c}
+                </td>
+                <td >
+                    {!item.Name}
+                </td>
+               
+                <td >
+                    {!item.Quantity__c}
+                </td>
+                <td >
+                    {!item.Total_Power_W__c}
+                </td>
+                <td>
+                   {!item.Sales_Price__c}         
+                </td>     
+                {!item.MP__c}
+                <td>
+                </td> 
+                {!item.Guaranteed_Delivery_Date__c}
+               
+  
+                <td>
+                    {!item.Goods_Description__c}
+                </td>
+
+                
+            </tr>
+            </apex:repeat>
+            <tr>
+                <td colspan="2" style="font-weight:bold">Total 共计:</td>
+                <td style="weight:bold">{!Order.Total_Quantity__c}</td>
+                <td style="weight:bold">{!Order.Total_Power_MW__c}</td>
+                <td colspan="4" style="weight:bold"></td>
+            </tr>
+            <tr>
+                <td colspan="8" style="font-weight:bold">Notes 说明</td>
+            </tr> 
+            <tr >
+                <td colspan="8" style="font-weight:bold">1.Special Requirements 相关特殊要求 (<apex:outputText rendered="{!IF(Order.Special_Requirements__c == '监造' ,true,false)}" value="√ "  />  )监造     ( <apex:outputText rendered="{!IF(Order.Special_Requirements__c == '验货' ,true,false)}" value="√ "  />  )验货     (具体要求请见组件设计任务书)</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="font-weight:bold;">2,Warranty Insurance (保险）:</td>
+                <td colspan="2" style="font-weight:bold;border:none;">( <apex:outputText rendered="{!IF(Order.Warranty_Insurance__c == 'N/A' ,true,false)}" value="√ "   />) None不需要 </td>
+                <td style="font-weight:bold;border:none;">( <apex:outputText rendered="{!IF(Order.Warranty_Insurance__c == 'PG' ,true,false)}" value="√ "  /> )PG</td>
+                <td style="font-weight:bold;border:none;">( <apex:outputText rendered="{!IF(Order.Warranty_Insurance__c == 'AR' ,true,false)}" value="√ "  />)AR</td>
+                <td colspan="1" style="font-weight:bold;border-right-style:solid;border-left-style:none;"></td>
+            </tr>
+            <tr>
+                <td colspan="8" style="font-weight:bold">3.Others 其它   &nbsp;&nbsp; &nbsp;&nbsp;{!Order.Other__c}</td>
+            </tr> 
+        </table>
+    </body>
+    
+</apex:page>

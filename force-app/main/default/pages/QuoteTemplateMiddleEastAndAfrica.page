@@ -1,0 +1,433 @@
+<apex:page standardcontroller="Quote" extensions="QuoteModelController"  renderAs="PDF" sidebar="false"  applyHtmlTag="false" 
+           showHeader="false" standardStylesheets="false">
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        
+        <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+        </style>
+      
+        
+    </head>
+    
+    <body style="margin:10px auto;">
+        <table border="0" width="100%" style="border-collapse: collapse;margin:10px auto;font-family: sans-serif;font-size:0.85em;">
+            
+            <tbody>
+                <tr>
+                   
+                    <td align="left" valign="top" colspan="4" >
+                      
+                        <!--
+                        <apex:image width="737" height="140" value="https://c.ap4.content.force.com/servlet/servlet.FileDownload?file=0156F00000CQA9n"/>
+-->
+                          <apex:image width="290" height="110" value="https://c.ap4.visual.force.com/resource/1571364873000/logo"/>  <!-- 
+                            <apex:image url="{!URLFOR($Resource.QuoteImages, 'QuoteImage.QuoteLogo.png')}"/>
+                        -->
+                   </td>
+                    
+                    <td colspan="4" >
+                        <table>
+                        <tr>
+                         <td colspan="4">
+                        <span style="color:green">
+                            {!companyName}
+                        </span>
+                    </td>
+                    <td >
+                        
+                    </td> 
+                </tr>
+                <tr>
+                    <td >
+                        
+                    </td>
+                    <td colspan="4">
+                        <span>
+                            {!companyAdderss}
+                        </span>
+                    </td>
+                    <td colspan="3" >
+                        
+                    </td>                                         
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td colspan="3">
+                        <span>
+                            {!companyPostcode}
+                        </span>
+                    </td>
+                    <td colspan="4">
+                        <span>
+                            {!companyTelFax}
+                        </span>
+                    </td>
+                    <td colspan="4">
+                        
+                    </td>
+                </tr>
+                        </table>
+                    
+                   </td>
+                </tr>
+                <tr height="1">
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <!--
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr><tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+-->
+                <tr>
+                    <td>
+                        To:
+                    </td>
+                    <td colspan="2" >
+                        {!Quote.Contact_Name__c}
+                    </td>
+                    <td colspan="5">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td colspan="2">
+                        {!Quote.Account.Name}
+                    </td>
+                    <td colspan="5">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td colspan="2">
+                        {!Quote.BillingCountry + Quote.BillingState}
+                    </td>
+                    <td colspan="5">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td colspan="2">
+                        {!Quote.BillingCity + Quote.BillingStreet + Quote.BillingPostalCode}
+                    </td>
+                    <td colspan="5">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td colspan="2" style="text-align: left;">
+                        {!Quote.Account.Phone}
+                    </td>
+                    <td colspan="5">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="8" width="737" style="background-color:#808080">
+                        Sales quotation
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" >
+                    </td>
+                    <td colspan="4" >
+                        Date: {! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }
+                    </td>
+                </tr>
+                <tr>
+                     <td colspan="4">
+                    </td>
+                    <td  colspan="4" >
+                        Opportunity name:
+                        {!Quote.Opportunity.Name}
+                    </td>
+                </tr>
+                <tr>
+                     <td colspan="4">
+                    </td>
+                    <td  colspan="4" >
+                        Project Total Mwp:
+                        {!Quote.Total_MW__c}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    </td>
+                    <td colspan="4" >
+                        Customer ID: {!Quote.Account.Customer_Id__c}
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="8" >
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td>
+                        Dear Mr/Mrs
+                    </td>
+                    <td colspan="7">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan="8" >
+                        According to our discussion and your request, we Jinko Solar are pleased to present you our offer defined as follows:
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                
+                <tr style="text-align: center;font-family: sans-serif;font-size:0.95em;">
+                    <td width="73" style="text-align: center; ">
+                        Product Code
+                    </td>
+                    <td width="116" style="text-align: center;">
+                        Power Module
+                    </td>
+                    <td  width="105" style="text-align: center;">
+                        Total MW
+                    </td>
+                    <td width="102" style="text-align: center;">
+                        Quantity Pcs
+                    </td>
+                    <td width="108" style="text-align: center;">
+                        Delivery Date
+                    </td>
+                    <td width="76" style="text-align: center;">
+                        Price Wp
+                    </td>
+                    <td width="107" style="text-align: center;">
+                        Total Price
+                    </td>
+                    
+                </tr>
+                
+                <apex:repeat value="{!Quote.QuoteLineItems}" var="line" >  
+                    <tr height="20" style="font-family: sans-serif;font-size:0.95em;">
+                        <td  style="text-align: center;border:1px solid #000;">
+                             {!line.Product2.Name}
+                        </td>
+                        <td style="text-align: center;border:1px solid #000;">
+                            {!line.Product2.Maximum_Power_at_STC_Pmax__c} 
+                        </td>
+                        <td style="text-align: center;border:1px solid #000;">
+                            {!line.Total_MW__c}
+                        </td>
+                        <td style="text-align: center;border:1px solid #000;">
+                            {!line.Quantity}　
+                        </td>
+                        <td style="text-align: center;border:1px solid #000;">
+                            {! CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(line.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                        <td style="text-align: center; border-color: #000; border-width: 1px; border-style: solid; border-left-style: none;">
+                            <apex:outputText >
+                                ({!Quote.CurrencyIsoCode})<BR/>
+                                {!line.UnitPrice}
+                            </apex:outputText>  
+                        </td>
+                        <td style="text-align: center;border-color: #000; border-width: 1px; border-style: solid; border-left-style: none;">
+                            <apex:outputText >
+                                ({!Quote.CurrencyIsoCode})<BR/>
+                                <apex:param value="{!line.Total_Price__c}"/>
+                            </apex:outputText>    
+                        </td>
+                        
+                    </tr>
+                    
+                </apex:repeat>
+                
+              
+                <tr>
+                    <td colspan="5">
+                    </td>
+                    
+                </tr>
+                <tr height="15">
+                    <td colspan="4">
+                    </td>
+                    <td colspan="2" style="text-align: right;">
+                        Total
+
+                    </td>
+                    <td style="text-align: center;border-color: #000; border-width: 1px; border-style: solid; border-top-style: none;">
+                        <apex:outputText >
+                            ({!Quote.CurrencyIsoCode})<BR/>
+                            <!--{!Quote.Total_Price__c}-->
+                             <apex:param value="{!Quote.Total_Price__c}"/>
+                        </apex:outputText>                        
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="8">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        Incoterms 2010
+                    </td>
+                   
+                    <td colspan="2" style="text-align: left;">
+                        {!Quote.Opportunity.Trade_Term__c}
+                    </td>
+                    <td colspan="4">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Destination
+                    </td>
+                    
+                    <td colspan="6" style="text-align: left;">
+                        {!Quote.Opportunity.delivey_point__c}
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="8">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" height="60" style="text-align: left;" >
+                        Payment Terms
+                    </td>
+                    
+                    <td colspan="6" height="60" style="text-align: left;">
+                        {!Quote.Opportunity.Payment_Term_Description__c}
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="8">
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="8">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Technical Specification
+                    </td>
+                    <td colspan="6" style="text-align: left;">
+                        Please Refer To Attached Datasheet Of The Modules Requested
+                    </td>                    
+                </tr>
+                <tr >
+                    <td colspan="8">
+                        
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td colspan="2">
+                        Additional Request
+                    </td>
+                  
+                    <td colspan="6" style="text-align: left;">
+                        {!Quote.Additional_Request__c}
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td colspan="8">
+                        
+                    </td>
+                    
+                </tr>
+                
+                <tr>
+                    <td colspan="6">
+                        
+                    </td>
+                    <td colspan="2">
+                        {!Quote.Opportunity.owner.Name}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        
+                    </td>
+                    <td colspan="2">
+                        {!Quote.Opportunity.owner.note__c}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8"  height="3" style="text-align: center;">
+                        Thank you for trusting Jinko!
+                    </td>                   
+                </tr>
+               
+            </tbody>
+        </table>
+    </body>
+</apex:page>

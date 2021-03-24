@@ -1,0 +1,109 @@
+<apex:page showHeader="false" sidebar="false" extensions="MutualTerminationAgreementCtrl"  standardStylesheets="false" applyHtmlTag="false" standardController="Amendment__c" contentType="application/vnd.ms-word#Adment.doc">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <style>
+            body{
+            font-family:'Calibri';
+            font-size:10pt;
+            }
+            .div{
+            text-align:center;
+            margin:auto 0;
+            width:100%;
+            }
+            .hid_div{
+            display:hidden;
+            }
+        </style>
+        
+        
+    </head>	
+    <body style="font-family:Arial Unicode MS">
+        <div class="div">
+             <p style="font-size:15pt; line-height:150%; margin:0pt; orphans:0; text-align:center;"><span>MUTUAL TERMINATION AGREEMENT</span></p>
+        </div>
+        <br/>
+        <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;This Mutual Termination Agreement (the “Termination Agreement”) is hereby entered into as of {!TEXT(YEAR(ad.Printing_time__c)) &" ." & CASE( MONTH(ad.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ad.Printing_time__c))}(the “Effective Date”) by and between {!ord2.Buyer__r.Name} (“Buyer”) and {!ord.SELLER__c} (“Seller”). 
+            Buyer and Seller may hereinafter be referred to each as a “Party” and collectively as the “Parties”.
+        </div>
+        <br/>
+        <div  class="div">
+             <p style="font-size:15pt; line-height:150%; margin:0pt; orphans:0; text-align:center;"><span>RECITALS</span></p>
+        </div>
+        <div>
+            <span>
+  <!--  &nbsp;&nbsp;&nbsp;&nbsp;WHEREAS,the Seller and the Buyer are Parties to that 
+    certain Purchase Order  (NO.: {!Amendment__c.Contract_No__c}) dated {!TEXT(YEAR(ActiveDate)) &" ." & CASE( MONTH(ActiveDate), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ActiveDate))} -->
+</span>
+<!--<span style="display:{!IF(Anum==2,'run-in','none')};" > ,as amended by the First Amendment to Purchase Order dated {!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))} </span>
+<span style="display:{!IF(Anum==3,'run-in','none')};">  ,as amended by the First Amendment to Purchase Order dated{!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))} and the Second Amendment to Purchase Order dated {!TEXT(YEAR(add1.Printing_time__c)) &" ." & CASE( MONTH(add1.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add1.Printing_time__c))}</span>
+<span style="display:{!IF(Anum==4,'run-in','none')};"> ,as amended by the First Amendment to Purchase Order dated {!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))}, the Second Amendment to Purchase Order dated {!TEXT(YEAR(add1.Printing_time__c)) &" ." & CASE( MONTH(add1.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add1.Printing_time__c))} and the Third Amendment to Purchase Order dated {!TEXT(YEAR(add2.Printing_time__c)) &" ." & CASE( MONTH(add2.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add2.Printing_time__c))} </span>
+<span style="display:{!IF(Anum==5,'run-in','none')};"> ,as amended by the First Amendment to Purchase Order dated {!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))}, the Second Amendment to Purchase Order dated {!TEXT(YEAR(add1.Printing_time__c)) &" ." & CASE( MONTH(add1.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add1.Printing_time__c))}, the Third Amendment to Purchase Order dated {!TEXT(YEAR(add2.Printing_time__c)) &" ." & CASE( MONTH(add2.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add2.Printing_time__c))}  and the Fourth Amendment to Purchase Order dated {!TEXT(YEAR(add3.Printing_time__c)) &" ." & CASE( MONTH(add3.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add3.Printing_time__c))} </span>
+       --> </div>
+        <br/>
+        <div>
+            <span>
+                <!--&nbsp;&nbsp;&nbsp;&nbsp;WHEREAS, as of the Effective Date, the Seller has received {!Amendment__c.Amount_paid_by_the_buyer__c} from the Buyer -->
+            </span>
+
+          
+            <div>
+           <apex:outputfield value="{!Aord.LegalV1__c}" style="width: 99%;height:100%;word-wrap: break-word;word-break: normal;">
+       
+        </apex:outputfield>
+            </div>
+   
+
+
+
+           
+        </div>
+        <br/>
+       <!-- <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;WHEREAS, the Parties wish to mutually terminate the Purchase Agreement pursuant to this Termination Agreement; 
+        </div>-->
+        <br/>
+       <!-- <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;NOW, THEREFORE, for good and valuable consideration, the sufficiency and receipt of which is hereby acknowledged, the Parties agree as follows:
+        </div>-->
+        <br/>
+        <div  class="div">
+             <p style="font-size:15pt; line-height:150%; margin:0pt; orphans:0; text-align:center;"><span>ARTICLES</span></p>
+        </div>
+        <br/>
+        <div>
+			<apex:outputfield value="{!Aord.Mutual_Termination_Agreement_Area__c}" style="width: 99%;height:100%;word-wrap: break-word;word-break: normal;">
+       
+        </apex:outputfield></div>    
+       
+       
+        <br/>
+        <div>
+            IN WITNESS WHEREOF, the Parties have caused this Termination Agreement to be executed by their duly authorized representatives as of the Effective Date.
+        </div>
+        <table border="1" cellpadding="1" cellspacing="1"  style="width:650px">             
+            <tr>
+               <td>SELLER</td>
+               <td>BUYER</td>
+             </tr>
+            <tr>
+                <td>
+                    {!Amendment__c.SELLER__c}<br/>
+
+                ____________________________________<br/>
+<!--By: Cao Haiyun<br/>
+Title: CFO<br/>-->
+                    </td>
+                <td>
+                {!Amendment__c.Buyer__r.Name}<br/>
+
+____________________________________<br/>
+<!--By:<br/>
+Title:<br/>-->
+                </td>
+            </tr>
+        </table>
+    </body>
+</apex:page>

@@ -1,0 +1,23 @@
+<apex:page standardController="Opportunity" extensions="AddproductAppCtrl" 
+           sidebar="false" >
+    <apex:pageMessages />
+    <div >
+        <pre align="left" style="font-size:15px ;color:red ;"><strong>Please select product type</strong></pre>
+    </div>
+    <apex:form >
+        
+        <apex:commandButton value="Add product" action="{!ApplyNext}" />
+          <apex:commandButton value="Back" action="{!toback}" />
+        <apex:commandButton VALUE="Cancel" onClick="window.close()"/>
+         <apex:pageBlock title="Product Selection" id="pgbk"  mode="Edit" >
+           <apex:pageBlockTable value="{!paList}" var="line" >
+            <apex:column >
+                        <apex:inputCheckbox value="{!line.IsOrNotCheck__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Name">
+                           {!line.name}
+                    </apex:column>
+          </apex:pageBlockTable>
+             </apex:pageBlock>
+    </apex:form>
+</apex:page>

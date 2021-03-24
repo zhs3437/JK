@@ -1,0 +1,247 @@
+<apex:page standardController="Opportunity" extensions="OppPaymentController" id="OppPayment"
+           showHeader="false" sidebar="false">
+    
+    <style>
+        body {
+        width: 100%;
+        }
+        
+        .linkcolor {
+        color: #015ba7;
+        text-decoration: none;
+        font-weight: normal;
+        }
+        
+        .ErrorColor {
+        color: red;
+        text-decoration: none;
+        font-weight: normal;
+        }
+        
+    </style>
+    <apex:form Id="PaymentForm">
+        
+        <apex:messages style=" color:#EE2C2C;font-size:10.5pt"/>
+        <apex:inputHidden value="{!editID}" id="editID"/>
+        <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+        
+        <apex:pageBlock title="{!$Label.Payment}" id="PaymentBlock">
+            
+            <!-- Block Buttons -->
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!CancelPaymentRequest}"
+                                    value="{!$Label.Cancel}"
+                                    rerender="PaymentForm" 
+                                    status="PaymentStatus"
+                                    rendered="{!IF(PaymentInsertFlag == true || editID != null,true,false)}" 
+                                    style="margin:5px 0 0 0" />
+                <apex:commandButton action="{!addPaymentRequest}"
+                                    value="{!$Label.New}"
+                                    rerender="PaymentForm" 
+                                    status="PaymentStatus" />
+            </apex:pageBlockButtons>
+            
+            <!-- Block Table -->
+            <apex:pageBlockTable value="{!PaymentList}" var="Payment"
+                                 id="PaymentTable" 
+                                 rowClasses="odd,even" 
+                                 styleClass="list"
+                                 width="100%" 
+                                 rules="rows" 
+                                 columnsWidth="80px, 110px, 110px,200px">
+                
+                <!-- Action Edit & Delete -->
+                <apex:column headerValue="{!$Label.Action}" width="120px"
+                             rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}">
+                    <div id="_DefaultDiv_{!Payment.Id}">
+                        <apex:commandButton value="Edit" onclick="editPayment('{!Payment.ID}');" / >
+                            <apex:outputText value=" | "/>
+                            <apex:commandButton action="{!DeletePay}" onclick="deletePayment('{!Payment.ID}');" value="Delete" oncomplete="returnPage();" />
+                        </div>
+                    </apex:column>
+                    
+                    <!-- Action Insert -->
+                    <apex:column headerValue="{!$Label.Action}"  rendered="{!IF(Payment.Name == null,true,false)}">
+                        <apex:commandButton onclick="SaveRequest()" id="savePaymentRequestButton"
+                                            value="{!$Label.Save}"
+                                            rerender="PaymentForm" 
+                                            status="PaymentStatus"
+                                            style="margin:5px 0 0 0" />
+                    </apex:column>
+                    
+                    <!-- Action Update -->
+                    <apex:column headerValue="{!$Label.Action}" rendered="{!IF(editID == Payment.ID && Payment.ID != null,true,false)}">
+                        <apex:commandButton action="{!saveEditPayment}" oncomplete="{!IF(NO=='err',false,"returnPage()")}"
+                                            value="{!$Label.Save}"
+                                            rerender="PaymentForm" 
+                                            status="PaymentStatus"
+                                            style="margin:5px 0 0 0" />
+                    </apex:column>
+                    
+                    <!-- Percentage -->
+                    <apex:column headerValue="{!$ObjectType.Payment__c.fields.Percentage__c.label}" width="60px">
+                        <apex:inputField value="{!Payment.Percentage__c}" 
+                                         rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Percentage__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}" />
+                    </apex:column>
+                    
+                    <!-- Amount -->
+                    <apex:column headerValue="{!$ObjectType.Payment__c.fields.Amount__c.label}">
+                        
+                        <apex:outputField value="{!Payment.Amount__c}" />
+                        
+                    </apex:column>
+                    
+                    <!-- Down/ Balance Payment -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Down_Balance_Payment__c.label}">
+                        <apex:inputField value="{!Payment.Down_Balance_Payment__c}"
+                                         rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Down_Balance_Payment__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}" />
+                    </apex:column>
+                    
+                    <!-- Payment Method -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Payment_Method__c.label}">
+                        <apex:inputField value="{!Payment.Payment_Method__c}"
+                                         rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Payment_Method__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}" />
+                    </apex:column>
+                    
+                    <!-- 国际流式 
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');" rendered="{!IF(opp.Destination_Country__c=='Japan',true,false)}"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Type__c.label}"  >
+                        <apex:inputField value="{!Payment.Type__c}"
+                                         rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Type__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}" />
+                    </apex:column>
+
+-->
+                    <!-- Days -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Days__c.label}">
+                        <apex:inputField value="{!Payment.Days__c}"
+                                         rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Days__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}" />
+                    </apex:column>
+                    
+                    <!-- Payment Term -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Payment_Term__c.label}">
+                        <apex:inputField value="{!Payment.Payment_Term__c}"
+                                         rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Payment_Term__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}" />
+                    </apex:column>
+                    
+                    <!-- Credit Valid -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Credit_Valid__c.label}">
+                        <apex:inputField value="{!Payment.Credit_Valid__c}"
+                                         rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Credit_Valid__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}" />
+                    </apex:column>
+                    
+                    <!-- Precise Day 
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Precise_Day__c.label}">
+                        <apex:inputField value="{!Payment.Precise_Day__c}"
+                                         rendered="{!IF(Payment.Name == null&& (Payment.Payment_Term__c != 'After PO date'
+                                                   || Payment.Payment_Term__c != 'The latest payment day at'|| Payment.Payment_Term__c != 'At precise day (specify)'|| Payment.Payment_Term__c != 'Before goods arrived at the destination')|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Precise_Day__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null) ,false,true )}" />
+                    </apex:column>
+                    -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                                 headerValue="{!$ObjectType.Payment__c.fields.PaymentDescription__c.label}">
+                        <apex:outputField value="{!Payment.PaymentDescription__c}"
+                                          rendered="{!IF(Payment.Name == null&& (Payment.Payment_Term__c != 'After PO date'
+                                                    || Payment.Payment_Term__c != 'The latest payment day at'|| Payment.Payment_Term__c != 'At precise day (specify)'|| Payment.Payment_Term__c != 'Before goods arrived at the destination')|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.PaymentDescription__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null) ,false,true )}" />
+                    </apex:column>
+                    
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');" rendered="{!IF(opp.Destination_Country__c=='Japan',true,false)}"
+                                 headerValue="{!$ObjectType.Payment__c.fields.PaymentDescription_Japan__c.label}">
+                        <apex:outputField value="{!Payment.PaymentDescription_Japan__c}"
+                                          rendered="{!IF(Payment.Name == null&& (Payment.Payment_Term__c != 'After PO date'
+                                                    || Payment.Payment_Term__c != 'The latest payment day at'|| Payment.Payment_Term__c != 'At precise day (specify)'|| Payment.Payment_Term__c != 'Before goods arrived at the destination')|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.PaymentDescription_Japan__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null) ,false,true )}" />
+                    </apex:column>
+                    
+                    <!-- Comments -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');" rendered="{!IF(opp.Destination_Country__c!='Japan',true,false)}"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Comments__c.label}">
+                        <apex:inputField value="{!Payment.Comments__c}"
+                                         rendered="{!IF(Payment.Name == null || (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                        <apex:outputField value="{!Payment.Comments__c}"
+                                          rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null) ,false,true )}" />
+                    </apex:column>
+                    
+                    
+                    <!-- Comments English -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');" rendered="{!IF(opp.Destination_Country__c=='Japan',true,false)}"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Comments_English__c.label}"  >
+                        <apex:inputField value="{!Payment.Comments_English__c}"
+                                         rendered="{!IF(Payment.Name == null|| ((editID == Payment.ID && Payment.ID != null) && Payment.PaymentDescription__c==null),true,false)}" />
+                        <apex:outputField value="{!Payment.Comments_English__c}"
+                                          rendered="{!IF(Payment.Name == null|| ((editID == Payment.ID && Payment.ID != null) && Payment.PaymentDescription__c==null),false,true)}" />
+                    </apex:column> 
+                    
+                    <!-- Comments Japan -->
+                    <apex:column onclick="_SwitchHidden('{!Payment.Id}');" rendered="{!IF(opp.Destination_Country__c=='Japan',true,false)}"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Comments_Japan__c.label}"  >
+                        <apex:inputField value="{!Payment.Comments_Japan__c}"
+                                         rendered="{!IF(Payment.Name == null|| ((editID == Payment.ID && Payment.ID != null) && Payment.PaymentDescription__c==null),true,false)}" />
+                        <apex:outputField value="{!Payment.Comments_Japan__c}"
+                                          rendered="{!IF(Payment.Name == null|| ((editID == Payment.ID && Payment.ID != null) && Payment.PaymentDescription__c==null),false,true)}" />
+                    </apex:column>                    
+                    
+                </apex:pageBlockTable>
+                
+                <apex:actionStatus id="PaymentStatus" startText="Requesting..." />&nbsp; <apex:outputPanel id="thePanel" layout="block" styleClass="ErrorColor">{!PaymentStatusText} </apex:outputPanel>
+                <apex:actionFunction name="savePaymentRequest" action="{!savePaymentRequest}" />
+            </apex:pageBlock>
+            
+        </apex:form>
+        
+        <script>
+        function SaveRequest(){    
+            if (confirm("Confirm to save?")){   
+                savePaymentRequest();
+            }else{
+                return false;
+            }      
+        }
+        
+        function deletePayment(payid){
+            if(confirm("Are you sure Delete?")){
+                
+                var hidden1 = document.getElementById("OppPayment:PaymentForm:deleteID");
+                
+                hidden1.value = payid;
+                
+            }
+        }
+        
+        function editPayment(payid){
+            
+            var hidden2 = document.getElementById("OppPayment:PaymentForm:editID");
+            
+            hidden2.value = payid;
+            
+        }
+        
+        function returnPage(){
+            window.location.href = '/apex/OpportunityPaymentPage?id={!requestId}';
+        }
+        </script>
+        
+    </apex:page>

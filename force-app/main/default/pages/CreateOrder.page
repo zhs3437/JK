@@ -1,0 +1,4 @@
+<apex:page standardController="Order" extensions="CreateOrder"  standardStylesheets="true" recordSetVar="Objs" action="{!onCreateOrder}">
+   
+
+</apex:page>

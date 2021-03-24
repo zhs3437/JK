@@ -1,0 +1,46 @@
+<apex:component access="global" controller="CommisionINFOCtrl" >
+    <apex:attribute access="global" Id="requestId" name="OppId" assignTo="{!requestId}" description="ID" type="String" required="true"/>
+   <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;font-size:15px" > 
+   
+
+<tr>
+   <td>
+   ------------------------COMMISSION DETAIL------------------------</td></tr>
+<tr>
+   <td>
+   Commission Payee (Company):{!comm[0].Commission_Payee_Company__c}</td></tr>
+<tr>
+   <td>
+   Commission(Per watt):{!comm[0].Commission_Per_watt__c}</td></tr>
+<tr>
+   <td>
+   Address of Payee:{!comm[0].Address_of_Payee__c}</td></tr>
+
+<tr>
+   <td>
+   Brief Record of the Discussion:{!comm[0].Brief_Record_of_the_Discussion__c}</td></tr>
+</table>
+   
+    <apex:repeat value="{!comm}" var="com">
+    <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;font-size:15px" > 
+   
+
+<tr>
+   <td>
+   ------------------------COMMISSION DETAIL HISTORY------------------------</td></tr>
+<tr>
+   <td>
+   Commission Payee (Company):{!com.Commission_Payee_Company__c}</td></tr>
+<tr>
+   <td>
+   Commission(Per watt):{!com.Commission_Per_watt__c}</td></tr>
+<tr>
+   <td>
+   Address of Payee:{!com.Address_of_Payee__c}</td></tr>
+
+<tr>
+   <td>
+   Brief Record of the Discussion:{!com.Brief_Record_of_the_Discussion__c}</td></tr>
+</table>
+    </apex:repeat>
+</apex:component>

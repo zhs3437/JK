@@ -1,0 +1,6 @@
+<apex:page standardController="Opportunity" action="{!goto}"
+           extensions="ModuleDesignProduct2Controller" sidebar="false"
+           showHeader="false" standardStylesheets="true" id="thePage" recordSetVar="Objs">
+    
+    
+</apex:page>

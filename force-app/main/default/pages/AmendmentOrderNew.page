@@ -1,0 +1,25 @@
+<apex:page standardController="Order"   showHeader="false" sidebar="false" extensions="AmendmentOrderNewCtrl">
+<apex:messages style="font-size:20px;"/>
+<apex:form style="background:#CADEF1 ; color:#EE2C2C">
+
+
+<pre align="center" style="font-size:15px ;color:red ;">if you want to amend any terms of the purchase agreement, please click [amendment agreement].</pre>
+<pre align="center" style="font-size:15px ;color:red ;">if you want to terminate the purchase agreement, please click [termination agreement].</pre>
+<apex:commandButton value="Amendment Agreement"  style="margin-left:15px;" action="{!Action1}"/>
+<apex:commandButton value="Termination Agreement"  style="margin-left:15px;" action="{!terminateAgreement}"/>
+<apex:commandButton value="Close" oncomplete="Close()"  style="margin-left:15px;"/> 
+</apex:form>
+     <!-- <c:SpecialPriceBusinessLicense Powerbookid="{!opp.id}"> </c:SpecialPriceBusinessLicense>-->
+<script>
+function Close(){
+
+    window.top.close();
+}       
+function SaveRequest(){    
+        if (confirm("Please note: this opportunity had commission application before, if you go NEXT step, previously CFO/CMO/Finance VP approval will go back to PENDING. Or you can click on CANCEL to close the window.")){   
+        }else{
+           return false;
+        }      
+    }        
+</script>
+</apex:page>

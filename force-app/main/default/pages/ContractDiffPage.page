@@ -1,0 +1,525 @@
+<apex:page standardController="Contract" extensions="ContractDiffCtrl"   showHeader="false" sidebar="false" id="thePage"  >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="Content-Style-Type" content="text/css" />	
+        <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+            body {  widows:0; orphans:0; font-family: Arial Unicode MS; font-size:7.9pt }
+            p { margin:0pt }
+            diffbg {background-color:Yellow}
+        </style>
+        <script>
+        
+        function colorPageBlock(pageblock, color) {
+            if (pageblock != null) pageblock.firstChild.style.cssText = "background-color:" + color + ";";
+        }
+        </script>
+    </head>
+    
+    
+    <div style="overflow-x: auto; overflow-y: auto; height: 400px; width:100%;">
+        <apex:form > 
+            <apex:pageMessages />	
+            <apex:pageBlock >
+                <style>
+                    body .bPageBlock .pbBody .lightskyblue .pbSubheader{
+                    background-color:#37B2E3;
+                    }
+                </style>
+                <apex:repeat value="{!HistoryList}" var="hl"  > 
+                    <apex:outputPanel styleClass="lightskyblue" layout="block">
+                        
+                        <apex:pageBlockSection columns="1"  title="Difference Between last time({!hl.ApprovalNumbers}) and this time({!hl.ApprovalNumbers+1}) " collapsible="false"  >
+                            
+                            <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+                                <tr bgcolor="#4DFFFF">
+                                    <td style="font-size:13px;">
+                                        Contract difference 
+                                    </td>
+                                </tr>
+                            </table>
+                            <table  border="0" width="100%"  style="border-collapse: collapse;margin:10px auto;" >
+                                <tr style="font-size:13px;">
+                                    <td colspan="1"  width="10%"><strong>Field name</strong></td>
+                                    <td colspan="1" width="30%"><strong>Before modify</strong></td>
+                                    <td colspan="1" width="30%"><strong>After modify</strong></td>
+                                    <td colspan="1" width="15%"><strong>Difference</strong></td>
+                                    <td colspan="1" width="15%"><strong>Submit time</strong></td>
+                                </tr>
+                                
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Trade_Term_After__c == hl.condiff.Trade_Term_Before__c ,true,false)}">
+                                    <tr >
+                                        <td colspan="1"  width="10%">Trade Term</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Trade_Term_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Trade_Term_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Trade_Term_After__c == hl.condiff.Trade_Term_Before__c,false,true)}">
+                                    <tr bgcolor="Yellow">
+                                        <td colspan="1"  width="10%">Trade Term</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Trade_Term_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Trade_Term_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Seller_After__c == hl.condiff.Seller_Before__c,true,false)}">
+                                    <tr >
+                                        <td colspan="1"  width="10%">Seller</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Seller_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Seller_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td colspan="1" width="15%">{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Seller_After__c == hl.condiff.Seller_Before__c,false,true)}">
+                                    <tr bgcolor="Yellow">
+                                        <td colspan="1"  width="10%">Seller</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Seller_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Seller_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                    </tr>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!IF(hl.DiffCommision = 0 || hl.DiffCommision = 0.0,true,false)}">
+                                    <tr >
+                                        <td colspan="1"  width="10%">Commision</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Commision_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Commision_After__c}</td>
+                                        <td colspan="1" width="15%">{!hl.DiffCommision}</td>
+                                        
+                                        <td colspan="1" width="15%">{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.DiffCommision = 0 || hl.DiffCommision = 0.0,false,true)}">
+                                    <tr bgcolor="Yellow">
+                                        <td colspan="1"  width="10%">Commision</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Commision_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Commision_After__c}</td>
+                                        <td colspan="1" width="15%">{!hl.DiffCommision}</td>                           
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Destination_Country_After__c == hl.condiff.Destination_Country_Before__c,true,false)}">
+                                    <tr >
+                                        <td colspan="1"  width="10%">Destination Country</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Destination_Country_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Destination_Country_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td colspan="1" width="15%">{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Destination_Country_After__c == hl.condiff.Destination_Country_Before__c,false,true)}">
+                                    <tr bgcolor="Yellow">
+                                        <td colspan="1"  width="10%">Destination Country</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Destination_Country_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Destination_Country_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Expect_Price_and_Comments_After__c  == hl.condiff.Expect_Price_and_Comments_Before__c ,true,false)}">
+                                    <tr >
+                                        <td colspan="1"  width="10%">Expect Price and Comments</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Expect_Price_and_Comments_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Expect_Price_and_Comments_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td colspan="1" width="15%">{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.condiff.Expect_Price_and_Comments_After__c  == hl.condiff.Expect_Price_and_Comments_Before__c,false,true)}">
+                                    <tr bgcolor="Yellow">
+                                        <td colspan="1"  width="10%">Expect Price and Comments</td>
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Expect_Price_and_Comments_Before__c}</td>
+                                        <td colspan="1" width="30%">{!hl.condiff.Expect_Price_and_Comments_After__c}</td>
+                                        <td colspan="1" width="15%"></td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!IF(hl.DiffPrice = 0 || hl.DiffPrice = 0.0,true,false)}">
+                                    <tr >
+                                        <td colspan="1"  width="10%">Total Price</td>
+                                        
+                                        <td colspan="1"  width="30%"> {!hl.condiff.Total_Price_Old__c}</td>
+                                        <td>
+                                            <p>
+                                                <apex:outputText value="{0,number,#,#00.00}" >
+                                                    <apex:param value="{!hl.condiff.Total_Price_New__c}"/>
+                                                </apex:outputText>
+                                            </p>
+                                            
+                                        </td>
+                                        
+                                        <td colspan="1" width="15%">{!hl.DiffPrice}</td>
+                                        
+                                        <td colspan="1" width="15%">{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.DiffPrice = 0 || hl.DiffPrice = 0.0,false,true)}">
+                                    <tr bgcolor="Yellow">
+                                        <td>Total Price</td>
+                                        
+                                        <td>{!hl.condiff.Total_Price_Old__c}</td>
+                                        <td>
+                                            <p>
+                                                <apex:outputText value="{0,number,#,#00.00}" >
+                                                    <apex:param value="{!hl.condiff.Total_Price_New__c}"/>
+                                                </apex:outputText>
+                                            </p>
+                                            
+                                        </td>
+                                        <td>{!hl.DiffPrice}</td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.DiffQuantity = 0 || hl.DiffQuantity = 0.0,true,false)}">
+                                    <tr>
+                                        <td>Total Quantity</td>
+                                        <td>{!hl.condiff.Total_Quantity_Old__c}</td>
+                                        <td>{!hl.condiff.Total_Quantity_New__c}</td>
+                                        <td>{!hl.DiffQuantity}</td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.DiffQuantity = 0 || hl.DiffQuantity = 0.0,false,true)}">
+                                    <tr bgcolor="Yellow">
+                                        <td>Total Quantity</td>
+                                        <td>{!hl.condiff.Total_Quantity_Old__c}</td>
+                                        <td>{!hl.condiff.Total_Quantity_New__c}</td>
+                                        <td>{!hl.DiffQuantity}</td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <!--
+<apex:outputPanel rendered="{!IF(hl.DiffPow = 0 || hl.DiffPow = 0.0,true,false)}">
+<tr>
+<td>Total Power</td>
+<td>{!hl.condiff.Opp_Total_Power_Old__c}</td>
+<td>{!hl.condiff.Opp_Total_Power_New__c}</td>
+<td>{!hl.DiffPow}</td>
+<td>{! TEXT(YEAR(hl.condiff.CreatedDate)) & " ." &  CASE( MONTH(hl.condiff.CreatedDate), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreatedDate))  }</td>
+
+</tr>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!IF(hl.DiffPow = 0 || hl.DiffPow = 0.0,false,true)}">
+<tr bgcolor="Yellow">
+<td>Total Power</td>
+<td>{!hl.condiff.Opp_Total_Power_Old__c}</td>
+<td>{!hl.condiff.Opp_Total_Power_New__c}</td>
+<td>{!hl.DiffPow}</td>
+<td>{! TEXT(YEAR(hl.condiff.CreatedDate)) & " ." &  CASE( MONTH(hl.condiff.CreatedDate), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreatedDate))  }</td>
+
+</tr>
+</apex:outputPanel>
+-->
+                                <apex:outputPanel rendered="{!IF(hl.DiffMW = 0 || hl.DiffMW = 0.0,true,false)}">
+                                    <tr>
+                                        <td>Total MW</td>
+                                        <td>{!hl.condiff.Total_MW_Old__c}</td>
+                                        <td>{!hl.condiff.Total_MW_New__c}</td>
+                                        <td>{!hl.DiffMW}</td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(hl.DiffMW = 0 || hl.DiffMW = 0.0,false,true)}"> 
+                                    <tr bgcolor="Yellow">
+                                        <td>Total MW</td>
+                                        <td>{!hl.condiff.Total_MW_Old__c}</td>
+                                        <td>{!hl.condiff.Total_MW_New__c}</td>
+                                        <td>{!hl.DiffMW}</td>
+                                        
+                                        <td>{! TEXT(YEAR(hl.condiff.CreateDate__c)) & " ." &  CASE( MONTH(hl.condiff.CreateDate__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(hl.condiff.CreateDate__c))  }</td>
+                                        
+                                    </tr>
+                                </apex:outputPanel>
+                                
+                            </table>
+                            <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+                                <tr bgcolor="#4DFFFF">
+                                    <td style="font-size:13px;">
+                                        Contract Product difference 
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            
+                            
+                            <apex:pageBlockTable value="{!hl.conLinDiffLst}" var="review"
+                                                 width="100%" columnsWidth="150px, 200px, 150px,80px;500px" >
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.ProductName__c.label}" >
+                                    <apex:outputField value="{!review.ProductName__c}"  >
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Quantity_Old__c.label}" rendered="{!IF(review.DiffQuantity__c != 0 || review.DiffQuantity__c != 0.00 ,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.Quantity_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Quantity_Old__c.label}" rendered="{!IF(review.DiffQuantity__c != 0 || review.DiffQuantity__c != 0.00,false,true)}"  >
+                                    
+                                    <apex:outputField value="{!review.Quantity_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Quantity_New__c.label}" rendered="{!IF(review.DiffQuantity__c != 0 || review.DiffQuantity__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.Quantity_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Quantity_New__c.label}" rendered="{!IF(review.DiffQuantity__c != 0 || review.DiffQuantity__c != 0.00,false,true)}"  >
+                                    <apex:outputField value="{!review.Quantity_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.UnitPrice_Old__c.label}" rendered="{!IF(review.DiffUnitPrice__c != 0 || review.DiffUnitPrice__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.UnitPrice_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.UnitPrice_Old__c.label}" rendered="{!IF(review.DiffUnitPrice__c != 0 || review.DiffUnitPrice__c != 0.00,false,true)}"  >
+                                    <apex:outputField value="{!review.UnitPrice_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.UnitPrice_New__c.label}" rendered="{!IF(review.DiffUnitPrice__c != 0 || review.DiffUnitPrice__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.UnitPrice_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.UnitPrice_New__c.label}" rendered="{!IF(review.DiffUnitPrice__c != 0 || review.DiffUnitPrice__c != 0.00,false,true)}"  >
+                                    <apex:outputField value="{!review.UnitPrice_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_MW_Old__c.label}" rendered="{!IF(review.DiffTotalMW__c != 0 || review.DiffTotalMW__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.Total_MW_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_MW_Old__c.label}" rendered="{!IF(review.DiffTotalMW__c != 0 || review.DiffTotalMW__c != 0.00,false,true)}"  >
+                                    <apex:outputField value="{!review.Total_MW_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_MW_New__c.label}" rendered="{!IF(review.DiffTotalMW__c != 0 || review.DiffTotalMW__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!review.Total_MW_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_MW_New__c.label}" rendered="{!IF(review.DiffTotalMW__c != 0 || review.DiffTotalMW__c != 0.00,false,true)}"  >
+                                    <apex:outputField value="{!review.Total_MW_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_Price_Old__c.label}" rendered="{!IF(review.DiffTotoalPrice__c != 0 || review.DiffTotoalPrice__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.Total_Price_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_Price_Old__c.label}" rendered="{!IF(review.DiffTotoalPrice__c != 0 || review.DiffTotoalPrice__c != 0.00,false,true)}"  >
+                                    <apex:outputField value="{!review.Total_Price_Old__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_Price_New__c.label}" rendered="{!IF(review.DiffTotoalPrice__c != 0 || review.DiffTotoalPrice__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!review.Total_Price_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Total_Price_New__c.label}" rendered="{!IF(review.DiffTotoalPrice__c != 0 || review.DiffTotoalPrice__c != 0.00,false,true)}"  >
+                                    <apex:outputField value="{!review.Total_Price_New__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Type_of_module_Before__c.label}" rendered="{!IF(review.Type_of_module_Before__c != review.Type_of_module_After__c ,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.Type_of_module_Before__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Type_of_module_Before__c.label}" rendered="{!IF(review.Type_of_module_Before__c !=  review.Type_of_module_After__c ,false,true)}"  >
+                                    <apex:outputField value="{!review.Type_of_module_Before__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Type_of_module_After__c.label}" rendered="{!IF(review.Type_of_module_Before__c !=  review.Type_of_module_After__c ,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!review.Type_of_module_After__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Type_of_module_After__c.label}" rendered="{!IF(review.Type_of_module_Before__c !=  review.Type_of_module_After__c ,false,true)}"  >
+                                    <apex:outputField value="{!review.Type_of_module_After__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Guaranteed_Delivery_Date_Before__c.label}" rendered="{!IF(review.Guaranteed_Delivery_Date_Before__c !=  review.Guaranteed_Delivery_Date_After__c ,true,false)}" style="background-color:Yellow" >
+                                    
+                                    <apex:outputField value="{!review.Guaranteed_Delivery_Date_Before__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Guaranteed_Delivery_Date_Before__c.label}" rendered="{!IF(review.Guaranteed_Delivery_Date_Before__c !=  review.Guaranteed_Delivery_Date_After__c ,false,true)}"  >
+                                    <apex:outputField value="{!review.Guaranteed_Delivery_Date_Before__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Guaranteed_Delivery_Date_After__c.label}" rendered="{!IF(review.Guaranteed_Delivery_Date_Before__c != review.Guaranteed_Delivery_Date_After__c ,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!review.Guaranteed_Delivery_Date_After__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.ContractLineItem_Difference_Detail__c.fields.Guaranteed_Delivery_Date_After__c.label}" rendered="{!IF(review.Guaranteed_Delivery_Date_Before__c != review.Guaranteed_Delivery_Date_After__c ,false,true)}"  >
+                                    <apex:outputField value="{!review.Guaranteed_Delivery_Date_After__c}" >
+                                    </apex:outputField>
+                                </apex:column>
+                            </apex:pageBlockTable>
+                            <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+                                <tr bgcolor="#4DFFFF">
+                                    <td style="font-size:13px;">
+                                        contract Payment difference 
+                                    </td>
+                                </tr>
+                            </table>
+                            <apex:pageBlockTable value="{!hl.payDiffLst}" var="reviewPay"
+                                                 width="100%" columnsWidth="150px, 200px, 150px,80px;500px" >
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Amount_Old__c.label}"  rendered="{!IF(reviewPay.DiffAmount__c != 0 || reviewPay.DiffAmount__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!reviewPay.Amount_Old__c}">
+                                    </apex:outputField>
+                                </apex:column> 
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Amount_Old__c.label}"  rendered="{!IF(reviewPay.DiffAmount__c != 0 || reviewPay.DiffAmount__c != 0.00,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Amount_Old__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Amount_New__c.label}" rendered="{!IF(reviewPay.DiffAmount__c != 0 || reviewPay.DiffAmount__c != 0.00,true,false)}" style="background-color:Yellow">
+                                    <apex:outputField value="{!reviewPay.Amount_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Amount_New__c.label}"  rendered="{!IF(reviewPay.DiffAmount__c != 0 || reviewPay.DiffAmount__c != 0.00,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Amount_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Percentage_Old__c.label}"  rendered="{!IF(reviewPay.DiffPercentage__c != 0 || reviewPay.DiffPercentage__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!reviewPay.Percentage_Old__c}">
+                                    </apex:outputField>
+                                </apex:column> 
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Percentage_Old__c.label}"  rendered="{!IF(reviewPay.DiffPercentage__c != 0 || reviewPay.DiffPercentage__c != 0.00,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Amount_Old__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Percentage_New__c.label}" rendered="{!IF(reviewPay.DiffPercentage__c != 0 || reviewPay.DiffPercentage__c != 0.00,true,false)}" style="background-color:Yellow">
+                                    <apex:outputField value="{!reviewPay.Percentage_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Percentage_New__c.label}"  rendered="{!IF(reviewPay.DiffPercentage__c != 0 || reviewPay.DiffPercentage__c != 0.00,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Percentage_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Method_Old__c.label}"  rendered="{!IF(reviewPay.Payment_Method_Old__c != reviewPay.Payment_Method_New__c,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!reviewPay.Payment_Method_Old__c}">
+                                    </apex:outputField>
+                                </apex:column> 
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Method_Old__c.label}"  rendered="{!IF(reviewPay.Payment_Method_Old__c != reviewPay.Payment_Method_New__c,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Payment_Method_Old__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Method_New__c.label}" rendered="{!IF(reviewPay.Payment_Method_Old__c != reviewPay.Payment_Method_New__c,true,false)}" style="background-color:Yellow">
+                                    <apex:outputField value="{!reviewPay.Payment_Method_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Method_New__c.label}"  rendered="{!IF(reviewPay.Payment_Method_Old__c != reviewPay.Payment_Method_New__c,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Payment_Method_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <!--
+<apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Down_Balance_Payment_Old__c.label}"  rendered="{!IF(reviewPay.Down_Balance_Payment_Old__c != reviewPay.Down_Balance_Payment_New__c,true,false)}" style="background-color:Yellow" >
+<apex:outputField value="{!reviewPay.Down_Balance_Payment_Old__c}">
+</apex:outputField>
+</apex:column> 
+<apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Down_Balance_Payment_Old__c.label}"  rendered="{!IF(reviewPay.Down_Balance_Payment_Old__c != reviewPay.Down_Balance_Payment_New__c,false,true)}">
+<apex:outputField value="{!reviewPay.Down_Balance_Payment_Old__c}">
+</apex:outputField>
+</apex:column>
+<apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Down_Balance_Payment_New__c.label}" rendered="{!IF(reviewPay.Down_Balance_Payment_Old__c != reviewPay.Down_Balance_Payment_New__c,true,false)}" style="background-color:Yellow">
+<apex:outputField value="{!reviewPay.Down_Balance_Payment_New__c}">
+</apex:outputField>
+</apex:column>
+<apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Down_Balance_Payment_New__c.label}"  rendered="{!IF(reviewPay.Down_Balance_Payment_Old__c != reviewPay.Down_Balance_Payment_New__c,false,true)}">
+<apex:outputField value="{!reviewPay.Down_Balance_Payment_New__c}">
+</apex:outputField>
+</apex:column>
+-->
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Days_Old__c.label}"  rendered="{!IF(reviewPay.DiffDays__c != 0 || reviewPay.DiffDays__c != 0.00,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!reviewPay.Days_Old__c}">
+                                    </apex:outputField>
+                                </apex:column> 
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Days_Old__c.label}"  rendered="{!IF(reviewPay.DiffDays__c != 0 || reviewPay.DiffDays__c != 0.00,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Days_Old__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Days_New__c.label}" rendered="{!IF(reviewPay.DiffDays__c != 0 || reviewPay.DiffDays__c != 0.00,true,false)}" style="background-color:Yellow">
+                                    <apex:outputField value="{!reviewPay.Days_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Days_New__c.label}"  rendered="{!IF(reviewPay.DiffDays__c != 0 || reviewPay.DiffDays__c != 0.00,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Days_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                
+                                
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Term_Old__c.label}"  rendered="{!IF(reviewPay.Payment_Term_Old__c != reviewPay.Payment_Term_New__c,true,false)}" style="background-color:Yellow" >
+                                    <apex:outputField value="{!reviewPay.Payment_Term_Old__c}">
+                                    </apex:outputField>
+                                </apex:column> 
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Term_Old__c.label}"  rendered="{!IF(reviewPay.Payment_Term_Old__c != reviewPay.Payment_Term_New__c,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Payment_Term_Old__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Term_New__c.label}" rendered="{!IF(reviewPay.Payment_Term_Old__c != reviewPay.Payment_Term_New__c,true,false)}" style="background-color:Yellow">
+                                    <apex:outputField value="{!reviewPay.Payment_Term_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                                <apex:column headerValue="{!$ObjectType.Contract_Payment_Difference__c.fields.Payment_Term_New__c.label}"  rendered="{!IF(reviewPay.Payment_Term_Old__c != reviewPay.Payment_Term_New__c,false,true)}">
+                                    <apex:outputField value="{!reviewPay.Payment_Term_New__c}">
+                                    </apex:outputField>
+                                </apex:column>
+                            </apex:pageBlockTable>
+                            
+                            
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                </apex:repeat>
+            </apex:pageBlock>
+        </apex:form>
+    </div>
+    
+</apex:page>

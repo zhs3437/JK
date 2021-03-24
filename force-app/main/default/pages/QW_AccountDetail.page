@@ -1,0 +1,246 @@
+<apex:page docType="html-5.0" showHeader="false" applyHtmlTag="false" standardStylesheets="false" applyBodyTag="false" sidebar="false"
+  controller="QW_FormViewController" action="{!verify}">
+
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:v-model="http://www.w3.org/1999/vue"
+    xmlns:v-bind="http://www.w3.org/1999/vue" xmlns:v-on="http://www.w3.org/1999/vue">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>省份相关</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-orientation" content="portrait" />
+    <!-- Import the Design System style sheet -->
+    <apex:slds />
+  </head>
+
+  <body>
+    <div class="container" id="container" v-cloak="true" style="position: absolute;overflow: hidden;">
+      <div class="weui-tab">
+        <div class="tab-header slds-scope slds-grid">
+          <div class="slds-col slds-size_1-of-1 slds-card" style="border: none;">
+            <div class="slds-p-around_small">
+              <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                  <span class="slds-icon_container slds-icon-standard-account" title="account">
+                  </span>
+                </div>
+                <div class="slds-media__body slds-p-right_small">
+                  <div class="slds-card__header-title">
+                    <!-- <span v-if="action == 'new'">新建客户</span>
+                    <span v-if="action != 'new'">客户详情</span> -->
+                    <span>相关项目列表</span>
+                  </div>
+                </div>
+                <div class="slds-no-flex">
+                  <!-- <button class="slds-button slds-button_neutral" v-show="account & account.Id" v-on:click="deleteValue">删除</button> -->
+                  <button class="slds-button slds-button_neutral" style="visibility: hidden;">保存</button>
+                </div>
+              </header>
+            </div>
+          </div>
+        </div>
+        <div class="weui-tab__bd">
+          <!-- error message -->
+          <!-- <div v-show="errMsg != ''" style="font-size: small; color: red;">
+            {{ errMsg }}
+          </div> -->
+          <!-- TODO : account field list -->
+          <!-- <div class="weui-tab__panel" v-bind:style="'height:' + (window.screen.height - 135) + 'px'">
+            <div class="weui-cells__title">客户名称</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="account.Name" />
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <!-- TODO : account - project relate list -->
+          <div>
+            <div v-bind:class="['weui-search-bar', search.focus ? 'weui-search-bar_focusing' : '']" id="search-bar_project">
+              <div class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                  <i class="weui-icon-search"></i>
+                  <input type="text" 
+                         class="weui-search-bar__input" 
+                         placeholder="搜索" 
+                         v-on:input="search_input" 
+                         v-model="search.text"  />
+                  <a href="javascript:void(0);" class="weui-icon-clear" v-on:click="search.text = ''"></a>
+                </div>
+                <label class="weui-search-bar__label" v-on:click="search.focus = true" style="transform-origin: 0px 0px; opacity: 1; transform: scale(1, 1);">
+                  <i class="weui-icon-search"></i>
+                  <span>搜索</span>
+                </label>
+              </div>
+            </div>
+            <div class="weui-tab__panel" v-bind:style="'height:' + (window.screen.height - 120) + 'px; padding-bottom: 0px'">
+              <div class="weui-cells" style="margin-top: auto;">
+                <a v-for="form in forms" class="weui-cell weui-cell_access" v-bind:href="'/apex/QW_FormDetail?userId=' + userId + '&id=' + form.Id">
+                  <div class="weui-cell__bd">
+                    <p>{{ form.Name }}</p>
+                  </div>
+                  <div class="weui-cell__ft">
+                  </div>
+                </a>
+              </div>
+              <div style="padding-bottom: 4rem">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-footer slds-scope">
+          <div class="weui-tabbar slds-p-vertical_small">
+            <a href="" v-on:click="redirectTab('#tab1')" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">省份</p>
+            </a>
+            <a href="" v-on:click="redirectTab('#tab2')" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">项目</p>
+            </a>
+            <!--<a href="#tab3" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">报表</p>
+            </a>-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui-for-work.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/jquery-weui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/QW_GlobalStyle.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/weui.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/lodash.js')}" />
+    <!-- <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery-weui.min.js')}" /> -->
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/vue.min.js')}" />
+
+  </body>
+
+  </html>
+    <script>
+      var vm = new Vue({
+        el: "#container",
+        data: function (){ 
+          return {
+            id: getUrlParam("id"),
+            data: {},
+            account: {},
+            forms: [],
+            errMsg: "",
+            search: {
+              text: "",
+              focus: false
+            },
+            userId: getUrlParam("userId"),
+            provinceId: getUrlParam("id")
+            // action: getUrlParam("action")
+          }
+        },
+        created: function () {
+          var that = this;
+          if (that.action != "new") {
+            // QW_FormDetailController.getAccount(that.id, function (result, event) {
+            //   if (event.statusCode == 200) {
+            //     that.account = result
+            //   } else {
+            //     window.location.href = "/apex/QW_Error?msg=" + event.message;
+            //   }
+            // });
+
+            QW_FormViewController.getForms(JSON.stringify({userId: that.userId, provinceId: that.provinceId}), function (result, event) {
+              if (result != null) {
+                that.data.forms = result;
+                that.forms = result;
+              }
+            });
+          }
+        },
+
+        methods: {
+          // getInputValue: function () {
+          //   debugger;
+          //   var that = this;
+          //   QW_FormDetailController.setAccount(JSON.stringify({ action: that.action, userId: that.userId, id: that.id, account: that.account }), function (result, event) {
+          //     if (event.statusCode == 200) {
+          //       if (result.status === 'success'){
+          //         alert("保存成功");
+          //         window.location.href = "/apex/QW_AccountDetail?userId=" + that.userId + "&id=" + result.id;
+          //       } else {
+          //         window.location.href = "/apex/QW_Error?msg=" + result.msg;
+          //       }
+          //     } else {
+          //       that.errMsg = event.message;
+          //     }
+          //   });
+          // }
+          
+          search_input: _.debounce(function () {
+            var that = this;
+            var temp = [];
+            if (!_.isEmpty(that.search.text)) {
+              that.data.forms.forEach(form => {
+                if (form.Name.includes(that.search.text)) temp.push(form);
+              });
+              that.forms = temp;
+            } else {
+              that.forms = that.data.forms;
+            }
+          }, 500)
+        }
+      });
+
+      function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+      }
+
+      function deleteValue() {
+        console.log('delete');
+        QW_FormDetailController.setAccount(JSON.stringify(vm.$data.account), function (result, event) {
+          if (event.statusCode == 200) {
+            alert("删除成功");
+            window.location.href = "/apex/QW_FormView?userId=" + vm.$data.userId + "&time=" + new Date().getTime();
+          }
+        });
+      }
+
+      function redirectTab(href) {
+        window.location.href = '/apex/QW_FormView?userId=' + vm.$data.userId + '&time=' + new Date().getTime() + href
+      }
+
+      /*$("#select").picker({
+        title: "",
+        cols: [
+          {
+            textAlign: 'center',
+            values: ['Utility', 'Independent Power Producer', 'Developer', 'Investor', 'EPC', 'EP', 'Integrator', 'Distributor', 'Installer', 'End User', 'Trader', 'Consultant',
+            'Utility PSC', 'Utility Municipal', 'Utility purchasing association', 'System Partner', 'SPV', 'Government']
+          }
+        ]
+      });*/
+
+      // $("#select").select({
+      //   title: "Customer Business Type",
+      //   items: ["Utility", "Independent Power Producer", "Developer"]
+      // });
+      
+
+      // $("#selectCountry").select({
+      //   title: "Country",
+      //   items: ["Germany", "Italy", "Spain"]
+      // });
+      
+
+      // $("#selectState").select({
+      //   title: "Destination State",
+      //   items: ["CA", "NJ", "NC", "TN", "CT", "MA", "N/A",]
+      // });
+      
+    </script>
+
+</apex:page>

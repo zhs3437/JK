@@ -1,0 +1,100 @@
+<apex:page standardController="Contract" extensions="ContractOverridesClone"  >
+ 
+  <apex:form >
+    <apex:message />
+      <apex:pageBlock title="Contract Clone" id="thePageBlock"  >
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!doSave}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>               
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Contracts/PO/PI Information" columns="2">
+                <apex:inputField value="{!cpyContract.Contract_NO__c }" /> 
+                <apex:inputField value="{!cpyContract.Opportunity__c }"  required="true"/>   
+                <apex:inputField value="{!cpyContract.OwnerId}" />
+                <apex:inputField value="{!cpyContract.StartDate }" />
+                <apex:inputField value="{!cpyContract.AccountId }" />
+                <apex:inputField value="{!cpyContract.PO_PI_Date__c }" />
+                <apex:inputField value="{!cpyContract.BuyerAccount__c }" />
+                <apex:inputField value="{!cpyContract.Expected_Shipment_Date__c }" />
+                <apex:inputField value="{!cpyContract.SELLER__c }" />
+                <apex:inputField value="{!cpyContract.Pick_up_Date__c }" />
+                <apex:inputField value="{!cpyContract.JINKO_OEM__c }" />
+                <apex:inputField value="{!cpyContract.Status }" />
+                <apex:inputField value="{!cpyContract.Pick_up_by_Customer__c }" />
+                <apex:inputField value="{!cpyContract.Trade_term__c }" />
+                <apex:inputField value="{!cpyContract.Destination__c }" />
+                <apex:inputField value="{!cpyContract.BillingCountry }" />
+                <apex:inputField value="{!cpyContract.BillingPostalCode }" />
+                <apex:inputField value="{!cpyContract.BillingState }" />
+                <apex:inputField value="{!cpyContract.BillingCity }" />
+                <apex:inputField value="{!cpyContract.BillingStreet }" />
+       
+                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Customer Information" columns="2">
+                <apex:inputField value="{!cpyContract.Customer_Grade__c }" />
+                <apex:inputField value="{!cpyContract.Customer_country__c }" />
+                <apex:inputField value="{!cpyContract.Contact_Name__c }" />
+                <apex:inputField value="{!cpyContract.Phone__c }" />
+                <apex:inputField value="{!cpyContract.Fax__c }" />
+                <apex:inputField value="{!cpyContract.Email__c }" />
+                <apex:inputField value="{!cpyContract.Customer_Business_Scale__c}" />
+            </apex:pageBlockSection>
+            
+            
+            <apex:pageBlockSection title="Finance Information" columns="2">
+                <apex:inputField value="{!cpyContract.Payment_Method__c }" />
+                <apex:inputField value="{!cpyContract.CurrencyIsoCode }" />
+                <apex:inputField value="{!cpyContract.Balance_Payment__c }" />
+                <apex:inputField value="{!cpyContract.Perpayment__c}" />
+                <apex:inputField value="{!cpyContract.Credit_Days__c }" />
+                <apex:inputField value="{!cpyContract.Prepaid__c }" />
+                <apex:inputField value="{!cpyContract.BankInfo__c}" />
+                <apex:inputField value="{!cpyContract.Prepayment_Amount__c}" />
+                <apex:inputField value="{!cpyContract.Bank_Information_Content__c}" />
+                <apex:inputField value="{!cpyContract.Payment_Term_Description__c}" />
+                <apex:inputField value="{!cpyContract.Warranty_On_Material_and_Workmanship__c}" />
+                <apex:inputField value="{!cpyContract.Type_Of_Warranty__c}" />
+                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Signature Information" columns="2">
+                <!-- apex:inputField value="{!cpyContract.CustomerSigned }" />-->
+                <!--<apex:inputField value="{!cpyContract.CompanySigned }" />-->
+               <!-- <apex:inputField value="{!cpyContract.CustomerSignedTitle }" />-->
+                <!--<apex:inputField value="{!cpyContract.CompanySignedDate }" />-->
+                <!--<apex:inputField value="{!cpyContract.CustomerSignedDate }" />-->
+
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Department Views" columns="2">
+                <apex:inputField value="{!cpyContract.Sales_Dept__c }" />
+                <apex:inputField value="{!cpyContract.BMO_Dept__c }" />
+                <apex:inputField value="{!cpyContract.Sales_Dept_Comments__c }" />
+                <apex:inputField value="{!cpyContract.BMO_Manager_Comments__c }" />
+                <apex:inputField value="{!cpyContract.Technical_Dept__c }" />
+                <apex:inputField value="{!cpyContract.BMO_Dept_Comments__c }" />
+                <apex:inputField value="{!cpyContract.Technical_Dept_Comments__c }" />
+                <apex:inputField value="{!cpyContract.Stock_Coordinator_Comments__c }" />
+                <apex:inputField value="{!cpyContract.Technical_Dept_Comments2__c }" />
+                <apex:inputField value="{!cpyContract.PMC_Dept__c }" />
+                <apex:inputField value="{!cpyContract.Finance_Dept__c }" />
+                <apex:inputField value="{!cpyContract.PMC_Dept_Comments__c }" />
+                <apex:inputField value="{!cpyContract.Finance_Dept_Comments__c }" />
+                <apex:inputField value="{!cpyContract.Legal_Dept__c }" />
+                <apex:inputField value="{!cpyContract.CMO_Dept__c}" />
+                <apex:inputField value="{!cpyContract.Legal_Dept_Comments__c }" />
+                <apex:inputField value="{!cpyContract.CMO_Dept_Comments__c }" />
+                <apex:inputField value="{!cpyContract.Legal_Dept_Comments2__c }" />
+                <apex:inputHidden /> 
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+
+  </apex:form>
+  
+</apex:page>

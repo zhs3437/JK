@@ -1,0 +1,239 @@
+<apex:page standardController="Contract" language="ja" 
+           extensions="PA_Japan_Ctrl" sidebar="false"
+           showHeader="false" standardStylesheets="false" renderAs="PDF">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+    
+<TABLE width="100%"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+<TBODY>
+
+<TR style=" mso-height-source: userset" height="62">
+<TD><apex:image id="theImage" value="{!$Resource.logo}" style="height:84px; width:130px" /></TD>
+<TD height="62" colSpan="5" align="center" vAlign="middle">
+<FONT color="#000000" style="float:left;">
+<STRONG>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROFORMA INVOICE
+</STRONG>
+</FONT>
+</TD>
+</TR>
+
+<TR style=" mso-height-source: userset" height="20">
+<TD colspan="2" rowSpan="8" align="center" valign="top" ></TD>
+</TR>
+
+<TR style=" mso-height-source: userset" height="20">
+  <TD colspan="5" align="right" valign="top" >www.jinkosolar.com</TD>
+</TR>
+
+<TR style=" mso-height-source: userset" height="20">
+  <TD height="20" colspan="5" ><STRONG><FONT color="#000000">INVOICE NO: <FONT color="#000000">{!Contract.Contract_NO__c}</FONT></FONT></STRONG></TD>
+  </TR>
+<TR style=" mso-height-source: userset" height="20">
+  <TD height="20" colspan="5" valign="middle" ><STRONG><FONT color="#000000">INVOICE DATE:</FONT></STRONG> {! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</TD>
+  </TR>
+
+<TR style=" mso-height-source: userset" height="20">
+  <TD height="20" colspan="5" valign="middle" ><STRONG><FONT color="#000000">SELLER:</FONT></STRONG> {!Contract.SELLER__c  }</TD>
+  </TR>
+    <apex:outputPanel rendered="{!(Contract.Region__c=='EU' || Contract.Region__c=='Non EU')&& Contract.RecordType.Name=='1MW Global Standard Contract'}">
+  <TR style=" mso-height-source: userset" height="20">
+  <TD height="20" colspan="5" valign="middle" ><STRONG><FONT color="#000000">SELLER&rsquo;s VAT:</FONT></STRONG> {!SellerVATNO}</TD>
+  </TR>  
+    </apex:outputPanel>
+<TR style=" mso-height-source: userset" height="30">
+  <TD height="20" colspan="5" valign="middle" ><STRONG><FONT color="#000000">BUYER:</FONT></STRONG> {!buyer.Name }</TD>
+  </TR>
+     <apex:outputPanel rendered="{!(Contract.Region__c=='EU' || Contract.Region__c=='Non EU')&& Contract.RecordType.Name=='1MW Global Standard Contract'}">
+     <TR style=" mso-height-source: userset" height="20">
+  <TD height="20" colspan="5" valign="middle" ><STRONG><FONT color="#000000">SELLER&rsquo;s VAT:</FONT></STRONG> {!Contract.BuyerAccount__r.VAT_NO__c}</TD>
+  </TR>  
+     </apex:outputPanel>
+
+     <TR style=" mso-height-source: userset" height="39">
+  <TD height="20" colspan="5" valign="left" style="display:{!IF( Contract.Vietnam_Contract_loading_port__c ==false,'run-in','none')};"><STRONG><FONT color="#000000">Loading Port:</FONT></STRONG>China main port</TD>
+</TR>
+    <TR style=" mso-height-source: userset" height="39">
+  <TD height="20" colspan="5" valign="left" ><STRONG><FONT color="#000000">PAYMENT TERM:</FONT></STRONG>{!Contract.Payment_Term_Description__c}</TD>
+</TR>
+
+<TR style=" mso-height-source: userset" height="22">
+    <TD height="40" colspan="6" valign="middle" style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0"><STRONG><FONT color="#000000" >TRADE TERM:</FONT></STRONG> {!Contract.Trade_term__c} {!Contract.Delivery_point__c} under Incoterms 2010</TD>
+    <TD height="40" colspan="6" valign="middle" style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0"><STRONG><FONT color="#000000" >TRADE TERM:</FONT></STRONG> {!Contract.Trade_term__c} {!Contract.Delivery_point__c} under Incoterms 2020</TD>
+
+</TR>
+<TR style=" mso-height-source: userset" height="20">
+<TD height="20" colSpan="6" valign="middle" style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">
+<STRONG><FONT color="#000000">BUYER CONTACT:</FONT></STRONG> {!Contract.Contact_Name__c} &nbsp; / &nbsp;{!Contract.Phone__c} &nbsp; / &nbsp;{!Contract.Email__c}/ &nbsp; 
+<!--{!Contract.BuyerAccount__r.Other_Email_1__c}/ &nbsp; {!Contract.BuyerAccount__r.Other_Email_2__c}-->
+</TD>
+</TR>
+</TBODY>
+</TABLE>
+
+<TABLE width="100%"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+<TR style=" mso-height-source: userset" height="4">
+<TD border="1" colSpan="6" style="BORDER-BOTTOM:#000000; BORDER-LEFT: #000000; BACKGROUND-COLOR: white;  BORDER-TOP: #000000; BORDER-RIGHT: #000000" height="4">&nbsp;</TD></TR>
+
+<TR style=" mso-height-source: userset" height="23">
+<TD height="23" colSpan="6" valign="middle" style="BORDER: black 0.5pt solid;text-align:center;"><FONT color="#000000"  ><STRONG>PURCHASE INVOICE DETAILS</STRONG></FONT></TD>
+</TR>
+
+    
+    
+<TR style=" mso-height-source: userset" height="49">
+<TD width="20" height="49" rowspan="2" align="center" valign="middle" style="BORDER: black 0.5pt solid;"><FONT color="#000000"  ><STRONG>Item</STRONG></FONT></TD>    
+<TD width="40" align="center" rowspan="2" valign="middle" style="BORDER: black 0.5pt solid;"><STRONG><FONT >MODULE<br /> DESCRIPTION</FONT></STRONG></TD>    
+<TD width="80" align="center" colspan="2" valign="middle" style="BORDER: black 0.5pt solid;"><STRONG><FONT color="#000000"  >Quantity<BR /> (PCS)</FONT></STRONG></TD>       
+<TD width="80" align="center" valign="middle" style="BORDER: black 0.5pt solid;"><STRONG><FONT >Unit Price</FONT></STRONG></TD>
+<TD width="60" rowspan="2" align="center" valign="middle" style="BORDER: black 0.5pt solid;"><STRONG><FONT >Total Amount<br/>({!Contract.CurrencyIsoCode})</FONT></STRONG></TD>
+</TR>
+    
+<TR style=" mso-height-source: userset" height="49">
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;"><STRONG><FONT color="#000000"  >PIECES</FONT></STRONG></TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;"><STRONG><FONT >W</FONT></STRONG></TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;font-size:8px;"><STRONG><FONT >({!Contract.CurrencyIsoCode}/W)</FONT></STRONG></TD>
+</TR>
+
+<apex:variable var="index" value="{!0}" />
+<apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+<apex:variable var="index" value="{!index+1}" />
+<TR style=" mso-height-source: userset" height="49">
+<TD  align="center" valign="middle" style="BORDER: black 0.5pt solid;">{!index}</TD> 
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;display:{!IF( Contract.Destination_Country__c !='Vietnam','run-in','none')};" >{!line.Product_name__c}</TD> 
+    <TD align="center" valign="middle" style="BORDER: black 0.5pt solid;display:{!IF( Contract.Destination_Country__c =='Vietnam','run-in','none')};" >SOLAR MODULE  {!line.Product_name__c}</TD> 
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;" ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;" ><apex:outputText value="{0, number, #,##0.0}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+<TD  align="center" vAlign="middle" style="BORDER: black 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+</TR>
+</apex:repeat>
+   
+    
+    <TR style=" mso-height-source: userset" height="49">
+        <TD   align="center" valign="middle" style="BORDER: black 0.5pt solid;  " >
+        <STRONG> <FONT >
+             <apex:outputText rendered="{!IF(Contract.GST_Added__c,true,false)}"> [GST] </apex:outputText>
+            <apex:outputText rendered="{!IF(Contract.GST_Added__c,false,true)}"> [Tax] </apex:outputText>
+        <BR />
+        </FONT></STRONG></TD>
+        <TD align="center" valign="middle" style="BORDER: black 0.5pt solid;" >{!Contract.Tax_Rate__c}% </TD>
+        <TD align="center" valign="middle" style="BORDER: black 0.5pt solid;" >&nbsp;</TD>
+        <TD align="center" valign="middle" style="BORDER: black 0.5pt solid;">&nbsp; </TD>
+        
+        <TD align="center" valign="middle" style="BORDER: black 0.5pt solid;">&nbsp; </TD>
+        <TD align="center" valign="middle" style="BORDER: black 0.5pt solid;">
+            <apex:outputPanel >
+                <apex:outputText value="{0, number, #,##0.0000}" rendered="{! Contract.GST_Added__c==false }"><apex:param value="{!Contract.Tax__c}"/></apex:outputText>
+                <apex:outputText value="{0, number, #,##0.0000}" rendered="{! Contract.GST_Added__c==true }"><apex:param value="{!Contract.GST_Tax__c}"/></apex:outputText>
+            </apex:outputPanel>
+        </TD>
+    </TR>
+    
+   
+<TR style=" mso-height-source: userset" height="49">
+<TD  align="center" valign="middle" style="BORDER: black 0.5pt solid;  " ><STRONG> <FONT >TOTAL<BR /></FONT></STRONG></TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;" >&nbsp; </TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;" ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0}"><apex:param value="{!Contract.Japan_W__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;">&nbsp;  </TD>
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;">
+<apex:outputText rendered="{!IF(Contract.GST_Added__c,false,true)}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText>
+  <apex:outputText rendered="{!IF(Contract.GST_Added__c,true,false)}" value="{0, number, #,##0.0000}"><apex:param value="{!Contract.Total_Price_GST_India__c}"/>
+  </apex:outputText>
+</TD>
+</TR>
+    
+</TABLE>
+<TABLE width="100%"  style="font-family : Arial; font-size:12px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+<TR style=" mso-height-source: userset" height="23">
+<TD height="23" colSpan="6" valign="middle" style="BORDER-LEFT:black 0.5pt solid; BORDER-RIGHT:black 0.5pt solid;"><STRONG><FONT color="#000000"  >BANK INFORMATION</FONT></STRONG>
+</TD>
+</TR>
+
+<TR style=" mso-height-source: userset" height="3">
+<TD height="80" width="25%" colSpan="3" style="BORDER: black 0.5pt solid;" >
+Bank Information Content
+</TD>
+<TD height="80" width="75%" colSpan="3" style="BORDER: black 0.5pt solid;" >
+<pre style="font-family : Arial; font-size:11px;">{!Contract.Bank_Information_Content__c}</pre>
+</TD>
+</TR>
+
+<TR style=" mso-height-source: userset" height="15">
+<TD colSpan="6" style="BORDER: black 0.5pt solid;" height="75"><STRONG><FONT color="#000000"  >This PI is issued in accordance with Purchase Agreement ({!Contract.Contract_NO__c}) executed by the Seller and Buyer. To the extent that there is any conflict between this PI and the Purchase Agreement, the terms and the conditions of the Purchase Agreement shall prevail.</FONT></STRONG></TD></TR>
+
+<TR style=" mso-height-source: userset" height="15">
+<TD colSpan="6" style="BORDER: black 0.5pt solid;" height="40"><STRONG><FONT color="#000000"  >The PI shall become effective and binding on the Seller only after being chopped with Seller's seal.</FONT></STRONG></TD></TR>
+
+<TR style=" mso-height-source: userset" height="31">
+<TD colSpan="6" style="BORDER: black 0.5pt solid;" height="28"><STRONG><FONT color="#000000"  >SIGNATURE / STAMP</FONT></STRONG></TD></TR>
+</TABLE>
+<TABLE width="100%"  style="font-family : Arial; font-size:12px;BORDER-COLLAPSE: collapse; "  border="1" >
+                <tr>
+                    <td style="width:312px">
+                        <strong>SELLER</strong>
+                    </td>
+                    <td style="width:312px">
+                        <strong>BUYER</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:312px">
+                        
+                        [{!Contract.SELLER__c}]
+                        
+
+                    </td>
+                    <td style="width:312px">
+[{!Contract.buyer1__c}]
+                        
+                        
+
+                        
+                        
+                    </td>
+                </tr>
+               
+                 <tr style="width:91px;display:{!IF( yuenan='1','run-in','none')};">
+                                      <TD >Name:Wang Zhihua</TD><!--{!Contract.Contact_Name__c}-->
+<TD>Name:{!Contract.Buyer_Name_Vietnam__c}
+</TD>
+                </tr>
+                 <tr style="width:91px;display:{!IF( yuenan='1','run-in','none')};">
+                   
+<TD>
+     Title:Finance VP
+</TD><!-- {!Contract.Title__c} -->
+                      <TD >
+     Title:{!Contract.Buyer_s_representative_Title__c}</TD>
+                </tr>
+                
+                
+                  <tr style="width:91px;display:{!IF( yuenan='2','run-in','none')};">
+                                      <TD >Name:Miao Gen</TD>
+<TD>Name:{!Contract.Buyer_Name_Vietnam__c}
+</TD>
+                </tr>
+                
+                 <tr style="width:91px;display:{!IF( yuenan='2','run-in','none')};">
+                   
+<TD>
+     Title:CMO
+</TD>
+                      <TD >
+     Title:{!Contract.Buyer_s_representative_Title__c}</TD>
+                </tr>
+                
+           
+
+<TR style=" mso-height-source: userset" height="26">
+<TD height="26"  style="BORDER: black 0.5pt solid;"><FONT color="#000000"  >Date:&nbsp;{! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</FONT></TD>
+
+<TD height="26"  style="BORDER: black 0.5pt solid;"><font color="#000000"  >Date:&nbsp;{! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</font></TD>
+
+</TR>
+
+</TABLE>
+
+</apex:page>

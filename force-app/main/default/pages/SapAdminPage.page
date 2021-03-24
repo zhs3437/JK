@@ -1,0 +1,7 @@
+<apex:page controller="SapAdminPageCtrl"  >
+    
+    <apex:form >
+        <apex:commandButton action="{!syncProduct}" value="手动同步 - 物料主数据"/>
+    </apex:form>
+  
+</apex:page>

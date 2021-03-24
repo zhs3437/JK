@@ -1,0 +1,1383 @@
+<apex:page Controller="ComponentTaskBookController" sidebar="false"  showHeader="false" standardStylesheets="false" renderAs="PDF" >
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <style>
+            body{
+            font-family:'Calibri';
+            font-size:15pt;
+            }
+            .div{
+            text-align:center;
+            margin:auto 0;
+            width:700px;
+            }
+            .hid_div{
+            display:hidden;
+            }
+        </style>
+        
+        
+    </head>
+    <body style="font-family:Arial Unicode MS">
+        <div class="div">      
+            
+            <p style="font-size:15pt; line-height:150%; margin:0pt; orphans:0; text-align:center;"><span>组件设计（变更）任务书</span></p>
+            <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:0pt;border:1px solid #ccc">
+                <tbody>
+                    <tr style="height:28.65pt">
+                        <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:130pt"><p style="margin:0pt; orphans:0; text-align:justify; widows:0"><!--<span style="font-family:'Times New Roman';text-align:left;  font-size:10.5pt; display:{!IF(ctb.Contract__c != null ,'run-in','none')}; ">-->订单号:<!--</span>--><span style="font-family:宋体; font-size:10.5pt">&nbsp;{!ctb.Contract__r.Contract_No__c} &nbsp;</span>
+                        <!--<span style="font-family:'Times New Roman';text-align:left;  font-size:10.5pt; display:{!IF(ctb.Contract__c == null ,'run-in','none')}; ">MDA NO:</span><span style="font-family:宋体; font-size:10.5pt">&nbsp;{!ctb.name} &nbsp;</span>--></p></td>
+                        <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:350pt"><p style="margin:0pt; orphans:0; text-align:justify; widows:0">业务代表（签字）:<span style="font-size:10.5pt">&nbsp; {!ctb.Opportunity__r.Actual_Sales_Name__c}</span></p>
+                        <p style="margin:0pt; orphans:0; text-align:justify; widows:0">联系电话:<span style="font-family:宋体; font-size:10.5pt">&nbsp; {!ctb.Contract__r.Owner.MobilePhone}</span></p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:10.5pt">E-mail :</span><span style="font-family:宋体; font-size:10.5pt">&nbsp;{!ctb.Contract__r.Owner.Email} </span></p></td>
+                        
+                        
+                        
+                        <td style="width:50pt; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt;  border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt;  "><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span>提交日期</span></p></td>
+                        <td style="width:100pt; font-family:'Times New Roman'; font-size:10.5pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; text-align:left; ">
+                        {!TEXT(YEAR(tod))& "-" & TEXT(MONTH(tod))& "-" & TEXT(DAY(tod))}</td>
+                    
+                    </tr>
+                    <tr style="height:18.25pt;  ">
+                        <td rowspan="1" colspan="6" style="display:{!IF(ctb.Contract__c != null ,'run-in','none')}; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle;width:630pt;"><p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                            <span style="font-size:8.5pt">客户名称</span><span style="font-family:'font-size:10.5pt">:</span><span style="font-size:10.5pt">{!ctb.Client_Name__c}</span></p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                            <span style="font-size:8.5pt">订单数量</span><span style="font-size:10.5pt">:</span><span style="font-size:10.5pt"> </span><span style="color:#000000;font-size:10.5pt">{!ctb.Order_Quantities__c}</span>
+                            </p></td>  
+                        <td rowspan="1" colspan="6" style="display:{!IF(ctb.Contract__c == null ,'run-in','none')}; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle;width:630pt;"><p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                            <span style="font-size:8.5pt">客户名称</span><span style="font-family:'Times New Roman'; font-size:10.5pt">:</span><span style="fon font-size:10.5pt">{!ctb.OpportunityAccName__c}</span></p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                            <span style="font-size:8.5pt">订单数量</span><span style="font-family:'Times New Roman'; font-size:10.5pt">:</span><span style="font-size:10.5pt"> </span><span style="color:#000000; font-family:'Times New Roman'; font-size:10.5pt">{!ctb.Order_Quantities__c}</span>
+                            </p></td>
+                    </tr>
+                    
+                    
+                    <tr style="height:10.45pt"> 
+                        
+                        <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle; width:454.25pt">
+                            <div style="text-align:center">
+                                <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin:0 auto">
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">产品名称</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:116.75pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">块数</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">电池数量</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">电池类型</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">组件类型</span></p></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">{!ctb.ModuleType1__r.Name}</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:116.75pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">{!ctb.PCS1__c}</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity1__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Quantity1__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity1_Text__c <> 0 ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Cell_Quantity1_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Type1__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type1__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Cell_Type1_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type1_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            
+                                            
+                                            
+                                            
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Series1__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Series1__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Category1_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Category1_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            
+                                        </tr>
+                                        <apex:outputText rendered="{!IF(ctb.Module_Type2__c != '' ,true,false)}">
+                                            <tr>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">{!ctb.Module_Type2__r.Name}</span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:116.75pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">{!ctb.PCS2__c}</span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity2__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Quantity2__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity2_Text__c != 0 ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Cell_Quantity2_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type2__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type2__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type2_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type2_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Series2__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Series2__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Category2_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Category2_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            </tr>
+                                        </apex:outputText>   
+                                        <apex:outputText rendered="{!IF(ctb.Module_Type3__c != '' ,true,false)}">
+                                            <tr>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">{!ctb.Module_Type3__r.Name}</span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:116.75pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">{!ctb.PCS3__c}</span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity3__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Quantity3__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Quantity3_Text__c != 0 ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;">{!ctb.Cell_Quantity3_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-size:10pt">
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type3__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type3__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(ctb.Cell_Type3_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                        <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Cell_Type3_Text__c}</span>
+                                                    </apex:outputPanel></span></p></td>
+                                                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Series3__c != 'Other',true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Series3__c}</span>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(ctb.Module_Category3_Text__c != null ,true,false)}" style="color:#000000; font-size:10pt font-weight:200;">
+                                                    <span style="color:#000000; font-size:10pt font-weight:200;"> {!ctb.Module_Category3_Text__c}</span>
+                                                </apex:outputPanel></span></p></td>
+                                            </tr>
+                                        </apex:outputText>
+                                        
+                                        <tr>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:93.55pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">Total</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:116.75pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">{!ctb.Total__c}</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">&nbsp;</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">&nbsp;</span></p></td>
+                                            <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:95.5pt"><p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="color:#000000; font-family:'Times New Roman'; font-size:10pt">&nbsp;</span></p></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><p style="margin:0pt; orphans:0; text-align:justify; widows:0"></p>
+                        </td>
+                    </tr>
+                    
+                     <!-- FF填充因子  已完成  -->
+                    <tr style="display:{!IF(ctb.FF__c !='其他','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">填充因子FF:{!ctb.FF__c}</span>
+                        </td>
+                    </tr>                    
+                       <tr style="display:{!IF(ctb.FF_Text__c !='','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">填充因子FF:{!ctb.FF_Text__c}</span>
+                        </td>
+                    </tr>   
+                    
+                    
+                    
+                    
+                    
+                    
+                    <tr>
+                        <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt"><p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-size:10pt">技术要求：</span></p>
+                                                      
+                        </td>
+                    </tr>
+                    <!--<tr >
+                        <td width="20%"><span style="font-size:10.5pt">1.认证要求:</span></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c !='IEC61215: 2005 (TUV certified)','run-in','none')};" ><span style="font-size:10.5pt">TUV（旧） □</span></div></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c =='IEC61215: 2005 (TUV certified)','run-in','none')};" ><span style="font-size:10.5pt">TUV（旧） √</span></div></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c !='UL(UL certified)','run-in','none')};" ><span style="font-size:10.5pt">UL（旧） □</span></div></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c =='UL(UL certified)','run-in','none')};" ><span style="font-size:10.5pt">UL（旧） √</span></div></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c !='IEC61215:2016 (TUV certified)','run-in','none')};" ><span style="font-size:10.5pt">TUV（新） □</span></div></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c =='IEC61215:2016 (TUV certified)','run-in','none')};" ><span style="font-size:10.5pt">TUV（新） √</span></div></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c !='Dual IEC61215 & UL','run-in','none')};" ><span style="font-size:10.5pt">UL（新） □</span></div></td>
+                        <td width="20%"><div align="left" style="display:{!IF(ctb.Product_Certificate__c =='Dual IEC61215 & UL','run-in','none')};" ><span style="font-size:10.5pt">UL（新） √</span></div></td>
+                    </tr>  -->
+                   <!-- <tr>
+                        <td><div align="left" style="display:{!IF(ctb.Product_Certificate__c !='Other','run-in','none')};" ><span style="font-size:10.5pt">其它：   </span></div></td>
+                         <td><div align="left" style="display:{!IF(ctb.Product_Certificate__c =='Other','run-in','none')};" >其它：<span style="font-size:10.5pt">{!ctb.Product_Certificate_Text__c}</span></div></td>
+                    </tr>-->
+                    
+                    <!-- 产品认证  已完成  -->
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='IEC61215: 2005 (TUV certified)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:TUV（旧） </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='UL(UL certified)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:UL（旧） </span>
+                        </td>
+                    </tr>    
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='IEC61215:2016 (TUV certified)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:TUV（新） </span>
+                        </td>
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='Dual IEC61215 & UL','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:UL（新）</span>
+                        </td>
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='TUV(旧/新,保持整单一致）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:TUV(旧/新,保持整单一致）</span>
+                        </td>
+                    </tr>
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='UL（旧/新，保持整单一致）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:UL（旧/新，保持整单一致）</span>
+                        </td>
+                    </tr>
+                    <tr style="display:{!IF(ctb.Product_Certificate__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.认证要求:{!ctb.Product_Certificate_Text__c}</span>
+                        </td>
+                    </tr>
+                    
+                    
+                    
+                    
+                    <!-- 附加认证 验证规则已解决  -->
+                    <tr style="display:{!IF(ctb.Additional_Certificate__c !='Other','run-in','none')};">
+                    <td colspan="6" style="border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt;  border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;">
+                        <span style="font-size:10.5pt">2.附加认证: {!ctb.Additional_Certificate__c}</span>
+                        </td>
+                        </TR>
+                        <TR style="display:{!IF(ctb.Additional_Certificate__c =='Other','run-in','none')};">
+                          <td colspan="6" style="border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt;  border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;">
+                  
+                         <span style="font-size:10.5pt">{!ctb.Additional_Certificate_other__c}</span>
+                         </TD>
+                    </TR>
+                       
+                   
+                  
+                    <!-- <td colspan="6" style="display:{!IF(ctb.Additional_Certificate__c =='Other','run-in','none')};border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;border-left-style:solid;">
+                        <span style="font-size:10.5pt">√其它：{!ctb.Additional_Certificate_other__c}</span>
+                        </td>
+                        <td colspan="6" style="display:{!IF(ctb.Additional_Certificate__c !='Other','run-in','none')};border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;border-left-style:solid;">
+                        <span style="font-size:10.5pt">□其它：_____</span>
+                        </td>-->
+                    
+                       
+                    
+                     
+                    
+                    
+ 
+                    
+                    <!-- 3、系统电压 已完成 -->
+                    <tr style="display:{!IF(ctb.System_Voltage__c =='1000V','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.系统电压:1000V </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.System_Voltage__c =='1500V','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.系统电压:1500V</span>
+                        </td>
+                    </tr>    
+                    <tr style="display:{!IF(ctb.System_Voltage__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.系统电压:&nbsp;{!ctb.System_Voltage_Text__c}</span>
+                        </td>
+                    </tr>  
+                   <!-- 4、组件功率公差 已完成--> 
+                    <tr style="display:{!IF(ctb.Power_Tolerance__c =='Each module: 0~+3%','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.组件功率公差:单块0~+3%</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Power_Tolerance__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.组件功率公差:&nbsp;{!ctb.Power_Tolerance_Text__c}</span>
+                        </td>
+                        </tr>
+                  <!-- 5、   组件质保   已完成 -->
+                   <tr style="display:{!IF(ctb.Warranty__c =='Standard','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件质保:晶科标准</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Warranty__c =='Customized','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件质保:客户要求，需赠送功率&nbsp;{!ctb.Warranty_Text__c}</span>
+                        </td> 
+                        </tr>
+                                        
+               <!-- 6、  组件串联电阻   已完成 -->     
+                  <tr style="display:{!IF(ctb.Component_Series_Resistance__c =='晶科标准（≤0.9Ω）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.组件串联电阻:晶科标准（≤0.9Ω）</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Component_Series_Resistance__c =='其他','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.组件串联电阻:&nbsp;{!ctb.Component_Series_Resistance_Text__c}</span>
+                        </td> 
+                        </tr>
+                    
+               <!-- 第二部分，物料要求 -->     
+                    
+                 <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid;border-top-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">物料要求</span>
+                    </td>
+                 </tr>        
+                    
+                <!-- 1、 BOM      已完成-->    
+                  <tr style="display:{!IF(ctb.BOM__c =='Standard Certified BOM','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.BOM:晶科标准 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.BOM__c =='客户指定','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.BOM:客户指定  </span>
+                        </td>   
+                        </tr>
+                    
+              <!-- 2、   电池类型   已完成  列表值和组件任务书不一致,以及该选项值有三个-->      
+                    <tr style="display:{!IF(ctb.Cell_Type1__c =='多晶','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.电池类型:多晶</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Cell_Type1__c =='PERC单晶','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.电池类型:PERC单晶</span>
+                        </td> 
+                        </tr>
+                    <tr style="display:{!IF(ctb.Cell_Type1__c =='P型双面','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.电池类型:P型双面</span>
+                        </td> 
+                        </tr>
+                     <tr style="display:{!IF(ctb.Cell_Type1__c =='N型双面','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.电池类型: N型双面</span>
+                        </td> 
+                        </tr>                 
+                    <tr style="display:{!IF(ctb.Cell_Type1__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.电池类型:&nbsp;{ctb.Cell_Type1_Text__c}</span>
+                        </td>  
+                        </tr>
+                   
+                <!-- 3、 是否对电池片栅线图型及其尾数混包装有要求（单块组件保持一致）：    已完成 -->    
+                    <!--<tr style="display:{!IF(ctb.Cell_grid__c =='无要求','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.是否对电池片栅线图型及其尾数混包装有要求（单块组件保持一致）:√无要求   &nbsp;&nbsp;   □有要求_________</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Cell_grid__c =='有要求','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.是否对电池片栅线图型及其尾数混包装有要求（单块组件保持一致）:□无要求   &nbsp;&nbsp;   √有要求{!ctb.Cell_grid_Text__c}</span>
+                        </td> 
+                    </tr>-->
+                    
+                    
+                  <!-- 4、   电池片厂家 已完成，页面需要必填 -->  
+                   <tr style="display:{!IF(ctb.Cell_Factory__c =='自产','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.电池片厂家:自产</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Cell_Factory__c =='外购','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.电池片厂家:外购 </span>
+                        </td> 
+                    </tr>
+                    
+                    
+                   
+                    <!-- 5.电池栅线数             已完成 -->  
+                    <tr style="display:{!IF(ctb.Cell_grid_quantity__c =='5BB','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.电池栅线数:5BB</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Cell_grid_quantity__c =='9BB','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.电池栅线数:9BB</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Cell_grid_quantity__c =='其他','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.电池栅线数:{!ctb.Cell_grid_quantity_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    <!-- 6.单块组件电池片数    已完成   -->
+                    <tr style="display:{!IF(ctb.Cell_Quantity1__c =='60','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.单块组件电池片数:60</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Cell_Quantity1__c =='72','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.单块组件电池片数:72</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Cell_Quantity1__c =='120','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.单块组件电池片数:120</span>
+                        </td> 
+                    </tr> 
+                   
+                    <tr style="display:{!IF(ctb.Cell_Quantity1__c =='144','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.单块组件电池片数:144</span>
+                        </td>
+                    </tr>                    
+                    
+                                        
+                    <tr style="display:{!IF(ctb.Cell_Quantity1__c =='132','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.单块组件电池片数:132</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Cell_Quantity1__c =='156','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.单块组件电池片数:156</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Cell_Quantity1__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.单块组件电池片数:{!ctb.Cell_Quantity1_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+               <!-- 玻璃类型(镀膜玻璃) 已完成  -->     
+                     <tr style="display:{!IF(ctb.Front_Glass__c =='2.0mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.玻璃类型(镀膜玻璃):2.0mm </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Front_Glass__c =='2.5mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.玻璃类型(镀膜玻璃):2.5mm</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Front_Glass__c =='3.2mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.玻璃类型(镀膜玻璃):3.2mm</span>
+                        </td> 
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Front_Glass__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.玻璃类型(镀膜玻璃):{!ctb.Front_Glass_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+                    
+                    <!-- 8.接线盒品牌、型号 值不统一  已完成  -->
+                     <tr style="display:{!IF(ctb.Junction_Box__c =='晶科标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.接线盒品牌、型号:晶科标准 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Junction_Box__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.接线盒品牌、型号:客户标准{!ctb.Junction_Box_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+                    
+                    <!-- 9、接线盒电缆线长度（含接插件）   已完成-->
+                    
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='700mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000;  border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:700mm</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='900mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:900mm </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='1000mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:1000mm </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='1200mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:1200mm </span>
+                        </td>
+                    </tr>   
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='1400mm For US','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:1400mm For US </span>
+                        </td>
+                    </tr>   
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='1825mm For US','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:1825mm For US </span>
+                        </td>
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='(+) 250mm&(-) 150mm for Dual-glass modules or Swan modules','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:(+) 250mm&amp;(-) 150mm for Dual-glass modules or Swan modules  </span>
+                        </td>
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='anode 290mm & cathode 145mm for HC','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:anode 290mm &amp; cathode 145mm for HC </span>
+                        </td>
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Junction_Box_Cable_Length__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.接线盒电缆线长度（含接插件）:{!ctb.Junction_Box_Cable_Length_Text__c}</span>
+                        </td>
+                    </tr>  
+                    
+                    <!-- 10、连接器品牌、型号 已完成-->
+                    <tr style="display:{!IF(ctb.Connector__c =='晶科标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.连接器品牌、型号:晶科标准</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Connector__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.连接器品牌、型号:客户标准:{!ctb.Connector_Text__c}</span>
+                        </td> 
+                    </tr> 
+                 
+                    
+                   <!-- 11.背板型号 需复查前面所有行的值是否正确    已完成--> 
+                    <tr style="display:{!IF(ctb.Rear_cover__c =='晶科标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:晶科标准</span>
+                        </td>
+                    </tr>                    
+                    
+                    <tr style="display:{!IF(ctb.Rear_cover__c =='25μm TPT','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:25μm TPT</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Rear_cover__c =='网格透明背板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:网格透明背板</span>
+                        </td> 
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Rear_cover__c =='非网格透明背板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:非网格透明背板 </span>
+                        </td> 
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Rear_cover__c =='不限定网格或者非网格透明背板 ，保持整单一致','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:不限定网格或者非网格透明背板 ，保持整单一致 </span>
+                        </td> 
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Rear_cover__c =='不限定网格或者非网格透明背板 ，保持批次一致','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:不限定网格或者非网格透明背板 ，保持批次一致 </span>
+                        </td> 
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Rear_cover__c =='Other','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:_____ </span>
+                        </td>
+                    </tr>  
+                     <tr style="display:{!IF(ctb.Rear_cover__c =='双玻组件无背板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.背板型号:双玻组件无背板 </span>
+                        </td>
+                    </tr>                  
+          
+                    
+                    
+                 <!-- 12.EVA类型 已完成-->   
+                                       
+                    <tr style="display:{!IF(ctb.EVA__c =='Transparent','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">11.EVA类型:透明EVA </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.EVA__c =='White','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">11.EVA类型:白色EVA </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.EVA__c =='encapsulation material for bifacial products','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">11.EVA类型:POE</span>
+                        </td> 
+                    </tr> 
+                     <tr style="display:{!IF(ctb.EVA__c =='Decide by factory','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">11.EVA类型:根据实际功率工厂决定</span>
+                        </td> 
+                    </tr> 
+                    
+                    <!-- 13.是否使用LRF 已完成 需要页面必填 -->
+                    <tr style="display:{!IF(ctb.LRF__c =='Optional _ For DG project (Keep LRF in one order / Keep without LRF in one order)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">12.是否使用LRF:分布式电站项目（贴膜保持整单一致/不贴膜保持整单一致</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.LRF__c =='Optional _ For Utility project (Keep LRF in one batch / Keep without LRF in one batch)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">12.是否使用LRF:地面电站项目（贴膜保持整批次一致/不贴膜保持整批次一致）</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.LRF__c =='Shall not use','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">12.是否使用LRF:不可使用 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.LRF__c =='Shall use','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">12.是否使用LRF:必须使用</span>
+                        </td> 
+                    </tr> 
+                    
+                    <!-- 14.是否可使用聚光焊带  LCR  已完成 需要页面必填-->
+                    
+                     <tr style="display:{!IF(ctb.LCR__c =='不可使用','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">13.是否可使用聚光焊带:不可使用   </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.LCR__c =='必须使用','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">13.是否可使用聚光焊带:必须使用  </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.LCR__c =='根据实际功率工厂决定','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">13.是否可使用聚光焊带:根据实际功率工厂决定 </span>
+                        </td> 
+                    </tr> 
+                    
+                    <!-- 打桩 -->
+                    
+                    
+                    
+                    
+                    <!-- 15.边框及安装要求 Frame__c       已完成-->
+                    <tr style="display:{!IF(ctb.Frame__c =='晶科标准 30mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">14.边框B面厚度:30mm</span>
+                        </td>
+                    </tr>  
+                    <tr style="display:{!IF(ctb.Frame__c =='晶科标准 35mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">14.边框B面厚度:35mm</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Frame__c =='晶科标准 40mm','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">14.边框B面厚度:40mm</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Frame__c =='Customized','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">14.边框B面厚度:客户标准{!ctb.Frame_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+                    
+                    <!-- 16.边框安装孔间距     Border_mounting__c 已完成-->
+                     <tr style="display:{!IF(ctb.Border_mounting__c =='晶科标准边框','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">15.边框安装孔间距:晶科标准边框</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Border_mounting__c =='Nextracker边框','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">15.边框安装孔间距:Nextracker边框 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Border_mounting__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">15.边框安装孔间距:客户标准{!ctb.Border_mounting_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+                    
+                    
+                    <!-- 17、组件颜色    Module_Color__c 已完成 -->
+                    
+                    <tr style="display:{!IF(ctb.Module_Color__c =='银白色边框+白背板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">16.组件颜色:银白色边框+白背板</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Module_Color__c =='黑色边框+白背板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">16.组件颜色:黑色边框+白背板</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Module_Color__c =='黑色边框+黑背板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">16.组件颜色:黑色边框+黑背板 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Module_Color__c =='其他','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">16.组件颜色:{!ctb.Module_Color_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+                    
+                    
+                    <!-- 18、项目地年总辐照量  Total_annual__c  已完成，需要设置页面必填-->
+                    
+                    <tr style="display:{!IF(ctb.Total_annual__c =='≥不能使用K膜背板（ ≥2000kwh/m2或年平均昼夜温差≥12℃或最低温差≤-20℃）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">17.项目地气候是否符合使用K膜背板条件:不能使用K膜背板（ ≥2000kwh/m2或年平均昼夜温差≥12℃或最低温差≤-20℃）</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Total_annual__c =='能使用K膜背板，（＜2000kwh/m2&年平均昼夜温差＜12℃&最低温差＞-20℃）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">17.项目地气候是否符合使用K膜背板条件:能使用K膜背板，（＜2000kwh/m2&amp;年平均昼夜温差＜12℃&amp;最低温差＞-20℃）</span>
+                        </td>
+                    </tr>
+                    <tr style="display:{!IF(ctb.Total_annual__c =='双玻订单','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">17.项目地气候是否符合使用K膜背板条件:双玻订单</span>
+                        </td>
+                    </tr>
+                    
+                    
+                    
+                    <!-- 19、物料其它要求：Other_requirements_for_materials__c  已完成-->
+                        <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">18.物料其它要求:{!ctb.Other_requirements_for_materials__c}</span>
+                        </td>
+                    </tr>   
+                        
+                        
+                    
+                    <!-- 第三部分，标签及包装要求： -->
+                        
+                    
+                 <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-top-style:solid; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">标签及包装要求</span>
+                    </td>
+                 </tr>     
+                    
+                  <!-- 1.Flash 及唛头样式   缺少备注-->
+                    <tr style="display:{!IF(ctb.Shipping_Mark__c =='Jinko Standard','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.Flash 及唛头样式:晶科标准 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Shipping_Mark__c =='Customer Standard','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.Flash 及唛头样式:客户标准 &nbsp;&nbsp; </span>
+                        </td> 
+                    </tr> 
+                    
+                                        
+                  <!-- 2.铭牌样式    缺少备注 -->  
+                    <tr style="display:{!IF(ctb.Nameplate__c =='Standard','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.铭牌样式:晶科标准</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Nameplate__c =='Customized','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.铭牌样式:客户标准</span>
+                        </td> 
+                    </tr>
+                    
+                    
+                <!-- 3.是否使用英文铭牌     If_use_EnglishNameplate__c  完成-->    
+                    <tr style="display:{!IF(ctb.If_use_EnglishNameplate__c =='是','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.是否使用英文铭牌:是</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.If_use_EnglishNameplate__c =='否','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.是否使用英文铭牌:否 </span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.If_use_EnglishNameplate__c =='无要求','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.是否使用英文铭牌:无要求</span>
+                        </td> 
+                    </tr>
+                    
+                    
+                 <!-- 4.是否为分销订单  完成 --> 
+                    <tr style="display:{!IF(ctb.Distribution_order_or_not__c =='是','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.是否为分销订单:是</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Distribution_order_or_not__c =='否','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.是否为分销订单:否</span>
+                        </td> 
+                    </tr>
+                    
+                    
+                    
+                    
+                    
+                 <!-- 5.组件包装片数 已完成验证规则部分   待确认-->   
+                    <tr style="display:{!IF(ctb.Package__c =='60P 30块（B35）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数:60P 30块（B35）</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Package__c =='72P 26块(B40)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数:72P 26块(B40)</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Package__c ==' 60P/66P/72P/78P 35块(B30)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数: 围卡包装标准数量:60P/66P/72P/78P 35块(B30)</span> </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Package__c =='60P/66P/78P 31块(B35)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数: 围卡包装标准数量:60P/66P/78P 31块(B35)</span>
+                        </td> 
+                    </tr>
+                    
+                    <tr style="display:{!IF(ctb.Package__c =='72P/78P 27块(B40)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数:围卡包装标准数量:72P/78P 27块(B40)</span>
+                        </td> 
+                    </tr>
+                    
+                    <tr style="display:{!IF(ctb.Package__c =='60P晶科标准36片每托（双玻无边框）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数:围卡包装标准数量:60P晶科标准36片每托（双玻无边框）</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Package__c =='72P晶科标准32片每托（双玻无边框）','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数:围卡包装标准数量:  72P晶科标准32片每托（双玻无边框）</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Package__c =='Standard','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件包装片数:围卡包装标准数量:客户标准</span>
+                        </td> 
+                    </tr>
+                    
+                 <!-- 6.包装方式    Package_Style__c 已完成  -->   
+                    <tr style="display:{!IF(ctb.Package_Style__c =='晶科标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.包装方式:晶科标准</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Package_Style__c =='客户其它要求','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.包装方式:{!ctb.Package_Style_Text__c}</span>
+                        </td> 
+                    </tr>
+
+                    
+                    
+                 <!-- 7.是否使用英文包装    IF_EnglishPackage__c   已完成，需要页面必填-->   
+                    <tr style="display:{!IF(ctb.IF_EnglishPackage__c =='是','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.是否使用英文包装:是</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.IF_EnglishPackage__c =='否','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.是否使用英文包装:否</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.IF_EnglishPackage__c =='无要求','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.是否使用英文包装:无要求</span>
+                        </td> 
+                    </tr>
+                    
+                    
+                    
+                 <!-- 8.每托组件是否需要合格证   Module_Certificate__c  已完成-->   
+                    <tr style="display:{!IF(ctb.Module_Certificate__c =='需要，晶科标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.每托组件是否需要合格证:需要，晶科标准</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Module_Certificate__c =='不需要','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.每托组件是否需要合格证:不需要 </span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Module_Certificate__c =='需要，客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.每托组件是否需要合格证:需要，客户标准{!ctb.Module_Certificate_Text__c}</span>
+                        </td> 
+                    </tr>
+                    
+                    
+                    <!-- 9.安装说明书    Installation_instructions__c  已完成-->  
+                    
+                    <tr style="display:{!IF(ctb.Installation_instructions__c =='晶科标准二维码','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.安装说明书:晶科标准二维码 </span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Installation_instructions__c =='晶科标准纸质安装说明书','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.安装说明书:晶科标准纸质安装说明书</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Installation_instructions__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.安装说明书:客户标准{!ctb.Installation_instructions_Text__c}</span>
+                        </td> 
+                    </tr>
+                    
+                    
+                    
+                    <!-- 10、组件分类包装方式 -->
+                    <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">10.组件分类包装方式</span>
+                    </td>
+                 </tr>   
+                    
+                  <!-- 电流分档 以库存信息为准   -->  
+                    <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">电流分档:</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Current_Sorting__c =='中间档0.2A，分三档','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000;border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">中间档0.2A，分三档 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Current_Sorting__c =='中间档0.1A，分三档','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">中间档0.1A，分三档 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Current_Sorting__c =='中间档0.1A，分四档','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">中间档0.1A，分四档 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Current_Sorting__c =='无要求，以库存信息为准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">无要求，以库存信息为准</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Current_Sorting__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">客户标准:{!ctb.Current_Sorting_Text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+                    <!-- 电流分档是否同意尾数混包装：有问题 -->
+                    <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">电流分档是否同意尾数混包装:</span>
+                        </td>
+                    </tr>  
+                    
+                    <tr style="display:{!IF(ctb.Current_Sorting_Style__c =='Yes, Mixed current sorting allowed for the balance modules','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">允许尾数混装</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Current_Sorting_Style__c =='Yes, Mixed current sorting allowed for the balance modules of every 7MW','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">允许每7兆瓦尾数混装</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Current_Sorting_Style__c =='Not acceptable','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">不混装</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Current_Sorting_Style__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">是，允许每{!ctb.Current_Sorting_Style_Text__c}MW尾数混装</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Current_Sorting_Style__c =='No Need','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">否</span>
+                        </td> 
+                    </tr> 
+                <!-- 颜色分档是否同意尾数混包装： 有问题-->    
+                     <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">颜色分档是否同意尾数混包装:</span>
+                        </td>
+                    </tr>      
+                     <tr style="display:{!IF(ctb.Color_Sorting_style__c =='Yes, Mixed color sorting allowed for the balance modules','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">允许尾数混装</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Color_Sorting_style__c =='Yes, Mixed color sorting allowed for the balance modules of every 7MW','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">允许每7兆瓦尾数混装</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Color_Sorting_style__c =='Not acceptable','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">不混装</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Color_Sorting_style__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">是，允许每{!ctb.Color_Sorting_style_text__c}MW尾数混装 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Color_Sorting_style__c =='No Need','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">否</span>
+                        </td> 
+                    </tr> 
+                    <!-- 11、是否需使用缠绕膜    Wrapping_film__c 已完成-->
+                    
+                      <tr style="display:{!IF(ctb.Wrapping_film__c =='不需要','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">11.是否需使用缠绕膜:不需要</span>
+                        </td> 
+                    </tr>
+                    <tr style="display:{!IF(ctb.Wrapping_film__c =='需要，无缠绕层数要求','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">11.是否需使用缠绕膜:需要，无缠绕层数要求</span>
+                        </td> 
+                    </tr>
+                     <tr style="display:{!IF(ctb.Wrapping_film__c =='需要，客户指定缠绕层数','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">11.是否需使用缠绕膜:需要，客户指定缠绕层数{!ctb.Wrapping_film_text__c}层</span>
+                        </td> 
+                    </tr>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <!-- 12、组件运输方式 已完成 -->
+                     <tr style="display:{!IF(ctb.Transportation_style__c =='物流','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">12.组件运输方式:物流</span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Transportation_style__c =='高低平板车','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">12.组件运输方式:高低平板车</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Transportation_style__c =='Land','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">12.组件运输方式:{!ctb.Transportation_style_Text__c}</span>
+                        </td> 
+                    </tr> 
+                 
+                    
+                    
+                    
+                   <!-- 组件检验标准及验货要求： --> 
+                     <tr>
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000;border-top-style:solid; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">组件检验标准及验货要求：</span>
+                    </td>
+                 </tr>   
+                    <!-- 1、组件外观标准   Component_appearance_standard__c    Component_appearance_standard_text__c  已完成 -->
+                    
+                    <tr style="display:{!IF(ctb.Component_appearance_standard__c =='晶科标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.组件外观标准:晶科标准 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Component_appearance_standard__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">1.组件外观标准:客户标准:{!ctb.Component_appearance_standard_text__c}</span>
+                        </td> 
+                    </tr> 
+                    
+                    
+                    <!-- 2.组件EL标准 EL_standard__c   EL_standard_text__c   已完成-->
+                    
+                    <tr style="display:{!IF(ctb.EL_standard__c =='晶科标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.组件EL标准:晶科标准  </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.EL_standard__c =='客户标准','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">2.组件EL标准:客户标准:{!ctb.EL_standard_text__c}</span>
+                        </td> 
+                    </tr> 
+
+                    <!-- 3. 组件EL照片是否需要    EL_photo__c   已完成，需要页面必填 -->
+                     <tr style="display:{!IF(ctb.EL_photo__c =='需要EL照片','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.组件EL照片是否需要:需要EL照片 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.EL_photo__c =='不需要EL照片','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">3.组件EL照片是否需要:不需要EL照片</span>
+                        </td> 
+                    </tr> 
+ 
+                    <!-- 4.组件功率测试标准板    Component_power_test__c 已完成，需要页面必填-->
+                     <tr style="display:{!IF(ctb.Component_power_test__c =='晶科TUV莱茵标准板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.组件功率测试标准板:晶科TUV莱茵标准板 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Component_power_test__c =='客户标准板','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">4.组件功率测试标准板:客户标准板</span>
+                        </td> 
+                    </tr> 
+                    
+                    <!-- 5.组件是否需要外送做可靠性测试   Lab_tests__c -->
+                    
+                     <tr style="display:{!IF(ctb.Lab_tests__c =='3rd Party lab','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件是否需要外送做可靠性测试:是，{!ctb.Lab_tests_text__c}  </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Lab_tests__c =='Jinko laboratory','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件是否需要外送做可靠性测试:否，晶科实验室</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Lab_tests__c =='No Need','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">5.组件是否需要外送做可靠性测试:不做可靠性测试</span>
+                        </td> 
+                    </tr> 
+
+                    <!-- 6.组件是否需要外送做功率及EL测试   EL_Test__c    EL_Test_Text__c 完成 -->
+                    <tr style="display:{!IF(ctb.EL_Test__c =='是','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.组件是否需要外送做功率及EL测试:是，{!ctb.EL_Test_Text__c} </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.EL_Test__c =='否，晶科实验室','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.组件是否需要外送做功率及EL测试:否，晶科实验室 </span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.EL_Test__c =='不做测试','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">6.组件是否需要外送做功率及EL测试:不做测试</span>
+                        </td> 
+                    </tr> 
+                    
+                    
+                    
+                    
+                    
+                    <!-- 7.客户是否验货或驻厂监造   Inspection_or_supervision__c   Inspection_or_supervision_time__c  -->
+                    <tr style="display:{!IF(ctb.Inspection_or_supervision__c =='客户验货','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.客户是否验货或驻厂监造:客户验货 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.Inspection_or_supervision__c =='客户驻厂监造','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.客户是否验货或驻厂监造:客户驻厂监造 &nbsp;备注{!TEXT(YEAR(ctb.Inspection_or_supervision_time__c))& "-" & TEXT(MONTH(ctb.Inspection_or_supervision_time__c))& "-" & TEXT(DAY(ctb.Inspection_or_supervision_time__c))}</span>
+                        </td> 
+                    </tr> 
+                    <tr style="display:{!IF(ctb.Inspection_or_supervision__c =='无此要求','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">7.客户是否验货或驻厂监造:无此要求</span>
+                            
+                        </td> 
+                    </tr> 
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <!-- 8.如需验货，客户验货抽检比例、测试项目、允收标准、惩罚措施：详见合同差异表（最终确认） -->
+               <!-- </tbody></table> -->
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">8.如需验货，客户验货抽检比例、测试项目、允收标准、惩罚措施：详见合同差异表（最终确认）</span>
+                            
+                        </td> 
+                    </tr>
+                    
+                    
+                    
+               <!-- 技术规格书  -->
+                     <!--<tr style="display:{!IF(ctb.DS_Version_in_the_Contract__c =='Official Version (A version)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.技术规格书:√官方版  □草稿版   &nbsp;&nbsp;  □其他 </span>
+                        </td>
+                    </tr>                    
+                    <tr style="display:{!IF(ctb.DS_Version_in_the_Contract__c =='Draft Version (D version)','run-in','none')};">
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.技术规格书:□官方版  √草稿版   &nbsp;&nbsp;  □其他</span>
+                        </td> 
+                    </tr> -->
+                    <tr >
+                    <td colspan="6" style="width:500pt;border-bottom-color:#000000; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:454.25pt">
+                        <span style="font-size:10.5pt">9.技术规格书:{!ctb.DS_Version_in_the_Contract_Text__c}</span>
+                        </td> 
+                    </tr>      
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+   
+                  <!-- <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:0pt; width:530.15pt;border:1px solid #ccc">
+                   <tbody>    -->
+            
+                    
+                    <tr>
+                        <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                            <span style="color:#000000; font-size:10pt">订单概要:</span>
+                            <apex:outputPanel style="font-family: Arial Unicode MS">
+                                {!ctb.Note__c}
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                    
+                    
+                    
+                    
+                    <tr style="height:10.65pt">
+                        <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                            <span style="font-size:10.5pt">销售总监意见: &nbsp;</span>                            
+                            <span style="font-size:10.5pt">{!ctb.Sales_director_opinions__c}</span>
+                        </td>
+                        <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:200pt">
+                            <span style="font-size:10.5pt">签名: &nbsp; </span> 
+                            <span style="font-size:10.5pt">{!ctb.Director_Signature__c}</span>
+                        </td>
+                        <td style="width:30pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt;  border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;">
+                            <p style="margin:0pt; orphans:0; text-align:center;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Date:&nbsp; </span>
+                            </p>
+                        </td>
+                        <td style="width:100pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;"> 
+                            <p style="margin:0pt; orphans:0; text-align:left;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">{!TEXT(YEAR(approveDate))& "-" & TEXT(MONTH(approveDate))& "-" & TEXT(DAY(approveDate))}</span> &nbsp;
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height:10.65pt">
+                        <td colspan="3" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                            <span style="font-size:10.5pt">技术服务部经理意见: &nbsp;</span>                            
+                            <span style="font-size:10.5pt">{!ctb.Technical_manager_Shanghai__c}</span>
+                        </td>
+                        <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:200pt">
+                            <span style="font-size:10.5pt">签名: &nbsp; </span> 
+                            <span style="font-size:10.5pt">{!ctb.Signature__c}</span>
+                        </td>
+                        <td style="width:30pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt;  border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;">
+                            <p style="margin:0pt; orphans:0; text-align:center;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Date:&nbsp; </span>
+                            </p>
+                        </td>
+                        <td style="width:100pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top;"> 
+                            <p style="margin:0pt; orphans:0; text-align:left;  widows:0"> 
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">{!TEXT(YEAR(approveDate))& "-" & TEXT(MONTH(approveDate))& "-" & TEXT(DAY(approveDate))}</span> &nbsp;
+                            </p>
+                        </td>
+                    </tr>
+                   
+                   <!-- <tr style="height:9.35pt">
+                        <td colspan="6" style="width:630pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle;">
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Technical manager assigns tasks:&nbsp;</span>
+                                <span style="font-family:Arial Unicode MS ; font-size:10.5pt">
+                                    {!ctb.Technical_manager_assigns_tasks__c}
+                                </span>
+                            </p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Designer:&nbsp;</span>
+                                <span style="font-family:Arial Unicode MS ; font-size:10.5pt">
+                                    {!ctb.Designer__c}
+                                </span>
+                            </p>
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-family:'Times New Roman'; font-size:10.5pt">Designing dead line:&nbsp;</span>
+                                <span style="font-family:Arial Unicode MS ; font-size:10.5pt">
+                                    {!ctb.Designing_dead_line__c}
+                                </span>
+                            </p>
+                        </td>
+                    </tr>-->
+                     <tr>
+                        <td colspan="3"  style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:300pt">
+                            <span style="font-family: Arial Unicode MS; font-size:10.5pt">{!ctb.Deviation_sheet__c}</span>
+                          
+                        </td>
+                    </tr>
+                    
+                    <tr style="height:9.35pt">
+                        <td colspan="6" style="width:630pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle;">
+                            <p style="margin:0pt; orphans:0; text-align:justify; widows:0">
+                                <span style="font-size:10.5pt">技术服务部经理审批意见:&nbsp;</span>
+                                <span style="font-size:10.5pt">
+                                    {!ctb.Technical_manager_Shanghai_Comments__c}
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <!--
+                    <tr style="height:0pt">
+                        <td style="width:70.35pt; border:none"></td>
+                        <td style="width:68.9pt; border:none"></td>
+                        <td style="width:169.35pt; border:none"></td>
+                        <td style="width:15.4pt; border:none"></td>
+                        <td style="width:211.4pt; border:none"></td>
+                        <td style="width:211.4pt; border:none"></td>
+                    </tr>
+                         -->
+                
+                </tbody>
+            </table>
+            <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">Note：&nbsp;</span><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">1&nbsp;The assignment paper is filled and distributed by the sales department or technical department</span></p>
+            <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 &nbsp;Pls salesman make sure that the information in this sheet is consistent with the information in “order notice”in order to different department in factory have the same information from sales department to avoid misunderstanding</span></p>
+            -->
+            <!--
+<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">&nbsp;</span></p>
+<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'Times New Roman'; font-size:9pt; font-weight:bold">&nbsp;</span></p>
+-->
+            <!--
+<p style="margin:0pt; orphans:0; text-align:right; widows:0"><span style="width:21pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'Times New Roman'; font-size:9pt">JKM-TN-015A</span></p>
+-->
+        </div>
+    </body>
+    
+</apex:page>

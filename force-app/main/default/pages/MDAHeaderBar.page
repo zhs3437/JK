@@ -1,0 +1,21 @@
+<apex:page standardController="Component_Task_Book__c" showHeader="false" sidebar="false" >
+   <html xmlns="http://www.w3.org/1999/xhtml">
+       <head>
+<title>Matters needing attention</title>
+
+</head>
+       <body>
+       
+           <pre align="left" style="font-size:20px ;color:red ;"><b>Please take note some modifications has been applied to MDA.</b>
+
+</pre>
+ <pre align="left" style="font-size:20px ;color:red ;"><b>1. The optimization on layout will not affect the option.</b> 
+</pre>
+  <pre align="left" style="font-size:20px ;color:red ;"><b>2. Has set Default selections for some items but can be re-selected if it against your requirement.</b>
+</pre>
+
+
+
+       </body>
+    </html>
+</apex:page>

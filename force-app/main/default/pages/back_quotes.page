@@ -1,0 +1,27 @@
+<apex:page Standardcontroller="Quote" extensions="GenerateQuotePdf" sidebar="false" showHeader="false" showQuickActionVfHeader="true">
+<body style="background:https://c.cs31.content.force.com/servlet/servlet.ImageServer?id=015p00000006U3C&oid=00Dp0000000DGSK&lastMod=1480339823000;">
+<apex:form style="width:600px;  margen-left: 100px; display:block;" >
+    <apex:pageMessages />
+    <style type="text/css">
+    .pbTitle {
+        white-space: nowrap
+    }
+    </style>
+    <apex:pageBlock title="Please choose below choice before you create Quote:">
+        Please choose seller:
+        <apex:outputText >
+            <apex:param value="q"/>
+        	<apex:selectList value="{!company}"  multiselect="false" size="1"> 
+              <apex:selectOptions value="{!CountryItems}"/> 
+        	</apex:selectList><p/>
+        </apex:outputText>
+          pleaes choose quote format:<apex:selectList value="{!format}" multiselect="false" size="1"> 
+              <apex:selectOptions value="{!FormatItems}"/> 
+          </apex:selectList><p/>          
+          <apex:commandButton action="{!doGenerate}" value="Print"/>
+          <apex:commandButton value="Back" onclick="window.close()"/>
+      </apex:pageBlock> 
+
+  </apex:form>
+</body>
+</apex:page>

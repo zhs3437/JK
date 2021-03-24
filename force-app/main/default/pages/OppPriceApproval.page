@@ -1,0 +1,63 @@
+<apex:page standardController="opportunity"   showHeader="false" sidebar="false"  extensions="OppPriceApprovalCtrl">
+<apex:messages style="font-size:20px;"/>
+<apex:form style="background:#CADEF1 ; color:#EE2C2C">
+<pre >正常非佣金流程请点击 Price approval(Without commission) 按钮.</pre>
+<pre >For opportunity without commission, please select "Price approval(Without commission)".</pre>
+<pre >如果需要添加佣金请点击 Price approval(apply for commission) 按钮,需要填写所有相关信息和上传所有的相关附件.</pre>
+<pre >For opportunity requesting commission, please select "Price approval(apply for commission)".</pre>
+<pre align="center" style="font-size:15px ;color:red ;display:{!IF( $User.Id =='00590000002rep3AAA' && CALstnum==1 && opp.Commision__c==null ,'run-in','none')};">Credit:销售选择佣金流程请点击 [Price approval(apply for commission)]</pre>
+<pre align="center" style="font-size:15px ;color:red ;display:{!IF($User.Id =='00590000002rep3AAA' && ((opp.Commision__c!=null && CALstnum==1) ||(opp.Commision__c==null && CALstnum==0)),'run-in','none')};">Credit:销售选择正常流程请点击 [Price approval(None commission)]</pre>
+<apex:commandButton value="Price approval(None commission)2" oncomplete="SaveRequest3();" style="margin-left:15px;display:{!IF( $User.Id !='00590000002rep3AAA' && opp.Region__c=='North Asia' ,'run-in','none')};"/>
+<apex:commandButton id="sum" value="Price approval(None commission)" oncomplete="SaveRequest();" style="margin-left:15px;display:{!IF( $User.Id =='00590000002rep3AAA' || opp.Region__c!='North Asia' ,'run-in','none')};"/>
+    <apex:commandButton value="Price approval(apply for commission)" action="{!Action4}"  style="margin-left:15px;"/>
+<apex:commandButton value="Close" oncomplete="Close()"  style="margin-left:15px;"/> 
+         <apex:actionFunction name="Action1" action="{!Action1}" />
+           <apex:actionFunction name="Action3" action="{!Action3}" />
+</apex:form>
+<script>
+var isclick= true;
+function Close(){
+    window.top.close();
+}       
+function SaveRequest(){   
+if(isclick){
+
+        isclick= false; 
+        if (confirm("Are you sure? (Please do not send email multiple times)")){   
+           Action1();
+            //  window.location.href = '/apex/Commission_Application?id={!requestId}';
+        }else{
+           
+        }      
+        setTimeout(function(){ 
+
+            isclick = true;
+
+        }, 5000); 
+    }
+    }        
+ function SaveRequest3(){   
+ 
+if(isclick){
+
+        isclick= false;
+       
+         if (confirm("Are you sure? (Please do not send email multiple times)")){   
+           Action3();
+         
+        }else{
+        
+           
+        }  
+        
+setTimeout(function(){ 
+
+            isclick = true;
+
+        }, 5000); 
+ }
+          
+    }  
+   
+</script>
+</apex:page>

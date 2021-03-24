@@ -1,0 +1,191 @@
+<apex:page standardcontroller="Opportunity" extensions="ROAQuoteCtrl" renderAs="PDF" sidebar="false"  applyHtmlTag="false" 
+           showHeader="false" standardStylesheets="false">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    
+        <style type="text/css">
+            @page{
+            size:  29.12pxcm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+        </style>
+        
+        
+    </head>
+    
+    <body style="margin:10px auto;">
+         <table border="0" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+        <tr>
+                <td style="width:30%;font-size:12px;text-align:center"><apex:image id="theImage" value="{!$Resource.logo}" style="height:2cm; width:200px" /></td>
+                <td style="width:50%;font-size:30px;text-align:center">QUOTATION SHEET</td>
+                <td style="width:20%;font-size:12px;text-align:center">Jinko Solar Co., Ltd.  www.jinkosolar.com</td>
+               
+        </tr>
+            </table>
+         <table border="0" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+         <tr>
+                <td style="width:10%;font-size:12px;text-align:center"></td>
+                 <td style="width:10%;font-size:12px;text-align:center"></td>
+                <td style="width:50%;font-size:30px;text-align:center"></td>
+                <td style="width:20%;font-size:12px;text-align:center">Quotation number:</td>  
+        </tr>
+        <tr>
+                <td style="width:10%;font-size:12px;text-align:center">Quotation Date:</td>
+                 <td style="width:10%;font-size:12px;text-align:center">
+                  {!TEXT(YEAR(today)) &" ." & CASE( MONTH(today), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(today))}</td>
+                <td style="width:50%;font-size:30px;text-align:center"></td>
+                <td style="width:20%;font-size:12px;text-align:center">{!Opportunity.Quotation_number__c}</td>
+
+               
+        </tr>
+        <tr>
+                <td style="width:10%;font-size:12px;text-align:center">Expiry date:</td>
+                 <td style="width:10%;font-size:12px;text-align:center">         {!TEXT(YEAR(Opportunity.Expiry_date__c)) &" ." & CASE( MONTH(Opportunity.Expiry_date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(Opportunity.Expiry_date__c))}</td>
+
+                <td style="width:50%;font-size:30px;text-align:center"></td>
+                <td style="width:20%;font-size:12px;text-align:center"></td>
+        </tr>
+    </table>
+     <table border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+         <tr>
+                <td style="width:10%;font-size:12px;text-align:lift">Seller Name:</td>
+                
+                <td colspan="3" style="width:90%;font-size:12px;text-align:lift">{!Opportunity.Seller__c}</td>  
+        </tr>
+                 <tr>
+                <td style="width:10%;font-size:12px;text-align:lift">Buyer Name:</td>
+                
+                <td colspan="3" style="width:90%;font-size:12px;text-align:lift">{!Opportunity.Account.name}</td>  
+        </tr>
+         <tr>
+                <td style="width:10%;font-size:12px;text-align:lift">Payment Terms:</td>
+                
+                <td colspan="3" style="width:90%;font-size:12px;text-align:lift">{!Opportunity.Payment_Term_Description__c}</td>  
+        </tr>
+         <tr>
+                <td style="width:10%;font-size:12px;text-align:center">Delivery Period :</td>
+                
+                <td style="width:40%;font-size:12px;text-align:center">{!Opportunity.Delivery_Period__c}</td>  
+                 <td style="width:10%;font-size:12px;text-align:center">Trade term:</td>
+                
+                <td style="width:40%;font-size:12px;text-align:center">{!Opportunity.Trade_Term__c}</td>  
+        </tr>
+         
+         </table>
+         
+  <table border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+         <tr>
+              
+                
+                <td colspan="7" style="width:90%;font-size:12px;text-align:left">QUOTATION DETAILS</td>  
+        </tr>
+               <tr>
+
+
+              <td  style="width:5%;font-size:12px;text-align:center">Product Name</td>  
+              <td  style="width:5%;font-size:12px;text-align:center">Unit Price({!Opportunity.CurrencyIsoCode}/W)</td>  
+              <td  style="width:10%;font-size:12px;text-align:center;display:{!IF(Opportunity.Trade_Term__c!="FOB"&& Opportunity.Trade_Term__c!="CIF",'run-in','none')};">Delivery Date</td>  
+              <td  style="width:10%;font-size:12px;text-align:center;display:{!IF(Opportunity.Trade_Term__c=="FOB" || Opportunity.Trade_Term__c=="CIF",'run-in','none')};">Estimated to Departure China (ETD date)</td>  
+              <td  style="width:10%;font-size:12px;text-align:center">Quantity(PCS)</td>  
+              <td  style="width:10%;font-size:12px;text-align:center">Total Quantity (MW)</td>  
+              <td  style="width:5%;font-size:12px;text-align:center">Total Amount ({!Opportunity.CurrencyIsoCode})</td>  
+        </tr>
+          <apex:repeat value="{!opplst}" var="line"> 
+            <tr width="100%" style="table-layout:fixed;">
+
+                <td width="20%" style="font-size:12px;word-wrap:break-word;text-align: center;">{!line.Product2.name}</td>
+                <td width="20%" style="font-size:12px;text-align: center;">{!line.UnitPrice}</td>   
+                <td width="20%" style="font-size:12px;text-align: center;">{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}</td> 
+                <td width="10%" style="font-size:12px;word-wrap:break-word;text-align: center;">{!line.Quantity}</td>
+                <td width="10%" style="font-size:12px;word-wrap:break-word;text-align: center;">{!line.Total_MW__c}</td>
+                <td width="20%" style="font-size:12px;text-align: center;">{!line.Total_Price__c}</td>  
+            </tr>
+             
+            </apex:repeat>
+            <tr>
+              <td  style="width:5%;font-size:12px;text-align:center">Total</td>  
+              <td  style="width:5%;font-size:12px;text-align:center"></td>  
+              <td  style="width:5%;font-size:12px;text-align:center"></td>  
+              <td  style="width:10%;font-size:12px;text-align:center">{!Opportunity.Total_Quantity__c}</td>  
+              <td  style="width:10%;font-size:12px;text-align:center">{!Opportunity.Total_MW__c}</td>  
+              <td  style="width:5%;font-size:12px;text-align:center">{!Opportunity.Total_Price__c}</td>  
+        </tr>
+         </table>
+ 
+     <table border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+         <tr>
+              
+                
+                <td colspan="2" style="width:90%;font-size:12px;text-align:left">NOTED POINTS</td>  
+        </tr>
+               <tr>
+              <td  style="width:5%;font-size:12px;text-align:left">1</td>  
+                <td  style="width:95%;font-size:12px;text-align:left">Jinko Global standard waranty-Linear will be applied to above products.</td>  
+        </tr>
+         <tr>
+              
+                
+                <td  style="width:5%;font-size:10px;text-align:left">2</td>  
+                <td  style="width:95%;font-size:10px;text-align:left">THIS QUOTATION PROPOSAL SHALL NOT CONSTITUTE A FORMAL OFFER. THE PARTIES 
+                WILL ONLY BE BOUND BY A DEFINITIVE CONTRACT,  ENTERED INTO BY THE SELLER AND BUYER FOR THE PURCHASE AND SALE OF THE GOODS CONTEMPLATED
+                 HEREUNDER.                 
+                  
+</td>  
+        </tr>
+         </table>
+         <table border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+         <tr>
+              
+                
+                <td colspan="3" style="width:90%;font-size:12px;text-align:left">SIGNATURE</td>  
+        </tr>
+               <tr>
+              <td  style="width:20%;font-size:12px;text-align:center">Company Name:</td>  
+                <td  style="width:40%;font-size:12px;text-align:center">{!Opportunity.Account.name}</td>  
+                <td  style="width:40%;font-size:12px;text-align:center">{!Opportunity.Seller__c}</td>  
+        </tr>
+         <tr>
+                <td  style="width:20%;font-size:12px;text-align:center">Address:</td>  
+                <td  style="width:40%;font-size:12px;text-align:center"><span style="display:{!IF(Opportunity.Account.BillingStreet!="" || Opportunity.Account.BillingStreet!=null ,'run-in','none')};">{!Opportunity.Account.BillingStreet},</span>
+                <span style="display:{!IF(Opportunity.Account.BillingCity!="" || Opportunity.Account.BillingCity!=null ,'run-in','none')};" > {!Opportunity.Account.BillingCity},</span>
+                <span style="display:{!IF(Opportunity.Account.BillingState!="" || Opportunity.Account.BillingState!=null ,'run-in','none')};"> {!Opportunity.Account.BillingState},</span>
+                <span style="display:{!IF(Opportunity.Account.BillingCountry!="" || Opportunity.Account.BillingCountry!=null ,'run-in','none')};"> {!Opportunity.Account.BillingCountry}</span>
+                
+                <span style="display:{!IF(Opportunity.Account.BillingPostalCode!="" || Opportunity.Account.BillingPostalCode!=null ,'run-in','none')};">, {!Opportunity.Account.BillingPostalCode}</span></td>  
+                <td  style="width:40%;font-size:12px;text-align:center">{!selleraddress}</td>  
+        </tr>
+        <tr>
+                <td  style="width:20%;font-size:12px;text-align:center">Authorized by:</td>  
+                <td  style="width:40%;font-size:12px;text-align:center">{!Opportunity.Buyer_Authorized_by__c}</td>  
+                <td  style="width:40%;font-size:12px;text-align:center">Anita Li, GM of APAC Region.</td>  
+        </tr>
+         </table>
+           <table border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+         <tr>
+              
+                
+                <td colspan="3" style="width:90%;font-size:12px;text-align:left"></td>  
+        </tr>
+               <tr>
+              <td  style="width:20%;font-size:12px;text-align:center">Contact name:</td>  
+                <td  style="width:40%;font-size:12px;text-align:center">{!Opportunity.Contact_name__c}</td>  
+                <td  style="width:40%;font-size:12px;text-align:center"> {!Opportunity.Seller_Contact_Name__c}</td>  
+        </tr>
+         <tr>
+                <td  style="width:20%;font-size:12px;text-align:center">Contact Email:</td>  
+                <td  style="width:40%;font-size:12px;text-align:center">{!Opportunity.Contact_Email__c}</td>  
+                <td  style="width:40%;font-size:12px;text-align:center">{!Opportunity.Seller_Contact_Email__c}</td>  
+        </tr>
+
+         </table>
+ <table border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black">
+          <tr>
+                <td  style="width:80%;font-size:12px;text-align:left"><apex:image id="theImage2" value="{!$Resource.webogo}" style="height:1.48 cm; width:10.21 cm" /></td>  
+                <td  style="width:20%;font-size:12px;text-align:right"><apex:image id="theImage3" value="{!$Resource.tree}" style="height:1.48 cm; width:1.4 cm" /></td>  
+        </tr>
+         </table>
+    </body>
+</apex:page>

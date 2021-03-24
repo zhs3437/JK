@@ -1,0 +1,26 @@
+<apex:page standardController="Contract" showHeader="false" sidebar="false">
+<head>
+<base target="_blank" />
+</head>
+    <script>
+    //onloa触发事件只会在页面加载时触发一次
+    function load(){
+        document.getElementById("f3").click();
+            document.getElementById("f1").click();
+        	document.getElementById("f2").click();  
+        document.getElementById("f4").click();  
+                
+    }
+    </script>
+    
+<body onload="load()" >
+    <a id="f1" href="/apex/PAUkraineAttachment2?id={!Contract.id}"   target="_blank"/> <!-- 0156F00000CPoIB -->
+    <a id="f2" href="/apex/PAUkrainePurchaseAgreement?id={!Contract.id}" target="_blank"/>  <!-- 0156F00000CPoIG -->
+ <a id="f3" href="/apex/UkrainePreview?id={!Contract.id}"   target="_blank"/> <!-- 0156F00000CPoIB -->
+     <a id="f4" href="/apex/PAUkraineAttachment3?id={!Contract.id}"   target="_blank"/> <!-- 0156F00000CPoIB -->
+    <h1 style='font-size:30px'>
+        
+    </h1>
+</body>
+
+</apex:page>

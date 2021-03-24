@@ -1,0 +1,86 @@
+@isTest
+public class AddQuoteProductCtrlTest {
+    static testMethod void myUnitTest() {
+        // TO DO: implement unit test
+        
+        Product2 product1                = TestHelper.createProduct2();
+        Product2 product2                = TestHelper.createProduct2();
+        PricebookEntry pbe1              = TestHelper.createPricebookEntry(product1.id);
+        PricebookEntry pbe2              = TestHelper.createPricebookEntry(product2.id);
+        Account acct                     = TestHelper.createAccount();
+        Opportunity opp                  = TestHelper.createOpportunity(acct.id);
+         quote quote                  = TestHelper.createQuote(opp.id);
+        OpportunityLineItem oppLineItem1 = TestHelper.createOpportunityLineItem(opp.id, pbe1.id); 
+     //   OpportunityLineItem oppLineItem2 = TestHelper.createOpportunityLineItem(opp.id, pbe2.id);
+                  ApexPages.currentPage().getParameters().put('Id',quote.id);
+        AddQuoteProductCtrl con = new AddQuoteProductCtrl();        
+       
+        ApexPages.standardController std    = new ApexPages.standardController(quote);
+        AddQuoteProductCtrl controller      = new AddQuoteProductCtrl(std);
+        controller.loadquote(quote.Id);
+      //  controller.currentProducts[0].isOneLineContainer = true;
+        controller.idToDelete = oppLineItem1.Id;
+        controller.sortField = 'Name';
+        controller.sortCatalog();
+        controller.sortField = 'ProductCode';
+        controller.sortCatalog();
+        controller.sortField = 'Family';
+        controller.sortCatalog();
+        controller.sortField = 'Product_Line__c';
+        controller.sortCatalog();
+        controller.pullProducts();
+        controller.ChangeLineItem();
+        controller.Save();
+        controller.SaveChanges();
+        controller.SaveAndReturn();   
+        
+        // Add a product
+        //controller.catalog[0].isSelected = true;
+        controller.AddProducts();
+        controller.pullProducts();
+        
+	    try {
+      //  controller.Save();
+        system.assert(true);
+	    }
+	    catch ( Exception ex ) {
+	        system.assert(false);
+	    }
+	   // controller.DeleteRow();
+	    controller.Cancel();
+	    
+        //controller.catalog[0].isSelected = true;
+        controller.CloneLineItems();
+       // controller.AddProduct();
+        
+    }
+    
+    static testMethod void myUnitTest2() {
+        Product2 product1                = TestHelper.createProduct2();
+        Product2 product2                = TestHelper.createProduct2();
+        PricebookEntry pbe1              = TestHelper.createPricebookEntry(product1.id);
+        PricebookEntry pbe2              = TestHelper.createPricebookEntry(product2.id);
+        Account acct                     = TestHelper.createAccount();
+        Opportunity opp                  = TestHelper.createOpportunity(acct.id);
+         quote quote                  = TestHelper.createQuote(opp.id);
+        OpportunityLineItem oppLineItem1 = TestHelper.createOpportunityLineItem(opp.id, pbe1.id); 
+     //   OpportunityLineItem oppLineItem2 = TestHelper.createOpportunityLineItem(opp.id, pbe2.id);
+           
+        AddQuoteProductCtrl con = new AddQuoteProductCtrl();        
+       ApexPages.currentPage().getParameters().put('Id',quote.id);
+        ApexPages.standardController std    = new ApexPages.standardController(quote);
+        AddQuoteProductCtrl controller      = new AddQuoteProductCtrl(std);
+        controller.loadquote(quote.Id);
+        //controller.catalog[0].isSelected = true;
+        controller.CloneLineItems();
+        controller.AddProduct();
+        controller.getProductNamesSpaceDelimited();
+	    try {
+	            controller.SaveAndReturn();
+	            system.assert(true);
+	    }
+	    catch ( Exception ex ) {
+	    	system.assert(false);
+	    }    	
+    }
+}

@@ -1,0 +1,24 @@
+<apex:page showHeader="false" sidebar="false"  >
+                                        <body style="background:#CADEF1;">
+<apex:messages style="font-size:20px;"/>
+                                          <apex:image value="{!$Resource.logo}"></apex:image>
+<apex:form style="background:#CADEF1;">
+<p style="font-size:25px;">Thank you for taking the system Satisfaction Survey from IT department. The survey may take you a few minutes to complete, As our Key users, your opinion is extremely important and having a better knowledge of your needs and requirements, we would be able to develop better service for you. Thank you again for your kind support. </p>
+<div  align="center">
+<apex:commandButton style="margin-left:50px;font-size:25px;"  value="Start" oncomplete="gotoPage1()"/>
+</div>
+</apex:form>
+                                            <p align="right">
+<apex:image value="{!$Resource.salesforcelogo}"></apex:image>
+                                            </p>
+<script>
+function Close(){
+    window.top.close();
+}       
+function gotoPage1(){
+        window.location.href = '/apex/report2019118'; 
+    }
+  
+</script>
+                                                                                 </body>
+</apex:page>

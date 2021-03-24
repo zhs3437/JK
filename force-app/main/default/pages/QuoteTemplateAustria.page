@@ -1,0 +1,178 @@
+<apex:page standardcontroller="Quote" extensions="QuoteModelController" renderAs="PDF" sidebar="false" showheader="false" applyHtmlTag="false" 
+           standardstylesheets="false" contenttype="application/vnd.ms-excel#Austria.xls">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        
+        <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }    
+        </style>     
+        
+    </head>
+    <body style="margin:30px auto;" >
+        <table border="0"  style="border-collapse: collapse;table-layout:fixed;margin:10px auto;font-family: sans-serif;font-size:0.75em;" >
+            <tbody>
+                <tr>
+                    <td  valign="top" colspan="5" width="50%">
+                        <apex:image width="179px" height="75px" value="https://c.ap4.content.force.com/servlet/servlet.FileDownload?file=01590000000BDd6"/>
+    				</td>
+                    <td style="text-align: right" colspan="5" width="50%">
+                        {!seller.Seller__c}<br/>
+                        ABN:{!seller.Seller_VAT_NO__c}<br/>
+                        {!seller.Address__c}<br/>PARRAMATTA NSW 2150 Australia<br/>
+                     </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <br/> <br/> 
+                    </td>
+                </tr>
+                <tr  >
+                    <td colspan="6" width="60%">{!Quote.Account.Name}</td>
+                    <td colspan="4" width="40%">Ship To</td>
+                </tr>
+                 <tr  >
+                    <td colspan="6" width="60%">{!Quote.Account.BillingStreet}</td>
+                    <td colspan="4" width="40%">{!Quote.ShippingStreet}</td>
+                </tr>
+                <tr >
+                    <td colspan="6" width="60%">{!Quote.Account.BillingCity},{!Quote.Account.BillingState},{!Quote.Account.BillingPostalCode}</td>
+                    <td colspan="4" width="40%">{!Quote.ShippingCity},{!Quote.ShippingState},{!Quote.ShippingPostalCode}</td>
+                </tr>
+                
+                <tr  >
+                    <td colspan="6" width="60%">{!Quote.Account.BillingCountry }</td>
+                    <td colspan="4" width="40%">{!Quote.ShippingCountry}</td>
+                </tr>
+                
+                
+               
+                <tr >
+                    <td colspan="10"> 
+                        <h2>
+                            Quotation
+                        </h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Quote#</b></td>
+                    <td colspan="8"  style="text-align: left"> {!Quote.Name}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Your ABN</b></td>
+                    <td colspan="8">{!Quote.Account.VAT_NO__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Issued</b></td>
+                    <td colspan="8">
+                        {! TEXT(DAY(Quote.Validity_Of_The_Offer__c)) & " " & CASE( MONTH(Quote.Validity_Of_The_Offer__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " &   TEXT(YEAR(Quote.Validity_Of_The_Offer__c)) }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10"><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Summary</b></td>
+                    <td colspan="8">{!Quote.Summary__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="10"><br/></td>
+                </tr>
+                <tr>
+                    <td width="10%"><b>Qty</b></td>
+                    <td colspan="2" width="20%"><b>Code</b></td>
+                    <td colspan="3" width="30%"><b>Description</b></td>
+                    <td colspan="2" width="20%" style="text-align: right"><b>Unit Price <br/>(Exc GST)</b></td>
+                    <td colspan="2" width="20%" style="text-align: right"><b>Line Total <br/>(Exc GST)</b></td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <hr/>
+                    </td>
+                </tr>
+                <apex:repeat value="{!QuoteItemLst}" var="line" >  
+                    <tr>
+                        <td  valign="top" width="20%"> 
+                            <apex:outputText value="{0,number,#,##0}">
+                            	<apex:param value="{!line.Quantity}"/>
+                            </apex:outputText>
+                            　
+                        
+                        </td>
+                        <td  valign="top" colspan="2" width="20%"> {!line.Product2.Name}</td>
+                        <td  valign="top" colspan="3" width="30%">
+                            <div >
+                                {!line.Description}
+                            </div>	
+                               
+                        </td>
+                        <td  valign="top" colspan="2" width="20%" style="text-align: right"> {!line.UnitPrice}</td>
+                        <td  valign="top" colspan="2" width="20%" style="text-align: right">
+                            <apex:outputText value="{0,number,#,###.00}">
+                            	<apex:param value="{!line.Total_Price__c}"/>
+                            </apex:outputText>
+                            
+                        </td>
+                    </tr>                  
+                </apex:repeat>
+                <tr>
+                    <td colspan="10">
+                        <hr/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8"  style="text-align: right">Sub-Total Exc GST(AUD)</td>
+                    <td colspan="2" style="text-align: right">
+                        <apex:outputText value="{0,number,#,###.00}">
+                            	<apex:param value="{!Quote.Total_Price__c}"/>
+                        </apex:outputText>
+                   </td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align: right">Plus GST(AUD)</td>
+                    <td colspan="2" style="text-align: right">{!Quote.PlusGST__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align: right">Total Inc(AUD)</td>
+                    <td colspan="2" style="text-align: right">{!Quote.TotalIncGST__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align: right">Amount Paid(AUD)</td>
+                    <td colspan="2" style="text-align: right">{!ap}</td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <hr/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align: right"><b>Balance Due(AUD)</b></td>
+                    <td colspan="2" style="text-align: right">
+						{!BalanceDue}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10"><br/><br/></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="10">Notes: {!Quote.Note__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="10"><br/></td>
+                </tr>
+                
+                <tr>
+                    <td  colspan="10"><i>This pricing is provided as an indication to assist with your project planning. Stock has not been reserved 
+                        and details are not legally binding until Purchase Agreement has been signed by both parties.</i> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</apex:page>

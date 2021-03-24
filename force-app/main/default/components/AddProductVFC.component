@@ -1,0 +1,52 @@
+<apex:component access="global" controller="AddProductVFCCtrl" >
+    <apex:attribute access="global" Id="requestId" name="addproductid" assignTo="{!requestId}" description="addproductid" type="String" required="true"/>
+   <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+        <tr bgcolor="#4DFFFF">
+            <td style="font-size:13px;">
+                 Product
+            </td>
+        </tr>
+    </table>
+    
+    <table border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+        <tr>
+               
+                <td colspan="1"><p style="text-align:center;"><span>Product</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Sales Price</span></p></td>
+            <td colspan="1"><p style="text-align:center;"><span>Power gear</span></p></td>
+            <td colspan="1" ><p style="text-align:center;"><span>Quantity(PC片)</span></p></td>
+                 <td colspan="1"><p style="text-align:center;"><span>Guaranteed Delivery Date</span></p></td>
+            <td colspan="1" style="display:{!IF(pp.tcm__c =='Approved','run-in','none')};"><p style="text-align:center;"><span>Additional costs</span></p></td>
+               <td colspan="1" style="display:{!IF(pp.tcm__c =='Approved','run-in','none')};"><p style="text-align:center;"><span>Comments</span></p></td>
+            </tr>
+        <apex:repeat value="{!ppList}" var="line"> 
+            <tr>
+                <td  style="text-align: center;">
+                    {!line.name}
+                </td>
+                 <td  style="text-align: center;">
+                    {!line.Sales_Price__c}
+                </td>
+                 <td  style="text-align: center;">
+                    {!line.W__c}
+                </td>
+                 <td  style="text-align: center;">
+                      {!line.Discount__c}
+                </td>
+
+
+                 <td  style="text-align: center;">
+                 {!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}
+
+                </td>
+              
+            <td style="text-align: center;display:{!IF(pp.tcm__c =='Approved','run-in','none')};">
+                 {!line.cost__c}
+                </td>
+                  <td style="text-align: center;display:{!IF(pp.tcm__c =='Approved','run-in','none')};">
+                 {!line.comments__C}
+                </td>
+                </tr>
+            </apex:repeat>
+        </table>
+</apex:component>

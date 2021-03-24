@@ -1,0 +1,49 @@
+<apex:page standardController="Contract" sidebar="false" extensions="PIJinkoGermany_Ctrl" showHeader="false" action="{!qingkong}" >
+    <html>
+        <script>
+    function returnPage(){
+        window.location.href = '/apex/PIJinkoGermany?id={!requestId}'; 
+    }
+    
+</script>
+        <apex:form Id="ProductLineForm">
+
+    <apex:pageBlock id="Product_Line_Block">
+            Please select at least one payment term before you do [go print]. 
+      
+  <apex:pageBlockSection title="Payment Term"   columns="4">
+         <apex:commandButton action="{!check}"  value="go print" oncomplete="returnPage()"/>
+ <apex:pageBlockTable value="{!payLst}" var="P"  width="250%" rules="rows">
+  <apex:column headerValue="action">
+ <apex:inputField value="{!P.check__c}" />
+ </apex:column>
+  <apex:column headerValue="Percentage">
+ <apex:outputField value="{!P.Percentage__c}" />
+ </apex:column>
+   <apex:column headerValue="Down/ Balance Payment">
+  <apex:outputField value="{!P.Down_Balance_Payment__c}" />
+   </apex:column>
+      <apex:column headerValue="Payment Method">
+  <apex:outputField value="{!P.Payment_Method__c}" />
+   </apex:column>
+      <apex:column headerValue="Days">
+  <apex:outputField value="{!P.Days__c}" />
+   </apex:column>
+      <apex:column headerValue="Payment Term">
+  <apex:outputField value="{!P.Payment_Term__c}" />
+   </apex:column>
+      <apex:column headerValue="Credit Valid">
+  <apex:outputField value="{!P.Credit_Valid__c}" />
+   </apex:column>
+      <apex:column headerValue="Comments">
+  <apex:outputField value="{!P.Comments__c}" />
+   </apex:column>
+ </apex:pageBlockTable>
+      
+ </apex:pageBlockSection>
+           
+     </apex:pageBlock>
+        </apex:form>
+
+        </html>
+</apex:page>

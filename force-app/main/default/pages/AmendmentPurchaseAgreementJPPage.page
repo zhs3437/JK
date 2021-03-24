@@ -1,0 +1,132 @@
+<apex:page Controller="AmendmentPurchaseAgreementCtrl" sidebar="false" showHeader="false" standardStylesheets="false">
+
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+	
+	<style> body { font-family: Arial Unicode MS; } </style>
+		
+	<style type="text/css">
+	
+	@page Section1 {
+		size:8.27in 11.69in; 
+		margin:1.0in 1.0in 1.0in 1.0in; 
+        mso-header-margin:.5in; 
+		mso-footer-margin:.5in; 
+		mso-paper-source:0; 
+	}
+	div.Section1 {
+		page:Section1;
+	} 
+	@font-face{
+        font-family: "MS Mincho";
+        src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+        -fs-pdf-font-embed: embed;
+        -fs-pdf-font-encoding: Identity-H;
+	}
+	.page-break {
+	    display:block;
+	    page-break-after:always;
+    }
+	div.header {
+	    position : running(header) ;
+	}
+	body {
+	    font-family: 'MS Mincho';
+    }
+	table{
+	    width:560pt;
+	}
+	.p1{
+		font-size:16pt; line-height:115%; margin:4pt 0pt 12pt
+	}
+
+	</style>
+ </head>
+ 
+ <body>
+  <div class="Section1">
+   <p style="margin:0pt; text-align:center;"><span style="font-family:Calibri; font-size:10.5pt">NO.[</span><span style="font-family:Calibri; font-size:10.5pt;font-weight: bold;">{! CASE( sa.SEQ__c , 1 , '1st' , 2 , '2nd' , 3 , '3rd' , TEXT(sa.SEQ__c) & 'th' )} </span><span style="font-family:'MS Mincho'; font-size:10.5pt">]変更契約書</span></p>
+   <p style="margin:0pt; text-align:center;"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   
+   <div style="margin:0pt;">
+	   	<span style="font-family:宋体; font-size:11pt"></span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt;font-weight: bold;">{!sa.Buyer_Name__c}&nbsp;</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">(以下「買主」という)と</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt;font-weight: bold;">{!sa.Seller_Name__c}&nbsp;</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">(以下「売主」という)は、</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt; text-decoration:underline">買主</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">及び売主が</span>
+	   	<span style="font-family:宋体; font-size:11pt; font-weight: bold;">{! CASE( MONTH(sa.Print_Contract_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(sa.Print_Contract_Date__c)) & ", " &  TEXT(YEAR(sa.Print_Contract_Date__c)) }</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt"> に締結した「売買契約書」</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">（番号：</span>
+	   	<span style="font-family:'Times New Roman'; font-size:11pt;font-weight: bold;">{!sa.Contract_No__c}</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">）</span>
+	   	<span style="display:{!IF(sa.Previous_Amendment_Generation_Date__c == null,'none','inline')};"> 及び&nbsp; </span>
+	   	<span style="display:{!IF(sa.Previous_Amendment_Generation_Date__c == null,'none','inline')};font-family:'MS Mincho'; font-size:10.5pt;font-weight: bold;">{!sa.Previous_Amendment_Generation_Date__c}</span>
+	   	<span style="display:{!IF(sa.Previous_Amendment_Generation_Date__c == null,'none','inline')};font-family:'MS Mincho'; font-size:11pt"> 付その変更契約書</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">(以下</span>
+	   	<span  style="display:{!IF(sa.Previous_Amendment_Generation_Date__c == null,'none','inline')};">あわせて</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">「本売買契約」という)</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">の変更について、以下のとおり変更契約書（以下「本契約書」という）を</span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt;font-weight: bold;">{! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) } </span>
+	   	<span style="font-family:'MS Mincho'; font-size:11pt">（以下「締結日」という）に中国上海浦東新区にて</span>
+   		<span style="font-family:'MS Mincho'; font-size:11pt">締結する。</span>
+   </div>
+   
+   <p style="margin:0pt;text-align:justify;"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   <div style="margin-bottom: 10px">
+    <div style="font-family:'MS Mincho'; font-size:11pt; line-height:16pt; padding-left:5pt; text-align:justify;"><span style="font-family:'MS Mincho'; font-size:11pt">1.</span><span style="font-family:'MS Mincho'; font-size:11pt">本売買契約を</span><span style="font-family:'MS Mincho'; font-size:10.5pt">以下の通り変更する。</span></div>
+   </div>
+   
+   		<div style="display:{!IF(sa.Amendment1__c == null || sa.Amendment1__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:MS Mincho; font-size:11pt">1.1</span><span style="font:11pt 'MS Mincho';font-weight:bold;text-align:justify;">&nbsp;&nbsp;{!sa.Amendment1__c}</span> 
+        </div>
+        <div style="display:{!IF(sa.Amendment2__c == null || sa.Amendment2__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:MS Mincho; font-size:11pt">1.2</span><span style="font:11pt 'MS Mincho';font-weight:bold;text-align:justify;">&nbsp;&nbsp;{!sa.Amendment2__c}</span> 
+        </div>
+        <div style="display:{!IF(sa.Amendment3__c == null || sa.Amendment3__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:MS Mincho; font-size:11pt">1.3</span><span style="font:11pt 'MS Mincho';font-weight:bold;text-align:justify;">&nbsp;&nbsp;{!sa.Amendment3__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment4__c == null || sa.Amendment4__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:MS Mincho; font-size:11pt">1.4</span><span style="font:11pt 'MS Mincho';font-weight:bold;text-align:justify;">&nbsp;&nbsp;{!sa.Amendment4__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment5__c == null || sa.Amendment5__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:MS Mincho; font-size:11pt">1.5</span><span style="font:11pt 'MS Mincho';font-weight:bold;text-align:justify;">&nbsp;&nbsp;{!sa.Amendment5__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment6__c == null || sa.Amendment6__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:MS Mincho; font-size:11pt">1.6</span><span style="font:11pt 'MS Mincho';font-weight:bold;text-align:justify;">&nbsp;&nbsp;{!sa.Amendment6__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment7__c == null || sa.Amendment7__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:MS Mincho; font-size:11pt">1.7</span><span style="font:11pt 'MS Mincho';font-weight:bold;text-align:justify;">&nbsp;&nbsp;{!sa.Amendment7__c}</span>
+        </div>
+        
+   <div>
+    <div style="font-family:'MS Mincho'; font-size:11pt; line-height:16pt; padding-left:5pt; text-align:justify;"><span style="font-family:'MS Mincho'; font-size:11pt">2.</span><span style="font-family:'MS Mincho'; font-size:11pt">本契約書にて特別に修正しているものを除き、修正又は変更の生じていない本売買契約の条項及び条件は有効に存続するものとする。本契約書の締結は、いずれかの一方当事者の本売買契約に関連して生じる又はこれに関係するいずれかの過去若しくは現在の権利若しくはいずれかの請求の放棄と解釈してはならない。</span></div>
+   </div>
+   <p style="margin:0pt; orphans:0; text-align:justify; text-indent:22pt; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   <div>
+    <div style="font-family:'MS Mincho'; font-size:11pt; line-height:16pt; padding-left:5pt; text-align:justify;"><span style="font-family:'MS Mincho'; font-size:11pt"></span>3.<span style="font-family:'MS Mincho'; font-size:11pt">本契約書は1式2通を作成し、両当事者が1通ずつ所持し、いずれも同等の効力を有する。</span></div>
+   </div>
+   <p style="line-height:16pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:Arial; font-size:10pt">&nbsp;</span></p>
+   <p style="line-height:16pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">これを証するため、本契約書は冒頭の締結日に両当事者の正式な授権代表により締結された。</span></p>
+   <p style="line-height:16pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   <p style="line-height:16pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;買主: </span><span style="font-family:'MS Mincho'; font-size:11pt;font-weight: bold;">{!sa.Buyer_Name__c}</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="width:20.25pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;住所: </span><span style="font-family:'MS Mincho'; font-size:11pt;font-weight: bold;">{!sa.Billing_Address__c}</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="width:20.25pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;代表取締役:　</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; text-align:justify; text-indent:0.1pt; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="width:20.25pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;署名又は記名捺印:</span></p>
+   <p style="line-height:16pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   <p style="line-height:16pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;売主: </span><span style="font-family:'MS Mincho'; font-size:11pt;font-weight: bold;">{!sa.Seller_Name__c}</span></p>
+   <div style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="width:20.25pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;住所: </span><span style="font-family:'MS Mincho'; font-size:11pt;font-weight: bold;">{!sa.Seller_Address__c}</span></div>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="width:20.25pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;代表取締役：　李仙徳</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:27pt; text-align:justify; text-indent:-27pt; widows:0"><span style="font-family:'MS Gothic'; font-size:11pt">&nbsp;</span></p>
+   <p style="margin:0pt; margin-bottom:2px; orphans:0; padding-left:20.25pt; text-align:justify; text-indent:-20.25pt; widows:0"><span style="width:20.25pt; text-indent:0pt; display:inline-block"></span><span style="font-family:'MS Mincho'; font-size:11pt">&nbsp;&nbsp;&nbsp;&nbsp;署名又は記名捺印:</span></p>
+   
+  </div>
+ </body>
+ 
+
+</apex:page>

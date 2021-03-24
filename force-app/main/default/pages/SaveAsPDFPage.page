@@ -1,0 +1,27 @@
+<apex:page standardController="Contract" showHeader="false" sidebar="false">
+<head>
+<base target="_blank" />
+</head>
+    <script>
+    
+    function load(){
+        document.getElementById("f3").click();
+        if('{!HTMLENCODE($CurrentPage.parameters.Warranty)}' == '10 linear warranty'){
+         <!--  document.getElementById("f1").click();-->
+        }
+        else if('{!HTMLENCODE($CurrentPage.parameters.Warranty)}' == '10 standard warranty'){
+           <!-- document.getElementById("f2").click();  -->
+        }        
+    }
+    </script>
+    
+<body onload="load()" >
+    <a id="f1" href="/servlet/servlet.FileDownload?file=0156F00000COOXb"   target="_blank"/> <!-- 0156F00000CPoIB -->
+    <a id="f2" href="/servlet/servlet.FileDownload?file=0156F00000COOXc" target="_blank"/>  <!-- 0156F00000CPoIG -->
+    <a id="f3" href="{!HTMLENCODE($CurrentPage.parameters.filename)}" target="_blank"/>
+    <h1 style='font-size:30px'>
+        
+    </h1>
+</body>
+
+</apex:page>

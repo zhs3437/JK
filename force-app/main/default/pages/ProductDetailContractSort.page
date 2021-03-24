@@ -1,0 +1,65 @@
+<apex:page standardController="Product_Detail__c" extensions="ProductDetailContractSortCtrl" id="AccountSortOpp" sidebar="false" showHeader="false" standardStylesheets="true" recordSetVar="Objs">
+     <apex:form id="AccountSortOppForm">
+         <apex:inputHidden value="{!ChangedId}" id="ChangedId"/>
+    <apex:pageMessages />
+         <apex:pageBlock >
+                                 <apex:commandButton id="save" value="Save" action="{!doSave}" />
+             <apex:outputPanel id="thePageBlock111" >
+                
+                <apex:pageBlockTable value="{!oppLst}" var="approver">
+                    <apex:column >
+                        <apex:commandButton value="Top" action="{!TopDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Top" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    
+                        <apex:commandButton value="Up" action="{!UpDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Up" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    
+                        <apex:commandButton value="Down" action="{!DownDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Down" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    
+                        <apex:commandButton value="Bottom" action="{!TailDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Bottom" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    </apex:column>
+                   
+                    <apex:column >
+                        <apex:facet name="header">ProductName</apex:facet>
+                        <apex:outputField value="{!approver.Product_Name__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                   
+                    <apex:column >
+                        <apex:facet name="header">Sales Price</apex:facet>
+                        <apex:outputField value="{!approver.Unit_Price__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Quantity</apex:facet>
+                        <apex:outputField value="{!approver.Quantity__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Total W</apex:facet>
+                        <apex:outputField value="{!approver.Total_W__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">Guaranteed Delivery Date</apex:facet>
+                        <apex:outputField value="{!approver.Guaranteed_Delivery_Date__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">ChangedNo</apex:facet>
+                        <apex:outputField value="{!approver.ChangedNo__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    
+                    
+                </apex:pageBlockTable>
+            </apex:outputPanel>
+         </apex:pageBlock>
+    </apex:form>
+    <script>
+    function ChangeAccountSortOpp(payid){
+            var hidden1 = document.getElementById("AccountSortOpp:AccountSortOppForm:ChangedId");
+
+            hidden1.value = payid;
+        //window.location.href = '/apex/AmendmentOrder?id='0010w000009DF3Y''; 
+    }
+    </script>
+</apex:page>

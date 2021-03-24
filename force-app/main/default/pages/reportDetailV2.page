@@ -1,0 +1,72 @@
+<apex:page standardController="report_detail__c" id="addAmendmentOrder" extensions="ReportDetailClass" showHeader="false" >
+<script>
+    function returnPage(){
+               window.location.href = '/apex/report2019118'; 
+    }
+ 
+            function goto1(){
+            window.location.href = '/apex/reportDetail?tp={!mark}&num=1'; 
+    }
+        function goto3(){
+            window.location.href = '/apex/reportDetailV3?tp={!mark}&num=3'; 
+    }
+    
+</script>
+    <p style="font-size:25px;">
+2. 您认为目前的应用系统还应该增加什么功能或者模块，请举例说明。
+        <br/>
+2. Do you have any application or functionality you want to have? Can you list and describe in below section.    </p>
+<apex:form Id="ProductLineForm">
+ <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+
+    <apex:pageBlock id="Product_Line_Block">
+        <apex:pageBlockButtons location="top">
+                <apex:commandButton value="New" action="{!addPayment}"/>
+                
+                 <apex:commandButton value="Previous Page" action="{!SelectDailyDetail}"  oncomplete="goto1()"/>
+            <apex:commandButton value="Next" action="{!SelectDailyDetail}"  oncomplete="goto3()"/>
+            <apex:commandButton value="Go back to host page" oncomplete="returnPage()"/>
+        </apex:pageBlockButtons>
+        <apex:messages style=" color:#EE2C2C"/>
+
+ <apex:pageBlockSection title="Details"  >
+
+ <apex:pageBlockTable value="{!opList}" var="P"  rowClasses="odd,even" styleClass="list" rules="rows" style="width:260%;">
+   <apex:column headerValue="Action" style="width:10%;">
+   <apex:commandButton action="{!DeletePay}" onclick="deletePayment('{!P.Request_No__c}');" value="Delete" />
+   </apex:column>
+ <apex:column headerValue="System " style="width:10%;">
+  <apex:outputField value="{!P.Related_items__c}" />
+   </apex:column>
+     <apex:column headerValue="Type" style="width:10%;">
+  <apex:inputField value="{!P.Type__c}" />
+   </apex:column>
+      <apex:column headerValue="Comments" style="width:30%;">
+  <apex:inputField style="width:100%;" value="{!P.Description__c}" />
+   </apex:column>
+ </apex:pageBlockTable>
+ </apex:pageBlockSection>
+
+    </apex:pageBlock> 
+</apex:form>
+<script>
+ function deletePayment(payid){
+        if(confirm("Are you sure Delete?")){
+            
+            var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+            hidden1.value = payid;
+            
+        }
+    }
+    function deleteItem(itemid){
+        if(confirm("Are you sure Delete?")){
+            
+            var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+            hidden1.value = itemid;
+            
+        }
+    }
+     </script>
+</apex:page>

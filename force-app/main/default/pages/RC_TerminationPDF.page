@@ -1,0 +1,75 @@
+<apex:page language="ja"
+           sidebar="false"
+           showHeader="false" standardStylesheets="false" renderAs="PDF" standardController="Amendment_Agreement__c"  extensions="RC_AmendmentCtrl">
+    <head>
+         <style type="text/css">
+            @page
+            {       size: A4;
+            margin : 20pt .2in .5in .2in;
+            @top-center {
+            content : element(header);
+            }
+            @bottom-center {
+            content: " (  " counter(page) "  /  " counter(pages) "  )";
+            }
+            }
+            @font-face{
+            
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+            }
+            .page-break {
+            display:block;
+            page-break-after:always;
+            }
+            div.header {
+            position : running(header) ;
+            }
+           
+            table{
+            width:560pt;
+            }
+        </style>
+    </head>
+    <body style="font-family:Arial Unicode MS">
+        <h1 style = "text-align:center">
+            退购解除协议书
+        </h1>
+        <p>
+            买方（全称）：{!buyerName}
+        </p>
+        <p>
+            卖方（全称）：{!Amendment_Agreement__c.SELLER__c}
+        </p>
+        <p>
+            签订日期：{!prDate}
+        </p><br/>
+        <p>
+            鉴于<br/>
+            买卖双方于{!ContractDate}签订的《组件买卖合同》（{!ContractNumber}）（以下简称：合同），因<br/>
+            买方实际情况发生变化，实际已无法履行合同，经过买卖双方友好协商，卖方同意买方退购合同项<br/>
+            下全部货物，合同于{!prDate}解除，自解除之日起，合同项下双方的权利义务终止，且再无争<br/>
+            议。本协议一式贰份，买方执壹份，卖方执壹份，具有同等法律效力，自双方签字盖章之日起生效。
+        </p>         <br/>     
+        <table width="100%" style=" font-size:14px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+            <tr>
+                <td>买方：{!buyerName}</td>
+                <td>卖方：{!Amendment_Agreement__c.SELLER__c}</td>
+            </tr>
+            <tr>
+                <td>（公章）</td>
+                <td>（公章）</td>
+            </tr>
+            <tr>
+                <td>法定代表人或委托代理人</td>
+                <td>法定代表人或委托代理人</td>
+            </tr>
+            <tr>
+                <td>签字：_________________ </td>
+                <td>签字：_________________ </td>
+            </tr>
+        </table>
+                   
+    </body>
+</apex:page>

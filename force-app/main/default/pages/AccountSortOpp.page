@@ -1,0 +1,87 @@
+<apex:page standardController="Opportunity" extensions="AccountSortOppCtrl" id="AccountSortOpp" sidebar="false" showHeader="false" standardStylesheets="true" recordSetVar="Objs">
+     <apex:form id="AccountSortOppForm">
+         <apex:inputHidden value="{!ChangedId}" id="ChangedId"/>
+    <apex:pageMessages />
+         <apex:pageBlock >
+                                 <apex:commandButton id="save" value="Save" action="{!doSave}" />
+             <apex:outputPanel id="thePageBlock111" >
+                
+                <apex:pageBlockTable value="{!oppLst}" var="approver">
+                    <apex:column >
+                        <apex:commandButton value="Top" action="{!TopDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Top" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    
+                        <apex:commandButton value="Up" action="{!UpDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Up" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    
+                        <apex:commandButton value="Down" action="{!DownDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Down" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    
+                        <apex:commandButton value="Bottom" action="{!TailDataList}" image="https://c.ap12.visual.force.com/resource/1581070397000/Bottom" onclick="ChangeAccountSortOpp('{!approver.ChangedNo__c}');"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Opportunity Name</apex:facet>
+                        <apex:outputField value="{!approver.name}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Stage</apex:facet>
+                        <apex:outputField value="{!approver.StageName}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">CloseDate</apex:facet>
+                        <apex:outputField value="{!approver.CloseDate}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Total MW</apex:facet>
+                        <apex:outputField value="{!approver.Total_MW__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Currency</apex:facet>
+                        <apex:outputField value="{!approver.CurrencyIsoCode}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Total Price</apex:facet>
+                        <apex:outputText value="{0, number, #,##0}"><apex:param value="{!approver.Total_Price__c}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Last Modified Date</apex:facet>
+                        <apex:outputField value="{!approver.LastModifiedDate}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">GM approval</apex:facet>
+                        <apex:outputField value="{!approver.Sales_manager_approval__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Finance Price Approval Status </apex:facet>
+                        <apex:outputField value="{!approver.Price_Approval_Status__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Opportunity Owner Alias</apex:facet>
+                        <apex:outputField value="{!approver.Owner.Alias}" >
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">ChangedNo</apex:facet>
+                        <apex:outputField value="{!approver.ChangedNo__c}" >
+                        </apex:outputField>
+                    </apex:column>
+                    
+                    
+                </apex:pageBlockTable>
+            </apex:outputPanel>
+         </apex:pageBlock>
+    </apex:form>
+    <script>
+    function ChangeAccountSortOpp(payid){
+            var hidden1 = document.getElementById("AccountSortOpp:AccountSortOppForm:ChangedId");
+
+            hidden1.value = payid;
+        //window.location.href = '/apex/AmendmentOrder?id='0010w000009DF3Y''; 
+    }
+    </script>
+</apex:page>

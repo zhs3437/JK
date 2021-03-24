@@ -1,0 +1,124 @@
+<apex:page standardController="order" id="addAmendmentOrder" extensions="AddAmendmentOrderCtrlAgain" showHeader="false" >
+    <c:StatusSpinner />
+    <script>
+        function returnPage(){
+            window.location.href = '/apex/AmendmentOrder?id={!requestId}';
+        }
+
+    </script>
+
+    <apex:form Id="ProductLineForm">
+        <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+
+        <apex:pageBlock id="Product_Line_Block">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save All" action="{!SelectDailyDetail}" status="LoadingStatusSpinner" reRender="" onclick="SaveAll()"/><!-- onclick="SaveAll()"-->
+                <apex:commandButton value="Back to Order" action="{!Cancel}"/>
+                <!--<apex:commandButton value="Replace All" oncomplete="returnPage()" />-->
+            </apex:pageBlockButtons>
+            <apex:messages style=" color:#EE2C2C"/>
+            <apex:pageBlockSection title="Order details"   columns="4">
+                <table border="0" width="250%"  style="border-collapse: collapse;margin:10px auto;" >
+                   <apex:outputPanel >
+                        <tr >
+
+                            <td colspan="1"  width="25%" align="center" valign="middle">Total Price</td>
+                            <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Total_Price__c}" required="false"/></td>
+                            <td colspan="1"  width="25%" align="center" valign="middle">Amount paid by the buyer</td>
+                                <td colspan="1"  width="25%" align="center" valign="middle"><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong><apex:inputText style="width:200px" value="{!AmountPaid}"  required="true"></apex:inputtext></td>
+                            
+                        </tr>
+                        <tr>
+                            <td colspan="1"  width="25%" align="center" valign="middle">Note</td>
+                                <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputText style="width:200px" value="{!Note}"></apex:inputText></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                    </apex:outputPanel>
+                </table>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Order Products"   columns="4">
+                <apex:pageBlockTable value="{!aop}" var="Os"  rowClasses="odd,even" styleClass="list" width="100%" rules="rows">
+                    <apex:column headerValue="No">
+                        <apex:outputField value="{!Os.Request_No__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Product">
+                        <div   style="display:{!IF(Os.Actual_delivery__c==0.000 || Os.Actual_delivery__c==null,'run-in','none')};">
+                            <apex:outputField value="{!Os.Product2__c}" />
+                        </div>
+                        <div   style="display:{!IF(Os.Actual_delivery__c!=0.000 && Os.Actual_delivery__c!=null,'run-in','none')};">
+                            <apex:outputField value="{!Os.Product2__c}" />
+                        </div>
+                    </apex:column>
+                    <apex:column headerValue="Unit Price">
+                        <apex:outputField value="{!Os.UnitPrice__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Quantity">
+                        <apex:outputField value="{!Os.Quantity__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Total MW">
+                        <apex:outputField value="{!Os.Total_MW__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Total Price">
+                        <apex:outputField value="{!Os.TotalPriceBackstage__c}" />
+                    </apex:column>
+                   <!-- <apex:column headerValue="Deliveried goods & Un-posted(SAP)">
+                        <apex:outputField value="{!Os.Actual_delivery__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Unprocessed goods(SAP) ">
+                        <apex:outputField value="{!Os.Delivery_order_not_created_quantity__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Deliveried goods & Posted(SAP)">
+                        <apex:outputField value="{!Os.Quantity_of_goods_received__c}" />
+                    </apex:column>-->
+
+                    <apex:column headerValue="Certification">
+                        <apex:outputField value="{!Os.Certification__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Type of module">
+                        <apex:outputField value="{!Os.Type_of_module__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Guaranteed Delivery Date">
+                        <apex:outputField value="{!Os.Guaranteed_Delivery_Date__c}" />
+                    </apex:column>
+                   <!-- <apex:column headerValue="Cheetah">
+                        <apex:outputField value="{!Os.Cheetah__c}" />
+                    </apex:column>-->
+                    <apex:column headerValue="Quantity shipped">
+                        <apex:inputField value="{!Os.Quantity_shipped__c}"  required="true"></apex:inputField>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <script>
+        function SaveAll(){
+            if(confirm("Are you sure Save?")){
+
+
+
+            }
+
+        }
+        function deletePayment(payid){
+            if(confirm("Are you sure Delete?")){
+
+                var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+                hidden1.value = payid;
+
+            }
+        }
+        function deleteItem(itemid){
+            if(confirm("Are you sure Delete?")){
+
+                var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+                hidden1.value = itemid;
+
+            }
+        }
+    </script>
+</apex:page>

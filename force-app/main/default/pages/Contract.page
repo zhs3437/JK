@@ -1,0 +1,831 @@
+<apex:page standardController="Contract"   showHeader="false" sidebar="false" extensions="ContractPreviewCtrl" action="{!initialize}">
+    <c:ckeditor />
+    <apex:messages />
+    <apex:form >
+        <apex:commandButton action="{!AddSave}" value="Generate Pdf" />
+       <!-->
+        <apex:commandButton action="{!SendEmail}" value="Send Email"/>
+        -->
+        <table border="1"  width="80%"  style="border-collapse:collapse;margin:10px">
+            <tr>
+                <font size="7">
+                    <td style="width:20%;font-size:10px;text-align:center"><apex:image id="theImage" value="{!$Resource.logo}" style="height:84px; width:130px" /></td>
+                    <td style="width:30%;font-size:7;text-align:center">PURCHASE ORDER<br/> EXECUTION DATE:{!CASE( MONTH(dt), 1, "Jan",2, "Feb",3, "Mar", 4, "Apr", 5, "May", 6, "June",7, "July",8, "Aug", 9, "Sept",10, "Oct",11, "Nov", 12, "Dec", "") & " " & TEXT(DAY(dt)) &" , " & TEXT(YEAR(dt)) }  </td>
+                    <td style="width:20%;font-size:7;text-align:center"><B>NO.{!Contract.Contract_NO__c}</B></td>
+                </font>
+            </tr>
+        </table>
+         <div style="width:700px">
+
+            This Purchase Order is hereby entered into by and between Seller and Buyer, as of the Execution Date.  For clarity, all terms and conditions of the 
+            Exhibit A General Terms and Conditions shall apply to this Purchase Order as if fully set forth herein.  Seller and 
+            Buyer are hereinafter sometimes referred to each as a “Party” and collectively as the “Parties”. The Parties hereby 
+            agree to the following terms with respect to this Purchase Order:
+        
+        </div>
+        
+        <p>
+            I.  DEFINITIONS
+        </p>
+        
+        <table border="1" width="80%" style="border-collapse:collapse;margin:10px">
+            <tr>
+                <td align="center">#</td>
+                <td align="center">TERM</td>
+                <td align="center">DEFINITION</td>
+            </tr>
+            <tr>
+                <td align="center">a</td>
+                <td>Seller</td>
+                <td>{!Contract.SELLER__c}</td>
+            </tr>
+            <tr>
+                <td align="center">b</td>
+                <td>Seller's Address</td>
+                <td>{!Address}</td>
+                
+            </tr>
+            <tr>
+                <td align="center">c</td>
+                <td>Seller's Contact Information</td>
+                <td>
+                    Contact Person:{!Contract.Owner.Name}<br/>
+                    Tel:{!sellerTel}<br/>
+                    E-mail:{!sellerEmail}
+                </td>
+            </tr>
+            <tr>
+                <td align="center">d</td>
+                <td>Buyer</td>
+                <td>{!Contract.BuyerAccount__r.Name}</td>
+            </tr>
+            
+            <tr style="display:{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+                <td align="center">e</td>
+                <td>Buyer’s VAT No. if the Modules are to be <br/>
+                    imported into Europe countries</td>
+                <td>{!buyerVATNO}</td>
+            </tr>
+            
+            <tr style="display:{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+                <td align="center">f</td>
+                <td>Buyer's Address</td>
+                <td>{!buyerAddress}</td>
+            </tr>
+            <tr style="display:{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)','none','run-in')};">
+                <td align="center">e</td>
+                <td>Buyer's Address</td>
+                <td>{!buyerAddress}</td>
+            </tr>
+            
+            <tr style="display:{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+                <td align="center">g</td>
+                <td>Buyer’s Contact Information</td>
+               <apex:outputPanel rendered="{!IF(Contract.Contact_Name__c=='',true,false )}">
+                <td>Contact Person:{!Contract.BuyerAccount__r.Name}<br/>
+                    Tel:{!buyerTel}<br/>
+                    E-mail:{!buyerEmail}
+                </td>
+                </apex:outputPanel>
+                
+                 <apex:outputPanel rendered="{!IF(Contract.Contact_Name__c=='',false,true )}">
+                <td>Contact Person:{!Contract.Contact_Name__c}<br/>
+                    Tel:{!buyerTel}<br/>
+                    E-mail:{!buyerEmail}
+                </td>
+                </apex:outputPanel>
+            </tr>
+            
+            <tr style="display:{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)','none','run-in')};">
+                <td align="center">f</td>
+                <td>Buyer’s Contact Information</td>
+                 <apex:outputPanel rendered="{!IF(Contract.Contact_Name__c=='',true,false )}">
+                <td>Contact Person:{!Contract.BuyerAccount__r.Name}<br/>
+                    Tel:{!buyerTel}<br/>
+                    E-mail:{!buyerEmail}
+                </td>
+                </apex:outputPanel>
+                
+                 <apex:outputPanel rendered="{!IF(Contract.Contact_Name__c=='',false,true )}">
+                <td>Contact Person:{!Contract.Contact_Name__c}<br/>
+                    Tel:{!buyerTel}<br/>
+                    E-mail:{!buyerEmail}
+                </td>
+                </apex:outputPanel>            </tr>
+            <tr >
+                  <apex:outputPanel rendered="{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)',true,false )}">
+                  <td align="center" style="width: 10px;">h</td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)',false,true )}">
+                  <td align="center" style="width: 10px;">g</td>
+                </apex:outputPanel>
+                <td style="width: 10px;">Payment Term</td>
+                
+                <apex:outputPanel rendered="{!IF(StandAcutionTemplate==IndividualTemplate,false,true )}">
+                    <td style="width: 80px;">
+                        <apex:inputTextarea value="{!newPaymentTerm}" style="border-color:red;width: 99%;height:120px;" />
+                    </td>
+                </apex:outputPanel>
+                
+                <apex:outputPanel rendered="{!IF(StandAcutionTemplate==IndividualTemplate,true,false )}">
+                    <td style="width: 80px;">
+                        <apex:inputTextarea value="{!newPaymentTerm}" style="width:99%;height:120px;border:0"/>
+                    </td>
+                </apex:outputPanel>
+            </tr>
+            <tr>
+             <apex:outputPanel rendered="{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)',true,false )}">
+                  <td align="center" style="width: 10px;">i</td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)',false,true )}">
+                  <td align="center" style="width: 10px;">h</td>
+                </apex:outputPanel>
+
+               <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">Trade Term (per Incoterms® 2010 edition)</td>
+                <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">Trade Term (per Incoterms® 2020 edition)</td>
+                <td> <apex:inputTextarea value="{!TradeTerm}" style="width:99%;height:120px;border:0"/>
+                </td>
+            </tr>
+          
+            
+            <!--
+<tr>
+
+<td align="center">j</td>
+<td>Delivery Date</td>
+<td>
+{!TEXT(YEAR(DeliveryDate)) &" -" & CASE( MONTH(DeliveryDate), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " -" & TEXT(DAY(DeliveryDate))} 
+</td>
+</tr>
+-->    
+            
+            <tr style="display:{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+                <td align="center">j</td>
+                <td>General Terms and Conditions</td>
+                <td>Attached as Exhibit A</td>
+            </tr>
+            <tr style="display:{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)', 'none','run-in')};">
+                <td align="center">i</td>
+                <td>General Terms and Conditions</td>
+                <td>Attached as Exhibit A</td>
+            </tr>
+      
+            <tr style="display:{!IF(HaveModuleWarrantyEU==true,'run-in','none')};">
+                <td align="center">k</td>
+                <td>Warranty for Modules</td>
+                 <apex:outputPanel rendered="{!IF(HaveModuleWarrantyEU==true,true,false )}">
+                <td style="display:{!IF( Contract.Destination_Country__c!='Germany','run-in','none')};"><apex:inputTextarea value="{!Warranty}" style="width:99%;height:120px;border:0"/>
+            
+                </td>
+                 </apex:outputPanel>
+                 <td style="display:{!IF( Contract.Destination_Country__c=='Germany','run-in','none')};">Attached as Exhibit B
+                </td>
+            </tr>
+            
+            <tr style="display:{!IF(HaveConnectorWarrantyEU_NoModule==true,'run-in','none')};">
+                <td align="center">k</td>
+                <td>Warranty for products other than Modules</td>
+                <td>Beginning on the Delivery Date and terminating on that date which is one hundred and forty-four (144) months thereafter, Jinko warrants that the DC connectors shall be free from material defects in design, materials and workmanship that impair the performance of the Module. Material defects shall not include normal wear and tear.
+                </td>
+            </tr>
+                
+            
+            <tr style="display:{!IF(HaveConnectorWarrantyEU==true,'run-in','none')};">
+                <td align="center">l</td>
+                <td>Warranty for products other than Modules</td>
+                <td>Beginning on the Delivery Date and terminating on that date which is one hundred and forty-four (144) months thereafter, Jinko warrants that the DC connectors shall be free from material defects in design, materials and workmanship that impair the performance of the Module. Material defects shall not include normal wear and tear.
+                </td>
+            </tr>
+            
+            
+            
+            <!-- 非欧洲 -->
+            <tr style="display:{!IF(HaveModuleWarrantyNoneEU==true,'run-in','none')};">
+                <td align="center">j</td>
+                <td>Warranty for Modules</td>
+                      <apex:outputPanel rendered="{!IF(HaveModuleWarrantyNoneEU==true,true,false )}">
+                <td style="display:{!IF( Contract.Destination_Country__c!='Germany','run-in','none')};"><apex:inputTextarea value="{!Warranty}" style="width:99%;height:120px;border:0"/>
+                </td>
+                 </apex:outputPanel>
+                 <td style="display:{!IF( Contract.Destination_Country__c=='Germany','run-in','none')};">Attached as Exhibit B
+                </td>
+            </tr>
+
+
+       
+            <!-- 连接头质保 -->
+             <tr style="display:{!IF(HaveConnectorWarrantyNoneEU_NoModule==true,'run-in','none')};">
+                <td align="center">j</td>
+                <td>Warranty for products other than Modules</td>
+                <td>Beginning on the Delivery Date and terminating on that date which is one hundred and forty-four (144) months thereafter, Jinko warrants that the DC connectors shall be free from material defects in design, materials and workmanship that impair the performance of the Module. Material defects shall not include normal wear and tear.
+                </td>
+            </tr>
+            
+            <tr style="display:{!IF(HaveConnectorWarrantyNoneEU==true,'run-in','none')};">
+                <td align="center">k</td>
+                <td>Warranty for products other than Modules</td>
+                <td>Beginning on the Delivery Date and terminating on that date which is one hundred and forty-four (144) months thereafter, Jinko warrants that the DC connectors shall be free from material defects in design, materials and workmanship that impair the performance of the Module. Material defects shall not include normal wear and tear.
+                </td>
+            </tr>
+
+
+            
+            <tr style="display:{!IF(LoadingPortFlagTwoDetail==true,'run-in','none')};">
+                <td align="center">l</td>
+                <td>Loading Port</td>
+                <td>China main port
+                </td>
+            </tr>
+             <tr style="display:{!IF(LoadingPortFlagOneDetail==true,'run-in','none')};">
+                <td align="center">k</td>
+                <td>Loading Port</td>
+                <td>China main port
+                </td>
+            </tr>
+            <tr style="display:{!IF((Contract.Buyer_Letter_of_guarantee__c == 'None' || Contract.Buyer_Letter_of_guarantee__c == ''),'none','run-in')};">
+             
+                <td align="center">
+                     <apex:outputPanel rendered="{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)',true,false)}">
+                        <p style="text-align:center;">
+                                 l
+                        </p>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!IF(Contract.Region__c=='EU(Union)'||Contract.Region__c=='EU(Non-Eu)',false,true)}">
+                        <p style="text-align:center;">
+                                 k
+                        </p>
+                    </apex:outputPanel>
+                   </td>
+                 
+                <td>Buyer Guaranty</td>
+                <td>Attached as Exhibit B</td>
+            </tr>
+        </table>
+        <p>
+            II. MODULES
+        </p>
+        <table border="1" width="80%" style="border-collapse:collapse;margin:10px">
+            <tr>
+                <td align="center" rowspan="2">ITEM</td>
+                <td align="center" rowspan="2">MODULE DESCRIPTION</td>
+                <td align="center" rowspan="1" colspan="2">QUANTITY</td>
+                <td align="center" rowspan="2">UNIT PRICE ({!Contract.CurrencyIsoCode}/W)</td>
+                <td align="center" rowspan="2"> PURCHASE PRICE({!Contract.CurrencyIsoCode})</td>
+                <td align="center" rowspan="2">DELIVERY DATE </td>
+            </tr>
+            <tr>
+                <td align="center" rowspan="1" colspan="1">PIECES</td>
+                <td align="center" rowspan="1" colspan="1">W</td>
+            </tr>
+            <apex:variable var="index" value="{!0}" />
+            <apex:dataList value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                <apex:variable var="index" value="{!index+1}" />
+               <TR style=" " height="23" >
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD></TR>
+                                
+            </apex:dataList>
+            
+            
+            <apex:outputPanel rendered="{!IF(contract.Tax_Rate__c==null,false,true )}"> 
+                <TR  height="23">
+                      <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TAX</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">{!contract.Tax_Rate__c}%</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.Tax__c}"/></apex:outputText></FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+            </apex:outputPanel>
+           
+            <TR  height="23">
+                 <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Tax__c+contract.Transit_Fees__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+            </TR>
+        </table>
+        <p>
+            III.    GOVERNING LAW AND DISPUTE  RESOLUTION
+        </p>
+        <table border="1" width="80%" style="border-collapse:collapse;margin:10px">
+            <tr>
+                <td align="center">#</td>
+                <td align="center">TERM</td>
+                <td align="center">CONTENT</td>
+            </tr>
+            <tr>
+                <td align="center">a</td>
+                <td align="center">Governing Law</td>
+                <td align="center" >
+                   <apex:inputTextarea value="{!GoverningLaw}" style="width:99%;height:100px;border:0"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">b</td>
+                <td align="center">Dispute Resolution</td>
+                <td align="center" >
+                           
+<apex:inputTextarea value="{!DisputeResolution}" style="width:99%;height:100px;border:0"/>
+
+                </td>
+            </tr>
+        </table>
+         <br/>
+        <br/>
+        <br/>
+         <apex:outputPanel rendered="{!IF(SPECIALTERMS==''|| SPECIALTERMS==null,false,true)}">
+
+        <p>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IV.     SPECIAL TERMS
+        </p>
+        </apex:outputPanel>
+         <apex:outputPanel rendered="{!IF((SpecialTemLstsize==0 && MexicoSpecial==true) ,true,false)}">
+                <p>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IV.     SPECIAL TERMS
+        </p>
+              <table border="1" width="80%" style="border-style:dashed; border-width:1px;border-collapse:collapse;margin:10px">
+               <tr>
+                    <td >
+                  
+                    <apex:inputTextarea value="{!newSPECIALTERMS}" style="width:80%;height:400px;border:0"/>
+                 </td>
+                  </tr>
+                  <tr style="display:{!IF(AuExBoolean = true ,'run-in','none')};">
+                <td ><br/><br/>  {!$Label.Safety_SHE_Questionnaire} <br/><br/>
+                     <table border="1" width="700px" style="border-collapse:collapse;margin:5px;border: solid black">
+                         <tr>
+                            <td>Additional Costs</td>
+                            <td>Rate</td>
+                            <td>GST</td>
+                         </tr>
+                         <tr>
+                            <td>Storage Cost</td>
+                            <td>AUD 4.5 Per Pallet Per Week</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Pallet Pick</td>
+                            <td>AUD 2.5 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Outward</td>
+                            <td>AUD 2.5 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Outbound Order Admin Fee</td>
+                            <td>AUD 8.0 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                    </table>
+                    <br/><br/>
+                    {!$Label.Safety_SHE_Questionnaire2}
+                </td>
+            </tr>
+                  <tr style="display:{!IF(VnExBoolean = true ,'run-in','none')};">
+                <td > <br/><br/> {!$Label.Safety_VN} <br/><br/>
+                     <table border="1" width="700px" style="border-collapse:collapse;margin:5px;border: solid black">
+                         <tr>
+                            <td>Additional Cost</td>
+                            <td>Rate</td>
+                            <td>GST</td>
+                         </tr>
+                         <tr>
+                            <td>Storage Cost</td>
+                            <td>VND 7520/Pallet/Day</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Handling Out Cost</td>
+                            <td>VND 70350/Pallet/time</td>
+                            <td>10%</td>
+                         </tr>
+                    </table>
+                    <br/><br/>
+                </td>
+            </tr>
+              </table>
+        </apex:outputPanel>
+          <br/>
+          
+        <br/>
+        <table border="1" width="80%" style="border-style:dashed; border-width:1px;border-collapse:collapse;margin:10px">
+        <tr>
+        <td>
+          <apex:inputTextarea value="{!newSPECIALTERMS}" style="width:80%;height:400px;border:0"/><br/>
+          </td>
+          </tr>
+          <tr style="display:{!IF(AuExBoolean = true ,'run-in','none')};">
+                <td ><br/><br/>  {!$Label.Safety_SHE_Questionnaire} <br/><br/>
+                     <table border="1" width="700px" style="border-collapse:collapse;margin:5px;border: solid black">
+                         <tr>
+                            <td>Additional Costs</td>
+                            <td>Rate</td>
+                            <td>GST</td>
+                         </tr>
+                         <tr>
+                            <td>Storage Cost</td>
+                            <td>AUD 4.5 Per Pallet Per Week</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Pallet Pick</td>
+                            <td>AUD 2.5 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Outward</td>
+                            <td>AUD 2.5 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Outbound Order Admin Fee</td>
+                            <td>AUD 8.0 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                    </table>
+                    <br/><br/>
+                    {!$Label.Safety_SHE_Questionnaire2}
+                </td>
+            </tr>
+        <tr style="display:{!IF(VnExBoolean = true ,'run-in','none')};">
+                <td > <br/><br/> {!$Label.Safety_VN} <br/><br/>
+                     <table border="1" width="700px" style="border-collapse:collapse;margin:5px;border: solid black">
+                         <tr>
+                            <td>Additional Cost</td>
+                            <td>Rate</td>
+                            <td>GST</td>
+                         </tr>
+                         <tr>
+                            <td>Storage Cost</td>
+                            <td>VND 7520/Pallet/Day</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Handling Out Cost</td>
+                            <td>VND 70350/Pallet/time</td>
+                            <td>10%</td>
+                         </tr>
+                    </table>
+                    <br/><br/>
+                </td>
+            </tr>
+        <!--
+                  <tr style="display:{!IF(SpecialTemLstsize==1  ,'run-in','none')};">
+                 <td style="display:{!IF(MexicoSpecial==true,'run-in','none')};">
+                  <p style='font-size:14'>
+                    (a)  
+                     </p> {!SpecialT1} <br/>
+                     (b)  {!SpecialT2}
+                 </td>
+                  <td style="display:{!IF(MexicoSpecial==true,'none','run-in')};">
+                      <p style='font-size:14'>
+                    (a)  
+                     </p> {!SpecialT1} <br/>
+                  </td>
+               
+             </tr>
+             <tr style="display:{!IF(SpecialTemLstsize==2,'run-in','none')};">
+                    <td style="display:{!IF(MexicoSpecial==true,'run-in','none')};">
+                  <p style='font-size:14'>
+                    (a)  
+                     </p> {!SpecialT1} <br/>
+                        (b)  {!SpecialT2} <br/>
+                        (c)  {!SpecialT3}
+                 </td> 
+                 <td style="display:{!IF(MexicoSpecial==true,'none','run-in')};">
+                     <p style='font-size:14'>(a)</p>{!SpecialT1} <br/>
+                     <p style='font-size:14'>(b)</p>{!SpecialT2} 
+                 </td>
+             </tr>
+             <tr style="display:{!IF(SpecialTemLstsize==3,'run-in','none')};">
+                    <td style="display:{!IF(MexicoSpecial==true,'run-in','none')};">
+                   (a){!SpecialT1} <br/>
+              (b){!SpecialT2} <br/>
+                        (c){!SpecialT3} <br/>
+                        (d){!SpecialT4}
+                 </td>
+                 <td style="display:{!IF(MexicoSpecial==true,'none','run-in')};">
+                   (a){!SpecialT1} <br/>
+              (b){!SpecialT2} <br/>
+               (c){!SpecialT3} 
+                 </td>
+             </tr>
+              <tr style="display:{!IF(SpecialTemLstsize==4,'run-in','none')};">
+                     <td style="display:{!IF(MexicoSpecial==true,'run-in','none')};">
+                
+                    (a){!SpecialT1} <br/>
+              (b){!SpecialT2} <br/>
+                        (c){!SpecialT3} <br/>
+                      (d){!SpecialT4} <br/>
+                      (e) {!SpecialT5}
+                 </td>
+                 <td style="display:{!IF(MexicoSpecial==true,'none','run-in')};">
+                   (a){!SpecialT1} <br/>
+              (b){!SpecialT2} <br/>
+               (c){!SpecialT3}
+                      <br/>
+               (d){!SpecialT4} 
+                 </td>
+             </tr>        
+             -->
+             
+             </table>
+        
+      
+        <p align="center">
+            [SIGNATURES ON FOLLOWING PAGE] 
+        </p>
+        <p>
+            IN WITNESS WHEREOF, the Parties have caused this Purchase Order together with all its Exhibits to be executed by<br/>
+            their duly authorized representatives as of the Execution Date.
+        </p>
+    <table border="1" width="80%" style="border-collapse:collapse;margin:5px;border: solid black" >
+        <tr>
+            <td>SELLER</td>
+            <td>BUYER</td>
+        </tr>
+         <tr>
+                <td  width="350px" colpan='3' height="100spx" valign="top">
+                    Company Name:{!Contract.SELLER__c}<br/>
+                </td>
+                <td  width="350px" colpan='3' height="100px" valign="top"> Company Name:{!Contract.BuyerAccount__r.Name}<br/>
+                </td>
+            </tr>
+            <p>
+        <br/>
+     </p>
+    </table>
+        <p align="center">
+            <b>EXHIBIT A GENERAL TERMS AND CONDITIONS</b><br/>
+        </p>
+        
+         <div style="border:0;width:80%;margin-top:21cm;"  >
+     <table>
+           <tr>
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image value="{!$Resource.ExhibitA20181016}" style="height:23cm; width:100%" />
+                        <!--
+                        <apex:image width="700px" height="23cm" value="https://c.cs58.visual.force.com/resource/1522135965000/ExhibitA"/>
+                          -->
+                         <!-- 
+                            <apex:image url="{!URLFOR($Resource.QuoteImages, 'QuoteImage.QuoteLogo.png')}"/>
+                        -->
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                     <apex:image value="{!$Resource.ExhibitBV20181016}" style="height:23cm; width:100%" />
+                          <!--
+                        <apex:image width="700px" height="23cm" value="https://c.cs58.visual.force.com/resource/1522135981000/ExhibitB"/>
+                       
+                            <apex:image url="{!URLFOR($Resource.ExhibitB, 'ExhibitB.Exhibit A  2.png')}"/>
+                       -->
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.ExhibitCV20181016}" style="height:23cm; width:100%" />
+                            <!--
+                        <apex:image width="700px" height="23cm" value="https://c.cs58.visual.force.com/resource/1522135991000/ExhibitC"/>
+                     
+                            <apex:image url="{!URLFOR($Resource.ExhibitB, 'ExhibitB.Exhibit A  2.png')}"/>
+                       -->
+                   </td>
+                </tr>
+                  <!--
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.ExhibitD}" style="height:23cm; width:100%" />
+                        
+                        <apex:image width="700px" height="23cm" value="https://c.cs58.visual.force.com/resource/1522135998000/ExhibitD"/>
+                       
+                            <apex:image url="{!URLFOR($Resource.ExhibitB, 'ExhibitB.Exhibit A  2.png')}"/>
+                      
+                   </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.ExhibitE}" style="height:23cm; width:100%" />
+                                                
+                        <apex:image width="700px" height="23cm" value="https://c.cs58.visual.force.com/resource/1522135998000/ExhibitD"/>
+
+                            <apex:image url="{!URLFOR($Resource.ExhibitB, 'ExhibitB.Exhibit A  2.png')}"/>
+                       
+                   </td>
+                </tr>
+         -->
+         
+   </table>
+    <table style="display:{!IF(Contract.Destination_Country__c=='Germany','run-in','none')};">
+           <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty1}" style="height:23cm; width:100%" />
+                 
+                       
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                     <apex:image value="{!$Resource.GermanyLimitedarranty2}" style="height:23cm; width:100%" />
+                          
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty3}" style="height:23cm; width:100%" />
+                           
+                   </td>
+                </tr>
+         <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty4}" style="height:23cm; width:100%" />
+                        
+                   </td>
+                </tr>
+                  <tr>
+                    <td align="left" valign="top" colspan="8" >
+                     <apex:image value="{!$Resource.GermanyLimitedarranty5}" style="height:23cm; width:100%" />
+                          
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty6}" style="height:23cm; width:100%" />
+                           
+                   </td>
+                </tr>
+         <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty7}" style="height:23cm; width:100%" />
+                        
+                   </td>
+                </tr>
+              
+         
+   </table>
+        </div>
+        <!--
+          <div style="border: solid black;width:80%;margin-top:21cm;" > 
+            <p>
+                1.General <br/>
+                1.1. These General Terms and Conditions (“Conditions”) regulate the contractual relationship between the “Seller”, as defined in the Purchase Order, and “Buyer”, as defined in the Purchase Order, for purchase and sale of the photovoltaic modules defined in the Purchase Order (“Modules”). Seller and Buyer may hereinafter be referred to each as a “Party” and collectively as the “Parties”. <br/>
+                1.2. Notwithstanding anything to the contrary herein, Buyer shall have no obligation to purchase Modules hereunder, and Seller shall have no obligation to sell Modules hereunder, except pursuant to a purchase order in the form set forth by Seller which is issued by Buyer and accepted by Seller in writing in accordance with these Conditions (each a “Purchase Order”).  Quotations, made by Seller in whatever form, are not binding upon Seller and merely constitute an invitation to Buyer to place a Purchase Order. All quotations issued by Seller are revocable and subject to change by Seller without notice. Purchase Orders are not binding until accepted by Seller by countersigning such Purchase Order. Seller shall be entitled to refuse an order without indication of its reasons.<br/>
+                1.3. The terms of these Conditions shall be incorporated by reference in all Purchase Orders issued hereunder. Each Purchase Order upon mutual execution by the Parties hereunder, together with its Exhibits (including these Conditions and Warranty), shall constitute a separate binding agreement between the Parties (collectively referred as “Agreement”), and both Parties shall be fully liable for all obligations arising thereunder pursuant to this Agreement. <br/>
+                
+                2.Modules and Warranty<br/>
+                2.1. The Modules are Jinko products which shall be covered by Jinko Limited Warranty as indicated in the Purchaser Order (hereinafter referred to as “Warranty”), provided that those Modules for which Buyer has satisfied all payment obligations to Seller under this Agreement. Buyer acknowledges and agrees that if (and for as long as) it is in breach of its payment obligations under this Agreement, Seller shall have the right to suspend its performance of its obligations under the Warranty to the maximum extent permitted by applicable laws. <br/>
+                2.2. The express remedies set forth in the Warranty provided by Seller are the sole and exclusive remedies for any breach of representation or warranty, and the express warranties provided herein are in lieu of all other warranties, representations, conditions or other terms, express or implied, including, without limitation, any warranty of non-infringement, merchantability or fitness for a particular purpose. Except as expressly provided herein, the Modules are provided “as is”.<br/>
+                2.3 EXCEPT AS EXPRESSLY PROVIDED IN THIS AGREEMENT, SELLER MAKES NO WARRANTIES, GUARANTEES OR CONDITIONS, EXPRESS OR IMPLIED, AND SELLER DISCLAIMS ANY WARRANTY OR GUARANTEE IMPLIED BY LAW, INCLUDING IMPLIED WARRANTIES OF PERFORMANCE, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE AND IMPLIED WARRANTIES OF CUSTOM OR USAGE.<br/>
+                
+                3.Price and Taxes<br/>
+                3.1. Buyer shall pay Seller the purchase price for all the Modules (“Purchase Price”) under the Purchase Order, which amount are as set out in the Purchase Order agreed by both Parties, in accordance with the payment terms under this Agreement, to the bank account that is designated by Seller from time to time. <br/>
+                3.2. Unless agreed otherwise, Purchase Price should include (a) standard packaging and (b) insurance premium and transportation cost for delivery of Modules if such premium and cost should be borne by Seller pursuant to the applicable trade term (“Trade Term”). Any Trade Term defined in the Purchase Order shall have the meaning given to them in the Incoterm 2010 unless otherwise agreed in this Agreement. The Purchase Price does not include value added tax or any other similar applicable taxes, duties, levies or charges in any jurisdiction levied (“Taxes”) and in relation to the Modules or the delivery thereof. The amount of any Taxes levied in connection with the sale of the Modules to Buyer shall be for Buyer’s account and shall be added to each invoice or separately invoiced by Seller to Buyer. This Section 3.2 shall apply to all the payment that is payable by Buyer pursuant to this Agreement including without limitation Section 4, 8 and 10.<br/>
+                
+                4.Payment Term<br/>
+                4.1. Unless expressly stated otherwise in the Purchase Order, Buyer shall pay the Purchase Price for Modules by means of telegraphic transfer (“T/T”). <br/>
+                4.2. Unless expressly stated otherwise in the Purchase Order, total Purchase Price for the Modules shall be paid on the basis of net cash by means of T/T to the bank account in the invoice issued by Seller no later than five (5) business days prior to the earlier of (a) the Delivery Date or (2) the date on which the Modules are picked up by Buyer. <br/>
+                4.3. ALL PAYMENTS SHALL BE MADE WITHOUT ANY DEDUCTIONS ON ACCOUNT OF ANY TAXES AND FREE OF SET-OFF OR ANY OTHER COUNTERCLAIMS. Payments shall not be deemed made by Buyer or received by Seller unless and until Seller has an entry for such payment on its designated bank account.<br/>
+                4.4. If the Parties agree in the Purchase Order that the Purchase Price for the Modules be paid fully or partial by an irrevocable letter of credit in the Agreement, then:<br/>
+                (a) Buyer acknowledges and agrees that the irrevocable letter of credit shall be issued by a reputable bank in favor of Seller and in a form acceptable to Seller (“Qualified L/C”). <br/>
+                (b) Buyer shall issue the Qualified L/C and guarantee that Seller receives the same no later than five (5) business days following the Execution Date of the Purchase Order. In any event, the Qualified L/C shall be issued no later than the Delivery Date of the Modules, or, if the Modules are to be delivered in several shipments, no later than the Delivery Date of the first shipment of Modules. <br/>
+                (c) Buyer further agrees that should the issuing bank unreasonably reject to pay under such Qualified L/C by picking up immaterial discrepancies of documents presented by Seller while Seller has duly delivered the Modules no later than the related Delivery Date, Buyer shall, within three (3) business days after receiving notice from Seller stating such rejection by issuing bank, pay the corresponding Purchase Price by T/T to Seller, otherwise Section 4.7 shall apply.<br/>
+                4.5. If any open account payment terms is agreed in the Purchase Order, Buyer and Seller understand and agree that insurance from Sinosure is a prerequisite condition for Seller to agree on the open account payment term hereunder. The Buyer thus agrees that the payment terms set forth in the Purchase Order remain subject to the insurance limitations imposed by Sinosure in respect of the Buyer. In the event that the credit line provided by Sinosure if less than the total amount of open account payment hereunder, the Buyer shall pay the shortfall inclusive of any applicable tax via T/T no later than 7 business days prior to the earlier of (a) the Delivery Date for the related Modules and (b) the date on which the related Modules are delivered by Seller.
+                4.6. If Buyer is required under the Purchase Order to issue a bank guaranty or a parent company guaranty to Seller to guarantee the performance of its obligations hereunder, then (a)Buyer shall cause such guaranty to be issued by a reputable bank or a parent company in a form reasonably satisfactory to Seller (“Acceptable Buyer Guaranty”) and (b) Buyer shall cause such Acceptable Buyer Guaranty to be issued no later than thirty (30) days prior to the Delivery Date unless otherwise set forth in the Purchase Order. Buyer understands that the open account payment terms is agreed by Seller on the condition that such Acceptable Buyer Guaranty will be issued pursuant to this Agreement. Buyer shall guarantee the Acceptable Buyer Guaranty to remain in full force and effect until Buyer’s obligations hereunder are fully performed and discharged. If at any time the Acceptable Buyer Guaranty becomes partially or totally invalid or, in the case of a parent company guaranty, the financial conditions of the parent company materially declines after delivery of the parent guaranty to Seller, then (i) the credit limit available hereunder to back the open account payment terms shall be reduced by any amount that Sinosure and Seller deems reasonable in their sole discretion and (ii) Section 4.5 shall apply.<br/>
+                4.7. All late payments shall bear late fees at the rate of 0.04% per day of delay, or the maximum rate of late fees allowed by applicable laws, whichever is lower. Delay in payment includes without limitation the delay in issuance of Qualified L/C and Buyer Guaranty, if applicable, the late fees of which shall be calculated based on the amount that such Qualified L/C or Buyer Guaranty shall cover. All costs and expenses incurred by Seller with respect to collection of overdue payments (including, without limitation, reasonable attorney’s fees, expert fees, court costs and other expenses of litigation) shall be for Buyer’s account.<br/> 
+                
+                5.Delivery<br/>
+                5.1. Seller shall deliver the Modules to Buyer at the Delivery Point no later than the delivery date set forth in the Agreement (“Delivery Date”). If Buyer delays in any payment hereunder, then (a) upon notice to Buyer (i) Seller is entitled to correspondently suspend delivery of the Modules and (ii) the Delivery Date of the affected Modules is extended in correspondence to the period of such suspension and (b) Buyer shall indemnify and hold harmless Seller for all reasonable costs incurred by Seller arising from such breach by Buyer, including but not limited to storage fees, stay fees and/or actual transportation costs. Delays in payment includes without limitation delays in paying any down payment and balance payment, delays in issuance of Qualified L/C (if applicable) and delays in issuance of any Buyer Guaranty (if applicable).<br/>
+                5.2. Buyer shall timely receive or pick up the Modules from the Delivery Point. If the applicable Trade Term is DAP or DDP, then Buyer shall make the Delivery Point available for Seller’s delivery and allow sufficient time for Seller to delivery all the Modules before the Delivery Date. If the applicable Trade Term is DAP, then Buyer shall timely clear customs the Modules for import into the country where the Delivery Point is located. If Buyer breaches this Section 5.2, then (a) upon notice to Buyer, (i) Seller is entitled to correspondently suspend delivery of the Modules and (ii) the Delivery Date of the affected Modules is extended in correspondence to the period of such suspension and (b) Buyer shall indemnify and hold harmless Seller for all reasonable costs incurred by Seller arising from such breach by Buyer, including but not limited to storage fees, stay fees and/or actual transportation costs, due to Buyer’s breach of this Section 5.2. In the event of suspension by Seller under Section 5.1 and Section 5.2, in certain countries or regions where the number of available shipping lines are limited, the period of suspension of delivery and extension of Delivery Date will be longer than the period during which the payment is delayed by Buyer.<br/>
+                5.3. In the case where Buyer shall be responsible for contracting the carrier for the transportation of the Modules, Buyer shall give Seller sufficient advance notice regarding the vessel name and loading point, failing of which, Seller shall not be held responsible for any delay for delivery of Modules.<br/>
+                5.4. Unless otherwise expressly set forth in the Purchase Order, the Delivery Point means the place where Seller delivers the Modules to Buyer or the nominated carrier (if applicable) pursuant to the applicable Trade Term. <br/>
+                5.5 If the Trade Term applicable to the Purchase Order is DAT, the Modules shall be deemed delivered when they arrive at the Modules to the Delivery Point. Buyer shall be responsible for unloading the Modules from the arriving means of transport.<br/>
+                5.6 If Seller fails to deliver the Modules at the Delivery Point by the related Delivery Date, then Seller shall, after seven (7) business days grace period, pay to Buyer as Buyer’s sole and exclusive remedy arising from or relating to such late delivery an amount equal to 0.04% multiplied by the purchase price of the delay Modules for each day of delay beginning with that date which is the eighth (8th) day following the applicable Delivery Date (“Delay Liquidated Damages”)<br/>
+                
+                6.Transfer of Risk and Property<br/>
+                6.1. Risk of loss of or damage to the Modules shall pass to Buyer upon delivery of such Modules to the Delivery Point. <br/>
+                6.2. To the fullest extent permitted by applicable laws, all supplied Modules remain Seller’s property (“Reserved Property”), at the risk and expense of Buyer, until Buyer has paid all outstanding accounts for the Reserved Property.<br/>
+                
+                7.Limitation on Liability<br/>
+                7.1. Neither Party shall be liable for any special, incidental, indirect or consequential damages or for any loss of profit, feed-in tariff, subsidies, business, revenue, anticipated savings or data and in no event shall the total liability of either party exceed the Purchase Price under this Agreement, except in cases where the loss and damage is caused by gross negligence, willful misconduct or fraud.<br/>
+                7.2. Seller’s liability for Delay Liquidated Damages set forth at Section 5.6 shall not exceed ten percent (10%) of the Purchase Price of all the Modules hereunder as of the Effective Date. THE LIABILITY OF SELLER FOR ANY AND ALL CLAIMS FOR DAMAGES ARISING OUT OF OR IN CONNECTION WITH THE MODULES AND THE USE THEREOF SHALL UNDER NO CIRCUMSTANCES EXCEED THE SUM OF BUYER’S PAYMENTS FOR THE MODULES THAT ARE THE SUBJECT OF THE CLAIM.<br/>
+                
+                8.Indemnification<br/>
+                8.1. To the fullest extent permitted by applicable law, each Party (“Indemnifying Party”) shall fully indemnify, defend and save harmless the other Party and its directors, officers, shareholders, partners, agents and employees, and the affiliates of the same (collectively, the “Indemnified Parties”) from and against liabilities incurred by any Indemnified Parties in connection with or arising from any third party claim for physical damage to or physical destruction of third party property, or death of or personal injury to any person, arising out of the negligent acts or omissions of Indemnifying Party or its respective agents or employees or other parties under their respective control. Nothing herein shall be interpreted as creating any indemnification obligation in Indemnifying Party for liabilities arising solely from the willful act or gross negligence of Indemnified Party or Parties under its control.<br/>
+                8.2. Neither Party shall enter into any settlement that would have a material adverse effect on the rights of the indemnifying Party under this Agreement without the prior written consent of the applicable indemnified Party (such consent not to be unreasonably withheld).  The applicable indemnified Party shall (i) notify the indemnifying Party promptly of the receipt of any claim creating indemnification obligations hereunder, (ii) will not take any position adverse to the indemnifying Party regarding such claim, (iii) allow the indemnifying Party sole control of the defense and/or settlement thereof, (iv) make no admissions or other statements which may be prejudicial to the indemnifying Party, and (v) will give the indemnifying Party information and reasonable assistance to settle and defend the claim.<br/>
+                
+                9.Trade Remedy <br/>
+                9.1. Buyer fully understands that the Modules hereunder may be subject to certain trade remedy measures including anti-dumping and countervailing duties in certain regions and countries including without limitation European Union and the United States. Buyer confirms that it is familiar with and will be in full compliance with applicable laws related with those trade remedy measures. <br/>
+                
+                10.Termination<br/>
+                10.1 Either Party shall be entitled to terminate this Agreement, if the other Party is bankrupt, liquidated or becomes insolvent. Notice shall be given to the other Party of such bankruptcy, liquidation or insolvency within ten (10) days after such Party is or should be aware of such situation or procedure. However, Seller’s right to claim payment for delivered or manufactured Modules and right to other remedies shall not in any event be prejudiced by termination of this Agreement in accordance with this Section 10.1.<br/>
+                10.2. Seller has the right to terminate this Agreement upon written notice to Buyer if Buyer’s delay in any payment or issuance of Qualified L/C or Acceptable Buyer Guaranty lasts more than seven (7) days. Upon termination of this Agreement by Seller pursuant to this Section 10.2, without prejudice to Seller's other remedies under this Agreement, (a) Buyer shall immediately pay to Seller the full price of delivered Modules whether or not such price is due at the time of such termination, (b) Seller may retain all payment received related with undelivered Modules as liquidated damages, (c) if no down payment was made by Buyer for undelivered Modules, then Buyer shall pay liquidated damages amounting to 15% of the total price of the unrealized quantity of Modules without prejudice to Seller’s other remedies under this Agreement.<br/>
+                
+                11.Force Majeure<br/>
+                11.1. A “Force Majeure Event” shall mean the reasonably demonstrated occurrence of any act or event beyond the reasonable control of, and not the result of the fault or negligence of, the Party affected that prevents the affected Party from performing its obligations under this Agreement, in full or part, and which such Party is unable to avoid or overcome with the exercise of due diligence (including the expenditure of commercially reasonable sums).  The burden of proving a Force Majeure Event shall be on the Party claiming the occurrence of same.  So long as the foregoing conditions are satisfied, a Force Majeure Event may include: storms, nuclear emergency, natural disasters, acts of God, drought, flood, earthquake, fire, explosion, lightning, epidemic, war, riot, sabotage, terrorism or threat of terrorism, strike or lockout. <br/>
+                11.2. Upon written notice of the occurrence of a Force Majeure Event, the Party claiming such occurrence shall be excused from the performance of its obligations under this Agreement, with no liability to the other Party for any damage, loss, cost or expense arising therefrom, for the period of such Force Majeure Event; and any Guaranteed Delivery Date shall be extended on a day-for-day basis for each day of such occurrence; provided, however, in no event shall Buyer be excused from making any payment when due to Seller hereunder.<br/>
+                11.3. However, should a Force Majeure Event continue or be expected to continue for a period extending to more than two (2) months after the Guaranteed Delivery Date, either Party is entitled to cancel the affected part of this Agreement without any liability to the other Party.<br/>
+                
+                12.Confidentiality<br/>
+                12.1. The Parties agree that all written and oral information exchanged by the Parties shall be held in strict confidence and will be kept confidential, provided that such obligation will not apply in the event (i) to disclose to such Party’s affiliates, subcontractors, vendors, suppliers, employees, potential or actual lenders, potential or actual investors, counsel, accountants or advisors who have a need to know such information and have agreed in writing to keep such terms confidential and (ii) that any judicial or administrative proceeding or any governmental or regulatory authority of which a party is subject to require disclosure of such confidential information, and provided further that the party subject to the requirement has taken commercially reasonable efforts to obtain assurances that confidential treatment will be accorded to the information and has given prompt notice of the requirement to the other Party.<br/>
+                
+                13.Non-assignment and Non-waiver<br/>
+                13.1. This Agreement may not be assigned by either Party without the advance written consent from the other Party. Nothing herein shall be interpreted as limiting Seller’s right to subcontract all or any portion of its obligations under this Agreement; provided, however, Seller shall remain liable to Buyer for all such obligations. <br/>
+                13.2. Seller and its subcontractors shall be independent contractors to Buyer with respect to the obligations hereunder, and neither Seller nor its subcontractors, nor the employees or agents of either, shall be deemed to be the employees, representatives or agents of Buyer in connection with any matter relating to this Agreement.<br/>
+                13.3. This Agreement is made and entered into for the sole protection and legal benefit of Buyer and Seller, and their permitted successors and assigns, and no other Person shall be a direct or indirect legal beneficiary of, or have any direct or indirect cause of action or claim in connection with this Agreement.<br/>
+                13.4. Failure by Seller to enforce at any time any provision of this Agreement shall not be construed as a waiver of Seller’s right to act or to enforce any such term or condition and Seller’s rights shall not be affected by any delay, failure or omission to enforce any such provision. No waiver by Seller of any breach of Buyer’s obligations shall constitute a waiver of any other prior or subsequent breach.<br/>
+                
+                14.Governing Law and Dispute Resolution<br/>
+                14.1 This Agreement shall be governed by and construed in accordance with the laws set forth in the Purchase Order.<br/>
+                14.2. The Parties herein agree to submit any disputes or difference between them arising out of this Agreement to the arbitration institution according to the arbitration rules as provided in the Purchase Order. The arbitration proceedings shall be conducted in English. The number of arbitrators shall be one, if the total disputed amount under the Purchase Order is no more than $5,000,000USD (or equivalent); the number of arbitrators shall be three, if the total quantity of Modules under the Purchase Order is more than $5,000,000USD(or equivalent). The seat of arbitration is set forth in the Purchase Order. Notwithstanding the foregoing, either Party shall have the right to seek permanent or temporary injunctive or other similar relief in any court or other competent jurisdiction which shall not be interpreted as a waiver of the right to arbitrate.<br/>
+                
+                15.Change in Law<br/>
+                15.1 If, after the Execution Date of the Purchase Order until delivery of Modules, in case there is a Change in Law that affects the performance of Seller’s obligations under this Agreement,  then Seller shall notify the Buyer expressing its opinion on the likely effects of such Change in Law and giving details of its opinion of whether:<br/>
+                (i) Any change in Purchase Price of the Modules is required;<br/>
+                (ii) any change in the Modules to be supplied by the Seller under this Agreement is required;<br/>
+                (iii) any changes are required to the terms of this Agreement to deal with such Change in Law; or<br/>
+                (iv) any increase or decrease in costs or any increase in taxes/duties/levies or delay is likely to result from the Change in Law. <br/>
+                
+                15.2 After the Buyer has been made aware of the Change in Law, the Parties shall, no later than 30 days after such Change in Law has been brought to the notice of the Buyer, mutually discuss and reach agreement on the implication of such Change in Law and amendments to the agreement (including the Purchase Price). In the event the Parties fail to reach a mutual agreement within said 30 days, Seller shall have the right to terminate this Agreement and shall not be obliged to perform its obligations.<br/>
+                
+                15.3 Upon such termination under Section 15.3, the Seller will, refund to the Buyer all payments made by the Buyer to the Seller under this Agreement until such date of termination with respect to the terminated portion of the Agreement within 7 days of the date of the termination, and upon such refund the Buyer shall return any guarantee provided or caused to be provided by Seller, if any, available with it to the Seller.<br/>
+                
+                15.4 For the purposes of this Agreement, the term “Change in Law” means the occurrence of any change of the applicable laws following the Execution Date of the Purchase Order which affects Seller’s obligations under this Agreement; provided, however, Change in Law shall not include changes to applicable laws regarding immigration, employment or corporate structuring.<br/>
+                
+                16.Anti-Corrupt and Sanctions<br/>
+                16.1 Each Party warrants in respect of the other Party that it has not and will not participate, directly or indirectly, in any unlawful conduct that may be construed as bribery and/or corruption under applicable laws relating to the prevention of bribery, corruption, fraud or similar activities (“Anti-Corrupt Laws”).<br/>
+                16.2 Either Party have the right to terminate this Agreement upon written notice if the other Party or its employees, representatives or agents violates any Anti-Corrupt Laws.<br/>
+                16.3 Neither the Buyer nor any of its directors, officers, employees, affiliates, agents or representatives is an individual or entity that is, or is owned or controlled by another individual or entity that is the subject of any sanctions of the OFAC or to any other applicable or similar sanctions regimes.<br/>
+                16.4 Neither Buyer nor any of its affiliates has engaged in any dealings or transactions with any entity or individual, or in any country or territory, is or was the subject of any sanctions of the OFAC or sanctions of any other applicable or similar sanctions regimes.<br/>
+                
+                17.Miscellaneous<br/>
+                17.1. The Agreement shall supersede any and all prior oral and written quotations, communications, agreements and understandings of the Parties in respect of the subject matter set forth herein and shall apply in preference to and supersede any and all terms and conditions of any order placed by Buyer and any other terms and conditions submitted by Buyer. Buyer hereby declares its full and unconditional acceptance of the same. In the event of any discrepancy between these Conditions and the applicable Purchase Order, the Purchase Order shall prevail.<br/>
+                17.2. Statements and agreements made by Seller’s employees, officers, representatives and/or agents are not binding upon Seller unless, and only to the extent that, these are confirmed or made in writing by duly authorized representative(s) of Seller.<br/>
+                17.3. This Agreement is to be construed so as to effectuate the normal and reasonable expectations of a sophisticated buyer and seller of the equipment covered by this Agreement and shall not be construed either for or against either Party. No provision of this Agreement shall be construed or interpreted for or against either Party because such Party drafted or caused its legal representative to draft the provision.<br/>
+                
+                17.4. All notices required hereunder shall be in writing and effective upon receipt by the receiving Party when delivered by certified mail, overnight delivery or hand delivery at the address under Section 1 Definitions in Purchase Order.<br/>
+                17.5. No change, amendment or modification of this Agreement shall be valid or binding upon the Parties unless such change, amendment or modification shall be in writing and duly executed by both Parties.<br/>
+                17.6. No provision of this Agreement shall be construed or represented as creating a partnership, trust, joint venture, fiduciary or any similar relationship between the Parties. <br/>
+                17.7. In the event that any provision of this Agreement shall be held to be invalid or unenforceable, the same shall not affect in any respect whatsoever, the validity or enforceability of the remaining provisions between the Parties and shall be severed therefrom. The pertaining provisions held to be invalid or unenforceable shall be reformed to provisions satisfying the legal and economic intent of the original provisions to the maximum extent permitted by law.<br/>
+                17.8. This Agreement, including the Exhibits hereto shall be taken as mutually explanatory.  If either Party becomes aware of an express conflict between the provisions of this Agreement or any Exhibit hereto, such Party shall immediately provide written notice to the other Party of such conflict.  Express conflicts between the terms of this Agreement and any Exhibit shall be resolved by giving priority to the provisions in the following order: (i) the Purchase Order, (i) Section 1 to Section 16 of this Agreement, and (iii) the Exhibits to this Agreement.<br/>
+                17.9. The provisions of Section 2, 3, 4, 7, 8, 10, 12, 13, 14, 16 and 17 shall survive the termination of this Agreement to the extent required for their full performance.<br/>
+                17.10. Only the English version of this Agreement shall be authentic and shall prevail, in case of inconsistency, over any translation of this Agreement another language.<br/>
+                
+                18.Signature<br/>
+                18.1. This Agreement may be delivered to each Party by facsimile or by email (with the Agreement and signatures imaged in a standard format as PDF) and such delivery shall be effective and binding. The Parties acknowledge and agree that after execution and delivery by facsimile or email, additional copies of this Agreement may be circulated for signature so that each Party will ultimately retain a fully executed original. The circulation of the additional copies for original signatures shall in no way diminish or affect the binding effect of the Agreement previously signed in counterparts and delivered by facsimile or email.<br/>
+                18.2. This Agreement may be executed in any number of separate counterparts and delivered by electronic means, each of which when so executed shall be deemed an original, and all of said counterparts taken together shall be deemed to constitute one and the same instrument.<br/>
+                18.3. This Agreement takes effect only after being executed by Buyer and Seller. For avoidance of doubt, this Agreement is not binding on Seller if it's signed solely by Buyer. Seller has right to reject any payment from Buyer which is made before this Agreement goes into effect. <br/>
+            </p>
+        </div>
+        <p align="center">
+            <b>EXHIBIT B LIMITED </b><br/>
+            <b>EXHIBIT C Buyer Guaranty</b>
+        </p>
+-->
+    </apex:form>
+    
+    <script>
+    function opencontrat(){
+             window.open('/{!viewId}');}     
+    function showPosition(){ 
+          var str1 = document.getElementById("newPaymentTerm");
+        var str2 = document.getElementById("newPaymentTerm1");
+        var str3 = document.getElementById("newPaymentTerm2");
+        var str4 = document.getElementById("newPaymentTerm3");
+        //var selection = document.getElementById("warehouse1");
+       if(str1.value !=null){
+           func(str1.value); 
+
+       }else  if(str2.value !=null){
+           func(str2.value); 
+
+       } if(str3.value !=null){
+           func(str3.value); 
+
+       } if(str4.value !=null){
+           func(str4.value); 
+
+       }
+            
+    }
+    </script>
+        <apex:outputPanel id="msg">
+        <apex:messages />
+    </apex:outputPanel> 
+        <apex:form >
+        <apex:actionFunction name="func" action="{!AddSave}" reRender="msg">
+            <apex:param id="pro" name="pro" value="" assignTo="{!newPaymentTerm}"/>
+        </apex:actionFunction>
+   </apex:form>
+</apex:page>

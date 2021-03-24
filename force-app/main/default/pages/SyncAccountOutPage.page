@@ -1,0 +1,284 @@
+<apex:page standardController="Order" extensions="SyncAccountCtrl" sidebar="false" showHeader="false" standardStylesheets="true" action="{!modeBasicData}" id="thePage">
+    <html>
+        <head>
+            <style>
+                
+                body {
+                width: 95%;
+                margin: auto 40px;
+                font-family: 'trebuchet MS', 'Lucida sans', Arial;
+                font-size: 14px;
+                color: #444;
+                }
+                
+                table {
+                *border-collapse: collapse; /* IE7 and lower */
+                border-spacing: 0;
+                width: 100%;    
+                }
+                
+                .bordered {
+                border: solid #ccc 1px;
+                -moz-border-radius: 6px;
+                -webkit-border-radius: 6px;
+                border-radius: 6px;
+                -webkit-box-shadow: 0 1px 1px #ccc; 
+                -moz-box-shadow: 0 1px 1px #ccc; 
+                box-shadow: 0 1px 1px #ccc;         
+                }
+                
+                .bordered tr:hover {
+                background: #fbf8e9;
+                -o-transition: all 0.1s ease-in-out;
+                -webkit-transition: all 0.1s ease-in-out;
+                -moz-transition: all 0.1s ease-in-out;
+                -ms-transition: all 0.1s ease-in-out;
+                transition: all 0.1s ease-in-out;     
+                }    
+                
+                .bordered td, .bordered th {
+                border-left: 1px solid #ccc;
+                border-top: 1px solid #ccc;
+                padding: 10px;
+                text-align: left;    
+                }
+                
+                .bordered th {
+                background-color: #dce9f9;
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+                background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+                background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+                -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+                -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+                box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+                border-top: none;
+                text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+                }
+                
+                .bordered td:first-child, .bordered th:first-child {
+                border-left: none;
+                }
+                
+                .bordered th:first-child {
+                -moz-border-radius: 6px 0 0 0;
+                -webkit-border-radius: 6px 0 0 0;
+                border-radius: 6px 0 0 0;
+                }
+                
+                .bordered th:last-child {
+                -moz-border-radius: 0 6px 0 0;
+                -webkit-border-radius: 0 6px 0 0;
+                border-radius: 0 6px 0 0;
+                }
+                
+                .bordered th:only-child{
+                -moz-border-radius: 6px 6px 0 0;
+                -webkit-border-radius: 6px 6px 0 0;
+                border-radius: 6px 6px 0 0;
+                }
+                
+                .bordered tr:last-child td:first-child {
+                -moz-border-radius: 0 0 0 6px;
+                -webkit-border-radius: 0 0 0 6px;
+                border-radius: 0 0 0 6px;
+                }
+                
+                .bordered tr:last-child td:last-child {
+                -moz-border-radius: 0 0 6px 0;
+                -webkit-border-radius: 0 0 6px 0;
+                border-radius: 0 0 6px 0;
+                }
+                
+                
+                
+                /*----------------------*/
+                
+                .zebra td, .zebra th {
+                padding: 10px;
+                border-bottom: 1px solid #f2f2f2;    
+                }
+                
+                .zebra tbody tr:nth-child(even) {
+                background: #f5f5f5;
+                -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+                -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+                box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+                }
+                
+                .zebra th {
+                text-align: left;
+                text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+                border-bottom: 1px solid #ccc;
+                background-color: #eee;
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#eee));
+                background-image: -webkit-linear-gradient(top, #f5f5f5, #eee);
+                background-image:    -moz-linear-gradient(top, #f5f5f5, #eee);
+                background-image:     -ms-linear-gradient(top, #f5f5f5, #eee);
+                background-image:      -o-linear-gradient(top, #f5f5f5, #eee); 
+                background-image:         linear-gradient(top, #f5f5f5, #eee);
+                }
+                
+                .zebra th:first-child {
+                -moz-border-radius: 6px 0 0 0;
+                -webkit-border-radius: 6px 0 0 0;
+                border-radius: 6px 0 0 0;  
+                }
+                
+                .zebra th:last-child {
+                -moz-border-radius: 0 6px 0 0;
+                -webkit-border-radius: 0 6px 0 0;
+                border-radius: 0 6px 0 0;
+                }
+                
+                .zebra th:only-child{
+                -moz-border-radius: 6px 6px 0 0;
+                -webkit-border-radius: 6px 6px 0 0;
+                border-radius: 6px 6px 0 0;
+                }
+                
+                .zebra tfoot td {
+                border-bottom: 0;
+                border-top: 1px solid #fff;
+                background-color: #f1f1f1;  
+                }
+                
+                .zebra tfoot td:first-child {
+                -moz-border-radius: 0 0 0 6px;
+                -webkit-border-radius: 0 0 0 6px;
+                border-radius: 0 0 0 6px;
+                }
+                
+                .zebra tfoot td:last-child {
+                -moz-border-radius: 0 0 6px 0;
+                -webkit-border-radius: 0 0 6px 0;
+                border-radius: 0 0 6px 0;
+                }
+                
+                .zebra tfoot td:only-child{
+                -moz-border-radius: 0 0 6px 6px;
+                -webkit-border-radius: 0 0 6px 6px
+                border-radius: 0 0 6px 6px
+                }
+
+            </style>
+        </head>
+        
+        <body>
+            <apex:pageMessages />
+           
+            <br/>
+            &nbsp;&nbsp;<apex:outputText value="确认信息无误后，点击 Sync OA 按钮进行同步操作，同步成功后此界面自动关闭，此过程需要持续一段时间请耐心等待........"  style="background-color: yellow;font-size: 16px;"/>
+            <br/><br/>
+            <h1>【新建客户详细信息】</h1><br/><br/>
+            <table class="bordered" border="1">
+                <apex:form >
+                    <tr style="margin:auto 40px;">
+                        <td colspan="3" style="text-align: center;">  
+                            <apex:commandButton action="{!Sync}" value="Sync OA" oncomplete="Close()" style="margin-left:15px;" />
+                            <apex:commandButton value="Cancel" oncomplete="Close()"  style="margin-left:15px;"/>                             
+                        </td>
+                    </tr>
+                    <apex:outputPanel rendered="{!isSave}">
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>标题: &nbsp; &nbsp;<apex:outputField value="{!ord.Account_Title__c}"/></td>
+                            <td colspan="2">紧急程度: &nbsp; &nbsp;<apex:outputField value="{!ord.Emergency_level__c}"/></td>                                       
+                        </tr>
+                    </apex:outputPanel>
+                    <tr style="margin:auto 40px; ">
+                        <td colspan="3" style=" font-weight: bold;">
+                            【客户信息】
+                        </td>
+                        
+                    </tr>
+                    <tr style="margin:auto 40px;">
+                        <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>客户名称: &nbsp; &nbsp;<apex:outputField value="{!ord.Buyer__r.Name}"/></td>
+                        <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>国家: &nbsp; &nbsp;<apex:outputField value="{!ord.Buyer__r.Country__c}"/></td>
+                        <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>Phone: &nbsp; &nbsp;<apex:outputField value="{!ord.Buyer__r.Phone}"/></td>
+                    </tr>
+                                        
+                    <apex:outputPanel >
+                        <tr style="margin:auto 40px;">
+                            <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>账套名称: &nbsp; &nbsp;<apex:outputField value="{!ord.Ledger_Name__c}"/></td>
+                            <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>科目组: &nbsp; &nbsp;<apex:outputField value="{!ord.Subject_Group__c}"/></td>
+                            <td align="left" valign="top"><span style="font-weight: bold; color: Red">||</span>搜索条件: &nbsp; &nbsp;<apex:outputField value="{!ord.Search__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>街道/房号: &nbsp; &nbsp;<apex:outputField value="{!ord.Street_Room_Number__c}"/></td>
+                            <td>销售组织: &nbsp; &nbsp;<apex:outputField value="{!ord.Sales_Org__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>分销渠道: &nbsp; &nbsp;<apex:outputField value="{!ord.Distribution_channel__c}"/></td> 
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>产品组: &nbsp; &nbsp;<apex:outputField value="{!ord.Product_Group__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>销售地区: &nbsp; &nbsp;<apex:outputField value="{!ord.Sales_Region__c}"/></td>
+                            <td><span style="font-weight: bold; color: Red">||</span>销售部门: &nbsp; &nbsp;<apex:outputField value="{!ord.Sales_Dept__c}"/></td> 
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td><span style="font-weight: bold; color: Red">||</span>销售组: &nbsp; &nbsp;<apex:outputField value="{!ord.Sales_Group__c}"/></td>
+                            <td>客户组: &nbsp; &nbsp;<apex:outputField value="{!ord.Account_Group__c}"/></td> 
+                            <td><span style="font-weight: bold; color: Red">||</span>纳税人识别号: &nbsp; &nbsp;<apex:outputField value="{!ord.Taxpayer_Identification_No__c}"/></td> 
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td colspan="1"><span style="font-weight: bold; color: Red">||</span>OA 用户名: &nbsp; &nbsp;<apex:outputField value="{!ord.Account_Owner_Sap_Id__c}"/></td>   
+                            <td colspan="2"><span style="font-weight: bold; color: Red">||</span>账户分配组: &nbsp; &nbsp;<apex:outputField value="{!ord.Account_Allocation_Group__c}"/></td>   
+                        </tr>
+                    </apex:outputPanel>
+                    <tr style="margin:auto 40px;">
+                        <td colspan="3" style=" font-weight: bold;">
+                            【银行信息】
+                        </td>                        
+                    </tr>                
+                                       
+                    <apex:outputPanel >
+                        <tr style="margin:auto 40px;">    
+                            <td>国家: &nbsp; &nbsp;<apex:outputField value="{!ord.Bank_Country__c}"/></td>  
+                            <td>银行代码: &nbsp; &nbsp;<apex:outputField value="{!ord.Bank_Code__c}"/></td>
+                            <td>银行名称(全称): &nbsp; &nbsp;<apex:outputField value="{!ord.Bank_Name__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td>地区: &nbsp; &nbsp;<apex:outputField value="{!ord.Bank_Region__c}"/></td>
+                            <td>街道: &nbsp; &nbsp;<apex:outputField value="{!ord.Bank_Street__c}"/></td>
+                            <td>城市: &nbsp; &nbsp;<apex:outputField value="{!ord.Bank_City__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td>SWIFT 码: &nbsp; &nbsp;<apex:outputField value="{!ord.SWIFT_Code__c}"/></td>
+                            <td>银行账户: &nbsp; &nbsp;<apex:outputField value="{!ord.Bank_Account__c}"/></td>
+                            <td>开户人: &nbsp; &nbsp;<apex:outputField value="{!ord.Account_Holder__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">                            
+                            <td>国家分类: &nbsp; &nbsp;<apex:outputField value="{!ord.Country_Scope__c}"/></td>
+                            <td>IBAN 码: &nbsp; &nbsp;<apex:outputField value="{!ord.IBAN_Code__c}"/></td>
+                            <td>公司注册号: &nbsp; &nbsp;<apex:outputField value="{!ord.Company_Registration_No__c}"/></td>                            
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td>个人ID : &nbsp; &nbsp;<apex:outputField value="{!ord.Tax_No__c}"/></td>
+                            <td>BSB Number: &nbsp; &nbsp;<apex:outputField value="{!ord.BSB_Number__c}"/></td>
+                            <td>Routing Number（ABA）: &nbsp; &nbsp;<apex:outputField value="{!ord.Routing_Number_ABA__c}"/></td>
+                        </tr>
+                        <tr style="margin:auto 40px;">
+                            <td>CC清算号: &nbsp; &nbsp;<apex:outputField value="{!ord.CC_No__c}"/></td>
+                            <td colspan="2">SC清算号: &nbsp; &nbsp;<apex:outputField value="{!ord.SC_No__c}"/></td>
+                            
+                        </tr>
+                    </apex:outputPanel>
+                </apex:form>
+            </table>
+            
+        </body>
+        
+        <script>
+        function Close(){
+            window.opener.location.href = "/{!requestId}";
+            window.top.close();
+        }    
+        function Hidden(){
+            alert('aa');
+            //document.getElementById('out').style.display='block';
+            
+        }
+        </script>
+        
+    </html>
+</apex:page>

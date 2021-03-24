@@ -1,0 +1,350 @@
+<apex:page lightningStylesheets="true" showHeader="false" sidebar="false" controller="RC_ContractReminderController">
+
+  <apex:slds />
+  <!-- Necessary -->
+
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:v-model="http://www.w3.org/1999/vue"
+    xmlns:v-bind="http://www.w3.org/1999/vue" xmlns:v-on="http://www.w3.org/1999/vue">
+
+  <head>
+    <title>合同提示</title>
+
+    <style>
+      html {
+        height: 99px
+      }
+
+      body {
+        height: 100%
+      }
+
+      ::-webkit-inner-spin-button {
+        visibility: hidden;
+      }
+
+      custom-text-transform {
+        text-transform: capitalize;
+      }
+
+      [v-cloak] {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- REQUIRED SLDS WRAPPER -->
+    <div id="app" class="slds" v-cloak="true" style="display: flex;height: 100%;align-items: center;">
+      <!-- LOADING / Table -->
+      <div class="slds-spinner_container" v-show="status.pageLoading" style="z-index: 999;">
+        <div role="status" class="slds-spinner slds-spinner_large slds-spinner_brand">
+          <span class="slds-assistive-text">{!$Label.RC_Load}</span>
+          <div class="slds-spinner__dot-a"></div>
+          <div class="slds-spinner__dot-b"></div>
+        </div>
+      </div>
+      <div class="slds-grid slds-grid_vertical-align-center" style="width: 100%;">
+        <div class="slds-col slds-size_1-of-12 slds-text-heading_medium">
+          <div class="slds-p-left_large" style="height: 30px">{!$Label.RC_Lastest_Progress}</div>
+          <div class="slds-p-left_large" style="height: 30px">{!$Label.RC_Historical_Progress}</div>
+        </div>
+        <div class="slds-col slds-size_7-of-12 slds-text-heading_medium">
+          <div v-if="events.length == 0" class="slds-p-left_x-large" style="height: 30px">
+            {!$Label.RC_Not_Initiated}
+          </div>
+          <div v-if="events.length > 0" class="slds-grid" style="height: 30px">
+            <!-- <span class="slds-p-left_xx-large">最新进展</span> -->
+            <span class="slds-p-left_large">{{ events[0].createdDateStr }}</span>
+            <span class="slds-p-left_large">{{ events[0].Related_User_Name__c != null ? events[0].Related_User_Name__c :  '{!$Label.RC_Unknown}' }}</span>
+            <span class="slds-p-left_large">{{ events[0].action }}</span>
+            <span class="slds-p-left_large slds-size_4-of-12 slds-truncate" v-bind:title="events[0].ContractFileName__c">
+              <!-- <a v-bind:href="['ms-word:ofe|u|' + events[0].ContractUrl__c]">
+                {{ events[0].ContractFileName__c }}
+              </a> -->
+              <!-- <a v-bind:href="['ms-word:ofe|u|http://spcn.jinkosolar.com:82/JinKoDoc/' + events[0].ContractFileName__c]"
+                 v-bind:title="events[0].ContractFileName__c"> -->
+                {{ events[0].ContractFileName__c }}
+              <!-- </a> -->
+            </span>
+          </div>
+          <!-- <span class="slds-p-left_xx-large">历史进展</span> -->
+          <el-carousel height="30px" 
+                       direction="vertical" 
+                       indicator-position="none"
+                       arrow="always"
+                       autoplay="false"
+                       interval="5000">
+            <el-carousel-item v-for="(event, index) in events" class="slds-grid" v-bind:key="event.Id">
+              <span class="slds-p-left_large">{{ event.createdDateStr }}</span>
+              <span class="slds-p-left_large">{{ event.Related_User_Name__c != null ? event.Related_User_Name__c : '{!$Label.RC_Unknown}' }}</span>
+              <span class="slds-p-left_large">{{ event.action }}</span>
+              <span class="slds-p-left_large slds-size_4-of-12 slds-truncate" v-bind:title="event.ContractFileName__c">
+                <!-- <a v-bind:href="['ms-word:ofe|u|' + event.ContractUrl__c]">
+                  {{ event.ContractFileName__c }}
+                </a> -->
+                <!-- <a v-bind:href="['ms-word:ofe|u|http://spcn.jinkosolar.com:82/JinKoDoc/' + event.ContractFileName__c]"
+                   v-bind:title="event.ContractFileName__c"> -->
+                  {{ event.ContractFileName__c }}
+                <!-- </a> -->
+              </span>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+        <div class="slds-col slds-size_4-of-12 slds-grid slds-grid_vertical-align-center slds-grid_vertical">
+          <span class="slds-size_1-of-1 slds-grid slds-grid_align-left">
+            <button class="slds-button slds-button_outline-brand"
+                    v-on:click="init()">
+              {!$Label.RC_Refresh}     
+            </button>
+            <button class="slds-button slds-button_outline-brand"
+                    v-on:click="newContract()"
+                    v-bind:disabled="status.uploading">
+              {!$Label.RC_Upload}   
+            </button>
+            <button class="slds-button slds-button_outline-brand"
+                    v-on:click="confirmRevise()"
+                    v-bind:disabled="!contract.Joint_Review_Times__c">
+              {!$Label.RC_Confirm_Revised}   
+            </button>
+            <button class="slds-button slds-button_outline-brand"
+                    v-on:click="confirmVersion()"
+                    v-bind:disabled="!contract.Joint_Review_Times__c">
+              {!$Label.RC_Confirm_Version}   
+            </button>
+          </span>
+          <span class="slds-p-top_x-small slds-size_1-of-1 slds-grid slds-grid_align-left">
+            <button class="slds-button slds-button_outline-brand"
+                    v-on:click="startJoint()"
+                    v-bind:disabled="contract.Stage__c == 'Prospecting' && contract.RecordTypeId == '0122t00000006CIAAY' && contract.Sales_Dept__c != 'Other' && contract.Sales_Dept__c != 'Sales Dept 3'">
+              {!$Label.RC_Initiate_Non_standard_Review} {{ contract.Joint_Review_Times__c != null ? '( {!$Label.RC_Current_Rounds}：' + contract.Joint_Review_Times__c + ' )' : '' }}
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- / REQUIRED SLDS WRAPPER -->
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/element-ui.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/sweetalert2.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/vue.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/element-ui.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/sweetalert2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/lodash.js')}" />
+
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: () => {
+          return {
+            contract: {},
+            user: {},
+            owner: {},
+            events: [],
+            status: {
+              pageLoading: true,
+              uploading: false
+            }
+          }
+        },
+
+        watch: {
+          events: function (newValue, oldValue) {
+            // debugger;
+            if (newValue != null) {
+              let timeStamp = 0;
+              let url;
+              newValue.forEach(event => {
+                if (event.Event_Datetime__c >= timeStamp) {
+                  url = 'http://spcn.jinkosolar.com:82/JinKoDoc/' + event.ContractFileName__c;
+                  // url = event.ContractUrl__c;
+                  timeStamp = event.Event_Datetime__c;
+                }
+              });
+              this.contract.url = url;
+            }
+          }
+        },
+
+        computed: {
+          newContractUrl: function () {
+            if (this.contract == undefined || this.user == undefined) return '/';
+            // TODO
+            // return 'http://172.18.2.32/_layouts/15/Jinko_FileToSP/UpLoadFile.aspx?' +
+            return 'http://spcn.jinkosolar.com:82/_layouts/15/Jinko_FileToSP/UpLoadFile.aspx?' +
+                   '&id=' + this.contract.Id +
+                   '&contractnum=' + this.contract.Contract_No__c +
+                   '&sfuserId=' + this.user.Id +
+                   '&mail=' + (this.user.Email.includes('@jinkosolar.com') ? this.user.Email : 'administrator@jinkosolar.com') +
+                   '&token=6a6c00f2bcf5c0a41b1cfd7330bef0ec';
+          }
+        },
+
+        mounted() {
+          this.init();
+        },
+
+        methods: {
+          init: function() {
+            // debugger;
+            let that = this;
+            that.status.pageLoading = true;
+            that.status.uploading = false;
+            RC_ContractReminderController.init(JSON.stringify({id: getQueryVariable('id')}), function (result, event) {
+              if (event.statusCode == 200) {
+                that.contract = result.contract;
+                that.events = result.events;
+                that.events.forEach(event => {
+                  event.createdDateStr = new Date(event.Event_Datetime__c).format('yyyy-MM-dd hh:mm');
+                  if (event.Action_Type__c == 'upload') event.action = '上传文档 '
+                  else if (event.Action_Type__c == 'open') event.action = '打开文档 '
+                  else if (event.Action_Type__c == 'signout') event.action = '签出文档 '
+                  else if (event.Action_Type__c == 'signin') event.action = '签入文档 '
+                  else if (event.Action_Type__c == 'confirm') event.action = '确认文档版本 '
+                  else if (event.Action_Type__c == 'save') event.action = '保存文档 '
+                  else if (event.Action_Type__c == 'chatter') event.action = '评论文档 '
+                });
+                _.remove(that.events, function(event){
+                  return event.Action_Type__c == 'save' || event.IsActive__c == false || event.Action_Type__c == 'chatter';
+                });
+                that.user = result.user;
+                that.owner = result.owner;
+              }
+              that.status.pageLoading = false;
+            });
+          },
+
+          newContract: function() {
+            let flag = false;
+            let that = this;
+            // if (that.contract.url != null && confirm('已上传合同文件，是否上传新文件？')){
+            //   redirect(that.newContractUrl);
+            //   flag = true;
+            // } else if (that.contract.url == null)  {
+            //   redirect(that.newContractUrl);
+            //   flag = true;
+            // }
+            flag = true;
+            redirect(that.newContractUrl);
+            that.status.uploading = flag;
+          },
+
+          confirmRevise: function() {
+            // 判断当前用户部门名称，决定操作
+            let that = this;
+            that.status.pageLoading = true;
+            RC_ContractReminderController.confirmRevise(JSON.stringify({id: getQueryVariable('id')}), function (result, event) {
+              if (event.statusCode == 200) {
+                alert(result.message);
+                window.top.location.href = '/' + that.contract.Id;
+              } else {
+                alert(event.message);
+              }
+              that.status.pageLoading = false;
+            });
+          },
+
+          confirmVersion: function() {
+            // 判断当前用户权限集名称，决定操作
+            let that = this;
+            that.status.pageLoading = true;
+            RC_ContractReminderController.confirmVersion(JSON.stringify({id: getQueryVariable('id')}), function (result, event) {
+              if (event.statusCode == 200) {
+                alert(result.message);
+                window.top.location.href = '/' + that.contract.Id;
+              } else {
+                alert(event.message);
+              }
+              that.status.pageLoading = false;
+            });
+          },
+          
+          startJoint: function() {
+            // 判断当前用户权限集名称，决定操作
+            let that = this;
+            if (!that.contract.File_Version_Confirmed__c && that.contract.Joint_Review_Times__c && !confirm('当前轮次版本未确认，是否重新发起当前轮次')) return;
+            that.status.pageLoading = true;
+            RC_ContractReminderController.startJoint(JSON.stringify({id: getQueryVariable('id')}), function (result, event) {
+              if (event.statusCode == 200) {
+                alert(result.message);
+                window.top.location.href = '/' + that.contract.Id;
+              } else {
+                alert(event.message);
+              }
+              that.status.pageLoading = false;
+            });
+          }
+        }
+      })
+      
+      /* Generate Instance Url */
+      function instanceUrl(restUrl) {
+        var elements = location.hostname.split('.'),
+          instance = null,
+          instanceUrl = null;
+        if (elements.length === 4 && elements[1] === 'my') {
+          instance = elements[0] + '.' + elements[1];
+        } else if (elements.length === 3) {
+          instance = elements[0];
+        } else {
+          instance = elements[1];
+        }
+        return 'https://' + instance + '.salesforce.com' + '/services/apexrest' + restUrl;
+      }
+
+      /* Get Url Params */
+      function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split("=");
+          if (pair[0] == variable) {
+            return pair[1];
+          }
+        }
+        return (false);
+      }
+
+      /* Redirect */
+      function redirect(url) {
+        if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+          window.location.href = url
+        } else {
+          if (sforce && sforce.one) {
+            sforce.one.navigateToURL(url)
+          }
+        }
+      }
+
+      Date.prototype.format = function (fmt) {
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + ""));
+        for (var k in o) {
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+        return fmt;
+      };
+
+      function success() {
+        swal.fire({
+          title: '成功',
+          text: '提交成功',
+          showCancelButton: false,
+          showConfirmButton: true,
+          type: 'success',
+          confirmButtonText: '确认'
+        })
+      }
+    </script>
+  </body>
+
+  </html>
+
+</apex:page>

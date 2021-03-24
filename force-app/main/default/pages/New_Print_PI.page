@@ -1,0 +1,629 @@
+<apex:page standardController="Contract" sidebar="false" extensions="New_PI_Ctrl" showHeader="false" standardStylesheets="false" renderAs="PDF"   applyHtmlTag="false"  action="{!initialize}" >
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8;charset=ISO-8859-1"/>
+        <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+            body {  widows:0; orphans:0; font-family: Arial Unicode MS; font-size:7.9pt }
+            p { margin:0pt }
+            .divTop{
+               position:fix;
+               top:0;
+             }
+        </style>
+    </head>
+  <body  style="margin:10px auto;">
+<TABLE border="0" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black"  >
+<TBODY>
+<TR  height="62">
+<TD height="62" width="170" colspan="2" align="center" vAlign="middle">
+  <apex:image id="theImage" value="{!$Resource.logo}" style="height:2cm; width:130px" /></TD>
+<TD height="62" width="530" colSpan="5" align="center" vAlign="middle"><FONT color="#000000" ><STRONG>PROFORMA INVOICE</STRONG></FONT></TD>
+</TR>
+
+<TR  height="20">
+<TD colspan="1" rowSpan="8" align="center" valign="top" ></TD>
+</TR>
+
+<TR  height="20">
+  <TD colspan="6" align="right" valign="top" >www.jinkosolar.com </TD>
+</TR>
+
+<TR  height="20">
+  <TD height="20" colspan="6" ><STRONG><FONT color="#000000">INVOICE NO: <FONT color="#000000">{!Contract.Contract_NO__c}</FONT></FONT></STRONG></TD>
+  </TR>
+<TR  height="20">
+  <TD height="20" colspan="6" valign="left" ><STRONG><FONT color="#000000">INVOICE DATE:</FONT></STRONG> {! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</TD>
+  </TR>
+
+<TR  height="20" style="display:{!IF(Contract.SELLER__c=='ジンコソーラージャパン株式会社','run-in','none')};">
+  <TD height="20" colspan="6" valign="left" ><STRONG><FONT color="#000000">SELLER:</FONT></STRONG> <span>ジンコソーラージャパン株式会社</span></TD>
+  </TR>
+    <TR  height="20" style="display:{!IF(Contract.SELLER__c=='ジンコソーラージャパン株式会社','none','run-in')};">
+  <TD height="20" colspan="6" valign="left" ><STRONG><FONT color="#000000">SELLER:</FONT></STRONG> <span><FONT color="#000000">{!Contract.SELLER__c}</FONT> </span></TD>
+  </TR>
+
+<TR  height="30">
+    <TD height="20" colspan="6" valign="left" ><STRONG><FONT color="#000000">BUYER:</FONT></STRONG>{!Contract.BuyerAccount__r.name }</TD>
+  </TR>
+<TR  height="30">
+
+  <TD height="20" colspan="6" valign="left" ><STRONG><FONT color="#000000">PAYMENT TERM:</FONT></STRONG><br/> {!Contract.Payment_Term_Description__c}</TD><!---->
+  </TR>
+
+<TR  height="22">
+    
+    <TD height="40" colspan="6" valign="left" style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};" ><STRONG><FONT color="#000000" >TRADE TERM:</FONT></STRONG>{!TradeTerm} under INCOTERMS 2010</TD>
+    <TD height="40" colspan="6" valign="left" style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};" ><STRONG><FONT color="#000000" >TRADE TERM:</FONT></STRONG>{!TradeTerm} under INCOTERMS 2020</TD>
+
+</TR>
+<TR  height="20">
+<TD height="20" colSpan="7" valign="middle">
+<STRONG><FONT color="#000000">BUYER CONTACT:</FONT></STRONG> {!Contract.Contact_Name__c} &nbsp; / &nbsp;{!Contract.Phone__c} &nbsp; / &nbsp;{!Contract.Email__c}</TD>
+</TR>
+
+<TR  height="4">
+<TD style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0" height="4" colSpan="7">&nbsp;</TD></TR>
+    </TBODY>
+    </TABLE>
+ <table style="display:{!IF(Contract.Region__c!='ROA','run-in','none')};border-collapse:collapse;margin:5px;border: solid black" border="1"  width="700px;">
+  <tbody style="display:{!IF(HaveModule==true ,'run-in','none')};">
+<TR  height="23">
+<TD height="23" colSpan="7" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT:  windowtext 0.5pt solid; "><FONT color="#000000"  ><STRONG>PURCHASE INVOICE DETAILS</STRONG></FONT></TD>
+</TR>
+
+   <tr style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};">
+                <td align="center" rowspan="2">ITEM</td>
+                <td align="center" rowspan="2">MODULE DESCRIPTION</td>
+                <td align="center" rowspan="1" colspan="2">Quantity</td>
+                <td align="center" rowspan="2">UNIT PRICE ({!Contract.CurrencyIsoCode}/W)</td>
+                <td align="center" rowspan="2"> PURCHASE PRICE({!Contract.CurrencyIsoCode})</td>
+                <td align="center" rowspan="2">DELIVERY DATE </td>
+            </tr>
+      <tr style="display:{!IF( Contract.PFI_Enadble__c =true ,'run-in','none')};">
+                <td align="center" rowspan="2">ITEM</td>
+                <td align="center" rowspan="2">MODULE DESCRIPTION</td>
+                <td align="center" rowspan="1" colspan="2">Quantity</td>
+                <td align="center" rowspan="2">UNIT PRICE ({!Contract.CurrencyIsoCode}/PC)</td>
+                <td align="center" rowspan="2"> PURCHASE PRICE({!Contract.CurrencyIsoCode})</td>
+                <td align="center" rowspan="2">DELIVERY DATE </td>
+            </tr>
+            <tr>
+                <td align="center" rowspan="1" colspan="1">PIECES</td>
+                <td align="center" rowspan="1" colspan="1">W</td>
+            </tr>
+
+  
+          
+             <apex:variable var="index" value="{!0}" />
+              <apex:repeat value="{!Pds2}" var="line" id="Order_Line_List">
+                  <apex:variable var="index" value="{!index+1}" />
+                <TR style="display:{!IF(Contract.PFI_Enadble__c =false ,'run-in','none')};" height="23" >
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')};"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')};"><apex:outputText value="{!TEXT(DAY(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(YEAR(line.Guaranteed_Delivery_Date__c))}"/></TD> </TR>
+
+                      <TR style="display:{!IF(Contract.PFI_Enadble__c =true ,'run-in','none')};" height="23" >
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c* line.Product__r.Maximum_Power_at_STC_Pmax__c }"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c* line.Product__r.Maximum_Power_at_STC_Pmax__c * line.Quantity__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')};"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')};"><apex:outputText value="{!TEXT(DAY(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(YEAR(line.Guaranteed_Delivery_Date__c))}"/></TD> </TR>  
+                
+
+            </apex:repeat>
+</tbody>
+
+
+
+ <tbody style="display:{!IF(HaveConnector==true ,'run-in','none')};">
+<TR  height="23">
+<TD height="23" colSpan="7" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT:  windowtext 0.5pt solid; "><FONT color="#000000"  ><STRONG>PURCHASE INVOICE DETAILS</STRONG></FONT></TD>
+</TR>
+
+   <tr style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};">
+                <td align="center" >ITEM</td>
+                <td align="center" >MODULE DESCRIPTION</td>
+                <td align="center">Quantity</td>
+                <td align="center">Pair</td>
+                <td align="center" >UNIT PRICE ({!Contract.CurrencyIsoCode}/Pair)</td>
+                <td align="center" >PURCHASE PRICE({!Contract.CurrencyIsoCode})</td>
+                <td align="center" >DELIVERY DATE </td>
+            </tr>
+   
+          
+
+  
+          
+             <apex:variable var="index" value="{!0}" />
+              <apex:repeat value="{!PdsConnectors}" var="line" id="Order_Line_List2">
+                  <apex:variable var="index" value="{!index+1}" />
+                <TR style="display:{!IF(Contract.PFI_Enadble__c =false ,'run-in','none')};" height="23" >
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid" >{!line.Product_name__c}</TD>
+                                        <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;display:{!IF(line.Product_name__C=='JK03M','run-in','none')};">{!line.Quantity__c} pairs</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;display:{!IF(line.Product_name__C!='JK03M','run-in','none')};">-</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')};"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')};"><apex:outputText value="{!TEXT(DAY(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(YEAR(line.Guaranteed_Delivery_Date__c))}"/></TD> </TR>
+
+                      <TR style="display:{!IF(Contract.PFI_Enadble__c =true ,'run-in','none')};" height="23" >
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid" >{!line.Product_name__c}</TD>
+                                                            <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c} pairs</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c* line.Product__r.Maximum_Power_at_STC_Pmax__c }"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c* line.Product__r.Maximum_Power_at_STC_Pmax__c * line.Quantity__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')};"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')};"><apex:outputText value="{!TEXT(DAY(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(YEAR(line.Guaranteed_Delivery_Date__c))}"/></TD> </TR>  
+                
+
+            </apex:repeat>
+</tbody>
+
+
+
+
+
+
+             <tr style="display:{!IF(Contract.PFI_Enadble__c =true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="4">
+                    Freight 
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+        
+                    <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!fright*Contract.Total_W__c}"/></apex:outputText>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+        
+                
+                </td>
+                
+            </tr>
+
+             <tr style="display:{!IF(Contract.PFI_Enadble__c =true && Contract.iscif__c=true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="4">
+                    Insurance(For CIF)
+                </td>
+               
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" colspan="1">
+                  
+                   <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!Contract.Insurance_for_CIF__c}"/></apex:outputText>
+                </td>
+                <td height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid" >
+                </td>
+            </tr>
+            
+            <TR  height="23"  style="display:{!IF(contract.Tax_Rate__c!=null,'run-in','none')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TAX</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">{!contract.Tax_Rate__c}%</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.Tax__c}"/></apex:outputText></FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+
+
+            <TR  height="23"  style="display:{!IF(contract.GST_Added__c=true,'run-in','none')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">GST</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.GST_Tax__c}"/></apex:outputText></FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+            <!--
+
+            <TR  height="23"  style="display:{!IF(Contract.IFShowTransportationCost__c,'run-in','none')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">Freight</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.Transit_Fees__c}"/></apex:outputText></FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+   
+-->
+
+           <TR  style="border-collapse:collapse;margin:10px;border: solid black;display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};" height="23">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+                             <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,true,false)}"><apex:param value="{!Contract.Total_Price_GST_India__c}" />
+                </apex:outputText>
+
+                  <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,false,true)}"><apex:param value="{!Contract.Total_Price_Tax__c}"/></apex:outputText> 
+          </TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+            </TR>
+
+
+    <TR  style="border-collapse:collapse;margin:10px;border: solid black;display:{!IF(Contract.PFI_Enadble__c =true &&   Contract.iscif__c=false,'run-in','none')};" height="23">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+         
+                    <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+fright*Contract.Total_W__c}"/></apex:outputText> 
+                </TD>
+
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+            </TR>
+
+             <TR  style="border-collapse:collapse;margin:10px;border: solid black;display:{!IF(Contract.PFI_Enadble__c =true  && Contract.iscif__c=true,'run-in','none')};" height="23">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+                   
+
+                  <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+Contract.Insurance_for_CIF__c+fright*Contract.Total_W__c}"/></apex:outputText> 
+                </TD>
+
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+            </TR>
+
+
+      </table>
+      
+      
+      
+      
+      
+      
+      
+       <table border="1" width="700px;"  style="border-collapse:collapse;margin:5px;border: solid black">
+      
+      
+          <TBODY style="display:{!IF(Contract.Region__c=='ROA','run-in','none')};border-collapse:collapse;margin:5px;border: solid black" border="1" width="700px;"  >
+<TR  height="23">
+<TD height="23" colSpan="8" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT:  windowtext 0.5pt solid; "><FONT color="#000000"  ><STRONG>PURCHASE INVOICE DETAILS</STRONG></FONT></TD>
+</TR>
+
+   <tr style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};">
+                <td align="center" rowspan="2">ITEM</td>
+                <td align="center" rowspan="2" colspan="2">DESCRIPTION</td>
+                <td align="center" rowspan="1" colspan="2">Quantity</td>
+                <td align="center" rowspan="2">UNIT PRICE ({!Contract.CurrencyIsoCode}/W)</td>
+                <td align="center" rowspan="2"> PURCHASE PRICE({!Contract.CurrencyIsoCode})</td>
+                <td align="center" rowspan="2">DELIVERY DATE </td>
+            </tr>
+      <tr style="display:{!IF( Contract.PFI_Enadble__c =true ,'run-in','none')};">
+                <td align="center" rowspan="2">ITEM</td>
+                <td align="center" rowspan="2" colspan="2">DESCRIPTION</td>
+                <td align="center" rowspan="1" colspan="2">Quantity</td>
+                <td align="center" rowspan="2">UNIT PRICE ({!Contract.CurrencyIsoCode}/PC)</td>
+                <td align="center" rowspan="2"> PURCHASE PRICE({!Contract.CurrencyIsoCode})</td>
+                <td align="center" rowspan="2">DELIVERY DATE </td>
+            </tr>
+            <tr>
+                <td align="center" rowspan="1" colspan="1">PIECES</td>
+                <td align="center" rowspan="1" colspan="1">W</td>
+            </tr>
+
+  
+          
+             <apex:variable var="index" value="{!0}" />
+              <apex:repeat value="{!pdLstSort}" var="line" >
+                  <apex:variable var="index" value="{!index+1}" />
+                <TR style="display:{!IF(Contract.PFI_Enadble__c =false ,'run-in','none')};" height="23" >
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                    <TD align="center" valign="middle" style="BORDER: black 0.5pt solid;display:{!IF(line.Product_name__c!='JK03M','run-in','none')};" >SOLAR MODULE</TD> 
+<TD align="center" valign="middle" style="BORDER: black 0.5pt solid;display:{!IF(line.Product_name__c=='JK03M','run-in','none')};" >CONNECTOR</TD> 
+
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')};"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')};"><apex:outputText value="{!TEXT(DAY(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(YEAR(line.Guaranteed_Delivery_Date__c))}"/></TD> </TR>
+
+                      <TR style="display:{!IF(Contract.PFI_Enadble__c =true ,'run-in','none')};" height="23" >
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                    <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c* line.Product__r.Maximum_Power_at_STC_Pmax__c }"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c* line.Product__r.Maximum_Power_at_STC_Pmax__c * line.Quantity__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')};"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD>
+                    <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')};"><apex:outputText value="{!TEXT(DAY(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(YEAR(line.Guaranteed_Delivery_Date__c))}"/></TD> </TR>  
+                
+
+            </apex:repeat>
+
+             <tr style="display:{!IF(Contract.PFI_Enadble__c =true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="5">
+                    Freight 
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+        
+                    <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!fright*Contract.Total_W__c}"/></apex:outputText>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+        
+                
+                </td>
+                
+            </tr>
+
+             <tr style="display:{!IF(Contract.PFI_Enadble__c =true && Contract.iscif__c=true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="5">
+                    Insurance(For CIF)
+                </td>
+               
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" colspan="1">
+                  
+                   <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!Contract.Insurance_for_CIF__c}"/></apex:outputText>
+                </td>
+                <td height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid" >
+                </td>
+            </tr>
+            
+            <TR  height="23"  style="display:{!IF(contract.Tax_Rate__c!=null,'run-in','none')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TAX</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle" colspan="2" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">{!contract.Tax_Rate__c}%</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.Tax__c}"/></apex:outputText></FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+
+
+            <TR  height="23"  style="display:{!IF(contract.GST_Added__c=true,'run-in','none')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">GST</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle" colspan="2" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.GST_Tax__c}"/></apex:outputText></FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+            <!--
+
+            <TR  height="23"  style="display:{!IF(Contract.IFShowTransportationCost__c,'run-in','none')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">Freight</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.Transit_Fees__c}"/></apex:outputText></FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+   
+-->
+
+           <TR  style="border-collapse:collapse;margin:10px;border: solid black;display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};" height="23">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle" colspan="2" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+                             <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,true,false)}"><apex:param value="{!Contract.Total_Price_GST_India__c}" />
+                </apex:outputText>
+
+                  <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,false,true)}"><apex:param value="{!Contract.Total_Price_Tax__c}"/></apex:outputText> 
+          </TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+            </TR>
+
+
+    <TR  style="border-collapse:collapse;margin:10px;border: solid black;display:{!IF(Contract.PFI_Enadble__c =true &&   Contract.iscif__c=false,'run-in','none')};" height="23">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle" colspan="2" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+         
+                    <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+fright*Contract.Total_W__c}"/></apex:outputText> 
+                </TD>
+
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+            </TR>
+
+             <TR  style="border-collapse:collapse;margin:10px;border: solid black;display:{!IF(Contract.PFI_Enadble__c =true  && Contract.iscif__c=true,'run-in','none')};" height="23">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+                   
+
+                  <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+Contract.Insurance_for_CIF__c+fright*Contract.Total_W__c}"/></apex:outputText> 
+                </TD>
+
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+            </TR>
+
+
+  
+
+
+
+      </TBODY>
+      
+        <apex:repeat value="{!payLst}" var="Pay1" id="pay_List1" >
+
+       <TR  >
+                <TD height="23" colspan="5" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">{!Pay1.Down_Balance_Payment__c} of {!Pay1.Percentage__c}%</FONT></FONT></STRONG></TD>
+               
+
+                <TD align="center" colspan="3" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+                 <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.Total_Price_Tax__c*(0.01*Pay1.Percentage__c)}"/></apex:outputText>
+               
+                </TD>
+            </TR>
+      
+       
+     </apex:repeat>
+          
+      </TABLE>      
+      
+   
+ <TABLE border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black"  >
+       
+<TR  height="23">
+<TD height="23" colSpan="7" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: black 0.5pt solid"><STRONG><FONT color="#000000"  >BANK INFORMATION</FONT></STRONG></TD></TR>
+
+<TR  height="3">
+<TD height="120" colSpan="7"  >
+    <pre><FONT color="#000000" style="font-size:7.2pt"  ><STRONG>{!Contract.Bank_Information_Content__c}</STRONG></FONT></pre></TD>
+</TR>
+  <tr>
+                <td style=" border-left:black 0.5pt solid;border-right:black 0.5pt solid;display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')}; "  align="left" valign="middle" colspan="10">
+                    Contact person: <span style="font-family: Arial Unicode MS;">{!Contract.Contact_Person__c}</span>
+                </td>           
+            </tr>
+            <tr>
+                <td style="border-left:black 0.5pt solid;border-right:black 0.5pt solid;display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')}; "  align="left" valign="middle" colspan="10">
+                    Email: {!ContactEmail}
+                </td>           
+            </tr>
+            <tr>
+                <td style="border-left:black 0.5pt solid;border-right:black 0.5pt solid;display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')}; "  align="left" valign="middle" colspan="10">
+                    Tel: {!ContactTel}
+                </td>           
+            </tr>
+      <tr height="18" style="display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')};">
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="8">
+                        Shipment details:
+                    </td>
+                    
+                </tr>
+                <tr style="display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')};">
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Country of origin:  {!Contract.Country_of_Origin__c}
+                    </td>
+                    
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Total weight (Gross ):  {!Contract.Total_weight_Gross__c}
+                    </td>
+                    
+                </tr>
+               <tr style="display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')};">
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4" >
+                        Port of Origin:  {!Contract.Port_of_Origin__c}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Total weight (Net ):  {!Contract.Total_weight_Net__c}
+                    </td>
+                    
+                </tr>
+             <tr style="display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')};">
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Port of Transshipment:  {!Contract.Port_of_Transshipment__c}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Total Pallets.:  <apex:outputField value="{!Contract.Total_Pallets__c}"/> 
+                    </td>
+                    
+                </tr>
+               <tr style="display:{!IF(Contract.MEA_PI_additional_information__c,'run-in','none')};">
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Port of Discharge:  {!Contract.Delivery_point__c}
+                    </td>
+                    
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        
+                    </td>
+                    
+                    
+                </tr>
+         
+<TR >
+<TD colSpan="7" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: black 0.5pt solid"><STRONG><FONT color="#000000"  >This PI is issued in accordance with Purchase Order({!Contract.Contract_NO__c}) executed by the Seller and Buyer. To the extent that there is any conflict between this PI and the Purchase Order, the terms and the conditions of the Purchase Order shall prevail.</FONT></STRONG></TD></TR>
+
+<TR >
+<TD colSpan="7" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: black 0.5pt solid" ><STRONG><FONT color="#000000"  >The PI shall become effective and binding on the Seller only after being chopped with Seller's seal.</FONT></STRONG></TD></TR>
+
+<TR  height="31">
+<TD colSpan="7" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: black 0.5pt solid" height="31"><STRONG><FONT color="#000000"  >SIGNATURE / STAMP</FONT></STRONG></TD></TR>
+
+<TR  height="44">
+<TD height="4" colspan="3" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: white;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+<STRONG><FONT color="#000000">Seller Representative:</FONT></STRONG></TD>
+<TD height="4" colspan="4" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: white;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+<STRONG><FONT color="#000000">Buyer Representative:</FONT></STRONG>
+</TD>
+</TR>
+ <tr style="width:91px;display:{!IF( Contract.Vietnam_loading_port_ruler__c==true,'run-in','none')};">
+                                      <TD colspan="3">Name:Wang Zhihua</TD><!--{!Contract.Contact_Name__c}-->
+                                        <TD colspan="4">Name:{!Contract.Buyer_Name_Vietnam__c}
+                                        </TD>
+                </tr>
+                 <tr style="width:91px;display:{!IF( Contract.Vietnam_loading_port_ruler__c==true,'run-in','none')};">
+                   <TD colspan="3">
+                         Title:Finance VP
+                    </TD><!-- {!Contract.Title__c}-->
+                      <TD colspan="4">
+                         Title:{!Contract.Buyer_s_representative_Title__c}
+                     </TD>
+                </tr>
+                
+                <tr style="width:91px;display:{!IF( Contract.Vietnam_loading_port_ruler2__c==true,'run-in','none')};">
+                                      <TD colspan="3">Name:Miao Gen</TD><!--{!Contract.Contact_Name__c}-->
+                                        <TD colspan="4">Name:{!Contract.Buyer_Name_Vietnam__c}
+                                        </TD>
+                </tr>
+                 <tr style="width:91px;display:{!IF( Contract.Vietnam_loading_port_ruler2__c==true,'run-in','none')};">
+                   <TD colspan="3">
+                         Title:CMO
+                    </TD><!-- {!Contract.Title__c}-->
+                      <TD colspan="4">
+                         Title:{!Contract.Buyer_s_representative_Title__c}
+                     </TD>
+                </tr>
+
+
+
+<TR  height="26">
+<TD height="26" colspan="3" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: white;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000"  >Date:</FONT></TD>
+
+<TD height="26" colspan="4" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: white;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><font color="#000000"  >Date:</font></TD>
+
+</TR>
+</TABLE>
+    </body>
+</apex:page>

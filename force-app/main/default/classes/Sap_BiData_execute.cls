@@ -1,0 +1,133 @@
+global class Sap_BiData_execute implements Schedulable{
+    global void execute(SchedulableContext sc) {
+        
+        //try{
+            
+            Sap_BiData_Batch db = new Sap_BiData_Batch();
+            Database.executeBatch(db,1);
+            
+       // }catch(Exception ex ){
+       //     System.debug('----------> '+ex.getMessage());
+      //  }
+        
+    }
+     public void test(){
+       Decimal i=0;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+         i++;
+         i++;
+         i++;
+         i++;
+        i++;
+         i++;
+ }
+}

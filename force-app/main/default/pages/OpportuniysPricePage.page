@@ -1,0 +1,60 @@
+<apex:page standardController="Opportunity" showHeader="false" sidebar="false" extensions="OpportunitysPricePageCtrl">
+     <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;"/>
+       <apex:form >
+        <apex:pageMessages />
+        <apex:pageBlock >
+             <apex:pageBlockSection columns="1"  rendered="{!oppfaLinLst <>null}" >
+                <apex:pageBlockTable value="{!StrLst}" var="oppLinLstPage" width="2000px" >
+                      <apex:column headervalue="Sub-Opportunity">
+                                 <apex:outputField value="{!oppLinLstPage.OpportunityId}">
+
+                        </apex:outputField>
+                    </apex:column>
+                    <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Product2Id.label}">
+                        <apex:outputField value="{!oppLinLstPage.Product2Id}">
+                        </apex:outputField>
+                    </apex:column>
+                    
+                         <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.UnitPrice.label}">
+                                 <apex:outputText value="{!oppLinLstPage.UnitPrice}">
+
+                        </apex:outputText>
+                    </apex:column>
+                    
+                        <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Quantity.label}">
+                        <apex:outputText value="{!oppLinLstPage.Quantity}">
+                        </apex:outputText>
+                    </apex:column>
+                    
+                     <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Total_Power_W__c.label}">
+                        <apex:outputText value="{!oppLinLstPage.Total_Power_W__c}">
+                        </apex:outputText>
+                    </apex:column>
+                         <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Total_Price__c.label}">
+                        <apex:outputText value="{!oppLinLstPage.Total_Price__c}">
+                        </apex:outputText>
+                    </apex:column>
+                   
+                        <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Certification__c.label}">
+                        <apex:outputField value="{!oppLinLstPage.Certification__c}">
+                        </apex:outputField>
+                    </apex:column>
+                           <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Type_of_module__c.label}">
+                        <apex:outputField value="{!oppLinLstPage.Type_of_module__c}">
+                        </apex:outputField>
+                    </apex:column>
+                    
+                     <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Guaranteed_Delivery_Date__c.label}">
+                        <apex:outputField value="{!oppLinLstPage.Guaranteed_Delivery_Date__c}">
+                        </apex:outputField>
+                    </apex:column>
+                         <apex:column headervalue="{!$ObjectType.OpportunityLineItem.fields.Guaranteed_Delivery_Date_japan__c.label}">
+                        <apex:outputField value="{!oppLinLstPage.Guaranteed_Delivery_Date_japan__c}">
+                        </apex:outputField>
+                    </apex:column>
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+           </apex:pageBlock>
+    </apex:form>
+</apex:page>

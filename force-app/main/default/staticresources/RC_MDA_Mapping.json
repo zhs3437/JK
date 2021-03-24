@@ -1,0 +1,273 @@
+{
+    "Frame_B_side_Height": {
+        "30mm frame": "T001001",
+        "30mm 边框": "T001001",
+        "35mm frame": "T001002",
+        "35mm 边框": "T001002",
+        "40mm frame": "T001003",
+        "40mm 边框": "T001003",
+        "45mm frame": "T001004",
+        "45mm 边框": "T001004",
+        "50mm frame": "T001005",
+        "50mm 边框": "T001005",
+        "Without frame": "T001006",
+        "无边框": "T001006"
+    },
+    "Frame_Color": {
+        "Silver": "T002001",
+        "Black": "T002002",
+        "Without frame": "T002003",
+        "银边框": "T002001",
+        "黑边框": "T002002",
+        "无边框": "T002003"
+    },
+    "Module_Level": {
+        "A级": "T003001",
+        "A-级": "T003002",
+        "A1级": "T003003",
+        "B级": "T003004",
+        "C级": "T003005",
+        "D级": "T003006"
+    },
+    "Product_Certificate": {
+        "IEC61215: 2005 (TUV certified)": "T004001",
+        "IEC61215: 2016 (TUV certified)": "T004002",
+        "UL(UL certified)": "T004003",
+        "Dual IEC61215: 2005&UL1703": "T004004",
+        "Dual IEC61215: 2016&UL61730": "T004005"
+    },
+    "Rear_cover": {
+        "White Backsheet": "T005001",
+        "Transparent backsheet/glass": "T005002",
+        "Transparent Mesh backsheet/glass": "T005003",
+        "Black+Black backsheet": "T005004",
+        "Black(inside)+White(air side) backsheet": "T005005",
+        "白背板": "T005001",
+        "透明非网格 背板/玻璃": "T005002",
+        "透明网格 背板/玻璃": "T005003",
+        "全黑背板": "T005004",
+        "黑白背板": "T005005"
+    },
+    "Frame_Type": {
+        "Standard Frame": "T006001",
+        "Nextracker Frame": "T006002",
+        "Without Frame": "T006003",
+        "Customized": "T006004",
+        "晶科标准边框": "T006001",
+        "Nextracker边框": "T006002",
+        "无边框": "T006003",
+        "客户标准": "T006004"
+    },
+    "LRF": {
+        "Optional_ For DG project (Keep LRF in one order / Keep without LRF in one order)": "T007001",
+        "Optional_ Ribbon LRF for 5BB (Keep same in whole order)": "T007001",
+        "Optional_ For Utility project (Keep LRF in one batch / Keep without LRF in one batch)": "T007002",
+        "Optional_ Ribbon LRF for 5BB (Keep same in single batch)": "T007002",
+        "Shall use": "T007003",
+        "Shall not use": "T007004",
+        "Optional_ Grid gap LRF for MBB (Keep same in whole order)": "T007006",
+        "Optional_ Grid gap LRF for MBB (Keep same in single batch)": "T007007",
+        "保持整单一致": "T007001",
+        "焊带贴膜-保持整单一致": "T007001",
+        "保持整批一致": "T007002",
+        "焊带贴膜-保持整批一致": "T007002",
+        "必须使用": "T007003",
+        "不可使用": "T007004",
+        "无要求_可混": "T007005",
+        "间隙贴膜-保持整单一致": "T007006",
+        "间隙贴膜-保持整批一致": "T007007"
+    },
+    "Junction_Box_brand": {
+        "Jinko Integrate": "T008001",
+        "Jinko Split": "T008002",
+        "Smart JB_ Zeron Z8S": "T008003",
+        "晶科标准-一体": "T008001",
+        "晶科标准-分体": "T008002",
+        "智能线盒 _泽润 Z8S": "T008003"
+    },
+    "Junction_Box_Cable_Length": {
+        "700mm": "T009001",
+        "900mm": "T009002",
+        "1000mm": "T009003",
+        "1200mm": "T009004",
+        "1400mm": "T009005",
+        "1825mm For US": "T009006",
+        "2053mm For US": "T009007",
+        "(+) 250mm&(-) 150mm": "T009008",
+        "(+) 290mm&(-) 145mm": "T009009",
+        "(+) 400mm &(-) 200mm for Tiger Pro series": "T009010",
+        "Other": "T009011"
+    },
+    "Junction_Box_Connector": {
+        "Standard_JK03M": "T010001",
+        "MC4_ for specific regions/orders": "T010002",
+        "MC4-EVO2_ for specific regions/orders": "T010003",
+        "Other": "T010004",
+        "JK03M/JK03M2": "T010001",
+        "JK03M": "T010001",
+        "MC4": "T010002",
+        "MC4-EVO2": "T010003",
+        "客户标准": "T010004"
+    },
+    "EVA": {
+        "Optional_keep same for whole order": "T011001",
+        "Optional_keep same for single batch": "T011002",
+        "White EVA+ Transparent EVA": "T011003",
+        "Transparent EVA +Transparent EVA": "T011004",
+        "整单一致": "T011001",
+        "整批一致": "T011002",
+        "白色EVA+透明EVA": "T011003",
+        "透明EVA+透明EVA": "T011004",
+        "POE +EVA": "T011005",
+        "POE +POE": "T011006"
+    },
+    "Front_Glass_Type": {
+        "ARC": "T012001",
+        "Anti-soiling": "T012002",
+        "Anti-glare": "T012003",
+        "抗反射玻璃": "T012001",
+        "自清洁玻璃": "T012002",
+        "防眩光玻璃": "T012003"
+    },
+    "Glass_Thickness": {
+        "2.0mm": "T013001",
+        "2.5mm": "T013002",
+        "3.2mm": "T013003",
+        "4.0mm": "T013004"
+    },
+    "Rear_Cover_Material": {
+        "T-based backsheet": "T014001",
+        "Decide by factory": "T014002",
+        "Glass": "T014003",
+        "T膜背板": "T014001",
+        "由工厂确定": "T014002",
+        "玻璃": "T014003",
+        "TPT /KPK": "T014004",
+        "双面含氟背板": "T014005"
+    },
+    "Mandatory_certification": {
+        "BIS": "T015001",
+        "Inmrtro": "T015002",
+        "RETIE": "T015003",
+        "CEC": "T015004",
+        "KS": "T015005",
+        "SII": "T015006",
+        "PQP": "T015007",
+        "IECEE": "T015008",
+        "CQC/CGC": "T015009",
+        "No Need": "T015010",
+        "Other": "T015011",
+        "CFP": "T015012"
+    },
+    "Additional_Certificate": {
+        "IEC62716(Ammonia)": "T016001",
+        "IEC61701(Salt Mist)": "T016002",
+        "PID85&85&96": "T016003",
+        "IEC60068-2-68(Sand dust)": "T016004",
+        "PCCC": "T016005",
+        "Others": "T016006",
+        "No need": "T016007"
+    },
+    "Package": {
+        "Old: 7-layer flap carton + 26pcs/pallet for 40mm frame modules": "T017001",
+        "Old: 7-layer flap carton + 30pcs/pallet for 35mm frame modules": "T017002",
+        "Old: 7-layer flap carton + 35pcs/pallet for 30mm frame modules": "T017003",
+        "New: 5-layer wrapping carton + 27pcs/pallet for 40mm frame modules": "T017004",
+        "New: 5-layer wrapping carton + 31pcs/pallet for 35mm frame modules": "T017005",
+        "New: 5-layer wrapping carton + 35pcs/pallet for 30mm frame products": "T017006",
+        "Old: 7-layer flap carton": "T017001",
+        "New: 5-layer wrapping carton": "T017004",
+        "Standard packing method for Dual-glass frameless modules": "T017007",
+        "7-layer flap carton with N-shape wooden supports": "T017008",
+        "5-layer wrapping carton with N-shape wooden supports for F30 dual-glass modules": "T017009",
+        "7-layer wrapping carton for Japanese Market": "T017010",
+        "Customized": "T017011"
+    },
+    "Current_Sorting": {
+        "No need": "T018001",
+        "Jinko Standard": "T018002",
+        "Customer Standard": "T018005",
+        "无要求，以库存信息为准": "T018001",
+        "中间档0.2A，分三档": "T018002",
+        "中间档0.1A，分三档": "T018003",
+        "中间档0.1A，分四档": "T018004",
+        "客户标准": "T018005"
+    },
+    "C_side_type_of_short_frame": {
+        "Jinko Standard (for 182mm AND 158mm F40&F35 series)": "T019001",
+        "With C-side for DG market (for 16Xmm AND 158mm&F30 series)": "T019002",
+        "With C-side (for 16Xmm AND 158mm&F30 series)": "T019002",
+        "Without C-side for Utility (for 16Xmm AND 158mm&F30 series)": "T019003",
+        "Without C-side (for 16Xmm AND 158mm&F30 series)": "T019003",
+        "Inventory Order_Keep same for whole order": "T019004",
+        "Without frame": "T019005",
+        "晶科标准 (182mm 及 158mm F40&F35 系列)": "T019001",
+        "分销市场 短边有C (16Xmm 及 158mm&F30 系列)": "T019002",
+        "短边有C (16Xmm 及 158mm&F30 系列)": "T019002",
+        "地面项目 短边无C (16Xmm 及 158mm&F30 系列)": "T019003",
+        "短边无C (16Xmm 及 158mm&F30 系列)": "T019003",
+        "出库存_ 整单一致": "T019004",
+        "无边框": "T019005"
+    },
+    "Nameplate": {
+        "Standard": "T026001",
+        "晶科标准-英文": "T026001",
+        "Latest version for Cheetah single-glass series": "T026002",
+        "Special Nameplate for Morocco": "T026003",
+        "BIS Nameplate": "T026004",
+        "Dual IEC &UL certified Nameplate": "T026005",
+        "KS Nameplate": "T026006",
+        "OEM Nameplate": "T026007",
+        "晶科标准-中文": "T026008",
+        "晶科标准-整单一致": "T026009",
+        "客户标准": "T026010"
+    },
+    "Shipping_Mark": {
+        "Jinko Standard": "T027001",
+        "Jinko Solar": "T027002",
+        "Special Label + Mark for KSA": "T027003",
+        "Special Mark for Morocco": "T027004",
+        "Customer Standard": "T027005",
+        "晶科标准-英文": "T027001",
+        "客户标准": "T027005",
+        "晶科标准-中文": "T027006",
+        "晶科标准-整单一致": "T027007"
+    },
+    "Current_Sorting_Style": {
+        "Yes, Mixed current sorting allowed for the balance modules": "T028001",
+        "Yes, Mixed current sorting allowed for the balance modules of every 7MW": "T028002",
+        "Not acceptable": "T028003",
+        "No Need": "T028004",
+        "是, 允许尾数混装": "T028001",
+        "是, 允许每7兆瓦尾数混装": "T028002",
+        "不允许混装": "T028003",
+        "不需要": "T028004",
+        "客户标准": "T028005"
+    },
+    "Color_Sorting_Style": {
+        "Yes, Mixed color sorting allowed for the balance modules": "T029001",
+        "Yes, Mixed color sorting allowed for the balance modules of every 7MW": "T029003",
+        "Not acceptable": "T029003",
+        "No Need": "T029004",
+        "是, 允许尾数混装": "T029001",
+        "是, 允许每7兆瓦尾数混装": "T029002",
+        "不允许混装": "T029003",
+        "不需要": "T029004",
+        "客户标准": "T029005"
+    },
+    "Additional_Shipping_Mark_Color_Label": {
+        "Need_ For Distributed orders": "T030001",
+        "No Need": "T030002",
+        "需要": "T030001",
+        "不需要": "T030002",
+        "无要求_整单一致": "T030003"
+    },
+    "Cell": {
+        "Acceptable, Mixed cell not allowed in the balance quantity": "T031001",
+        "Acceptable, Mixed cell allowed in the balance quantity": "T031002",
+        "Not acceptable": "T031003",
+        "接受混栅线-不允许尾数混包": "T031001",
+        "接受混栅线-允许尾数混包": "T031002",
+        "不接受": "T031003"
+    }
+}

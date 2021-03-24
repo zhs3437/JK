@@ -1,0 +1,618 @@
+<apex:page standardController="Contract" sidebar="false" extensions="PIJapan" showHeader="false"  renderAs="PDF"   applyHtmlTag="false" >
+    <html>
+        <!--<head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8;"/>
+            <meta http-equiv="Content-Style-Type" content="text/css" />
+            <style type="text/css">
+                body {font-family: Arial Unicode MS; font-size:8pt }
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8;charset=ISO-8859-1"/>
+           
+            </style>
+        </head>-->
+        <head>
+        <style  type="text/css" >
+            body {font-family: Arial Unicode MS; font-size:8pt }
+            
+            @page{
+            size:  A4;
+            margin-top: 100px;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 100px;
+            @top-center {
+                content: element(header);
+            };
+            }
+            div.header {
+                padding: 10px;
+                position: running(header);
+            }
+            table.tds td{border:solid 1px #A9A9A9;}
+        </style>
+</head>
+        <div class="header">
+        <div style="width:100%;">
+            <div style="color:#A9A9A9; font-size:10.0pt;text-align:right;">
+                JKS Ver.20200729
+            </div>
+            <div>
+                 &nbsp;
+            </div>
+            <table  width="100%"  style="border-collapse: collapse; font-size:7.0pt; ">
+               
+            </table>
+        </div>
+    </div>
+        <p align="center" style="font-size:11.5pt">
+        <b>PURCHASE AGREEMENT<br/>
+            売買契約書</b>
+        </p>
+        <div style="text-align: center;">
+            <TABLE border="0" width="600px;" align="center"  style="border-collapse:collapse;margin:5px;border: black;table-layout:fixed;margin: auto"  >
+                <TBODY>
+                    <TR  >
+                        <TD  width="220" align="right" vAlign="middle"><p>NO:{!Contract.Contract_NO__c}<br/>
+                            番号:{!Contract.Contract_NO__c}</p></TD>
+                        
+                    </TR>
+                    <TR  >
+                        <TD  width="380"  align="left" vAlign="top"><p>EXECUTION DATE: {!Month} , {!Day} , {!Year}<br/>
+                            締結日：{!Year}年{!Month}月{!Day}日</p></TD>
+                    </TR>
+                    <TR  style="display:{!IF(Contract.Seller__c=='ジンコソーラージャパン株式会社','run-in','none')};">
+                        <TD  width="380"  align="left" vAlign="top"><p>SELLER: Jinkosolar Japan KK<br/>
+                            売主：ジンコソーラージャパン株式会社
+                            </p></TD>
+                    </TR>
+                     <TR  style="display:{!IF(Contract.Seller__c=='ZHEJIANG JINKO SOLAR CO.,LTD','run-in','none')};">
+                        <TD  width="380"  align="left" vAlign="top"><p>SELLER:  Zhejiang Jinko Solar Co., Ltd.<br/>
+                            売主：浙江晶科能源有限公司
+                            </p></TD>
+                    </TR>
+                    </TBODY>
+                    <TBODY style="display:{!IF(Contract.Seller__c!='ZHEJIANG JINKO SOLAR CO.,LTD' ,'run-in','none')};">
+                    <TR  style="display:{!IF(Contract.Seller__c!='ジンコソーラージャパン株式会社','run-in','none')};">
+                        <TD  width="380"  align="left" vAlign="top"><p>SELLER: {!Contract.Seller__c}<br/>
+                            売主：{!Contract.Seller__c}
+                            </p></TD>
+                    </TR>
+                    </TBODY>
+                    <TBODY>
+                    <TR  >
+                        <TD  width="380"  align="left" vAlign="top"><p>BUYER: {!Contract.BuyerAccount__r.name}   <br/>
+                            買主：{!Contract.BuyerAccount__r.name}
+                            </p></TD>
+                    </TR>
+                    <TR  >
+                        <TD  width="380"  align="left" vAlign="top"><p>PAYMENT TERM: See below Article 3. <br/> 
+                            支払い条件については下記の第3条による。
+                            </p></TD>
+                    </TR>
+                    <TR  >
+                        <TD  width="380"  align="left" vAlign="top"><p>TRADE TERM：{!TRADETERM}<br/>
+                            取引条件：{!TRADETERMJP}
+                            </p></TD>
+                    </TR>
+                    <TR  >
+                        <TD  width="380"  align="left" vAlign="top"><p>PURCHASE AGREEMENT DETAILS<br/>
+                            売買契約の詳細事項
+                            </p></TD>
+                    </TR>
+                    <TR  >
+                        <TD  width="380"  align="left" vAlign="top"><p>Currency: {!Contract.CurrencyIsoCode} <br/>
+                            適用される通貨は{!CurrcyJP}とする
+                            </p></TD>
+                    </TR>
+                    
+                    
+                    
+                </TBODY>
+            </TABLE>
+        </div>
+        
+        <div  style="display:{!IF(con.Trade_term__c=='DDP','run-in','none')};" >
+        <TABLE class="tds" border="1" width="650px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;"  >
+            
+                
+                
+                <tr >
+                    <td align="center" rowspan ="2" >項目<br/>ITEM</td>
+                    <td align="center"  >GOODS<br/>商品明細</td>
+                    <td align="center" colspan="2">Quantity 数量</td>
+                    <td align="center" >UNIT PRICE <br/>単価</td>
+                    <td align="center" > Total Amount <br/>金额</td>
+                    <td align="center" rowspan ="2" width="100px">
+                        Expected Time of Delivery<br/> 引渡予定日</td>
+                </tr>
+                <tr >
+                    <td align="center"  >Description詳細</td>
+                    <td align="center" >PCS</td>
+                    <td align="center" >W</td>
+                    <td align="center" >({!Contract.CurrencyIsoCode}/W)</td>
+                    <td align="center" > {!Contract.CurrencyIsoCode}</td>
+                    
+                </tr>
+                
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                    <apex:variable var="index" value="{!index+1}" />
+                    <TR >
+                        <TD  height="23" align="center" valign="middle" >{!index}</TD>
+                        <TD  height="23" align="center" valign="middle" >{!line.Product_name__c}</TD>
+                        <TD align="center" valign="middle"  ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></TD>
+                        <TD align="center" valign="middle"  ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                        <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0.000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText>
+                        </TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!ROUND(line.Total_Price__c,0)}"/></apex:outputText>
+                        </TD>
+                        <TD align="center" valign="middle"  >   {!  TEXT(YEAR(line.Guaranteed_Delivery_Date__c))&" 年" & text(MONTH(line.Guaranteed_Delivery_Date__c))& "月" & text(day(line.Guaranteed_Delivery_Date__c))& "日" }</TD>
+                    </TR>        
+                </apex:repeat>
+                <tbody style="display:{!IF(Contract.Transit_Fees__c==0 ,'run-in','none')};">
+                <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Subtotal 小計</td>
+                <TD ></td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+<TD align="right" valign="middle"  >
+<apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!ROUND(Contract.Total_Price__c,0)}"/></apex:outputText>
+</TD>
+<TD rowspan ="3" style="WORD-BREAK: break-all; WORD-WRAP: break-word">納品回数：{!Contract.Productreturn__c}</td>
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Tax税金(10%)</td>
+                <TD rowspan ="2" colspan="4" align="center" valign="Left"><FONT align="center">*法定消費税率引上げの場合、商品の引渡日を基準日と して右記消費税額及び合計額の調整を行う。</FONT></td>
+            
+    <TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};"  value="{0, number, #,##0.00}"><apex:param value="{!0.1*Contract.Total_Price__c}"/></apex:outputText>
+    <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};"  value="{0, number, #,##0}"><apex:param value="{!0.1*ROUND(Contract.Total_Price__c,0)}"/></apex:outputText>
+    </TD>
+
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >TOTAL合計額</td>
+<TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!1.1*Contract.Total_Price__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!1.1*ROUND(Contract.Total_Price__c,0)}"/></apex:outputText>
+
+</TD>
+</tr>
+</tbody>
+                
+                
+                <tbody style="display:{!IF(Contract.Transit_Fees__c>0 ,'run-in','none')};">
+                <tr>
+                  <TD ></td>
+                <TD >送料</td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+<TD align="right" valign="middle"  >
+<apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText>
+</TD>
+<TD></td>
+                </tr>
+                <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Subtotal 小計</td>
+                <TD ></td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+<TD align="right" valign="middle"  >
+<apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c+Contract.Transit_Fees__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+</TD>
+<TD rowspan ="3" style="WORD-BREAK: break-all; WORD-WRAP: break-word">納品回数：{!Contract.Productreturn__c}</td>
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Tax税金(10%)</td>
+                <TD rowspan ="2" colspan="4" align="center" valign="Left"><FONT align="center">*法定消費税率引上げの場合、商品の引渡日を基準日と して右記消費税額及び合計額の調整を行う。</FONT></td>
+            
+    <TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};"  value="{0, number, #,##0.00}"><apex:param value="{!0.1*(Contract.Total_Price__c+Contract.Transit_Fees__c)}"/></apex:outputText>
+    <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};"  value="{0, number, #,##0}"><apex:param value="{!0.1*ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+    </TD>
+
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >TOTAL合計額</td>
+<TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!1.1*(Contract.Total_Price__c+Contract.Transit_Fees__c)}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!1.1*ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+
+</TD>
+</tr>
+</tbody>
+ </TABLE>
+<br/>
+    <TABLE border="1" width="500px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;"  >
+            <TBODY style="font-size:8.9pt">
+<TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD colspan="2">Buyer requests to use following checked truck type for transportation to destination. <br/>
+                        Should no specific type of truck is checked by Buyer, Seller may use any type of  <br/>
+                        truck at its sole discretion. /買主はマークで選択した下記のトラックで対象商品を目 <br/>
+                        的地まで運送することを要求する。ただし、買主がトラックの種類を選択してない <br/>
+                        場合、売主は運送用のトラックの種類を決める権利を有する。</td>
+</tr>
+<TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD align="left">Common Truck Type/汎用車種</td>
+<TD align="left">Special Truck Type/特殊車種</td>
+</tr><TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+<TD align="left" style="display:{!IF(car1==false,'run-in','none')};" >4t flatbed truck                     □</td>
+<TD align="left" style="display:{!IF(car1==true,'run-in','none')};" >4t flatbed truck                     √</td>
+<TD align="left" style="display:{!IF(scar1==false,'run-in','none')};" >4t unic truck        □</td>
+<TD align="left" style="display:{!IF(scar1==true,'run-in','none')};" >4t unic truck        √</td>
+</tr><TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+<TD align="left" style="display:{!IF(car2==false,'run-in','none')};" >4t wing truck                       □</td>
+<TD align="left" style="display:{!IF(car2==true,'run-in','none')};" >4t wing truck                       √</td>
+<TD align="left" style="display:{!IF(scar2==false,'run-in','none')};" >S10t unic truck       □</td>
+<TD align="left" style="display:{!IF(scar2==true,'run-in','none')};" >S10t unic truck       √</td>
+</tr><TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+<TD align="left" style="display:{!IF(car3==false,'run-in','none')};" >10t flatbed truck                    □</td>
+<TD align="left" style="display:{!IF(car3==true,'run-in','none')};" >10t flatbed truck                    √</td>
+<TD></td>
+</tr><TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+<TD align="left" style="display:{!IF(car4==false,'run-in','none')};" >10t wing truck                      □</td>
+<TD align="left" style="display:{!IF(car4==true,'run-in','none')};" >10t wing truck                      √</td>
+<TD></td>
+</tr><TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+<TD align="left" style="display:{!IF(car5==false,'run-in','none')};" >20t trailer                          □</td>
+<TD align="left" style="display:{!IF(car5==true,'run-in','none')};" >20t trailer                          √</td>
+<TD></td>
+</tr>
+<TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+<TD align="left" style="display:{!IF(Contract.consolidation_truck__c==false,'run-in','none')};" >consolidation truck（only available when <br/>
+                        the Total Quantity is below 2 pallets / 出荷<br/>
+                        数が2パレット未満の場合に適用）         □<br/></td>
+<TD align="left" style="display:{!IF(Contract.consolidation_truck__c==true,'run-in','none')};" >consolidation truck（only available when <br/>
+                        the Total Quantity is below 2 pallets / 出荷<br/>
+                        数が2パレット未満の場合に適用）         √<br/></td>
+<TD></td>
+</tr>
+
+                
+                </TBODY>
+</TABLE>
+
+</div>
+<br/>
+ <div  style="display:{!IF(con.Trade_term__c=='CIF','run-in','none')};" >
+<TABLE class="tds" border="1" width="600px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;"  >
+            <TBODY style="font-size:8pt">
+                
+                
+                <tr >
+                    <td align="center" rowspan ="2">項目<br/>ITEM</td>
+                    <td align="center"  >GOODS<br/>商品明細</td>
+                    <td align="center" colspan="2">Quantity 数量</td>
+                    <td align="center" >UNIT PRICE <br/>単価</td>
+                    <td align="center" > Total Amount <br/>金额</td>
+                    <td align="center" rowspan ="2">
+                        Expected Time of Shipment from Chinese Main Port<br/> 中国の主要港にお<br/>ける船積予定日</td>
+                </tr>
+                <tr >
+                    <td align="center"  >Description詳細</td>
+                    <td align="center" >PCS</td>
+                    <td align="center" >W</td>
+                    <td align="center" >(USD/W)</td>
+                    <td align="center" > (USD)</td>
+                    
+                </tr>
+                
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List1">
+                    <apex:variable var="index" value="{!index+1}" />
+                    <TR >
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                        <TD align="center" valign="middle"  ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></TD>
+                        <TD align="center" valign="middle"  ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                       <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0.000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText>
+                        </TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText>
+                        </TD> <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">   {!  TEXT(YEAR(line.Guaranteed_Delivery_Date__c))&" 年" & text(MONTH(line.Guaranteed_Delivery_Date__c))& "月" & text(day(line.Guaranteed_Delivery_Date__c))& "日" }</TD>
+                    </TR>        
+                </apex:repeat>
+                </tbody>
+                
+                
+                <tbody style="display:{!IF(Contract.Transit_Fees__c==0 ,'run-in','none')};">
+                <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >TOTAL合計額</td>
+                <TD ></td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+    <TD align="right" valign="middle" ><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText></TD>
+
+<TD style="WORD-BREAK: break-all; WORD-WRAP: break-word">納品回数：{!Contract.Productreturn__c}</td>
+</TR>
+</TBODY>
+                <tbody style="display:{!IF(Contract.Transit_Fees__c>0 ,'run-in','none')};">
+                <tr>
+                  <TD ></td>
+                <TD >送料</td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+<TD align="right" valign="middle"  >
+<apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText>
+</TD>
+<TD></td>
+                </tr>
+                 <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >TOTAL合計額</td>
+                <TD ></td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+    <TD align="right" valign="middle" ><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c+Contract.Transit_Fees__c}"/></apex:outputText></TD>
+
+<TD style="WORD-BREAK: break-all; WORD-WRAP: break-word">納品回数：{!Contract.Productreturn__c}</td>
+</TR>
+              
+</TBODY>
+
+ </TABLE>
+</div>
+<br/>
+
+ <div  style="display:{!IF(con.Trade_term__c=='EXW','run-in','none')};" >
+<TABLE class="tds" border="1" width="600px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;"  >
+            <TBODY style="font-size:8pt">
+                
+                
+                <tr >
+                    <td align="center" rowspan ="2">項目<br/>ITEM</td>
+                    <td align="center"  >GOODS<br/>商品明細</td>
+                    <td align="center" colspan="2">Quantity 数量</td>
+                    <td align="center" >UNIT PRICE <br/>単価</td>
+                    <td align="center" > Total Amount <br/>金额</td>
+                    <td align="center" rowspan ="2">
+                       Expected Time to Pick up Goods from Seller’s Warehouse<br/> 売主の倉庫からの<br/>商品引取り予定日</td>
+                </tr>
+                <tr >
+                    <td align="center"  >Description詳細</td>
+                    <td align="center" >PCS</td>
+                    <td align="center" >W</td>
+                    <td align="center" >({!Contract.CurrencyIsoCode}/W)</td>
+                    <td align="center" > {!Contract.CurrencyIsoCode}</td>
+                    
+                </tr>
+                
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_Lists">
+                    <apex:variable var="index" value="{!index+1}" />
+                    <TR >
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                        <TD align="center" valign="middle"  ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></TD>
+                        <TD align="center" valign="middle"  ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                       <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0.000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText>
+                        </TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!ROUND(line.Total_Price__c,0)}"/></apex:outputText>
+                        </TD><TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; ;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">   {!  TEXT(YEAR(line.Guaranteed_Delivery_Date__c))&" 年" & text(MONTH(line.Guaranteed_Delivery_Date__c))& "月" & text(day(line.Guaranteed_Delivery_Date__c))& "日" }</TD>
+                    </TR>        
+                </apex:repeat>
+                </tbody>
+                    <tbody style="display:{!IF(Contract.Transit_Fees__c==0 ,'run-in','none')};">
+                <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Subtotal 小計</td>
+                <TD ></td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+<TD align="right" valign="middle"  >
+<apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText>
+</TD>
+<TD rowspan ="3" style="WORD-BREAK: break-all; WORD-WRAP: break-word">納品回数：{!Contract.Productreturn__c}</td>
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Tax税金(10%)</td>
+                <TD rowspan ="2" colspan="4" align="center" valign="Left"><FONT align="center">*法定消費税率引上げの場合、商品の引渡日を基準日と して右記消費税額及び合計額の調整を行う。</FONT></td>
+            
+    <TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};"  value="{0, number, #,##0.00}"><apex:param value="{!0.1*Contract.Total_Price__c}"/></apex:outputText>
+    <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};"  value="{0, number, #,##0}"><apex:param value="{!0.1*ROUND(Contract.Total_Price__c,0)}"/></apex:outputText>
+    </TD>
+
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >TOTAL合計額</td>
+<TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!1.1*Contract.Total_Price__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!1.1*ROUND(Contract.Total_Price__c,0)}"/></apex:outputText>
+
+</TD>
+</tr>
+</tbody>
+                
+                
+                <tbody style="display:{!IF(Contract.Transit_Fees__c>0 ,'run-in','none')};">
+                <tr>
+                  <TD ></td>
+                <TD >送料</td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+<TD align="right" valign="middle"  >
+<apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText>
+</TD>
+<TD></td>
+                </tr>
+                <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Subtotal 小計</td>
+                <TD ></td>
+            <TD ></td>
+        <TD ></td>
+    <TD ></td>
+<TD align="right" valign="middle"  >
+<apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c+Contract.Transit_Fees__c}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+</TD>
+<TD rowspan ="3" style="WORD-BREAK: break-all; WORD-WRAP: break-word">納品回数：{!Contract.Productreturn__c}</td>
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >Tax税金(10%)</td>
+                <TD rowspan ="2" colspan="4" align="center" valign="Left"><FONT align="center">*法定消費税率引上げの場合、商品の引渡日を基準日と して右記消費税額及び合計額の調整を行う。</FONT></td>
+            
+    <TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};"  value="{0, number, #,##0.00}"><apex:param value="{!0.1*(Contract.Total_Price__c+Contract.Transit_Fees__c)}"/></apex:outputText>
+    <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};"  value="{0, number, #,##0}"><apex:param value="{!0.1*ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+    </TD>
+
+</TR>
+  <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD >TOTAL合計額</td>
+<TD align="right" valign="middle" ><apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.00}"><apex:param value="{!1.1*(Contract.Total_Price__c+Contract.Transit_Fees__c)}"/></apex:outputText>
+<apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!1.1*ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+
+</TD>
+</tr>
+</tbody>
+ </TABLE>
+</div>
+<div>
+1.  The sales between the Seller and the Buyer are subject only to the following terms and conditions as stipulated in this Agreement. Any terms and conditions used by Buyer shall not apply. The Goods are Jinko standard modules (Tolerance: 0%~+3%) and shall be covered by [Limited Warranty (REV. 061120-LINEAR-V2)] (available on Jinko official website: www.jinkosolar.com) (the “Jinko Limited Warranty”).
+売主と買主の間の売買は、本契約に明記された条項および条件のみに従う。買主が使用する如何なる条項および条件も適用しない。対象商品は JINKO標準モジュールであり（許容誤差を0から3％とする）、[{!Contract.Baozhengshu__c}]が適用される（ジンコソーラーのオフィシャルウ ェブサイトで確認できる：www.jinkosolar.com）（「JINKO限定保証書」）。
+<br/>
+The Goods shall be subject to Jinko Limited Warranty, stipulated in the attached document, provided, however, that Buyer acknowledges and agrees that if (and for as long as) Buyer is in breach of its payment obligations hereunder, Seller shall have no obligation to comply with Jinko Limited Warranty.
+対象商品は別紙のJINKO限定保証書に従って保証されるが、本契約に基づく買主の支払義務に不履行がありその不履行が治癒されない間は、売主は かかる保証義務を負わないことを買主は了解し且つ同意する。
+<br/>
+The express remedies set forth in this Agreement and in Jinko Limited Warranty by Seller are the sole and exclusive remedies for any breach of representation or warranty. Any other representation or warranties expressed or implied by the Seller, if any, will not be binding, including, without limitation, any warranty of non-infringement, merchantability or fitness for a particular purpose. 
+本契約及び売主によるJINKO限定保証書に明示的に定める救済が、売主によるいずれの表明保証違反に対する唯一かつ排他的な救済である。 （有るとしても）本契約以外において売主が行った明示的または黙示的な表明保証（これには権利の不侵害、商品性または特定用途への適合性に関 する保証 を含むが、これらに限らない。）は、拘束力を持たない。
+<br/>
+<br/>
+2.  All supplied Goods remain the Seller’s property (reserved property) until the Buyer has paid all outstanding amounts payable resulting from their business relationships.
+買主が売主との間の取引から生じた支払時期が到来したすべての支払いを行うまで、売主が供給したすべての対象商品は引き続き売主の所有物であ る（売主の所有権の保留）。
+<br/>
+<br/>
+    3.<table style="white-space: pre-line;">
+    <tr><td>{!DescriptionE}</td></tr>
+    <tr><td>{!Description}</td></tr>
+        </table>
+Both Parties understand and agree that the insurance from China Export &amp; Credit Insurance Corporation (the " Sinosure") is prerequisite condition for Seller to agree on the open account payment term. Should Sinosure refuses to provide or cancels the insurance coverage of any open account payment hereunder after the this Agreement is executed, the Buyer shall make the payment not covered by Sinosure within 3 days after Seller’s written notice, otherwise Seller is entitled to postpone the transportation and/or release of Goods hereunder or terminate this Agreement.
+両当事者は、売主が商品代金の後払いに同意する上で、中国輸出信用保険公司(「Sinosure」)における買主の与信額が充分あることが必須条件であ ることを理解し、かつこれに同意する。本契約の締結後、Sinosureが本契約の何らかの後払いについて、与信の提供を拒否し又は与信額を全部若し くは一部取り消した場合、買主は、売主から書面による通知を受領した日から3日以内に、Sinosureの与信額を超えた部分について支払いを行うもの とする。買主がこれに応じない場合、売主は、対象商品について、発送及び（若しくは）引渡しを延期し、又は本契約を解除する権利を有する。
+<br/>
+Except as agreed otherwise, remittance fees shall be paid by Buyer to its bank directly in addition to the purchase price.
+別段の定めがある場合を除き、買主は対象商品の代金に加えて、振込手数料を直接その銀行に支払うものとする。
+<br/>
+Payment shall be made without any deductions or offset for any reason and will not be considered made until the Seller has a credit entry on its bank account. The Buyer will be responsible for any loss and damages incurred by the Seller arising from its failure to pick up the Goods timely.
+かかる支払いは、いかなる控除または相殺をせずに行うものとし、かつ売主の銀行口座に入金記録が表示されたときに初めて入金がなされたとみな す。買主は対象商品を適時に受領しなかったために生じた売主の如何なる損失および損害についても責任を負うものとする。
+<br/>
+<br/>
+4.  The Seller is entitled to correspondently postpone the transportation and/or the release of Goods in case of any delay in payment under this Agreement and/or in case of any delay in payment under other purchase order(s)/agreement(s)/contract(s) between Buyer/Buyer’s affiliate and Seller/Seller’s affiliate. Default interests shall be charged on delayed payment at the rate of 0.04% per day. Buyer shall be charged for any delay in picking up Goods at 0.04 % of purchase price of the related Goods per day. In the event that such delay of payment and/or delay of pick-up Goods exceeds one week, the Seller is entitled to terminate this Agreement by giving a written notice and retain the payment received （if any）as liquidated damages without prejudice to Seller's other remedies under this Agreement.
+本契約における支払遅延がある場合、及び（または）買主もしくはその関連会社と売主もしくはその関連会社との間で締結した購入注文書、協議書、 契約書における支払遅延がある場合、それに応じて、売主は対象商品の輸送と引渡しを延期することができ、かつ一日あたり支払遅延金額の0.04％ の遅延利息を請求する。買主の受領遅滞の場合、一日あたり受領遅滞している対象商品金額の0.04％の遅延利息を支払うものとする。支払遅延及び （または）受領遅滞が一週間を超えた場合、売主は、書面で通知した上で本契約を解除することができ、既に受領済みの代金（ある場合）を違約金 として保持することができる。なお、これらの権利は売主が本契約に基づきその他の救済を受ける権利に何ら影響を及ぼすものではない。
+<br/>
+<br/>
+5.  If Buyer requests to change the delivery time and/or delivery address after execution of this Agreement, both Parties shall negotiate in good faith to reach an agreement on the updated delivery time and the cost that's might be incurred by Seller related with the change of the delivery time. Both Parties agree that postponement shall be no more than once. Buyer shall not postpone any delivery time, unless at least 3 months prior inform in advance to the Seller and the written agreement (including any additional storage cost (if any) related thereto) in advance between Buyer and Seller. Both Parties agree that an additional storage cost related with the postponed delivery shall be charged on Buyer beginning on the eleventh (11th) day of the extension period at the rate of JPY 30/Single Piece/period or the actual rate incurred by Seller arising from such postponement, whichever is higher. For avoidance of doubt, no change will go into effect unless an amendment is mutually agreed.
+本契約の締結後、買主が納期及び/又は納入場所の変更を求める場合、両当事者は、当該変更及びそれに関連する費用についてまず合意するものと する。ただし、変更は一回限りとする。買主は、3ヶ月前までに売主に通知し、かつ、両当事者がそれ（追加倉庫料（もしあれば）を含む）について 書面にて合意した場合に限り、納期延長をすることができる。売主は買主に対し、延長期間の最初の10日間については納期延長に関する追加倉庫保 管料を請求せず、延長期間の11日目からは納期延長に関する追加倉庫保管料を請求する。納期延長に係る対象商品の追加倉庫保管料の金額は、 (ⅰ)30円/枚/期と(ⅱ)実際に発生した費用のうちいずれか高い金額とする。疑義を避けるため、両当事者が共に認める変更合意がない限り、いかなる変更 も効力が生じないものとする。<br/>
+
+In the event that (i) the Goods are delivered on a day and time other than weekday morning due to Buyer's convenience <br/>
+(ii) the number of shipments required by Buyer for delivery of the Goods under this Agreement exceeds that set forth herein, <br/>
+(iii) the number of destinations for the Goods under this Agreement exceeds that set forth herein, or <br/>
+(iv) any special type of delivery vehicles are needed by Buyer for delivery under DDP beyond what set forth herein, Buyer shall be responsible for the additional transportation costs or fees arising from the aforementioned circumstances. <br/>
+次の場合、買主は追加輸送費を売主に支払うものとする。<br/>
+(ⅰ) 買主の都合で平日午前中以外の日時に納品する場合、<br/>
+(ⅱ) 買主が指定する納品回数が本契約に定めた回数を超えた場合、<br/>
+(ⅲ) 買主が指定する納入場所の数量が本契約に定める数量を超えた場合、又は<br/>
+(ⅳ) DDP取引条件の場合、買主が特殊なトラックによる配送を依頼した場合。<br/>
+<br/>
+
+6.  This Agreement shall be construed under and governed by the laws of Japan. Any dispute, controversy or claim arising out of or relating to this Agreement, including the existence, validity, interpretation, performance, breach or termination thereof or any dispute regarding non-contractual obligations arising out of or relating to it shall be subject to exclusive jurisdiction of Tokyo District Court.  
+本契約は日本国法に基づき解釈され、同法を準拠法とする。本契約に起因し、もしくは関連する意見の相違、紛争もしくは請求（本契約の存在、 効力、解釈、履行、契約違反もしくは終了を含む）、または本契約に起因し、もしくは関連する非契約義務に関する紛争については、東京地方裁判 所を専属的合意管轄裁判所とする。
+<br/>
+<br/>
+7.    A Party in breach of this Agreement shall be liable to the other Party for all normal damages and losses arising from that breach. However, neither Party shall be liable for any special, incidental, indirect damages or for any loss of profit, feed-in tariff, subsidies, business, revenue, anticipated savings or data and in no event shall the total liability of either party exceed the total purchase price (excluding tax) described or should have been described in corresponding Purchase Order, except where the damage and loss is caused by fraud, gross negligence or wilful misconduct by the defaulting Party.
+本契約に違反した当事者は相手方当事者に対してその違反による通常の損害・損失を賠償し、何れの当事者も特別な、付随的な、間接的な損害につ いては賠償の責めを負わない。また、逸失利益、固定価格買取制度、補助金、営業、収益、期待された貯蓄またはデータの損失についても、賠償の 責めを負わない。違反当事者の詐欺、重過失または故意によって当該損失や損害が発生した場合を除いて、如何なる状況に於いてもかかる賠償額の 合計は対応する注文書又は発注書に記載されている又は記載されるべき購入価格（税別）を上回らないものとする。
+<br/>
+<br/>
+8.  Upon request by the Seller, the Buyer shall collect and furnish to the Seller the pictures and other information related to the location and capacity of the project in which the Goods hereunder are to be installed. Buyer hereby grants Seller the right to use such pictures and project information in its external promotion activities worldwide.
+売主の要請により、買主は、本契約に基づき対象商品が据え置かれる場所や関連プロジェクトの能力に関連する写真やその他の情報を収集し、これ を売主に提供するものとする。買主は、かかる写真やプロジェクトに関する情報を全世界での営業活動において用いる権利を売主に付与する。
+<br/>
+<br/>
+9.  Neither Party shall be liable for failure to perform its obligations under this Agreement if such failure results from circumstances beyond such Party’s reasonable control. Therefore, there is no right to claim any indemnification for such a force majeure event which includes fire, flood, typhoon, earthquake and other unforeseeable and unavoidable events.
+For avoidance of doubt, the following events are deemed NOT to be 'Force Majeure':
+いずれの当事者も、本契約に基づく義務の不履行について、当該不履行が当該当事者の合理的支配を超える事由により生じたものである場合は責任 を負わない。従って、（火災、洪水、台風、地震その他の予想できず、かつ回避できない事由を含む）不可抗力事由を理由として当事者は補償を求 める権利を有しない。疑義を避けるため、下記の事由は不可抗力事由とみなさない。
+<br/>
+(i) strikes or other employee disturbances affecting any party;<br/>
+(ii)    economic hardship or change of government policies(including change in subsidy, duties and tariffs); <br/>
+(iii)   shortages of manpower; <br/>
+(i) ストライキまたは当事者に影響を及ぼす従業員の騒乱<br/>
+(ii)    経済情勢悪化または補助金、租税、関税の変更といった政府の方針変更<br/>
+(iii)   人員不足<br/>
+<br/>
+The affected Party will notify the other Party as soon as reasonably practicable but not beyond  10 working days after the force majeure event occurring, and use reasonable endeavors to mitigate the effect of the event. 
+不可抗力事由の影響を受ける当事者は、合理的に速やかに（ただし、不可抗力事由の発生から10業務日を超えない）相手方当事者に通知し、かつそ の悪影響を軽減する合理的努力を行う。
+<br/>
+In case, the Force Majeure occurrence continues for a prolonged period more than 10 weeks, then the Seller or the Buyer shall have the right to terminate this Agreement.
+<br/>
+不可抗力事由の発生が10週間以上の長期間継続する場合、売主または買主は、本契約を解除することができる。
+<br/>
+<br/>
+10. This Agreement together with its appendix shall constitute the entire agreement of the Parties with respect to the subject matter herein, and shall supersede all other prior agreements, understandings, and negotiations, both written and oral, between the Parties hereto.  
+本契約およびその別紙は、双方当事者の本契約の主題に関する完全なる合意を構成するものであり、双方当事者間のいかなる事前の書面または口頭 によるその他の合意、了承および協議にとって代わるものとする。
+<br/>
+<br/>
+11.  The Buyer shall purchase all the Goods set forth above and pay the price accordingly, failing of which Buyer shall pay 14.6% of the total price of unpurchased quantity and/or payable price as liquidated damages without prejudice to Seller’s other remedies under this Agreement.
+買主は上記の対象商品を全量購入の上その代金を支払うものとし、支払い期限までに売主の指定口座に於いて代金の全額入金が確認出来ない場合、 未購入分の商品代金総額及び/又は未入金代金額の14.6％を違約金として支払うものとする。但し、かかる違約金の支払いは本契約に基づく売主の その他の救済を受ける権利に何ら影響を及ぼすものではない。
+<br/>
+<br/>
+12. This Agreement may be delivered to each Party by facsimile or by email (with the Agreement and signatures imaged in a standard format such as PDF or TIF) and such delivery shall be effective and binding. The Parties acknowledge and agree that after execution and delivery by facsimile or email, additional copies of this Agreement may be circulated for signature so that each Party will ultimately retain a fully executed original. The circulation of the additional copies for original signatures shall in no way diminish or affect the binding effect of the Agreement previously signed in counterparts and delivered by facsimile or email.          
+本契約は、ファクシミリまたは電子メールで各当事者に送付することができ（PDFまたはTIFの標準フォーマットで契約書および調印の印影を添付）、 かかる送付は有効であり、かつ拘束力を有するものとする。双方当事者は、ファクシミリまたは電子メールによる送付を行った後、追加で調印用の 写しを回覧し、各当事者が最終的に全ての調印を終えた本契約書原本を保有できるようにすることを了解し、かつ同意する。かかる追加の調印のた めの写しの回覧は、いかなる意味でも、それ以前に副本に調印し、かつファクシミリまたは電子メールで送付した本契約の拘束力を弱め、又は影響 を及ぼすものではない。
+<br/>
+<br/>
+13. This Agreement shall be executed both in English and Japanese (if any). In the event of any inconsistency or difference between the two versions, the English language version shall prevail in all respects.
+本契約は、英語および日本語（ある場合）で締結する。両言語の文面に不一致または相違がある場合、英語版があらゆる面において優先する。
+<br/>
+<br/>
+14. This Agreement takes effect from the Execution Date specified at the beginning hereof. For avoidance of doubt, this Agreement is not binding on Seller if it's signed solely by Buyer. Seller has right to reject any payment from Buyer that's made before this Agreement goes into effect. The Seller shall be entitled to reject this Agreement or postpone the delivery time of Goods if the Buyer doesn't sign and return it before {!Month1},{!Day1},{!Year1}
+本契約は冒頭に記載する締結日から効力を有する。疑義を避けるため、買主だけが調印したとしても、本契約は売主に対し拘束力を持たない。本契 約の発効前においては、売主は買主からの如何なる支払いについても拒絶する権利を有する。買主が{!Year1}年{!Month1}月{!Day1}日までに本契約に調印し返送しなか った場 合、売主は本契約を拒否し、または該当対象商品の納期を延期する権利を有する。
+
+</div>
+<br/><br/><br/>
+<div>
+    The recommended signature block is the below:<br/>
+以下は調印頁である。
+
+
+<TABLE border="1" width="600px;" style="word-break:break-all;border-collapse:collapse;margin:5px;border: solid black;margin: auto;white-space: pre-line;"  >
+            <TBODY style="font-size:8pt">
+                
+                
+                <tr >
+                    
+                    <td align="center"  >Company Name:<br/>会社名称：</td>
+                    <td align="center" >ジンコソーラージャパン株式会社</td>
+                    <td align="center" >{!Contract.BuyerAccount__r.name}</td>
+                    
+                </tr>
+                <tr >
+                    <td align="center"  >Address:<br/>住所：</td>
+                    <td align="center" >東京都中央区京橋二丁目<br/>2番1号京橋エドグラン9階</td>
+                    <td align="center">
+                     
+                      <p style="white-space: pre-line;word-wrap: break-all;">{!con.BuyerAccount__r.BillingState}&nbsp;{!con.BuyerAccount__r.BillingCity}&nbsp;{!con.BuyerAccount__r.BillingStreet}</p> 
+               </td>
+                    
+                </tr>
+                <tr >
+                    <td align="center"  >Authorized by:<br/>記名捺印：</td>
+                    <td align="center" >代表取締役 　李仙德     &nbsp;&nbsp;&nbsp;印 </td>
+                    <td align="center" style="display:{!IF(Contract.Contact_Name__c!=null,'run-in','none')};">{!Contract.Contact_Name__c}     印</td>
+                     <td align="center" style="display:{!IF(Contract.Contact_Name__c==null,'run-in','none')};">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     印</td>
+                   
+                </tr>
+                
+               
+
+</TBODY>
+ </TABLE>
+    </div>
+</html>
+</apex:page>

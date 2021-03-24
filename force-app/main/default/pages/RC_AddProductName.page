@@ -1,0 +1,36 @@
+<apex:page title="申请产品选型" standardController="leanx__pm_Project__c" extensions="RC_AddproductAppCtrl" 
+           sidebar="false" >
+    <apex:pageMessages />
+    <div >
+        <pre align="left" style="font-size:15px ;color:red ;"><strong>请选择产品类型</strong></pre>
+    </div>
+    <apex:form >
+        
+        <apex:commandButton value="添加产品" action="{!ApplyNext}" />
+        <apex:commandButton value="返回" action="{!toback}" />
+        <apex:commandButton value="取消" onclick="redirect('{!$CurrentPage.parameters.Id}')"/>
+         <apex:pageBlock title="产品选择" id="pgbk"  mode="Edit" >
+           <apex:pageBlockTable value="{!paList}" var="line" >
+            <apex:column >
+                        <apex:inputCheckbox value="{!line.IsOrNotCheck__c}" />
+                    </apex:column>
+                    <apex:column headerValue="名字">
+                           {!line.name}
+                    </apex:column>
+          </apex:pageBlockTable>
+             </apex:pageBlock>
+    </apex:form>
+
+    <script>
+      /* Redirect */
+      function redirect(objId) {
+        if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+          window.location.href = '/' + objId
+        } else {
+          if (sforce && sforce.one) {
+            sforce.one.navigateToSObject(objId)
+          }
+        }
+      }
+    </script>
+</apex:page>

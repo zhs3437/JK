@@ -1,0 +1,47 @@
+<apex:page standardController="Opportunity" showHeader="false" sidebar="false" extensions="OpprortuntiyHeaderBarCtrl2" >
+   <html xmlns="http://www.w3.org/1999/xhtml">
+       <head>
+<title>无标题文档</title>
+
+</head>
+       <body>
+    
+        <BR/>
+  
+ <div style="display:{!IF(judgment,'run-in','none')};">
+        <pre align="center" style="font-size:15px ;color:red ;">当前业务机会为{!opp.RecordType.Name}类型，无法创建合同</pre>
+        <pre align="center" style="font-size:15px ;color:red ;">This Opporunity is {!opp.RecordType.Name} type，so you can't create Contract</pre>
+    </div>
+    <div style="display:{!IF(judgment,'none','run-in')};">
+           <pre align="center" style="font-size:15px ;color:red ;">如果生成合同后修改了业务机会数据,请点击合同中的 Refresh Data 按钮 更新数据</pre>
+ <pre align="center" style="font-size:15px ;color:red ;">Opportunity information is not same as Contract, Please click on button [refresh data] in contract page.
+</pre>
+
+ <pre align="center" style="font-size:15px ;color:red ;display:{!IF(Opp.Region__c=='North Asia' && opp.Warranty_Insurance__c=='PG' ,'run-in','none')};">10MW以下案件原則PG保険選択しないでください。どうしても必要な場合には、0.5％単価アップしてください。</pre>
+
+<pre align="center" style="font-size:15px ;color:red ;display:{!IF(opp.Total_MW__c>5 && opp.Sales_type__c=='DG Market' ,'run-in','none')};">Please confirm if the contract is DG Market type</pre>
+
+ <pre align="center" style="font-size:15px ;color:red ;display:{!IF(opp.Roll_up__c>0 ,'run-in','none')};">此业务机会包含佣金申请.This Opportunity includ Commission.</pre>
+<div style="display:{!IF( opp.Destination_Country__c!='VietNam','run-in','none')};">
+  <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flag==true && (opp.RecordType.Name!='Japan' && opp.RecordType.Name!='USA') ,'run-in','none')};">您当前是快速流程  This is fast PAPI Procedure</pre>
+<pre align="center" style="font-size:15px ;color:red ;display:{!IF(flag==false && (opp.RecordType.Name!='Japan' && opp.RecordType.Name!='USA') ,'run-in','none')};">您当前非快速流程  This is Normal PAPI Procedure</pre>
+
+    <pre align="center" style="display:{!IF(opp.RecordType.Name=='Japan' || opp.RecordType.Name=='USA'||flag==true,'none','run-in')};color:red"> {!text}</pre>
+
+</div>
+<div style="display:{!IF( opp.Destination_Country__c=='VietNam','run-in','none')};">
+  <pre align="center" style="font-size:15px ;color:red ;display:{!IF((opp.vn_fast__c==true || flag==true )&& opp.Total_MW__c<3 ,'run-in','none')};">您当前是快速流程  This is fast PAPI Procedure</pre>
+<pre align="center" style="font-size:15px ;color:red ;display:{!IF(opp.vn_fast__c==false && flag==false,'run-in','none')};">您当前非快速流程  This is Normal PAPI Procedure</pre>
+
+
+</div>
+
+</div>
+<br/>
+<div>
+    <pre align="center" style="font-size:24px ;color:#1265bb ;">请注意，业务机会中的毛利率等级可能存在误差，仅供参考。</pre>
+     <pre align="center" style="font-size:24px ;color:#1265bb ;">Please note the margin grade in OPP might not be accurate and it's for reference only. </pre>
+</div>
+       </body>
+    </html>
+</apex:page>

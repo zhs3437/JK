@@ -1,0 +1,1150 @@
+<apex:page standardController="Contract" language="ja" 
+           extensions="PA_Japan_Ctrl" sidebar="false"
+           showHeader="false" standardStylesheets="false" renderAs="PDF">
+    
+    <head>
+        <style> body { font-family: Arial Unicode MS; } </style>
+        <style type="text/css">
+            @page
+            {       size: A4;
+            margin : 20pt .2in .5in .2in;
+            @top-center {
+            content : element(header);
+            }
+            @bottom-center {
+            content: " (  " counter(page) "  /  " counter(pages) "  )";
+            }
+            }
+            @font-face{
+            font-family: "MS Mincho";
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+            }
+            .page-break {
+            display:block;
+            page-break-after:always;
+            }
+            div.header {
+            position : running(header) ;
+            }
+            body {
+            font-family: 'MS Mincho';
+            }
+            table{
+            width:560pt;
+            }
+            .xl864
+            {
+            text-align:center;
+            vertical-align:bottom;
+            border-top:none;
+            border-right:none;
+            border-bottom:1.0pt solid black;
+            border-left:none;}
+            .xl792
+            {
+            font-size:10.0pt;
+            font-weight:700;
+            font-family:'MS Mincho';
+            text-align:right;
+            vertical-align:top;}
+            .xl866
+            {
+            font-family: MS Mincho;
+            font-size:20.0pt;
+            font-weight:700;
+            text-align:center;
+            vertical-align:bottom;
+            border-top:none;
+            border-right:none;
+            border-bottom:5.0pt double;
+            border-left:none;}
+            .xl867
+            {
+            font-size:14.0pt;
+            font-weight:700;
+            text-align:center;
+            vertical-align:bottom;
+            white-space:nowrap;
+            border-bottom:5.0pt solid;
+            }
+            .xl869
+            {
+            font-size:14.0pt;
+            font-weight:700;
+            text-align:center;
+            vertical-align:bottom;
+            border-top:none;
+            border-right:none;
+            border-bottom:none;
+            border-left:none;
+            white-space:nowrap;
+            }
+            
+            .xlall
+            {
+            vertical-align:center;
+            border-top:1.0pt solid;
+            border-right:1.0pt solid;
+            border-bottom:1.0pt solid;
+            border-left:1.0pt solid;
+            }
+            .akl{
+            test-align:center;
+            }
+            .ol li{list-style:none;}
+           .MsoListParagraphCxSpMiddle{
+            
+            }
+        </style>
+    </head>
+    <body>
+        
+        <table border="1" cellpadding="0" cellspacing="0" style="text-align:center;">
+            <tbody>
+                <tr>
+                    <td style="width:144px"><apex:image id="theImage" value="{!$Resource.logo}" style="height:84px; width:130px" /></td>
+                    <td style="width:383px">
+                        <p><strong>PURCHASE ORDER</strong></p>
+                        <p><strong> EXECUTION DATE: {! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</strong></p>
+                        
+                    </td>
+                    <td style="width:137px">
+                        <p class="pcenter"><strong>NO. [{!Contract.Contract_NO__c}]</strong></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p>This Purchase Order is hereby entered into by and between Seller and Buyer, as of the Execution Date. Seller and Buyer are hereinafter sometimes referred to each as a &ldquo;Party&rdquo; and collectively as the &ldquo;Parties&rdquo;. The Parties hereby agree to the following terms with respect to this Purchase Order:</p>
+        
+        <ol>
+            <li style="list-style:none;"><strong>1&nbsp; DEFINITIONS</strong></li>
+        </ol>
+        <apex:outputPanel rendered="{!(Contract.Region__c=='EU(Union)' || Contract.Region__c=='EU(Non-Eu)' || buyer.Country__c =='Italy' )&& Contract.RecordType.Name=='1MW Global Standard Contract'}">
+            <table border="1" cellpadding="0" cellspacing="0" >
+                <tbody>
+                    <tr style="text-align:center;">
+                        <td style="width:20px"><strong>#</strong>
+                        </td>
+                        <td style="width:370px"><strong>TERM</strong>
+                        </td>
+                        <td style="width:370px"><strong>DEFINITION</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px;" align="center" >a
+                        </td>
+                        <td style="width:30px">
+                            Seller
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.SELLER__c}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px;" align="center" >b
+                        </td>
+                        <td style="width:30px">
+                            Seller&rsquo;s VAT
+                        </td>
+                        <td style="width:30px">
+                            <apex:outputText value="{!SellerVATNO}" />            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center" >c
+                        </td>
+                        <td style="width:30px">Seller&rsquo;s Registered Address
+                        </td>
+                        <td style="width:30px"> 
+                            {!Address}  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center" >d
+                        </td>
+                        <td style="width:30px">Seller&rsquo;s Contact Information
+                        </td>
+                        <td style="width:30px">Contact Person: {!Contract.Owner.name}
+                            Tel: <apex:outputText rendered="{!Contract.Owner.mobilePhone!=''}">{!Contract.Owner.mobilePhone}</apex:outputText>
+                            <apex:outputText rendered="{!Contract.Owner.Phone=''}">{!Contract.Owner.mobilePhone}</apex:outputText>
+                            E-mail: {!Contract.Owner.Email} 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">e
+                        </td>
+                        <td style="width:30px">Buyer
+                        </td>
+                        <td style="width:30px">
+                            <apex:outputText value="{!Contract.buyer1__c}" />  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">f
+                        </td>
+                        <td style="width:30px">Buyer&rsquo;s VAT
+                        </td>
+                        <td style="width:30px">
+                            <apex:outputText value="{!Contract.BuyerAccount__r.VAT_NO__c}" />  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">g
+                        </td>
+                        <td style="width:30px">
+                            Buyer&rsquo;s Address
+                        </td>
+                        <td style="width:30px">
+                             <p class="pcenter">{!Contract.BuyerAccount__r.BillingStreet}&nbsp;{!Contract.BuyerAccount__r.BillingCity}&nbsp;{!Contract.BuyerAccount__r.BillingState}&nbsp;{!Contract.BuyerAccount__r.BillingCountry}&nbsp; </p>
+                           <!-- <p class="pcenter">{!buyerAddress}&nbsp;</p>  -->
+                        </td>
+                    </tr>
+                          <tr style="display:{!IF( Contract.delivery_note_CI__c !='','run-in','none')};">
+                <td align="center">g2</td>
+                <td>Buyer’s Order Reference</td>
+               <td >
+                    {!Contract.delivery_note_CI__c}
+                </td>
+
+             </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            h
+                        </td>
+                        <td style="width:30px">
+                            Buyer&rsquo;s Contact Information
+                        </td>
+                        <td style="width:30px">
+                            Contact Person:{!Contract.Contact_Name__c}<br/> 
+                            
+                            Tel:{!Contract.BuyerAccount__r.Phone}<br/>
+                            
+                            E-mail:{!Contract.BuyerAccount__r.Company_Email__c}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            i
+                        </td>
+                        <td style="width:30px">
+                            Payment Term
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.Payment_Term_Description__c}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            j
+                        </td>
+                        <td  style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">
+                            Trade Term (per Incoterms&reg; 2010 edition)
+                        </td>
+                         <td  style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">
+                            Trade Term (per Incoterms&reg; 2020 edition)
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.Trade_term__c}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            k
+                        </td>
+                        <td style="width:30px">
+                            Delivery Point
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.Destination__c}
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            l
+                        </td>
+                        <td style="width:30px">
+                            General Terms and Conditions 
+                        </td>
+                        <td style="width:30px">
+                            Attached as Exhibit A
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            m
+                        </td>
+                        <td style="width:30px">
+                            Warranty
+                        </td>
+                        <td style="width:30px">
+                            Attached as Exhibit B
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!(Contract.Region__c!='EU(Union)' && Contract.Region__c!='EU(Non-Eu)' && buyer.Country__c !='Italy') || Contract.RecordType.Name !='1MW Global Standard Contract'}">
+            <table border="1" cellpadding="0" cellspacing="0" >
+                <tbody>
+                    <tr style="text-align:center;">
+                        <td style="width:20px"><strong>#</strong>
+                        </td>
+                        <td style="width:370px"><strong>TERM</strong>
+                        </td>
+                        <td style="width:370px"><strong>DEFINITION</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px;" align="center" >a
+                        </td>
+                        <td style="width:30px">
+                            Seller
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.SELLER__c}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center" >b
+                        </td>
+                        <td style="width:30px">Seller&rsquo;s Registered Address
+                        </td>
+                        <td style="width:30px"> 
+                            {!Address}  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center" >c
+                        </td>
+                        <td style="width:30px">Seller&rsquo;s Contact Information
+                        </td>
+                        <td style="width:30px">Contact Person: {!Contract.Owner.name}<br/>
+                            Tel: <apex:outputText rendered="{!Contract.Owner.mobilePhone!=''}">{!Contract.Owner.mobilePhone}</apex:outputText>
+                            <apex:outputText rendered="{!Contract.Owner.Phone=''}">{!Contract.Owner.mobilePhone}</apex:outputText><br/>
+                            E-mail: {!Contract.Owner.Email} 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">d
+                        </td>
+                        <td style="width:30px">Buyer
+                        </td>
+                        <td style="width:30px">
+                            <apex:outputText value="{!Contract.buyer1__c}" />  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">e
+                        </td>
+                        <td style="width:30px">
+                            Buyer&rsquo;s Address
+                        </td>
+                        <td style="width:30px">
+                         {!Contract.BuyerAccount__r.BillingStreet}&nbsp;{!Contract.BuyerAccount__r.BillingCity}&nbsp;{!Contract.BuyerAccount__r.BillingState}&nbsp;{!Contract.BuyerAccount__r.BillingCountry}&nbsp; 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            f
+                        </td>
+                        <td style="width:30px">
+                            Buyer&rsquo;s Contact Information
+                        </td>
+                        <td style="width:30px">
+                            Contact Person: {!Contract.Contact_Name__c}<br/> 
+                            
+                            Tel: {!Contract.BuyerAccount__r.Phone}<br/>
+                            
+                            E-mail: {!Contract.BuyerAccount__r.Company_Email__c}<br/>
+                            <!--
+                             E-mail: {!Contract.BuyerAccount__r.Other_Email_1__c}<br/>
+                             E-mail: {!Contract.BuyerAccount__r.Other_Email_2__c}<br/>
+                             -->
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            g
+                        </td>
+                        <td style="width:30px">
+                            Payment Term
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.Payment_Term_Description__c}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            h
+                        </td>
+                         <td  style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">
+                            Trade Term (per Incoterms&reg; 2010 edition)
+                        </td>
+                         <td  style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">
+                            Trade Term (per Incoterms&reg; 2020 edition)
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.Trade_term__c}
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody style="display:{!IF( yuenan =='0','run-in','none')};">
+                    <tr>
+                        <td style="width:30px" align="center">
+                            i
+                        </td>
+                        <td style="width:30px">
+                            Delivery Point
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.Delivery_point__c}
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            j
+                        </td>
+                        <td style="width:30px">
+                            General Terms and Conditions
+                        </td>
+                        <td style="width:30px">
+                            Attached as Exhibit A
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            k
+                        </td>
+                        <td style="width:30px">
+                            Warranty
+                        </td>
+                        <td style="width:30px">
+                            Attached as Exhibit B
+                        </td>
+                    </tr>
+                   </tbody>
+                    
+                    
+                    
+                    <tbody style="display:{!IF( yuenan =='1','run-in','none')};">
+                         <tr>
+                        <td style="width:30px" align="center">
+                            i
+                        </td>
+                        <td style="width:30px">
+                            Loading Port
+                        </td>
+                        <td style="width:30px">
+                            China main port
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            j
+                        </td>
+                        <td style="width:30px">
+                            Delivery Point
+                        </td>
+                        <td style="width:30px">
+                            {!Contract.Delivery_point__c}
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            k
+                        </td>
+                        <td style="width:30px">
+                            General Terms and Conditions
+                        </td>
+                        <td style="width:30px">
+                            Attached as Exhibit A
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:30px" align="center">
+                            m
+                        </td>
+                        <td style="width:30px">
+                            Warranty
+                        </td>
+                        <td style="width:30px">
+                            Attached as Exhibit B
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+        </apex:outputPanel>
+        <ol>
+            <li style="list-style:none;"><strong>2 &nbsp; MODULES</strong></li>
+        </ol>
+        
+        <a name="_GoBack"></a>
+        
+        <table border="1" cellpadding="0" cellspacing="0" style="text-align:center;">
+            <tbody>
+                <tr>
+                    <td rowspan="2" style="width:99px">
+                        <strong>ITEM</strong>
+                    </td>
+                    <td rowspan="2" style="width:96px">
+                        <strong>MODULE</strong>
+                        
+                        <strong>DESCRIPTION</strong>
+                    </td>
+                    <td colspan="2" style="width:178px">
+                        <strong>QUANTITY</strong>
+                    </td>
+                    <td rowspan="2" style="width:122px">
+                        <strong>UNIT PRICE</strong><strong> ({!Contract.CurrencyIsoCode}/W)</strong>
+                    </td>
+                    <td rowspan="2" style="width:103px">
+                        <strong>PURCHASE PRICE</strong>
+                        
+                        <strong>(</strong><strong>{!Contract.CurrencyIsoCode})</strong>
+                    </td>
+                    <td rowspan="2" style="width:96px">
+                        <strong>GUARANTEED DELIVERY DATE </strong>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="width:87px">
+                        <strong>PIECES</strong>
+                    </td>
+                    <td style="width:91px;display:{!IF( Contract.Destination_Country__c !='Vietnam','run-in','none')};">
+                        <strong>MW</strong>
+                    </td>
+                     <td style="width:91px;display:{!IF( Contract.Destination_Country__c =='Vietnam','run-in','none')};">
+                        <strong>W</strong>
+                    </td>
+                </tr>
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                    <apex:variable var="index" value="{!index+1}" />
+                    <tr style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};" >
+                        <td style="width:99px">
+                            {!index}
+                        </td>
+                        <td style="width:96px;display:{!IF( Contract.Destination_Country__c !='Vietnam','run-in','none')};">
+                            {!line.Product_Name__c}
+                        </td>
+                        <td style="width:96px;display:{!IF( Contract.Destination_Country__c =='Vietnam','run-in','none')};">
+                            SOLAR MODULE  {!line.Product_Name__c}
+                        </td>
+                        <td style="width:87px">
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText>
+                        </td>
+                        <td style="width:91px;display:{!IF( Contract.Destination_Country__c !='Vietnam','run-in','none')};">
+                            {!line.Total_MW__c}
+                        </td>
+                        <td style="width:91px;display:{!IF( Contract.Destination_Country__c =='Vietnam','run-in','none')};">
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Total_MW__c*1000000}"/></apex:outputText>
+                            
+                        </td>
+                        <td style="width:122px">
+                            {!line.Unit_Price__c}
+                        </td>
+                        <td style="width:103px">
+                            <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText>
+                        </td>
+                        <td style="width:96px; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')}">
+                            {! TEXT(DAY(line.Guaranteed_Delivery_Date__c)) & " " & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & ", " &  TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                        <td style="width:96px; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')}">
+                            {! CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(line.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                    </tr>
+
+                    <tr style="display:{!IF(Contract.PFI_Enadble__c =true ,'run-in','none')};">
+                        <td style="width:99px">
+                            {!index}
+                        </td>
+                        <td style="width:96px">
+                            {!line.Product_Name__c}
+                        </td>
+                        <td style="width:87px">
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText>
+                        </td>
+                        <td style="width:91px">
+                            {!line.Total_MW__c}
+                        </td>
+                        <td style="width:122px">
+                            <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c}"/></apex:outputText>
+                        </td>
+                        <td style="width:103px">
+                            <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.FOB_Unit_Price__c * line.Unit_WM__c * line.Quantity__c}"/></apex:outputText>
+                        </td>
+                        <td style="width:96px; display:{!IF(contract.Destination_Country__c=='Thailand','run-in','none')}">
+                            {! TEXT(DAY(line.Guaranteed_Delivery_Date__c)) & " " & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & ", " &  TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                        <td style="width:96px; display:{!IF(contract.Destination_Country__c=='Thailand','none','run-in')}">
+                            {! CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(line.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                    </tr>
+                </apex:repeat>
+
+                <tr style="display:{!IF(Contract.PFI_Enadble__c =true,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="4">
+                    Freight 
+                </td>
+  
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+
+        
+                    <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!fright*Contract.Total_W__c}"/></apex:outputText>
+                </td>
+                   <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                
+            </tr>
+
+             <tr style="display:{!IF(Contract.PFI_Enadble__c =true && Contract.iscif__c=true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="4">
+                    Insurance(For CIF)
+                </td>
+             
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                               
+                  
+                   <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!Contract.Insurance_for_CIF__c}"/></apex:outputText>
+                </td>
+                   <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+            </tr>
+
+
+                <tr>
+                    <td style="width:99px">
+                       <apex:outputText rendered="{!IF(Contract.GST_Added__c,true,false)}"> [GST] </apex:outputText>
+                       <apex:outputText rendered="{!IF(Contract.GST_Added__c,false,true)}"> [Tax] </apex:outputText>
+                    </td>
+                    <td style="width:96px">
+                        <apex:outputText value="{0, number, #,##0}%" rendered="{!!ISNULL(Contract.Tax_Rate__c)}"><apex:param value="{!Contract.Tax_Rate__c}"/></apex:outputText>
+                    </td>
+                    <td style="width:87px">
+                        
+                    </td>
+                    <td style="width:91px">
+                        
+                    </td>
+                    <td style="width:122px">
+                        
+                    </td>
+                    <td style="width:103px">
+                      <!--  <apex:outputText value="{0, number, #,##0.0000}" rendered="{!!ISNULL(Contract.Tax_Rate__c)}"><apex:param value="{!Contract.Tax__c}"/></apex:outputText>  -->
+                        <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,true,false)}"><apex:param value="{!Contract.GST_Tax__c}"/>
+                        </apex:outputText>
+                        <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,false,true) && !ISNULL(Contract.Tax_Rate__c)}"><apex:param value="{!Contract.Tax__c}"/></apex:outputText>
+                    </td>
+                    <td style="width:96px">
+                        
+                    </td>
+                </tr> 
+                  <tr style="display:{!IF(Contract.PFI_Enadble__c =true &&   Contract.ISCIF__c=false,'run-in','none')};">
+             <td style="height:26px; width:99px">
+                        <strong>Total</strong>
+                    </td>
+                    <td style="height:26px; width:96px">
+                        
+                    </td>
+                    <td style="height:26px; width:87px">
+                        <strong>
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText> 
+                        </strong>
+                    </td>
+                     <td style="width:91px;display:{!IF( Contract.Destination_Country__c !='Vietnam','run-in','none')};">
+                            {!Contract.Total_MW__c}
+                        </td>
+                        <td style="width:91px;display:{!IF( Contract.Destination_Country__c =='Vietnam','run-in','none')};">
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_MW__c*1000000}"/></apex:outputText>
+                            
+                        </td>
+                    <td style="height:26px; width:122px">
+                        
+                    </td>
+                    <td style="height:26px; width:103px"> 
+                        <strong>
+                            <apex:outputText value="{0, number, #,##0.0000}" > <apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+fright*Contract.Total_W__c}"/></apex:outputText> 
+                        </strong>
+                    </td>
+                    <td style="height:26px; width:96px">
+                    </td>
+                       
+ 
+
+            </tr>
+
+
+                <tr style="display:{!IF(Contract.PFI_Enadble__c =true  && Contract.iscif__c=true ,'run-in','none')};" >
+                    <td style="height:26px; width:99px">
+                        <strong>Total</strong>
+                    </td>
+                    <td style="height:26px; width:96px">
+                        
+                    </td>
+                    <td style="height:26px; width:87px">
+                        <strong>
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText> 
+                        </strong>
+                    </td>
+                  <td style="width:91px;display:{!IF( Contract.Destination_Country__c !='Vietnam','run-in','none')};">
+                            {!Contract.Total_MW__c}
+                        </td>
+                        <td style="width:91px;display:{!IF( Contract.Destination_Country__c =='Vietnam','run-in','none')};">
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_MW__c*1000000}"/></apex:outputText>
+                            
+                        </td>
+                    <td style="height:26px; width:122px">
+                        
+                    </td>
+                    <td style="height:26px; width:103px"> 
+                        <strong>
+                            <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+Contract.Insurance_for_CIF__c+fright*Contract.Total_W__c}"/></apex:outputText> 
+                        </strong>
+                    </td>
+                    <td style="height:26px; width:96px">
+                    </td>
+                </tr>
+
+                <tr  style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};">
+                    <td style="height:26px; width:99px">
+                        <strong>Total</strong>
+                    </td>
+                    <td style="height:26px; width:96px">
+                        
+                    </td>
+                    <td style="height:26px; width:87px">
+                        <strong>
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText> 
+                        </strong>
+                    </td>
+                     <td style="width:91px;display:{!IF( Contract.Destination_Country__c !='Vietnam','run-in','none')};">
+                            {!Contract.Total_MW__c}
+                        </td>
+                        <td style="width:91px;display:{!IF( Contract.Destination_Country__c =='Vietnam','run-in','none')};">
+                            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_MW__c*1000000}"/></apex:outputText>
+                            
+                        </td>
+                    <td style="height:26px; width:122px">
+                        
+                    </td>
+                    <td style="height:26px; width:103px"> 
+                        <strong>
+                            <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,false,true)}"><apex:param value="{!Contract.Total_Price_Tax__c}"/></apex:outputText> 
+                           <apex:outputText value="{0, number, #,##0.0000}" rendered="{!IF(Contract.GST_Added__c,true,false)}"><apex:param value="{!Contract.Total_Price_GST_India__c}" />
+                            </apex:outputText>
+                        </strong>
+                    </td>
+                    <td style="height:26px; width:96px">
+                    </td>
+                </tr>
+
+
+            </tbody>
+        </table>
+        <apex:outputPanel rendered="{!IF(items<5,true,false)}">      
+            <div style="page-break-after:always;">   
+            </div>  
+        </apex:outputPanel>  
+        <ol>
+            <li style="list-style:none;"><strong>
+                3 &nbsp; GOVERNING LAW AND DISPUTE&nbsp; RESOLUTION</strong></li>
+        </ol>
+        
+        <table border="1" cellpadding="0" cellspacing="0" style="text-align:center;">
+            <tbody >
+                <tr>
+                    <td style="width:42px">
+                        <strong>#</strong>
+                    </td>
+                    <td style="width:270px">
+                        <strong>TERM</strong>
+                    </td>
+                    <td style="width:357px">
+                        <strong>CONTENT</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:42px">
+                        a
+                    </td>
+                    <td style="width:270px">
+                        Governing Law
+                    </td>
+                    <td style="display:{!IF(Contract.Destination_Country__c!='Australia','run-in','none')};width:357px">
+                        {!con.Law__c}
+                    </td>
+                    <td style="display:{!IF(Contract.Destination_Country__c='Australia','run-in','none')};width:357px">
+                       This Purchase Order shall be governed by and construed in accordance with the laws of New South Wales.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:42px">
+                        b
+                    </td>
+                    <td style="width:270px">
+                        Dispute Resolution
+                    </td>
+                    <td style="display:{!IF(Contract.Destination_Country__c!='Australia','run-in','none')};width:357px">
+                        {!con.Arbitration__c}
+                    </td>
+                    <td style="display:{!IF(Contract.Destination_Country__c='Australia','run-in','none')};width:357px">
+                       Any dispute, controversy or claim arising out of, relating to or in connection with this Purchase Order, including any question regarding its existence, validity or termination, shall be resolved by arbitration in accordance with the ACICA Arbitration Rules. The seat of arbitration shall be Sydney, Australia.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <ol style="display:{!IF(Contract.Destination_Country__c='Greece','run-in','none')};">
+            <li style="list-style:none;"><strong>
+                4 &nbsp; SPECIAL TERMS</strong></li>
+        </ol>
+         
+         <table border="1" cellpadding="0" cellspacing="0" style="text-align:left;" >
+            <tbody>
+                
+<tr style="display:{!IF(Contract.Destination_Country__c='Greece','run-in','none')};">
+<td>
+The Buyer hereby acknowledges and agrees that the costs and expenses arising out of, or in connection with, the recycling of the Modules and waste of electronic and electrical equipment in Greece (the “Recycling Costs”)  have not been considered in the calculation of the Price of this Agreement. In light of the above, the Buyer hereby agrees to be fully and exclusively liable - or to procure that the end user of the Modules will be fully and exclusively liable - for the Recycling Costs, as well as, for the compliance with the relevant laws and regulations applicable in Greece for the recycling of the Modules and waste of electronic and electrical equipment.
+</td>
+</tr>
+</tbody>
+</table>
+        <ol style="display:{!IF(Contract.Destination_Country__c='Pakistan','run-in','none')};">
+            <li style="list-style:none;"><strong>
+                4 &nbsp; SPECIAL TERMS</strong></li>
+        </ol>
+         
+         <table border="1" cellpadding="0" cellspacing="0" style="text-align:left;" >
+            <tbody>
+                
+<tr style="display:{!IF(Contract.Destination_Country__c='Pakistan','run-in','none')};">
+<td>
+    The Parties understand that for importation into Pakistan of a shipment of Modules set forth in the Purchase Order, the Customs authority of Pakistan requires certain inspection and compliance documents to be issued for such shipment. For each shipment in the delivery schedule set forth in the Purchase Order, Seller will issue a set of Pre-Shipment Inspection report and Certificate of Conformance based on Jinko standard (together as the “Report”), and Buyer acknowledges that such Report satisfies the aforementioned requirements by the Customs authority. If Buyer requests to split the shipment(s) agreed in the Purchase Order which result in additional Reports being required for importation of related Modules into Pakistan, Buyer agrees to pay Seller an amount of USD 1200 for each additional set of Report to be issued by Seller.
+    </td>
+</tr>
+</tbody>
+</table>
+                <p style="display:{!IF(Contract.Destination_Country__c='Australia','run-in','none')};">
+<strong>
+                4 &nbsp; SPECIAL TERMS</strong></p>
+         <table border="1" cellpadding="0" cellspacing="0" style="text-align:left;" >
+            <tbody>
+                
+<tr style="display:{!IF(Contract.Destination_Country__c='Australia','run-in','none')};">
+<td>
+        The Section 6.3 and 6.4 of Exhibit A shall be deleted and replaced with the following language:
+“6.3 Title to the Modules will remain with the Seller until the total price payable by the Buyer to the Seller in relation to the Modules and any other amount that may be owing by the Buyer to the Seller from time to time (together the ‘Amounts Owing’) has been paid in full. Until the Amounts Owing have been paid: (a) the Buyer must ensure that the Modules are fully insured and stored or identified so that they are readily distinguishable from other goods held by the Buyer; (b) the Buyer has the right to sell or use the Modules in the ordinary course of business; and (c) all proceeds from the sale of the Modules must be applied to satisfying the Amounts Owing. Without limiting the foregoing, to secure payment of the Amounts Owing, all accounts relating to any sale of the Modules by the Buyer in the ordinary course of its business are transferred by the Buyer to the Seller. If the Buyer fails to comply with the terms of this Agreement or otherwise becomes insolvent then the Buyer will be in default. If the Buyer is in default and the Amounts Owing have not been paid in full, then: (a) the Buyer must immediately return the Modules if requested to do so by the Seller; (b) the Seller may enter the premises at which the Modules are held and seize them; and (c) the Seller may retain, sell or otherwise dispose of the Modules.
+
+<br></br>
+        6.4 The Buyer hereby consents to the Seller effecting any PPSA registration in relation to its security interest over the Modules under this Agreement (“Security Interests”) and the Buyer agrees to provide any assistance reasonably required to facilitate this. The Buyer further waives the right to receive any notices under the PPSA unless the notice is required by the PPSA and cannot be excluded. The Seller may at any time and from time to time take any steps that it considers advisable in its absolute discretion to perfect, protect, record, register, amend or remove the registration of any Security Interests over the Modules.”
+        <br></br><br></br><br></br>
+        </td>
+        </tr>
+        <tr style="display:{!IF(AuExBoolean = true ,'run-in','none')};">
+                <td >  {!$Label.Safety_SHE_Questionnaire} <br/><br/>
+                     <table border="1" width="700px" style="border-collapse:collapse;margin:5px;border: solid black">
+                         <tr>
+                            <td>Additional Costs</td>
+                            <td>Rate</td>
+                            <td>GST</td>
+                         </tr>
+                         <tr>
+                            <td>Storage Cost</td>
+                            <td>AUD 4.5 Per Pallet Per Week</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Pallet Pick</td>
+                            <td>AUD 2.5 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Outward</td>
+                            <td>AUD 2.5 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Outbound Order Admin Fee</td>
+                            <td>AUD 8.0 Per Pallet</td>
+                            <td>10%</td>
+                         </tr>
+                    </table>
+                    <br/><br/>
+                    {!$Label.Safety_SHE_Questionnaire2}
+                </td>
+            </tr>
+        <tr style="display:{!IF(VnExBoolean = true ,'run-in','none')};">
+                <td > <br/><br/> {!$Label.Safety_VN} <br/><br/>
+                     <table border="1" width="700px" style="border-collapse:collapse;margin:5px;border: solid black">
+                         <tr>
+                            <td>Additional Cost</td>
+                            <td>Rate</td>
+                            <td>GST</td>
+                         </tr>
+                         <tr>
+                            <td>Storage Cost</td>
+                            <td>VND 7520/Pallet/Day</td>
+                            <td>10%</td>
+                         </tr>
+                         <tr>
+                            <td>Handling Out Cost</td>
+                            <td>VND 70350/Pallet/time</td>
+                            <td>10%</td>
+                         </tr>
+                    </table>
+                    <br/><br/>
+                </td>
+            </tr>
+                    </tbody>
+        </table>
+        <p>For clarity, all terms and conditions of the <em>Exhibit A</em> <em>General Terms and Conditions</em> shall apply to this Purchase Order as if fully set forth herein.</p>
+        
+        
+        <p>This Purchase Order together with all its Exhibits shall constitute the entire agreement of the Parties with respect to the subject matter herein, and shall supersede all other prior agreements, understandings, and negotiations, both written and oral, between the Parties hereto. In case of any discrepancy or inconsistency between this Purchase Order and its Exhibits, the terms and conditions in this Purchase Order shall prevail.</p>
+        
+        <p>&nbsp;</p>
+        <p>[<strong>SIGNATURES ON FOLLOWING PAGE</strong>]</p>
+        <p>&nbsp;</p>
+        
+        <p>IN WITNESS WHEREOF, the Parties have caused this Purchase Order together with all its Exhibits to be executed by their duly authorized representatives as of the Execution Date.</p>
+        
+        <table border="1" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td style="width:312px">
+                        <strong>SELLER</strong>
+                    </td>
+                    <td style="width:312px">
+                        <strong>BUYER</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:312px">
+                        
+                        
+                        <p>[{!Contract.SELLER__c}]</p>          
+                        
+                        <p><u></u></p>
+                        
+
+                    </td>
+                    <td style="width:312px">
+                        
+                        <p>[{!Contract.buyer1__c}]</p>
+                        
+                        
+                        <p><u></u></p>
+                        
+
+                        
+                        
+                    </td>
+                </tr>
+               
+               <tr style="width:91px;display:{!IF( yuenan =='1','run-in','none')};">
+                                      <TD >Name:Wang Zhihua</TD><!--{!Contract.Contact_Name__c}-->
+                                        <TD>Name:{!Contract.Buyer_Name_Vietnam__c}
+                                        </TD>
+                </tr>
+                 <tr style="width:91px;display:{!IF( yuenan =='1','run-in','none')};">
+                   <TD>
+                         Title:Finance VP
+                    </TD><!-- {!Contract.Title__c}-->
+                      <TD >
+                         Title:{!Contract.Buyer_s_representative_Title__c}
+                     </TD>
+                </tr>
+                
+                
+                
+                
+                
+                <tr style="width:91px;display:{!IF( yuenan =='2','run-in','none')};">
+                                      <TD >Name:Miao Gen</TD><!--{!Contract.Contact_Name__c}-->
+                                        <TD>Name:{!Contract.Buyer_Name_Vietnam__c}
+                                        </TD>
+                </tr>
+                 <tr style="width:91px;display:{!IF( yuenan =='2','run-in','none')};">
+                   <TD>
+                         Title:CMO
+                    </TD><!-- {!Contract.Title__c}-->
+                      <TD >
+                         Title:{!Contract.Buyer_s_representative_Title__c}
+                     </TD>
+                </tr>
+
+                <div style="page-break-after:always;">   
+                </div>
+                
+        
+                <table align="left" style="display:{!IF(Contract.Destination_Country__c!='Germany','run-in','none')};">
+                    
+                   <tr align="left">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm" value="{!$Resource.ExhibitA2020}"/> 
+                        </td>
+                        </tr>
+                         <tr>
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm" value="{!$Resource.ExhibitB2020}"/> 
+                        </td></tr>
+                         <tr>
+                         <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm" value="{!$Resource.ExhibitC2020}"/> 
+                        </td>
+                        </tr>
+                         <tr>
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm" value="{!$Resource.ExhibitD2020}"/> 
+                        </td>
+                        </tr>
+                         <tr style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 standard warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.LIMITEDWARRANTY1}"/> 
+                        </td>
+                        </tr>
+                        <tr style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 standard warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.LIMITEDWARRANTY2}"/> 
+                        </td>
+                        </tr>
+ 
+                   <tr style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 standard warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.LIMITEDWARRANTY3}"/> 
+                        </td>
+                        </tr>
+                        <tr style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 standard warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.LIMITEDWARRANTY4}"/> 
+                        </td>
+                        </tr>
+
+              
+                         <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty' || Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty1}"/> 
+                        </td>
+                        </tr>
+                        <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty2}"/> 
+                        </td>
+                        </tr>
+ 
+ <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty3}"/> 
+                        </td>
+                        </tr>
+                        <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty4}"/> 
+                        </td>
+                        </tr>
+
+               <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty5}"/> 
+                        </td>
+                        </tr>
+                        
+                           <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty6}"/> 
+                        </td>
+                        </tr>
+                <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty7}"/> 
+                        </td>
+                        </tr>
+                          <tr  style="display:{!IF(Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'|| Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty','run-in','none')};">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm"  value="{!$Resource.GlobalLimitedarranty8}"/> 
+                        </td>
+                        </tr>
+                </table>
+                   
+                <table align="left" style="display:{!IF(Contract.Destination_Country__c=='Germany','run-in','none')};">
+                      <tr align="left">
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm" value="https://c.ap4.visual.force.com/resource/1545979465000/GTAC1123A"/> 
+                        </td>
+                        </tr>
+                         <tr>
+                    <td align="left" valign="top" colspan="8" >
+                        <apex:image width="700px" height="25cm" value="https://c.ap4.visual.force.com/resource/1545979481000/GTAC1123B"/> 
+                        </td>
+                        </tr>
+                     
+                       <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty1}" style="height:23cm; width:700px" />
+                 
+                       
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                     <apex:image value="{!$Resource.GermanyLimitedarranty2}" style="height:23cm; width:100%" />
+                          
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty3}" style="height:23cm; width:100%" />
+                           
+                   </td>
+                </tr>
+         <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty4}" style="height:23cm; width:100%" />
+                        
+                   </td>
+                </tr>
+                  <tr>
+                    <td align="left" valign="top" colspan="8" >
+                     <apex:image value="{!$Resource.GermanyLimitedarranty5}" style="height:23cm; width:100%" />
+                          
+                   </td>
+                </tr>
+          <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty6}" style="height:23cm; width:100%" />
+                           
+                   </td>
+                </tr>
+         <tr>
+                    <td align="left" valign="top" colspan="8" >
+                         <apex:image value="{!$Resource.GermanyLimitedarranty7}" style="height:23cm; width:100%" />
+                        
+                   </td>
+                </tr>
+                </table>
+                  
+                  
+            </tbody>
+                
+        </table>  
+            
+    </body>
+    
+</apex:page>

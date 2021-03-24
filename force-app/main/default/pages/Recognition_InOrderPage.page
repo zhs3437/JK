@@ -1,0 +1,746 @@
+<apex:page Standardcontroller="Order" extensions="OrderDetailCtrl" showQuickActionVfHeader="false" showHeader="false"><!-- contentType="application/vnd.ms-excel#PA.xls"     -->
+     <c:JqueryUI2 />
+    <script type="text/javascript" >
+    //引用datepicker
+    /*  $('#dat1').datepicker({
+    
+    });
+    $('#dat2').datepicker({
+       
+    }
+    );*/
+    
+    //joel 新增
+    function altRows(id){
+
+         if(document.getElementsByTagName){  
+
+         
+
+        var table = document.getElementById(id);  
+
+        var rows = table.getElementsByTagName("tr"); 
+
+          
+             
+
+        for(i = 0; i < rows.length; i++){          
+
+            if(i % 2 == 0){
+
+                rows[i].className = "evenrowcolor";
+
+            }else{
+
+                rows[i].className = "oddrowcolor";
+
+            }      
+
+        }
+
+         }
+
+}
+
+ 
+
+    window.onload=function(){
+
+    altRows('alternatecolor');
+
+}
+    
+    
+    
+    
+    //20200429 joel
+    
+    var $j = jQuery.noConflict();
+    $j(function() {
+        var xxx = "{!prod}";
+        ss = xxx.split(",");
+        $j("#inp").autocomplete({
+            source: ss
+        });
+    });
+    
+    function showPosition(){ 
+        var pro = document.getElementById("inp");
+        var dat1=document.getElementById("dat1");
+        var dat2=document.getElementById("dat2");
+        //func(pro.value);
+        func(dat1.value,dat2.value);
+    }
+   
+  
+  //格式化日期：yyyy-MM-dd
+  function formatDate(date) {
+      var myyear = date.getFullYear();
+      var mymonth = date.getMonth() + 1;
+      var myweekday = date.getDate();
+      if (mymonth < 10) {
+          mymonth = "0" + mymonth;
+      }
+      if (myweekday < 10) {
+          myweekday = "0" + myweekday;
+      }
+      return (myyear + "-" + mymonth + "-" + myweekday);
+  }
+    
+    //获取当年第一天
+    //获取当年第一天
+ function getFirstDayOfYear (date) {
+     date.setDate(1);
+     date.setMonth(0);
+     return timeFormat(date);
+ }
+    
+    
+    
+    //获取本月日期第一天
+    function getCurrentMonthFirst(){
+        var date = new Date();
+        date.setDate(1);
+        var month = parseInt(date.getMonth()+1);
+        var day = date.getDate();
+        if (month < 10) {
+            month = '0' + month
+        }
+        if (day < 10) {
+            day = '0' + day
+        }
+        return date.getFullYear() + '-' + month + '-' + day;
+    }
+    
+    //获取本月日期最后一天
+    function getCurrentMonthLast(){
+        var date=new Date();
+        var currentMonth=date.getMonth();
+        var nextMonth=++currentMonth;
+        var nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1);
+        var oneDay=1000*60*60*24;
+        var lastTime = new Date(nextMonthFirstDay-oneDay);
+        var month = parseInt(lastTime.getMonth()+1);
+        var day = lastTime.getDate();
+        if (month < 10) {
+            month = '0' + month
+        }
+        if (day < 10) {
+            day = '0' + day
+        }
+        
+        
+        return new Date(date.getFullYear() + '-' + month + '-' + day );
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+     //获取下月日期第一天
+    function getNextMonthFirst(){
+        var date = new Date();
+        date.setDate(1);
+        var month = parseInt(date.getMonth()+1+1);
+        var day = date.getDate();
+        if (month < 10) {
+            month = '0' + month
+        }
+        if (day < 10) {
+            day = '0' + day
+        }
+        return date.getFullYear() + '-' + month + '-' + day;
+    }
+    
+    //获取下月日期最后一天
+    function getNextMonthLast(){
+        var date=new Date();
+        var currentMonth=date.getMonth();
+        var TestMonth=++currentMonth;
+        var nextMonth=++TestMonth;
+        var nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1);
+        var oneDay=1000*60*60*24;
+        var lastTime = new Date(nextMonthFirstDay-oneDay);
+        var month = parseInt(lastTime.getMonth()+1);
+        var day = lastTime.getDate();
+        if (month < 10) {
+            month = '0' + month
+        }
+        if (day < 10) {
+            day = '0' + day
+        }
+        
+        
+        return new Date(date.getFullYear() + '-' + month + '-' + day );
+    }
+    
+    
+
+    
+     //获得某月的天数
+    
+    
+  function getMonthDays(theYear, theMonth) {
+         var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var nowMonth = now.getMonth(); //当前月
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0;
+      
+      var monthStartDate = new Date(theYear, theMonth, 1);
+     var monthEndDate = new Date(theYear, theMonth + 1, 1);
+      var days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
+      return days;
+  }
+    
+    
+    //获得本季度的开始月份
+  function getQuarterStartMonth(theMonth) {
+               var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var nowMonth = now.getMonth(); //当前月
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0;
+      if(!theMonth) {
+          theMonth = nowMonth;
+      }
+      var quarterStartMonth = 0;
+      if (theMonth < 3) {
+          quarterStartMonth = 0;
+      }
+      if (2 < theMonth && theMonth < 6) {
+          quarterStartMonth = 3;
+      }
+      if (5 < theMonth && theMonth < 9) {
+          quarterStartMonth = 6;
+      }
+      if (theMonth > 8) {
+        quarterStartMonth = 9;
+      }
+    return quarterStartMonth;
+ }
+
+
+ //获得下季度的开始月份
+  function NeQuarterStartMonth(theMonth) {
+               var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var TestMonth = now.getMonth(); //当前月
+        var TestMonth1=++TestMonth;
+        var TestMonth2=++TestMonth1;
+         var TestMonth3=++TestMonth2;
+         var nowMonth = TestMonth3; //月
+      
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0;
+      if(!theMonth) {
+          theMonth = nowMonth;
+      }
+      var quarterStartMonth = 0;
+      if (theMonth < 3) {
+          quarterStartMonth = 0;
+      }
+      if (2 < theMonth && theMonth < 6) {
+          quarterStartMonth = 3;
+      }
+      if (5 < theMonth && theMonth < 9) {
+          quarterStartMonth = 6;
+      }
+      if (theMonth > 8) {
+        quarterStartMonth = 9;
+      }
+    return quarterStartMonth;
+ }
+
+
+    
+    
+    //获得本季度的开始日期
+    function ghGetQuarterStartDate() {
+         var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var nowMonth = now.getMonth(); //当前月
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0;
+        
+        
+        var quarterStartDate = new Date(nowYear, getQuarterStartMonth(), 1);
+        return formatDate(quarterStartDate);
+    }
+    
+    //或的本季度的结束日期
+    function ghGetQuarterEndDate() {
+          var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var nowMonth = now.getMonth(); //当前月
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0;
+        var quarterEndMonth = getQuarterStartMonth() + 2;
+        var quarterStartDate = new Date(nowYear, quarterEndMonth,
+                                        getMonthDays(nowYear, quarterEndMonth));
+        return formatDate(quarterStartDate);
+    }
+    
+    
+    
+    
+     //获得下一季度的开始日期
+    function NextQuarterStartDate() {
+         var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var TestMonth = now.getMonth(); //当前月
+        var TestMonth1=++TestMonth;
+        var TestMonth2=++TestMonth1;
+         var TestMonth3=++TestMonth2;
+         var nowMonth = TestMonth3; //月
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0;
+        
+        
+        var quarterStartDate = new Date(nowYear, NeQuarterStartMonth(), 1);
+        return formatDate(quarterStartDate);
+    }
+    
+    //或的下一季度的结束日期
+    function NextQuarterEndDate() {
+          var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var TestMonth = now.getMonth(); //当前月
+        var TestMonth1=++TestMonth;
+        var TestMonth2=++TestMonth1;
+         var TestMonth3=++TestMonth2;
+         var nowMonth = TestMonth3; //月
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0;
+        var quarterEndMonth = NeQuarterStartMonth() + 2;
+        var quarterStartDate = new Date(nowYear, quarterEndMonth,
+                                        getMonthDays(nowYear, quarterEndMonth));
+        return formatDate(quarterStartDate);
+    }
+    
+    
+    
+    //日期赋值
+    function gradeChange(values){
+        console.log(values);
+        var now = new Date();
+        //alert(now.getDate()+'-'+now.getMonth());
+        //格式化日，如果小于9，前面补0
+        var day = ("0" + now.getDate()).slice(-2);
+        //格式化月，如果小于9，前面补0
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        //拼装完整日期格式
+        var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+        //完成赋值
+        
+        //当天日期
+        if (values == "opt2"){
+            $('#dat1').val(today);
+            $('#dat2').val(today);
+        }if(values=="opt3"){//本周日期
+            var now = new Date();
+            var nowTime = now.getTime() ;
+            var day = now.getDay();
+            var oneDayTime = 24*60*60*1000 ;
+            var MondayTime = nowTime - (day-1)*oneDayTime ;//显示周一
+            var SundayTime =  nowTime + (7-day)*oneDayTime ;//显示周日
+            console.log(new Date(MondayTime));
+            console.log(new Date(SundayTime));  
+            var t1=new Date(MondayTime);
+            var t2=new Date(SundayTime);
+            //格式化日，如果小于9，前面补0
+            var day1 = ("0" + t1.getDate()).slice(-2);
+            //格式化月，如果小于9，前面补0
+            var month1 = ("0" + (t1.getMonth() + 1)).slice(-2);
+            //拼装完整日期格式
+            var Monday = t1.getFullYear()+"-"+(month1)+"-"+(day1) ;
+            
+            //格式化日，如果小于9，前面补0
+            var day2 = ("0" + t2.getDate()).slice(-2);
+            //格式化月，如果小于9，前面补0
+            var month2 = ("0" + (t2.getMonth() + 1)).slice(-2);
+            //拼装完整日期格式
+            var Sunday = t2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+            
+            
+            $('#dat1').val(Monday);
+            
+            $('#dat2').val(Sunday);
+        }if(values=="opt4"){//本月日期
+            var d1=getCurrentMonthFirst();
+            var d2=getCurrentMonthLast();
+            //格式化日，如果小于9，前面补0
+            var day2 = ("0" + d2.getDate()).slice(-2);
+            //格式化月，如果小于9，前面补0
+            var month2 = ("0" + (d2.getMonth() + 1)).slice(-2);
+            //拼装完整日期格式
+            var d3 = d2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+            $('#dat1').val(d1);
+            
+            $('#dat2').val(d3);
+        }if(values=="opt5"){//本季度
+            var t1=ghGetQuarterStartDate();
+            var t2=ghGetQuarterEndDate();
+            
+            
+             $('#dat1').val(t1);
+            
+            $('#dat2').val(t2);
+            
+            
+            
+            
+        }if(values=="opt6"){//今年日期
+             var now = new Date();
+            var yearFirstDay=now.getFullYear()+"-"+"0"+"1"+"-"+"0"+"1";
+            var yearLastDay = now.getFullYear()+"-"+(12)+"-"+(31) ;
+
+            $('#dat2').val(yearLastDay);
+            $('#dat1').val(yearFirstDay);
+        }if(values=="opt7"){//下周日期
+         var now = new Date();
+            var nowTime = now.getTime() ;
+            // alert('nowTime'+nowTime);
+            var day = now.getDay();
+            //alert('day'+day);
+            var oneDayTime = 24*60*60*1000 ;
+            var MondayTime = nowTime - (day-1)*oneDayTime +7*oneDayTime;//显示周一
+            var SundayTime =  nowTime + (7-day)*oneDayTime + 7*oneDayTime ;//显示周日
+            console.log(new Date(MondayTime));
+            console.log(new Date(SundayTime));  
+            var t1=new Date(MondayTime);
+            var t2=new Date(SundayTime);
+            //格式化日，如果小于9，前面补0
+            var day1 = ("0" + t1.getDate()).slice(-2);
+            //格式化月，如果小于9，前面补0
+            var month1 = ("0" + (t1.getMonth() + 1)).slice(-2);
+            //拼装完整日期格式
+            var Monday = t1.getFullYear()+"-"+(month1)+"-"+(day1) ;
+            
+            //格式化日，如果小于9，前面补0
+            var day2 = ("0" + t2.getDate()).slice(-2);
+            //格式化月，如果小于9，前面补0
+            var month2 = ("0" + (t2.getMonth() + 1)).slice(-2);
+            //拼装完整日期格式
+            var Sunday = t2.getFullYear()+"-"+(month2)+"-"+(day2) ;         
+            $('#dat1').val(Monday);  
+            $('#dat2').val(Sunday);
+        }if(values=="opt8"){//下个月
+        var d1=getNextMonthFirst();
+            var d2=getNextMonthLast();
+            //格式化日，如果小于9，前面补0
+            var day2 = ("0" + d2.getDate()).slice(-2);
+            //格式化月，如果小于9，前面补0
+            var month2 = ("0" + (d2.getMonth() + 1)).slice(-2);
+            //拼装完整日期格式
+            var d3 = d2.getFullYear()+"-"+(month2)+"-"+(day2) ;
+            $('#dat1').val(d1);
+            
+            $('#dat2').val(d3);
+        }if(values=="opt9"){//下季度
+         var t1=NextQuarterStartDate();
+            var t2=NextQuarterEndDate();
+            
+            
+             $('#dat1').val(t1);
+            
+            $('#dat2').val(t2);
+        }if(values=="opt10"){//下一年
+          var now = new Date();
+            var yearFirstDay=now.getFullYear()+1+"-"+"0"+"1"+"-"+"0"+"1";
+            var yearLastDay = now.getFullYear()+1+"-"+(12)+"-"+(31) ;
+
+            $('#dat2').val(yearLastDay);
+            $('#dat1').val(yearFirstDay);
+        
+        }
+    }
+    
+    
+
+    
+    </script>
+    
+    <body >
+      
+            
+            <style type="text/css">
+                 body{background-color:#CCFFFF;}
+                .pbTitle {
+                white-space: nowrap
+                }
+                #t1{
+                background-color: pink;
+                }
+                #t2{
+                background-color: pink;
+                }
+            </style>
+            
+            <!-- joel 新增 -->
+            <!-- CSS goes in the document HEAD or added to your external stylesheet -->
+
+<style type="text/css">
+
+table.altrowstable {
+
+    font-family: verdana,arial,sans-serif;
+
+    font-size:13px;
+
+    color:#333333;
+
+    border-width: 1px;
+
+    border-color: #a9c6c9;
+
+    border-collapse: collapse;
+
+}
+
+table.altrowstable th {
+
+    border-width: 1px;
+
+    padding: 8px;
+
+    border-style: solid;
+
+    border-color: #a9c6c9;
+
+}
+
+table.altrowstable td {
+
+    border-width: 1px;
+
+    padding: 8px;
+
+    border-style: solid;
+
+    border-color: #a9c6c9;
+
+}
+
+.oddrowcolor{
+
+    background-color:#d4e3e5;
+
+}
+
+.evenrowcolor{
+
+    background-color:#c3dde0;
+
+}
+
+</style>
+            
+            <!-- OK -->
+            
+            
+            
+           <!-- <apex:pageBlock title="订单报表">-->
+                <style>
+                    body .bPageBlock .pbBody .lightskyblue .pbSubheader{
+                    background-color:#37B2E3;
+                    }
+                </style>
+                
+              <apex:image id="theImage" value="{!$Resource.logo}" style="height:2cm; width:130px" />
+            <p style="font-size:15pt; line-height:150%; margin:0pt; orphans:0; text-align:center;"><span>Payment detail information</span></p><br/><br/>
+                <div class="ui-widget"> 
+                    <div style="font-size:13px;">
+                        
+                     &nbsp;&nbsp;&nbsp; From<input type="text" id="dat1" /> To <input type="text" id="dat2" />
+            
+            
+            
+              
+                    
+                    <input type="button" value="search" name="botton" onclick="showPosition()"/></div> </div>
+                      <apex:form style="width:100%;  margen-left: 100px; display:block;" id="UnbookForm">
+            <apex:pageMessages />
+                    
+                    <script>
+                        var $j = jQuery.noConflict();
+                        //引用datepicker
+                         $j('#dat1').datepicker({
+                             dateFormat:'yy-mm-dd',
+                             showOtherMonths:'true'
+                        });
+                        $j('#dat2').datepicker({
+                           dateFormat:'yy-mm-dd',
+                            showOtherMonths:'true'
+                        }
+                        );
+                    
+                    
+               
+
+
+                    
+                    
+                    </script>
+               
+             <!--   <div>
+                    请选择时间段:
+                    <select name="myselect" id="myselect" onchange="gradeChange(this[selectedIndex].value)">
+                        <option value="opt1">None</option>
+                        <option value="opt2">this day</option>
+                        <option value="opt3">this week</option>
+                        <option value="opt4">this month</option>
+                        <option value="opt5">this quarter</option>
+                        <option value="opt6">this year</option>
+                        <option value="opt7">next week</option>
+                        <option value="opt8">next month</option>
+                        <option value="opt9">next quarter</option>
+                        <option value="opt10">next year</option>
+                    </select>
+                    
+                </div>-->
+                
+                <!--<apex:pageBlockTable value="{!odc}" var="line">
+                    <apex:column >
+                        <apex:facet name="header1">Buyer: Account Name</apex:facet>
+                        <apex:outputLink target="_parent" value="/{!line.id}" id="editLink1">{!line.Buyer__r.name}
+                        </apex:outputLink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header2">Destionation Region</apex:facet>
+                        <apex:outputLink target="_parent" value="/{!line.id}" id="editLink2">{!line.Destination_Region__c}
+                        </apex:outputLink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header3">Destination Country</apex:facet>
+                        <apex:outputLink target="_parent" value="/{!line.id}" id="editLink3">{!line.Destination_Country__c}
+                        </apex:outputLink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header4">Sales Region</apex:facet>
+                        <apex:outputLink target="_parent" value="/{!line.id}" id="editLink4">{!line.Sales_Region__c}
+                        </apex:outputLink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header5">Sales(contract Owner)</apex:facet>
+                        <apex:outputLink target="_parent" value="/{!line.id}" id="editLink5">{!line.owner}
+                        </apex:outputLink>
+                    </apex:column>
+                    
+                </apex:pageBlockTable>-->
+            <div style="display:{!IF(renkuan!=null,'run-in','none')};">
+                
+           
+                  <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px"  class="altrowstable" id="alternatecolor">
+            <tr height="20px" >
+                <th><Strong>Account Name</Strong></th>
+                <th><Strong>Contract Number</Strong></th>
+                <th><Strong>Amount of payment received</Strong></th>
+                
+                <th><Strong>Currency</Strong></th>
+                <th><Strong>payment Date</Strong></th>
+                <th><Strong>payment Type</Strong></th>
+                
+                <th><Strong>Commercial invoice</Strong></th>
+                <th><Strong>Country</Strong></th>
+                
+                <th><Strong>region</Strong></th>
+                <th><Strong>billing documents</Strong></th>
+                <th><Strong>Financial clearing time</Strong></th>
+                <th><Strong>Clearing amount</Strong></th>
+                <th><Strong>Clearing currency</Strong></th>
+            </tr>
+            
+            <apex:variable var="index" value="{!0}" />
+ <apex:repeat value="{!renkuan}" var="line" id="Order_Line_List">   
+<apex:variable var="index" value="{!index+1}" />
+            <tr height="30px" >
+                <td>{!line.Account_Name__c}</td>
+                <td>{!line.Contract_Number__c}</td>
+                <td>{!line.Amount_of_payment_received__c}</td>
+                <td>{!line.Cunccery__c}</td>
+                <td>{!line.Date_of_payment__c}</td>
+             
+                <td>{!line.Description_of_payment_type__c}</td>
+                <td>{!line.Commercial_invoice__c}</td>
+                <td>{!line.Country__c}</td>
+                
+                <td>{!line.region_name__c}</td>
+                <td>{!line.billing_documents__c}</td>
+                <td>{!line.Financial_clearing_time__c}</td>
+                <td>{!line.Clearing_amount__c}</td>
+                <td>{!line.Clearing_currency__c}</td>
+            </tr>
+            </apex:repeat>
+                
+
+            </table>
+                
+           </div>      
+            <script>
+                  //joel 新增
+    function altRows(id){
+
+         if(document.getElementsByTagName){  
+
+         
+
+        var table = document.getElementById(id);  
+
+        var rows = table.getElementsByTagName("tr"); 
+
+          
+             
+
+        for(i = 0; i < rows.length; i++){          
+
+            if(i % 2 == 0){
+
+                rows[i].className = "evenrowcolor";
+
+            }else{
+
+                rows[i].className = "oddrowcolor";
+
+            }      
+
+        }
+
+         }
+
+}
+
+ 
+
+
+    altRows('alternatecolor');
+
+            
+            </script>
+            <!--</apex:pageBlock> -->
+            
+        </apex:form>
+    </body>
+    
+    <apex:form >
+        <apex:actionFunction name="func" action="{!SousuoInOrder}" reRender="UnbookForm" >
+            
+            <apex:param id="dat1" name="dat1" value=""  assignTo="{!dat1}"/>
+             <apex:param id="dat2" name="dat2" value=""  assignTo="{!dat2}"/>
+             <!--<apex:param id="pro" name="pro" value=""  assignTo="{!prod}"/>-->
+        </apex:actionFunction>
+    </apex:form>
+    
+    <script type="text/javascript" >
+    </script>
+</apex:page>

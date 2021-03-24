@@ -1,0 +1,114 @@
+<apex:page title="申请详情" standardController="leanx__pm_Project__c" extensions="RC_AddproductAppCtrl" id="addProductDetail"
+           sidebar="false" >
+    <apex:pageMessages />
+    <div >
+        <pre align="left" style="font-size:15px ;color:red ;"><strong>注:请如实填写相关信息，并在保存后提交待审批。</strong> </pre>
+    </div>
+    <apex:form id="addPro">
+        <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+     
+        <div style="text-align:center">
+            <apex:commandButton value="保存" action="{!sendMail}" />
+            <apex:commandButton value="回到主页" action="{!toback}" />
+            <apex:commandButton value="回到上一页" action="{!toretrun}" />
+            <apex:commandButton value="取消" onclick="redirect('{!$CurrentPage.parameters.Id}')"/>
+        </div>
+        <apex:pageBlock title="产品信息" id="pgbk"  mode="Edit" >
+        <table border="1" width="1200px;" style="border-collapse:collapse;margin:5px;border:fixed;margin: auto;">
+            <tr><td></td>
+                <td>名字</td>
+                <td>瓦数</td> 
+                <td>销售价格</td>
+                <td>数量</td>
+                <td>保证交货日期</td>
+
+                </tr>
+            <apex:repeat value="{!pdList}" var="line" >
+                <tr><td>
+                    <apex:commandButton value="克隆" action="{!CopyPay}" onclick="clonePayment('{!line.Request_No__c}');"/><br/> 
+                    <apex:commandButton action="{!DeletePay}" onclick="deletePayment('{!line.Request_No__c}');" value="删除" />
+                    </td>
+                    
+                    <td>{!line.name}</td>
+                      <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong><apex:inputField value="{!line.W__c}"></apex:inputField></td>
+                    <td>{!code}<strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong><apex:inputField value="{!line.Sales_Price__c}"></apex:inputField></td>
+                    <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong><apex:inputField value="{!line.Discount__c}"></apex:inputField></td>
+                    <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong><apex:inputField value="{!line.Guaranteed_Delivery_Date__c}"></apex:inputField></td>
+                  
+                </tr>
+            </apex:repeat>
+        
+        </table>
+                  </apex:pageBlock>
+            <apex:pageBlock title="当前产品详细信息"  >
+        <table border="1" width="1200px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;">
+            <TR >
+                <TD  height="23" align="center" valign="middle" >产品名字</TD>
+                <TD  height="23" align="center" valign="middle" >价格({!code})</TD>
+                <TD  height="23" align="center" valign="middle" >类型</TD>
+                <TD  height="23" align="center" valign="middle" >单价(不含佣金)</TD>
+                <TD  height="23" align="center" valign="middle" >数量</TD>
+                <TD  height="23" align="center" valign="middle" >总瓦数</TD>
+                <TD  height="23" align="center" valign="middle" >总价格</TD>
+                <TD  height="23" align="center" valign="middle" >保证交货日期</TD>
+            </TR>   
+            <apex:repeat value="{!oppLineList}" var="line" >
+                
+                <TR >
+                    <TD  height="23" align="center" valign="middle" >{!line.name}</TD>
+                    <TD  height="23" align="center" valign="middle" >{!line.Sales_Price__c}</TD>
+                    <TD  height="23" align="center" valign="middle" >{!line.Main_Type__c}</TD>
+                    <TD  height="23" align="center" valign="middle" >{!line.Unit_price_Pipeline__c}</TD>
+                    <TD  height="23" align="center" valign="middle" >{!line.Quantity__c}</TD>
+                    <TD  height="23" align="center" valign="middle" >{!line.Total_Power_W__c}</TD>
+                    <TD  height="23" align="center" valign="middle" >{!line.Total_Price__c}</TD>
+                    <TD  height="23" align="center" valign="middle" >  {!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}
+</TD>
+                </TR>
+                
+            </apex:repeat>
+        </table>
+            </apex:pageBlock>
+                 <apex:actionFunction name="发邮件" action="{!sendMail}" />
+    </apex:form>
+    <script>
+    function deletePayment(payid){
+        if(confirm("你确定要删除?")){
+            
+            var hidden1 = document.getElementById("addProductDetail:addPro:deleteID");
+
+            hidden1.value = payid;
+            
+        }
+    }
+    function clonePayment(payid){
+            
+            var hidden1 = document.getElementById("addProductDetail:addPro:deleteID");
+
+            hidden1.value = payid;
+            
+    }
+     function sendMail(){
+            
+        if (confirm("请确认产品已完全添加保存数据后无法添加产品。")){ 
+            if (confirm("请再次确认产品保存后只能修改或删除当前产品。")){   
+              sendMail();
+            }else{
+            }   
+          
+        }else{
+
+        }      
+    }    
+
+      function redirect(objId) {
+        if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+          window.location.href = '/' + objId
+        } else {
+          if (sforce && sforce.one) {
+            sforce.one.navigateToSObject(objId)
+          }
+        }
+      }
+     </script>
+</apex:page>

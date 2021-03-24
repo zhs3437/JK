@@ -1,0 +1,39 @@
+<apex:page showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" controller="QW_FormViewController">
+
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:v-model="http://www.w3.org/1999/vue"
+    xmlns:v-bind="http://www.w3.org/1999/vue" xmlns:v-on="http://www.w3.org/1999/vue">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>项目管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Import the Design System style sheet -->
+    <apex:slds />
+  </head>
+
+  <body>
+    <div class="container slds-scope" style="position:absolute">
+      <div class="page slds-align_absolute-center">
+        <div class="">
+          <div class="slds-p-around_small" style="justify-content:center; display:flex">
+            <i class="weui-icon-warn weui-icon_msg-primary"></i>
+          </div>
+          <div class="slds-text-align_center">
+            {!$CurrentPage.parameters.msg}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui-for-work.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/jquery-ui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/jquery-weui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/QW_GlobalStyle.css')}" />
+  </body>
+
+  </html>
+</apex:page>

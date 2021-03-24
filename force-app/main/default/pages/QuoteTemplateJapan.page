@@ -1,0 +1,430 @@
+<apex:page standardcontroller="Quote" extensions="QuoteModelController"  renderAs="PDF" sidebar="false"  applyHtmlTag="false" 
+           showHeader="false" standardStylesheets="false">
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="Content-Style-Type" content="text/css" /> 
+        <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+            body {  widows:0; orphans:0; font-family: Arial Unicode MS; font-size:7.9pt }
+            p { margin:0pt }
+        </style>
+    </head>
+    
+    <body style="margin:10px auto;">
+        <table width="100%"  style="border-collapse: collapse; font-size:11.0pt ">
+            <tr>
+                <td colspan="11">  <p style="text-align:center; "><strong><span style="font-size:15.0pt">見 積 書<br/>QUOTATION</span></strong></p></td>
+            </tr>
+        </table>
+        
+        <table width="100%"  style="border-collapse: collapse;margin:10px auto;" border="0">
+            <tr height="30px" >
+                <td  width="68%" valign="bottom">  <p style="text-align:left;"><span style="font-size:20px;text-decoration:underline;">{!Quote.Account.Name}</span>&nbsp;&nbsp;御中</p></td>
+                <td valign="bottom">  <p style="text-align:left;"><span>発行日Issue Date:{! TEXT(YEAR(Quote.Create_Date__c)) & " ." & CASE( MONTH(Quote.Create_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(Quote.Create_Date__c))} </span></p></td>
+            </tr>
+            <tr height="10px">
+                <td width="68%">  <p style="text-align:center;visibility:hidden"><span style="font-size:30px">{!Quote.Account.Name}</span>&nbsp;&nbsp;御中 </p></td>
+                <td valign="top">  <p style="text-align:left;" ><span>管理番号 Confirmation No:  {!Quote.Name} </span></p></td>
+            </tr>
+        </table>
+        <table border="0" width="100%"  style="border-collapse: collapse;margin:10px auto;" >
+            <tr>
+                <td colspan="7" >
+                    
+                </td>
+                <td colspan="4" style="text-align:left;">
+                    <span style="text-align:left;">
+                        <apex:image width="179px" height="60px" value="https://c.ap4.visual.force.com/resource/1515662143000/logo"/>
+                    </span>
+                </td>               
+            </tr> 
+            <tr>
+                <td colspan="7" >
+                    <p style="text-align:center;visibility:hidden"><span>管理番号 Confirmation No:管理番号 Confirmation No:管理番号 Confirmation No:  </span></p>
+                </td>
+                <td colspan="4" style="text-align:left;">
+                    <span style="text-align:left;">
+                        {!companyName}
+                    </span>
+                </td>               
+            </tr>
+            <tr>
+                <td colspan="7">
+                </td>
+                <td colspan="4" style="text-align:left;">
+                    <span style="text-align:left;">
+                        {!companyAdderss}
+                    </span>
+                </td>                                      
+            </tr>
+            <tr>
+                <td colspan="7">
+                </td>
+                <td colspan="4" style="text-align:left;">
+                    <span style="text-align:left;">
+                        {!companyPostcode}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" >
+                    
+                    <span style="text-align:right;visibility:hidden;">
+                        {!companyTelFax}
+                    </span>
+                    
+                </td>
+                <td colspan="4" style="text-align:left;">
+                    <span style="text-align:left;">
+                        {!companyTelFax}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7"  rowspan="2">
+                    <span style="text-align:right;visibility:hidden;">
+                        {!companyTelFax}
+                    </span>
+                    
+                </td>
+                <td colspan="4" rowspan="2" style="text-align:left;">
+                    <div id= "div1" style="float:left; width:100px; height:20px;position:relative;">
+                        <div style="position:absolute;width:100px; height:20px;z-indent:2;left:0;top:0;">
+                            <table border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+                                <tr >
+                                    <td colspan="3">
+                                        <p style="text-align:center;"><span>承　認</span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" height="42.5px">
+                                         <apex:outputPanel rendered="{!IF(Quote.Manager__c == 'Vicky Sun'|| Quote.Manager__c == 'SunVicky',true,false)}">
+                                             <div style="text-align: center;">
+                                               
+                                                 <p style="text-align:center;" height="36px"> {!Quote.Manager__c}</p> 
+                                             </div>
+                                            </apex:outputPanel>
+                                         <apex:outputPanel rendered="{!IF(Quote.Manager__c == 'Vicky Sun'|| Quote.Manager__c == 'SunVicky' ,false,true)}">
+                                        <div style="text-align: center;">
+                                            <img  width="54px" height="36px" src="{!Quote.quoteManagerIcon__c}{!Quote.quoteManagerIconTwo__c}" alt="" id="img1" style="filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5;"/>
+                                        </div><!--  <p style="text-align:center;visibility:hidden;">{!Quote.Manager__c} </p>  -->
+                                        </apex:outputPanel>
+                                    </td>   
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id= "div2" style="float:left; width:100px; height:20px;position:relative">
+                        <div style="position:absolute;width:100px; height:20px;z-indent:2;left:0;top:0;">
+                            <table border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+                                <tr>
+                                    <td colspan="3">
+                                        <p style="text-align:center;"><span>担　当</span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" height="42.5px">
+                                        <div style="text-align: center;">
+                                            <apex:outputPanel rendered="{!IF(Quote.Actual_Sales_Name__c == null,true,false)}">
+                                                <img width="54px" height="36px" src="{!Quote.OppOwnerIcon__c}{!Quote.OppOwnerIconTwo__c}" alt="" id="img1" style="filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5;"/>
+                                                <!--  <p style="text-align:center;visibility:hidden;"> {!Quote.Opportunity.Owner.Name}</p> -->
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!IF(Quote.Actual_Sales_Name__c != null && Quote.Actual_Sales_Name__c!='Sam Shen',true,false)}">
+                                                <img width="54px" height="36px" src="{!Quote.actualSalesIcon__c}{!Quote.actualSalesIconTwo__c}" alt="" id="img1" style="filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5;"/>
+                                                <!--  <p style="text-align:center;visibility:hidden;">{!Quote.Actual_Sales_Name__c}</p>   -->
+                                            </apex:outputPanel>
+                                            
+                                             <apex:outputPanel rendered="{!IF(Quote.Actual_Sales_Name__c == 'Sam Shen'|| Quote.Actual_Sales_Name__c == 'Sam Shen',true,false)}">
+                                            
+                                               
+                                                 <p style="text-align:center;" height="36px">Sam Shen</p> 
+                                            
+                                            </apex:outputPanel>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div> 
+                 </td>
+            </tr>
+            
+        </table>
+        <br/><br/><br/><br/>
+        <table>
+            <tr>
+                <td colspan="12">  <p style="text-align:left;"><span>平素は格別のご高配を賜り厚く御礼申し上げます。</span></p></td> 
+            </tr>
+            <tr>
+                <td colspan="12">  <p style="text-align:left;"><span>下記の通り見積り申し上げます。ご検討の程宜しくお願い申し上げます。</span></p></td>
+            </tr>
+        </table>
+        <table  border="0" width="100%"  style="border-collapse: collapse;margin:10px auto;font-size:10.0pt">
+            
+            <tr>
+                <td colspan="2"  width="35%"> 
+                    <p style="text-align:left;text-decoration:underline "><strong><span>見積有効期限Quotation Validity Period</span></strong></p></td>
+                
+                <td colspan="10" width="65%" style="text-align: left;text-decoration:underline "><strong>{! TEXT(YEAR(Quote.Validity_Of_The_Offer__c)) & " ." &  CASE( MONTH(Quote.Validity_Of_The_Offer__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(Quote.Validity_Of_The_Offer__c))  }</strong></td>
+            </tr>
+             
+        </table>
+        <table  border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+            
+            <tr>
+                <td colspan="2"> 
+                    <p style="text-align:left;"><span>件　　名 Subject</span></p></td>
+                <td colspan="10" style="text-align: left;">{!Quote.Subject__c}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><p style="text-align:left;"><span>取引条件 Trade Term</span></p></td>
+                <td colspan="10" style="text-align: left;">
+                     <apex:outputPanel rendered="{!IF(Quote.Opportunity.Trade_Term__c == 'DDP',true,false)}">
+                        <p style="text-align:left;">
+                            <span>
+                                 {!Quote.Opportunity.Trade_Term__c}車上渡し
+                            </span>
+                        </p>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!IF(Quote.Opportunity.Trade_Term__c == 'CIF' || Quote.Opportunity.Trade_Term__c == 'FOB',true,false)}">
+                        <p style="text-align:left;">
+                            <span>
+                                {!Quote.Opportunity.Trade_Term__c} &nbsp;&nbsp; {!Quote.Opportunity.delivey_point__c}
+                            </span>
+                        </p>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel rendered="{!IF(Quote.Opportunity.Trade_Term__c == 'CIF' || Quote.Opportunity.Trade_Term__c == 'FOB'|| Quote.Opportunity.Trade_Term__c == 'DDP',false,true)}">
+                        <p style="text-align:left;">
+                            <span>
+                                {!Quote.Opportunity.Trade_Term__c}
+                            </span>
+                        </p>
+                    </apex:outputPanel>
+                    
+                    
+                   </td>
+            </tr>
+                             
+            <tr style="display:{!IF(Quote.Opportunity.Trade_Term__c == 'CIF'  || Quote.Opportunity.Trade_Term__c == 'FOB','inline','none')}">
+                <td colspan="2"><p style="text-align:left;"><span>納　　期 Delivery Date</span></p></td>
+                <td colspan="10" style="text-align: left;"> 
+                    {! TEXT(YEAR(LowDelivery)) & " ." &  CASE( MONTH(LowDelivery), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(LowDelivery))}--
+                    {! TEXT(YEAR(HighDelivery)) & " ." &  CASE( MONTH(HighDelivery), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(HighDelivery))}
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><p style="text-align:left;"><span>納品場所 Delivery Destination</span></p></td>
+                
+                <td colspan="10">{!Quote.Delivery_Destination__c}</td>
+                
+            </tr>
+            <tr>
+                <td colspan="2"><p style="text-align:left;"><span>支払条件 Payment Term</span></p> </td>
+                <td colspan="10"> 
+                     <apex:outputText value="{!SUBSTITUTE(JSENCODE(OppPaymentDescription), '||', '<br/>')}" escape="false"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><p style="text-align:left;"><span>為替レートExcange Rate</span></p></td>
+                <td colspan="10">
+                    <apex:outputText rendered="{!q.CurrencyIsoCode = 'USD'}">&nbsp;-</apex:outputText>
+                    <apex:outputText rendered="{!q.CurrencyIsoCode != 'USD'}">
+                        <p style="text-align:left;"><span>{!Quote.Excange_Rate__c} 円 > ドル</span></p>                    
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><p style="text-align: left;text-decoration:underline;font-size:11.0pt">
+                    <strong><span>見積明細 Details</span></strong></p> </td>
+                <td colspan="10"><p style="text-align: left;text-decoration:underline;font-size:11.0pt" >
+                               <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode =='JPY',true,false)}">
+                            <apex:outputText value="{0,number,#,#00}" >
+                                ({!Quote.CurrencyIsoCode}) <apex:param value="{!Quote.Total_Price_Fees__c}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode == 'USD',true,false)}">
+                            <apex:outputText value="{0,number,#,#00.00}" >
+                                 ({!Quote.CurrencyIsoCode})  <apex:param value="{!Quote.Total_Price_Fees__c}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                 </p></td>
+            </tr>
+            <tr>
+                <td colspan="1" rowspan="2"><p style="text-align:center;"><span>項目 <br/>Item</span></p></td>
+                <td colspan="1" rowspan="2"><p style="text-align:center;"><span>纳期 <br/>Delivery Date</span></p></td>
+                <td colspan="4" rowspan="2"><p style="text-align:center;"><span>商品明細<br/>Goods Description</span></p></td>
+                <td colspan="2" ><p style="text-align:center;"><span>数量<br/>Quantity</span></p></td>
+                <td colspan="2"><p style="text-align:center;"><span>単価<br/>Unit Price</span></p></td>
+                <td colspan="2"><p style="text-align:center;"><span>総価格(税拔)<br/>Total Amount</span></p></td>
+            </tr>
+            <tr>
+                <td><p style="text-align:center;"><span>PCS</span></p></td>
+                <td><p style="text-align:center;"><span>MW</span></p></td>
+                <td colspan="2"><p style="text-align:center;"><span>({!Quote.CurrencyIsoCode}/W)</span></p></td>
+                <td colspan="2"><p style="text-align:right;"><span>({!Quote.CurrencyIsoCode})</span></p></td>
+            </tr>
+            <apex:repeat value="{!QuoteItemLst}" var="line"> 
+                <tr>
+                 
+                    <td  style="text-align: center;">
+                       #{!line.ProductNo__c}
+                    </td>
+                       <td  style="text-align: center;">
+                        {! TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) & " ." &  CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}--
+                    {! TEXT(YEAR(line.Guaranteed_Delivery_Date_japan__c)) & " ." &  CASE( MONTH(line.Guaranteed_Delivery_Date_japan__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date_japan__c))}          
+                         </td>
+                    <td  colspan="4" style="text-align: center;">
+                        {!line.Product2.Name}
+                        <!--
+{!line.Description} 
+-->
+                    </td>
+                    <td style="text-align: center;">
+                        <apex:outputText value="{0,number,#,#00}" >
+                            <apex:param value="{!line.Quantity}"/>
+                        </apex:outputText>  
+                    </td>
+                    <td style="text-align: center;">
+                        {!line.Total_MW__c}
+                    </td>
+                    <td colspan="2"  style="text-align: center;"> 
+                        <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode =='JPY',true,false)}">
+                            <!--     <apex:outputText value="{0,number,#,#00.0}" >
+                                <apex:param value="{!line.UnitPrice}"/> -->
+                                <apex:outputText value="{!line.UnitPrice}" >
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode =='CNY',true,false)}">
+                            <apex:outputText value="{0,number,#,#00.0}" >
+                              
+                                <apex:param value="{!line.UnitPrice}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode == 'USD',true,false)}">
+                            <!--     <apex:outputText value="{0,number,#,#00.0}" >
+                                <apex:param value="{!line.UnitPrice}"/> -->
+                                <apex:outputText value="{!line.UnitPrice}" >
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                        
+                    </td>
+                    <td colspan="2"  style="text-align: right;">
+                            <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode =='JPY',true,false)}">
+                            <apex:outputText value="{0,number,#,#00}" >
+                         
+                                 <apex:param value="{!line.Total_Price__c}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode =='CNY',true,false)}">
+                            <apex:outputText value="{0,number,#,#00}" >
+                         
+                                 <apex:param value="{!line.Total_Price__c}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode == 'USD',true,false)}">
+                            <apex:outputText value="{0,number,#,#00.00}" >
+                            
+                                   <apex:param value="{!line.Total_Price__c}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+            </apex:repeat> 
+            
+            <tr>
+                    <td  style="text-align: center;">
+                        #{!ProductNumber}
+                    </td>
+                    <td style="text-align: center;">
+                        
+                    </td>
+                    <td  colspan="4" style="text-align: center;">
+                        <p style="text-align:center;"><span> 運送費 Transit Fees</span></p>
+                    </td>
+                    <td style="text-align: center;">
+                        0
+                    </td>
+
+                    <td style="text-align: center;">
+                       0
+                    </td>
+                    <td colspan="2"  style="text-align: center;"> 
+                      0
+                    </td>
+                    <td colspan="3"  style="text-align: right;">
+                           {!Quote.Transit_Fees__c}                    </td>
+                </tr>
+    
+            
+         
+            <tr>
+                <td colspan="5"></td>
+                <td colspan="4"><p style="text-align:left;"><span>合  計 Sum Total({!Quote.CurrencyIsoCode})</span></p></td>
+                <td colspan="3" style="text-align:right;"> 
+                              <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode =='JPY',true,false)}">
+                            <apex:outputText value="{0,number,#,#00}" >
+                               <apex:param value="{!Quote.Total_Price_Fees__c}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(Quote.CurrencyIsoCode == 'USD',true,false)}">
+                            <apex:outputText value="{0,number,#,#00.00}" >
+                                 <apex:param value="{!Quote.Total_Price_Fees__c}"/>
+                            </apex:outputText>  
+                        </apex:outputPanel>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td colspan="11">  <p style="text-align:left;"><span>備考 Remarks</span></p></td>
+            </tr>
+            <tr>                <td>{!Quote.Remark__c}</td></tr>
+        </table>
+        <table  border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+             <tr>
+                <td colspan="11" >
+                    <p style="text-align:left;;word-wrap:break-word; "><span >上記の見積単価及び総価格はJinkoの標準製品に基づいたものです。</span></p></td>
+            </tr>
+            <tr>
+                <td colspan="11">The Unit Price and Total Amount described above are estimates based on the standard products of Jinko.</td>
+            </tr>
+            
+            <tr>
+                <td colspan="11" >
+                    <p style="text-align:left;;word-wrap:break-word; "><span >別段の定めがない限り、振込手数料は貴社の負担とさせていただきます。</span></p></td>
+            </tr>
+            <tr>
+                <td colspan="11">Except as agreed otherwise, remittance charges shall be borne by your company.</td>
+            </tr>
+            <tr>
+                <td colspan="11" > 
+                    <p style="text-align:left;word-wrap:break-word;"><strong><span>本見積書は弊社の商業秘密に該当しますので、いかなる第三者への開示はお控えください。</span></strong></p></td>
+            </tr>
+            <tr>
+                <td colspan="11">This quotation belongs to the trade secret of this company, which shall not be disclosed to any third party.</td>
+            </tr>
+            <tr>
+                <td colspan="11"> 
+                    <p style="text-align:left;word-wrap:break-word;"><span >本見積書は弊社に法的拘束力はなく、全ての取引条件・条項は貴社と弊社間で契約書の締結をもって取り決めるものとする。また、貴社の注文は弊社の<br/>書面による承諾を得てはじめて弊社に法的拘束力を有するものとする。</span></p></td>
+            </tr>
+            <tr>
+                <td colspan="11">This Quotation are without obligation and subject to a written contract stipulating all contractual terms signed by <br/>both parties. Any orders are only binding if confirmed by us in writing.</td>
+            </tr>
+            <tr>
+                <td colspan="11"> <p style="text-align:left;word-wrap:break-word;"><span>本見積書は、日本語と英語で作成され、両言語に齟齬がある場合には、日本語に準ずる。</span></p></td>
+            </tr>
+            <tr>
+                <td colspan="11">This Quotation is drafted in Japanese and English. In case of any discrepancy, the Japanese version shall prevail. </td>
+            </tr>
+        </table>
+    </body>
+</apex:page>

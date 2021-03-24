@@ -1,0 +1,22 @@
+<apex:page standardController="CapacityReservation__c" showHeader="false" sidebar="false" extensions="PowerbookHeaderCtrl"  action="{!update2}"> 
+   <html xmlns="http://www.w3.org/1999/xhtml">
+       <head>
+<title>无标题文档</title>
+
+</head>
+       <body>
+    
+        <BR/>
+
+         <pre align="center"  style="display:{!IF(flag==true,'run-in','none')};color:red">业务机会数据与当前数据不一致,请点击 [refresh data] 按钮后 提交审批</pre>
+        
+  <pre align="center"  style="display:{!IF(flag==true,'run-in','none')};color:red">Opportunity information is not same as Book Capacity, Please click on button [refresh data] in this page.</pre>
+                    <pre align="center"  style="display:{!IF(approve==false,'run-in','none')};color:red">数据没有得到业务机会价格审批同意</pre>
+            <pre align="center"  style="display:{!IF(approve==false,'run-in','none')};color:red">Data is not ready for approval, because opportunity is still pending on price approval stage.</pre>
+
+           <pre align="center" style="display:{!IF(flag!=true && approve==true && MW>5,'run-in','none')};">数据已更新最新,可以直接点击 提交审批</pre>
+            <pre align="center" style="display:{!IF(flag!=true && approve==true && MW>5,'run-in','none')};">Data is ready. please click on submit for approval if you want to book capacity. </pre>
+
+       </body>
+    </html>
+</apex:page>

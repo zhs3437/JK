@@ -1,0 +1,6 @@
+<apex:page standardController="Contract" extensions="ContractTemplat1MWCtrl" sidebar="false" showHeader="false" standardStylesheets="false" applyHtmlTag="false">
+    <iframe src="/apex/ContractTemplate1MWGlobal?id={!requestId}" scrolling="no" width="100%;" height="1684px" style="float:none;"></iframe>
+    <iframe src="/servlet/servlet.FileDownload?file=015p000000099k4" scrolling="no" width="100%;" height="2200px"></iframe>
+    <iframe src="/servlet/servlet.FileDownload?file={!DocId}" scrolling="no" width="100%;" height="3500px"></iframe>
+   
+</apex:page>

@@ -1,0 +1,712 @@
+<apex:page standardController="opportunity"   showHeader="false" sidebar="false" extensions="CommissionApplicationVFCtrl" id="commission">
+<apex:messages style=" color:#EE2C2C;font-size:18.0pt"/>
+<apex:form Id="commissionForm">
+  
+<apex:commandButton action="{!Addsobj}"  value="Send email to approver"  style="margin-left:15px;"/>
+    
+    <!--
+    <apex:commandButton value="Cancel" oncomplete="Close()"  style="margin-left:15px;"/> 
+-->
+    <p style=" color:#EE2C2C">  点击按钮后请耐心等待,请勿重复点击</p>
+    <p style=" color:#EE2C2C">  Please wait patiently after clicking the button. Do not click many times.</p>
+<table border="1" width="95%" style="border-collapse:collapse;margin:10px">
+<tr>
+<td colspan="4" align="center">CONTRACT DETAILS 销售合同信息</td>
+</tr>
+<tr>
+        <td width="5%" align="center">No.</td>
+         <td width="30%" align="center">Items 项目</td>
+          <td width="40%" align="center">Fill in / Select 填写/选择</td>
+        <td width="30%" align="center"> 
+         Mandatory Attachments 必要附件
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">1.</td>
+         <td width="35%" align="center">Company name of Buyer 买方公司名称</td>
+          <td width="40%" align="center">{!opportunity.Account.name}</td>
+        <td width="30%" align="center"> 
+         
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">2.</td>
+         <td width="35%" align="center">Registered address of Buyer 买方注册地址</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Registered_address_of_Buyer__c}"/></td>
+        <td width="30%" align="center"> 
+        <a style="display:{!IF(ca.file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.file_id__c}" target="_blank">
+                                       Business license and Tax registration certificate
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.file_id__c==null,'run-in','none')};"  >Please upload the file:Business license and Tax registration certificate</p>
+
+             <apex:inputFile value="{!blob1}" filename="{!blob1name}"/>
+                   </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">3.</td>
+         <td width="35%" align="center">Office address of Buyer 买方办公地址</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Office_address_of_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">4.</td>
+         <td width="35%" align="center">Contact person of Buyer 买方联系人姓名</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Contact_person_of_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+
+            
+             <a style="display:{!IF(ca.X1_4_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_4_file_id__c}" target="_blank">
+                                               Business card or staff card
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_4_file_id__c==null,'run-in','none')};"  >        Please upload the file:Business card or staff card</p>
+                <apex:inputFile value="{!blob14}" filename="{!blob14name}"/>
+            
+             
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">5.</td>
+         <td width="35%" align="center">Position of contact person in the Buyer entity 买方联系人职位</td>
+          <td width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.Position_of_contact_person_in_the_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+       
+            <a style="display:{!IF(ca.X1_5_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_5_file_id__c}" target="_blank">
+                                              Staff card or business card
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_5_file_id__c==null,'run-in','none')};"  >Please upload the file:Staff card or business card</p>
+                
+                <apex:inputFile value="{!blob15}" filename="{!blob15name}"/>
+             
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">6.</td>
+         <td width="35%" align="center">Shareholder of Buyer; Share percentage of each shareholder; 买方公司股东情况、控股比例</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Shareholder_of_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+       
+            
+            <a style="display:{!IF(ca.X1_6_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_6_file_id__c}" target="_blank">
+                                               Any official documentation proof
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_6_file_id__c==null,'run-in','none')};"  > Please upload the file:Any official documentation proof</p>
+                <apex:inputFile value="{!blob16}" filename="{!blob16name}"/>
+                
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">7.</td>
+         <td width="35%" align="center">Organization chart (with information about related company, parent company, subsidiary, etc.) 买方公司完整组织架构图</td>
+          <td width="40%" align="center"></td>
+        <td width="30%" align="center"> 
+        
+
+            <a style="display:{!IF(ca.X1_7_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_7_file_id__c}" target="_blank">
+                                              Organization chart
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_7_file_id__c==null,'run-in','none')};"  > Please upload the file:Organization chart</p>
+                <apex:inputFile value="{!blob17}" filename="{!blob17name}"/>
+                
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">8.</td>
+         <td width="35%" align="center">Contract volume MW 合同采购量MW</td>
+          <td width="40%" align="center">{!opportunity.Total_MW__c}</td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">9.</td>
+         <td width="35%" align="center">Contract unit price 合同单价</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Contract_Unit_price__c}"/>
+              </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">10.</td>
+         <td width="35%" align="center">Incoterm 贸易方式</td>
+          <td width="40%" align="center">{!opportunity.Trade_Term__c}</td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">11.</td>
+         <td width="35%" align="center">Total contract price 合同总价</td>
+          <td width="40%" align="center">
+              <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!opportunity.Total_Price__c}"/></apex:outputText></td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">12.</td>
+         <td width="35%" align="center">Project location (Country) 项目所在国</td>
+          <td width="40%" align="center">
+              <apex:inputfield style="width: 95%;" required="true" value="{!ca.Project_Location_Coutry__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">13.</td>
+         <td width="35%" align="center">Project location (Address) 项目所在地</td>
+          <td width="40%" align="center">
+                <apex:inputfield style="width: 95%;" required="true" value="{!ca.Project_location_Address__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">14.1</td>
+         <td width="35%" align="center">Role of Buyer in the project 买方角色及职责
+</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Role_of_Buyer_in_the_project__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+
+<tr>
+        <td width="5%" align="center">14.2</td>
+         <td width="35%" align="center">Please specify if others is selected</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;"  value="{!ca.Role_of_Buyer_in_the_project_Text__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">15</td>
+         <td width="35%" align="center">Nature of project 项目性质
+</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Nature_of_project__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+
+</table>
+<table border="1" width="95%" style="border-collapse:collapse;margin:10px">
+<tr>
+<td colspan="5" align="center">COMMISSION DETAILS 佣金信息</td>
+</tr>
+<tr>
+        <td width="5%" align="center">No.</td>
+         <td width="35%" align="center">Items 项目</td>
+          <td colspan="2" width="40%" align="center">Fill in / Select 填写/选择</td>
+        <td width="30%" align="center"> 
+         Mandatory Attachments 必要附件
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">1.</td>
+         <td width="35%" align="center">Contract commission (Per watt) 合同佣金（/瓦） <p style=" color:#EE2C2C"> {!oppCurrencyIsoCode}</p></td>
+          <td colspan="2" width="40%" align="center">
+               <p style=" color:#EE2C2C">  {!oppCurrencyIsoCode}</p> <apex:inputfield style="width: 95%;" required="true" value="{!ca.Commission_Per_watt__c}"/><br/>
+              Amount exceed error, commission amount is not allow exceed 1% of total amount, for more details please contact with Finance Alex or CFO assistant Russell. Thanks!
+              
+              </td>
+        <td width="30%" align="center"> 
+         
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">2.</td>
+         <td width="35%" align="center">Commission Payee (Company)佣金收款方公司名称</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.Commission_Payee_Company__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">3.</td>
+         <td width="35%" align="center">Name of contact person of Payee 联系人</td>
+          <td colspan="2" width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Name_of_contact_person_of_Payee__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+        
+               <a style="display:{!IF(ca.X2_3_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_3_file_id__c}" target="_blank">
+                                              Business card or staff card;
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_3_file_id__c==null,'run-in','none')};"  > Please upload the file:Business card or staff card;</p>
+                
+<apex:inputFile value="{!blob23}" filename="{!blob23name}"/>               
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">4.</td>
+         <td width="35%" align="center">Position of contact person in the Payee 联系人职位</td>
+          <td colspan="2" width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Position_of_contact_person_in_the_Payee__c}"/>
+              
+    </td>
+        <td width="30%" align="center"> 
+        
+               <a style="display:{!IF(ca.X2_4_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_4_file_id__c}" target="_blank">
+                                             Staff card or business card;
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_4_file_id__c==null,'run-in','none')};"  > Please upload the file:Staff card or business card;</p>
+                
+          <apex:inputFile value="{!blob24}" filename="{!blob24name}"/>
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">5.</td>
+         <td width="35%" align="center">Mobile Number of contact person of Payee联系人电话</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.Mobile_Number_of_contact_person_of_Payee__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+        
+               <a style="display:{!IF(ca.X2_5_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_5_file_id__c}" target="_blank">
+                                            Business card or staff card;
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_5_file_id__c==null,'run-in','none')};"  >Please upload the file:Business card or staff card;</p>
+                <apex:inputFile value="{!blob25}" filename="{!blob25name}"/>
+        
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">6.</td>
+         <td width="35%" align="center">The photocopy of ID card of contact person of Payee 联系人身份证</td>
+          <td colspan="2" width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_photocopy_of_ID_card__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+        
+             <a style="display:{!IF(ca.X2_6_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_6_file_id__c}" target="_blank">
+                                            ID card
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_6_file_id__c==null,'run-in','none')};"  >Please upload the file:ID card</p>
+                <apex:inputFile value="{!blob26}" filename="{!blob26name}"/>
+  
+                </td>
+
+</tr>
+<tr >
+        <td  width="5%" align="center">7.</td>
+         <td  width="35%" align="center">Registered information of Payee (with registered date, share capital, scope of business,etc) 收款方公司注册信息</td>
+             <td colspan="2"  width="40%" align="center"> 
+             <table width="100%" border="1" required="true" style="border-collapse:collapse;margin:0px">
+             <tr>
+             <td width="50%">
+             1.Registration date 成立日期
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_1_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             2.Share capital 注册资本
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_2_TEXT__c}"/>
+             </td>
+             </tr>
+              <tr>
+             <td width="50%">
+             3.Scope of business 营业范围
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_3__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             4.Registered address注册地址
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_4_TEXT__c}"/>
+             </td>
+             </tr>
+             
+             </table>
+             </td>
+              
+              
+             
+              
+                <td   width="30%" align="center"> 
+        
+  <a style="display:{!IF(ca.X2_7_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_7_file_id__c}" target="_blank">
+                                           Business license and Tax registration certificate;
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_7_file_id__c==null,'run-in','none')};"  >Please upload the file:Business license and Tax registration certificate;</p>
+                <apex:inputFile value="{!blob27}" filename="{!blob27name}"/>
+
+                </td>  
+
+
+</tr>
+<tr>
+        <td width="5%" align="center">8.</td>
+         <td width="35%" align="center">Office address of Payee 收款方办公地址</td>
+          <td colspan="2" width="40%" align="center">
+              <apex:inputfield style="width: 95%;" required="true" value="{!ca.Address_of_Payee__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+         
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">9.</td>
+         <td width="35%" align="center">Shareholder of Payee; Share percentage of each shareholder 收款方股东情况、控股比例</td>
+          <td colspan="2" width="40%" align="center">
+      <apex:inputfield style="width: 95%;" required="true" value="{!ca.Shareholder_of_Payee__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+            
+  <a style="display:{!IF(ca.X2_9_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_9_file_id__c}" target="_blank">
+                                           Any official documentation proof
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_9_file_id__c==null,'run-in','none')};"  >Please upload the file:Any official documentation proof</p>
+                <apex:inputFile value="{!blob29}" filename="{!blob29name}"/>
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">10.</td>
+         <td width="35%" align="center">The actual controller of Payee 收款方实际控制人</td>
+          <td colspan="2" width="40%" align="center">
+      <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_actual_controller_of_Payee__c}"/>
+              
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">11.</td>
+         <td width="35%" align="center">Organization Chart of Payee (with information about related company, parent company, subsidiary, etc. ) 收款方公司完整组织架构图</td>
+          <td colspan="2" width="40%" align="center"></td>
+        <td width="30%" align="center"> 
+        
+             <a style="display:{!IF(ca.X2_11_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_11_file_id__c}" target="_blank">
+                                           Organization Chart
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_11_file_id__c==null,'run-in','none')};"  >Please upload the file:Organization Chart</p>
+                <apex:inputFile value="{!blob211}" filename="{!blob211name}"/>
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">12.</td>
+         <td width="35%" align="center">The photocopy of ID card of shareholders 股东身份证</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_photocopy_of_ID_card_of_shareholders__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+        
+             <a style="display:{!IF(ca.X2_12_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_12_file_id__c}" target="_blank">
+                                           ID card
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_12_file_id__c==null,'run-in','none')};"  >Please upload the file:ID card</p>
+                
+<apex:inputFile value="{!blob212}" filename="{!blob212name}"/>
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">13.</td>
+         <td width="35%" align="center">The photocopy of ID card of actual controller 实际控制人身份证</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_photocopy_of_ID_card_of_actual_contr__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+              <a style="display:{!IF(ca.X2_13_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_13_file_id__c}" target="_blank">
+                                           ID card
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_13_file_id__c==null,'run-in','none')};"  >Please upload the file:ID card</p>
+                <apex:inputFile value="{!blob213}" filename="{!blob213name}"/>
+  
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">14.</td>
+         <td width="35%" align="center">Number of employees of Payee 收款方公司员工人数</td>
+          <td colspan="2" width="40%" align="center">
+      <apex:inputfield style="width: 95%;" required="true" value="{!ca.Number_of_employees_of_Payee__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr >
+        <td  width="5%" align="center">15.</td>
+         <td  width="35%" align="center">Relationship between Payee and Jinko  收款方与晶科的关系</td>
+             <td colspan="2"  width="40%" align="center"> 
+             <table width="100%" border="1" style="border-collapse:collapse;margin:0px">
+             <tr>
+             <td width="50%">
+             1.Is there any past business record between Payee and Jinko? 
+             </td>
+             <td>
+                  <apex:inputfield style="width: 95%;" required="true" value="{!ca.X15_1__c}"/>
+                  Explain the business and historical contracts with Jinko if "YES" is selected.
+                  <apex:inputfield style="width: 95%;"   value="{!ca.X15_1_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             2.Does any one in Jinko hold any position in Payee?
+             </td>
+             <td>
+                  <apex:inputfield style="width: 95%;" required="true" value="{!ca.X15_2__c}"/>
+                 Please specify the name and position if "YES" is selected
+                  <apex:inputfield style="width: 95%;"  value="{!ca.X15_2_TEXT__c}"/>
+             </td>
+             </tr>
+              <tr>
+             <td width="50%">
+             3.Does any one in Payee hold any position in Jinko?
+             </td>
+             <td>
+                  <apex:inputfield style="width: 95%;" required="true" value="{!ca.X15_3__c}"/>
+                 Please specify the name and position if "YES" is selected
+                  <apex:inputfield style="width: 95%;"  value="{!ca.X15_3_TEXT__c}"/>
+             </td>
+             </tr>
+             
+             
+             </table>
+             </td>
+              
+              
+             
+              
+                <td   width="30%" align="center"> 
+       
+ <a style="display:{!IF(ca.X2_15_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_15_file_id__c}" target="_blank">
+                                           Contracts / Emails / other documentary record
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_15_file_id__c==null,'run-in','none')};"  > Please upload the file:Contracts / Emails / other documentary record</p>
+                <apex:inputFile value="{!blob215}" filename="{!blob215name}"/>
+
+
+                </td>  
+
+
+</tr>
+<tr>
+        <td width="5%" align="center">16.</td>
+         <td width="35%" align="center">Role of the Payee in the Project 收款方在项目中角色</td>
+          <td colspan="2" width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Role_of_the_Payee_in_the_Project__c}"/>
+              
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">17.</td>
+         <td width="35%" align="center">Work done by the Payee for Jinko in the project 收款方在项目中对晶科的作用</td>
+          <td colspan="2" width="40%" align="center">Please specify (>= 50 words)
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Work_done_by_the_Payee_for_Jinko__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr >
+        <td  width="5%" align="center">18.</td>
+         <td  width="35%" align="center">Payee’s relationship with Buyer 收款方与买方关系</td>
+             <td colspan="2"  width="40%" align="center"> 
+             <table width="100%" border="1" style="border-collapse:collapse;margin:0px">
+             <tr>
+             <td width="50%">
+             1.Is Payee a subsidiary company of Buyer?
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_1__c}"/>
+                 Please specify the share holding percentage if "YES" is selected
+                 <apex:inputfield style="width: 95%;" value="{!ca.X18_1_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             2.Does Payee hold any share of Buyer?
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_2__c}"/>
+                 Please specify the share holding percentage if "YES" is selected
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_2_TEXT__c}"/>
+             </td>
+             </tr>
+              <tr>
+             <td width="50%">
+             3.Is Buyer the actual controller of Payee?
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_3__c}"/>
+                  Please specify how this actual control is achieved if "YES" is selected
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_3_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             4.Is Payee the actual controller of Buyer?
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_4__c}"/>
+                  Please specify how this actual control is achieved if "YES" is selected
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_4_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             5.Is any one in Buyer hold any position in Payee?
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_5__c}"/>
+                 Please specify the position if "YES" is selected
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_5_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             6.Is any one in Payee hold any position in Buyer?
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_6__c}"/>
+                 Please specify the position if "YES" is selected
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_6_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             7.Is there any conflict of interest between Payee and Buyer?
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_7__c}"/>
+                 Please specify if "YES" is selected
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_7_TEXT__c}"/>
+             </td>
+             </tr>
+             
+             </table>
+             </td>
+              
+              
+             
+              
+                <td   width="30%" align="center"> 
+
+
+                </td>  
+                <tr>
+        <td width="5%" align="center">19.</td>
+         <td width="35%" align="center">Correspondence record with Payee related to the project 收款方与晶科关于该项目的沟通记录
+</td>
+          <td colspan="2"  width="40%" align="left">Time/location/topic/conclusion/etc.
+                    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Brief_Record_of_the_Discussion__c}"/> </td>
+                 
+        <td width="30%" align="center"> 
+       
+<a style="display:{!IF(ca.X2_19_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_19_file_id__c}" target="_blank">
+                                            Emails / audio / vedio / other documentary record (Multiple)
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_19_file_id__c==null,'run-in','none')};"  >  Please upload the file:Emails / audio / vedio / other documentary record (Multiple)</p>
+                <apex:inputFile value="{!blob219}" filename="{!blob219name}"/>
+
+                </td>
+
+</tr>
+
+ 
+</tr>
+</table>
+
+ </apex:form>
+ 
+   <script>
+    function Close(){
+        //  window.opener.location.href = "/{!requestId}";
+        window.top.close();
+    }       
+function SaveRequest(){  
+      if (confirm("Confirm to save?")){   
+        }else{
+           return false;
+        }      
+    }
+   
+    </script>
+</apex:page>

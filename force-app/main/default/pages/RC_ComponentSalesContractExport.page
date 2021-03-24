@@ -1,0 +1,242 @@
+<apex:page language="ja"
+           sidebar="false"
+           showHeader="false" standardStylesheets="false" renderAs="PDF" standardController="leanx__lg_Contract__c"  extensions="RC_PDFController" >
+    <head>
+       
+        <style type="text/css">
+            @page
+            {       size: A4;
+            // margin : 20pt .2in .5in .2in;
+            @top-center {
+            content : element(header);
+            }
+            @bottom-center {
+            content: " (  " counter(page) "  /  " counter(pages) "  )";
+            }
+            }
+            @font-face{          
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+            }
+            .page-break {
+            display:block;
+            page-break-after:always;
+            }
+            div.header {
+            position : running(header) ;
+            }          
+            // table{
+            // width:560pt;
+            //            }           
+        </style>
+       
+    </head>
+    <body style="font-family:Arial Unicode MS;font-size:12px;">
+        <h1 style = "text-align:center">
+            销售合同
+        </h1>
+        <table width="100%" style=" font-size:12px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+            <tr>
+                <td colspan="6" width="85%"></td>
+                <td colspan="2" width="15%">合同编号:{!leanx__lg_Contract__c.Contract_NO__c}</td>                
+            </tr>
+            <tr>
+                <td colspan="6" width="85%"></td>
+                <td colspan="2" width="15%">日&nbsp;&nbsp;期：{!printDate}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">需方：{!buyer.Name}</td>
+                <td colspan="4" width="50%">供方：{!leanx__lg_Contract__c.Seller__c}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">（以下简称甲方）</td>
+                <td colspan="4" width="50%">（以下简称乙方）</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">地址：{!buyerAddress}</td>
+                <td colspan="4" width="50%">地址：{!Address}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">法定代表人：</td>
+                <td colspan="4" width="50%">法定代表人：</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">邮编：{!buyerPostCode}</td>
+                <td colspan="4" width="50%">邮编：{!postCode}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">电话（Tel）：{!leanx__lg_Contract__c.Account_Contact_Mobile__c}</td>
+                <td colspan="4" width="50%">电话（Tel）：{!leanx__lg_Contract__c.Actual_Sales__r.MobilePhone}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">传真（Fax）：{!buyerFax}</td>
+                <td colspan="4" width="50%">传真（Fax）：{!fax}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">联系人：{!leanx__lg_Contract__c.Account_Contact_Name__c}</td>
+                <td colspan="4" width="50%">联系人：{!leanx__lg_Contract__c.Actual_Sales_Name__c}</td>                
+            </tr>
+        </table>
+        <br/><br/>
+              <div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据《中华人民共和国合同法》，经甲乙双方友好协商，在平等、自愿的基础之上，就晶硅太阳能组件采购事宜，双方签订本合<br/>同，以资共同遵守：   
+            </div>
+    <br/>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一条      产品名称、规格、单位、数量、单价、金额
+        </p>
+              <table width="100%" style=" font-size:12px;BORDER-COLLAPSE: collapse; "  border="1" cellSpacing="0" cellPadding="0" >
+           <tr>
+                <td width="12.5%" align="center" valign="middle">序号</td>
+                <td width="12.5%" align="center" valign="middle">品名</td>
+                <td colspan="2" width="25%" align="center" valign="middle">型号</td>
+                <td width="12.5%" align="center" valign="middle">数量（块）</td>
+                <td width="12.5%" align="center" valign="middle">含税单价（元/瓦）</td>
+                <td width="12.5%" align="center" valign="middle">金额（元/块）</td>
+                <td width="12.5%" align="center" valign="middle">备注</td>
+            </tr>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!pds}" var="line" id="Order_Line_List">
+            <apex:variable var="index" value="{!index+1}" />
+                <tr>
+                    <td align="center" valign="middle">{!index}</td>
+                    <td align="center" valign="middle" >{!line.Product_Name__c}</td>
+                    <td align="center" valign="middle" colspan="2">{!line.Name}</td>
+                    <td align="center" valign="middle">{!line.Quantity__c}</td>
+                    <td align="center" valign="middle">
+                        <apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!line.Sales_Price__c}"/></apex:outputText>
+                        </td>
+                    <td align="center" valign="middle"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!line.Sales_Price__c* line.Power_W__c}"/></apex:outputText></td>
+                    <td align="center" valign="middle">{!line.Goods_Description__c}
+                    </td>
+                </tr>
+            </apex:repeat>
+        </table>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本合同总金额为 ¥<u>{!leanx__lg_Contract__c.Total_Price__c}</u>元（含税（13%）总价、合同总价含备品备件价格），<br/>
+            大写：人民币<u>
+                {!chineseTotalPrice} 
+            </u>。<br/>
+        </p>
+        
+        <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二条      产品的质量标准<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、本合同的产品须有该产品的相关认证证书和中文说明书，并作为合同附件在交货时一并提供给甲方。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、质保期：乙方对其提供的产品就材料和工艺保证期为产品运至甲方指定交货地点之日起12年，乙方同时保证其太阳能组件产品<br/>
+            自产品运至甲方指定交货地点之日起，i)就多晶组件，首年在标准测试条件下达到97.5%的输出功率，12年内在标准测试条件下达到90<br/>
+            %的输出功率，25年内在标准测试条件下达到80%的输出功率。ii)就单晶组件，首年在标准测试条件下达到97%的输出功率，12年内<br/>
+            在标准测试条件下达到89.3%的输出功率，25年内在标准测试条件下达到80%的输出功率。本合同产品质保详见附件一中的《有限质<br/>
+            保书》（线性）。乙方提供的质保书与本合同规定不一致的，以质保书的约定为准。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、乙方提供的产品不符合本合同、国家的产品标准（GB，GB/T）、IEC标准，而存在质量问题的，双方根据具体情况，具体选<br/>择下列的某项解决措施：
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;调换：调换疵劣的产品，调换的产品须是全新的并符合本合同规定的规格、质量和性能。乙方负担因调换瑕疵产品而发生的运费<br/>及运输保险。对调换的新产品，其质保期从新产品到达甲方指定交货地点之日起开始计算。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;维修：在质保期内，由于产品本身质量，在质保期间发生问题，乙方应在收到甲方的通知后24小时响应，随后48小时内派技术人<br/>员并携带工器具到现场排除故障。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、双方对产品质量问题产生分歧的，应经双方协商确定独立权威的第三方鉴定检测机构（双方指定第三方机构为SGS、TUV北德<br/>、TUV南德、CCIC、上海太阳能）。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、整批产品规格、尺寸、功率、技术参数统一一致，具体标准见附件(如签署合同前签字确认过的除外),不接受红外、性能不良组<br/>件（温度条件为不含接线盒区域温差▽T﹤20℃）。<br/><br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三条      产品的价格<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产品定价，甲乙双方同意按本合同第一条规定的定价执行。本合同的产品价格为固定单价，在本合同履行过程中不予变更。<br/><br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第四条      包装方式<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、按照晶科标准进行包装；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、甲方要求的特殊包装方式：{!specialPackingMethod}  <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、乙方不回收包装物，包装物的价款已经包含在产品价格里面。<br/><br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第五条      交货方式<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、    交货时间：甲方付清本合同全部货款后<apex:outputText value="{0, number, #,##0}"><apex:param value="{!leanx__lg_Contract__c.How_Many_Days_After_Payment__c}"/></apex:outputText>日内乙方开始发货。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、    交货地点：甲方指定地点<u>{!leanx__lg_Contract__c.Delivery_Point__c}</u>。 <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、运输方式及运费承担：陆运，车板交货，运费由乙方承担（卸货由甲方负责进行，并且费用由甲方承担）。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、保险：乙方购买运输保险，运输保险的承保时间段应至货物送达交货地点为止。货物风险自货物到达交货地点之日起由乙方转<br/>移至甲方。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、甲方应确保主干道路至项目现场道路畅通并承担相关费用，若由于主干道路至项目现场道路不畅导致乙方逾期交货的，乙方不<br/>承担逾期交货的违约责任。<br/><br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第六条      验收方式
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、验收时间：合同产品运抵交货地点后三日内，甲乙双方将一起就运单和装箱单对设备的包装、件数、型号和铭牌等进行清点检<br/>验，并签订现场开箱检验证书一式二份以确认产品质量，双方各执一份。逾期未检验的，视为甲方对产品数量及外观确认，验收合格。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、验收标准：按照本合同附件中的《组件最终检验标准》进行验收。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、甲乙双方测试标准存在争议的，甲方可抽取任意一托组件（乙方可参与封样）送第三方（SGS、TUV北德、TUV南德、CCIC<br/>
+            、上海太阳能）检测机构进行检测,检测的组件平均功率低于标称功率的，因此产生的测试费用由乙方承担；测试的组件平均功率超过<br/>
+            或达到标称功率的，因此产生的测试费用由甲方承担。（功率测试，需考虑不确定度，双方同意单块组件±3%的功率偏差）
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、经甲方验收不合格的，经乙方确认后，甲方有权要求乙方调换，应在本合同交货期内或者双方同意的其他期限内调换为合格货<br/>品，如果乙方不能在交货期内予以调换由此造成逾期交货的，应按第八条第1款承担逾期交货的违约责任。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、包装标准：所有货物乙方必须按行业标准进行包装，以防止因生锈、腐蚀及震动致损。每一包装的尺寸、毛重、净重以及其它<br/>
+            必要的注意出项，例如：“小心轻放”、“固定”等，如有必要应以A4纸打印在每件包装的表面。如果由于乙方产品本身包装的质量问题造<br/>成的产品损失，由乙方承担赔偿责任。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6、色差检验标准：产品的色差检验标准以附件中的《组件外观检验标准》为准。<br/><br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第七条      付款日期及结算方式
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、本合同生效后五日内，甲方应向乙方支付合同全额货款，即￥{!leanx__lg_Contract__c.Total_Price__c}元，（大写：{!chineseTotalPrice}）。乙方<br/>
+            在收到全部货款之前有权不予发货，由此导致乙方逾期交货的，乙方不承担逾期交货的违约责任/赔偿责任。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、甲方应以电汇或乙方接受的期限不超过六个月的银行承兑汇票的方式向乙方支付合同全部款项，乙方发完全部货物后30天开具<br/>全额发票给甲方。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、如甲方未能按照本合同约定按时、足额支付货款的，乙方有权单方面中止履行本合同，同时本合同项下约定的交期顺延，且后<br/>
+            续甲方付款后需要给予乙方合理期限的备货期，甲方不得因此追究乙方任何形式的违约责任（包括但不限于逾期交货的责任等）。<br/><br/>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第八条      违约责任
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、乙方未在合同约定的时间交货的，视为乙方逾期交货。乙方应按逾期交货部分货款金额每日仟分之叁支付违约金，违约金上限<br/>不超过逾期交货部分货款金额的5%。逾期三十日以上的，甲方有权解除本合同，乙方承担因此给甲方造成的直接经济损失。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、甲方未按照合同约定按期支付货款的，甲方应按照逾期支付金额每日仟分之叁支付违约金。逾期三十日以上的，乙方有权解除<br/>
+            本合同，甲方已经支付的合同款项不予退还，且甲方承担因此给乙方造成的损失（包括但不限于组件的排产费用、库存费用及折价转<br/>让损失）。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、在质保期内，乙方不履行质保义务的，甲方有权请第三方进行维修，产生的合理费用由乙方承担。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、任意一方提出变更本合同部分条款，包括但不限于增减合同数量，变动交货时间等，应提前书面通知对方，并征得对方书面同<br/>意，否则按照原合同规定执行。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、双方同意，在任何情况下，任何一方不对因违反本合同引起的任何附随的、间接的、特殊的或惩罚性的损失承担责任,包括但<br/>不限于利润或收入损失、商业机会损失、生产损失、商誉损失，另行采购费用，无论索赔的类型如何，也无论一方是否已经被告知该<br/>种损失的可能性。本合同项下甲方的损失赔偿上限为已付款5%。<br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第九条      不可抗力
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、签约双方任何一方因受诸如战争、严重火灾、洪水、台风、地震、暴雪、公共卫生事件管控等不可抗力事故的影响而不能执行<br/>
+            合同时,履行合同的期限应予延长,延长的期限应相当于事故所影响的时间。不可抗力事故系指甲乙双方在缔结合同时所不能预见的,并<br/>且它的发生及其后果是无法避免和无法克服的。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、受影响一方应在不可抗力事故发生后尽快用传真通知对方, 并于事故发生后14天内将有关当局出具的证明文件用快件寄给对方<br/>
+            确认,否则, 受阻一方应对所造成的一切损失负责。一旦不可抗力事故的影响持续120天以上,双方就延长或终止合同事宜应友好协商解决。<br/><br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第十条      保密条款
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、双方保证对从另一方获悉且无法自公开渠道获得的商业秘密（包括但不限于技术信息、经营信息及其他商业秘密）予以保密。<br/>
+            未经该商业秘密的原提供方同意，一方不得向任何第三方泄露该商业秘密的全部或部分内容，但法律、法规另有规定或双方另有约定<br/>的除外。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、一方不履行上述保密义务的，应承担相应的违约责任并赔偿由此造成的损失。<br/><br/>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第十一条     争议解决方式
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、对于在执行本合同中发生的或与本合同有关的争议，双方应通过友好协商解决，经协商在30天内不能达成协议时，双方均有权<br/>就有关争议向甲方所在地有管辖权的人民法院提起诉讼。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、除法院另有判决外，诉讼费用应由败诉方负担。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、在诉讼期间，除正在进行诉讼部分外，合同其它部分应继续执行。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、本合同适用中华人民共和国的法律。<br/><br/>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第十二条   特别约定<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本合同项下所有组件产品甲方将出口至{!leanx__lg_Contract__c.Destination_Country__c}。鉴于此，甲乙双方约定如下：
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）甲方承诺，本合同设备仅限在中国或{!leanx__lg_Contract__c.Destination_Country__c}境内使用，并保证不会通过甲方或第三方通过中国或{!leanx__lg_Contract__c.Destination_Country__c}销往其他任何地区或<br/>
+            国家，如合同设备被销往其他任何地区或国家，甲方不承担合同设备的任何质保责任。如本合同设备所有权发生转移，甲方应提前以<br/>
+            书面的形式向受让方明确告知本合同项下的全部内容（包括但不限于本特别约定的内容），甲方未履行本特别约定相关承诺及义务的<br/>
+            ，乙方有权要求甲方按照本合同总价的30%支付违约金（甲方完全理解这里所指的违约金是确定的且经双方一致同意的，乙方有权基<br/>
+            于本款得到此违约金而无须提供所遭受的实际损失的证明），若违约金无法弥补乙方损失时，甲方认可乙方有权要求甲方赔偿乙方全<br/>部损失。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）甲方承担出口至{!leanx__lg_Contract__c.Destination_Country__c}的所有费用，包括且不限于SGS认证所需要的证书、检测、监装费用，清关、报关、运输、保险等费<br/>用。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）甲方承诺，依据联合国及美国有关制裁要求，甲方保证将乙方产品所出口至{!leanx__lg_Contract__c.Destination_Country__c}的不会遭受联合国及美国有关制裁，如因<br/>甲方违反本条承诺给乙方造成损失的，甲方应承担全部损失（包括间接损失）。<br/><br/>
+            
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第十三条     其他条款<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、合同履行期间，如因故不能履行或需要修改，必须经双方同意变更合同，方为有效。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、本合同未尽事宜，由双方当事人协商一致后，另行签订补充合同，补充合同与本合同具有同等法律效力，不一致的内容，以补<br/>充合同为准。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、本合同自双方当事人签字盖章时生效。本合同一式四份，当事人各执二份，具有同等法律效力。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、本合同中的联系方式为双方当事人的有效联系方式，若联系方式发生变化，应及时以书面方式通知另一方，如一方没有通知或<br/>
+            通知延误，则以原地址和号码为通讯地址和联络号码。任何一方因执行本合同向对方发送的一切通知、函件，按照本合同所列地址邮<br/>寄给对方或按本合同所列的传真号码发送给对方的，视为有效发送。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、其他：未尽事宜，双方协商解决。<br/><br/>
+            
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            （以下为签字页，无正文）
+        
+        
+ 
+
+
+
+
+ 
+        <h5 style="font-size:20px">[签字页]
+        
+        需方（甲方）：{!buyerName} <br/>
+        法定代表人/授权代表：{!contactPeople}<br/>
+        开户行：{!sellerBankName}<br/>
+        账号：{!sellerBankCode}<br/>
+        日期:&nbsp;&nbsp;&nbsp;{!printDate}<br/><br/>
+        
+        供方（乙方）：{!bankInfo.BENEFICIARY_s_Name__c}<br/>
+        法定代表人/授权代表：  <br/>
+        名称：{!bankInfo.BENEFICIARY_s_Name__c}<br/>
+        银行：{!bankInfo.Bank_Name__c}<br/>
+        账号：{!bankInfo.BENEFICIARY_s_A_C__c}<br/>
+        日期:&nbsp;&nbsp;&nbsp;{!printDate}<br/><br/></h5>
+
+
+        </div>
+    </body>
+   
+</apex:page>

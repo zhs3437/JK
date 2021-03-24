@@ -1,0 +1,18 @@
+<apex:page standardController="opportunity"   showHeader="false" sidebar="false"  extensions="NewProjectCtrl">
+<apex:messages style="font-size:15px;"/>
+    <div >
+        <pre  style="font-size:15px ;color:red ;background:#CADEF1 ">If the project/distribution information has been created,<br/>please select the correct one. <br/>Otherwise, please create a new one.</pre>
+    </div>
+    <apex:form >
+        <div style="text-align:center">
+        <apex:commandButton value="New Utility" action="{!openwin}"  style="margin-left:15px;"/>
+        <apex:commandButton value="New DG Market" action="{!openwinfenxiao}"  style="margin-left:15px;"/>
+        <apex:commandButton value="Save"  action="{!SaveReturn}"  style="margin-left:15px;"/>
+        <apex:commandButton value="Cancel" onClick="window.close()"  style="margin-left:15px;"/>
+            </div>
+        <div style="text-align:center">
+        Project information	:<apex:inputField value="{!opp.Project__c}"></apex:inputField>
+            </div>
+</apex:form>
+
+</apex:page>

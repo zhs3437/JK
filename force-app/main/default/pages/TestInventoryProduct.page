@@ -1,0 +1,193 @@
+<apex:page standardController="Apply_Inventory__c" extensions="TestInventoryProductCtrl"  sidebar="fales" showHeader="false" id="thePage">
+    <apex:messages />
+    <meta charset="GBK" />
+   <c:jqueryui />
+    <script type="text/javascript" >
+    $(function() {
+               var xxx = "{!prod}";
+               ss = xxx.split(",");
+        $("#inp").autocomplete({
+                source: ss
+            });
+    });
+</script>
+    <apex:include pageName="JinkoSolarCharliy" />
+    <apex:includeScript value="{!$Resource.main}"/>
+    <div style="overflow-x: auto; overflow-y: auto; height: 600px; width:100%;">
+        
+        
+    <apex:form id="frm">
+        <table >
+            <tr>
+                <td >
+                    Product Name:             
+                </td>
+                <td width="250px">
+                    <div class="ui-widget"> 
+                    <input type="text" id="inp" />
+                    <!--<apex:param name="NewProductID" value="" assignTo="{!productName}" -->
+                    </div>
+                    <!--<apex:inputField value="{!aic.ProductName__c}"/>-->
+                </td>
+                
+                <td>
+                    Warehouse:
+                </td>
+                <td >
+                    <select multiple="multiple"  id="war">
+                        <option value ="Fukuoka">Fukuoka</option>
+                        <option value ="Kobe">Kobe</option>
+                        <option value= "Shimizu">Shimiz</option>
+                         <option value="Transit">Transit</option>
+                     </select>
+                   <!--<select multiple="multiple" name="Warehouse" id='war' value="{!aic.SelectWarehouse__c}"/>
+               
+               
+                   <input value="{!aic.SelectWarehouse__c}" id="war"/>
+
+                  
+                    <apex:inputField value="{!aic.SelectWarehouse__c}"/>
+                    
+-->                
+                </td>
+                <td>
+                     <!--<input type="button" value="Search" name="botton" onclick="showPosition()" reRender="UnbookForm" />-->
+                   <input type="button" value="Search" name="botton" onclick="showPosition()"/>
+                   <!--<apex:commandButton value="Search" action="{!SearchProduct}" id="AddProductButton" />-->
+                
+                </td> 
+                <td >
+                </td>
+            </tr>
+        </table>
+    </apex:form>
+    
+    <apex:form Id="UnbookForm" >
+        <apex:inputHidden value="{!editID}" id="editID"/>
+        <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+        <apex:inputHidden value="{!bookID}" id="bookID"/>
+        
+                
+                   <apex:repeat value="{!HistoryList}" var="h1" id="his" >
+                   <apex:pageBlock title="Unbook Product" >
+                    <apex:commandButton value="Book"  onclick="bookCount('{!h1.ID}')" action="{!Book}" rendered="{!IF(bookID==h1.ID && h1.ID != null ,false,true)}"></apex:commandButton>
+                    
+                    <apex:commandButton value="Save" 
+                                        action="{!saveEditPayment}" rendered="{!IF(bookID == h1.ID && h1.ID != null,true,false)}"
+                                        onclick="delTableRow('{!h1.ID}');"
+                                        style="margin:5px 0 0 0"/>
+                       
+                    <apex:commandButton value="Cancel" rendered="{!IF(bookID == h1.ID && h1.ID != null,true,false)}" action="{!CancelPaymentRequest}" oncomplete="returnPage()"/>
+                    <!-- <apex:commandButton value="Selected Product" action="{!SelectDailyDetail}"/>-->
+                       
+        
+                    <apex:pageBlockTable value="{!h1.invList}" var="line" >
+                        
+                           <apex:column >
+                            <apex:inputCheckbox value="{!line.isSelect_c__c}"/>
+                        </apex:column> 
+                        
+                        <apex:column headerValue="BL NO."> 
+                            <apex:outputField value="{!line.BL_NO__c}">
+                            </apex:outputField>                        
+                        </apex:column>
+                        
+                            <apex:column headerValue="{!$ObjectType.Apply_Inventory__c.fields.Warehouse__c.label}">
+                            <apex:outputField value="{!line.Warehouse2__c}">
+                            </apex:outputField>                        
+                        </apex:column>
+                        
+                        <apex:column headerValue="Module type">
+                            <apex:outputField value="{!line.ProductName__c}">
+                            </apex:outputField>                        
+                        </apex:column>
+                        
+                        
+                        <div>
+                            <apex:column headerValue="剩余库存">
+                                <apex:outputField value="{!line.Quantity__c}">
+                                </apex:outputField>
+                                <apex:inputText value="{!line.InputNumber__c}" id="text" rendered="{!IF(line.isSelect_c__c && saveID!=null,true,false)}"/>
+                                
+                            </apex:column>
+                        </div>
+                        <apex:column headerValue="工厂描述">
+                            <apex:outputField value="{!line.MAKTX__c}">
+                            </apex:outputField>                        
+                        </apex:column>
+                        <apex:column headerValue="入库日期">
+                            <apex:outputField value="{!line.UDate__c}">
+                            </apex:outputField>                        
+                        </apex:column>
+                        
+                        <!--<apex:column headerValue="库龄">
+                            <apex:outputField value="{!h1.WarehouseTime__c}">
+                            </apex:outputField>                        
+                        </apex:column>-->
+        
+                    </apex:pageBlockTable> 
+                 </apex:pageBlock> 
+        </apex:repeat>
+    </apex:form>
+
+    <script>
+    function cou(){
+        hidden2 = document.getElementById("text").value;             
+        alert(hidden2);
+    }
+    
+    function editPayment(editID){
+        var hidden2 = document.getElementById("thePage:UnbookForm:editID");
+        hidden2.value = editID ;
+    }
+        
+    function delTableRow(deleteID){
+        var hidden2 = document.getElementById("thePage:UnbookForm:deleteID");
+        hidden2.value = deleteID;
+        alert('确认保存并且刷新界面！');
+    }
+        
+    function bookCount(bookID){
+        var hidden2 = document.getElementById("thePage:UnbookForm:bookID");
+        hidden2.value = bookID;
+    }
+        
+    function returnPage(){
+         window.location.href = '/apex/TestInventoryProduct?id={!requestId}'; 
+    }   
+    
+    function refreshData(){
+        window.location.href='/apex/TestInventoryProductShowData?id={!requestId}';
+    }
+    
+    </script>
+<script>
+    function showPosition(){ 
+        var pro = document.getElementById("inp");
+        var wars = document.getElementById("war");
+         var str ='';
+                for(var i=0;i<wars.length;i++){
+                    if(wars.options[i].selected){
+                        if(str==''){
+                          str = wars[i].value;  
+                        }else{
+                         str = str+','+wars[i].value;
+                        }
+                       
+                        }
+                    }
+        func(pro.value,str);
+        
+    }
+        //window.location.href='/apex/TestInventoryProductShowData?id={!requestId}';
+    </script>
+        
+        <apex:form >
+        <apex:actionFunction name="func" action="{!SearchProduct}"  reRender="UnbookForm" >
+           
+           <apex:param id="pro" name="pro" value="" assignTo="{!productName}" />
+           <apex:param id="ware" name="ware" value="" assignTo="{!warehouse}"/>
+        </apex:actionFunction>
+   </apex:form>
+    </div>
+</apex:page>

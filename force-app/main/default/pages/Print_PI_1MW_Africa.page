@@ -1,0 +1,521 @@
+<apex:page standardController="Contract" extensions="PA_Japan_Ctrl" sidebar="false" showHeader="false" applyHtmlTag="false" renderAs="PDF" action="{!initializeMea}">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        
+        <style>
+            .bordered {
+            border: solid #ccc 1px;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            -webkit-box-shadow: 0 1px 1px #ccc; 
+            -moz-box-shadow: 0 1px 1px #ccc; 
+            box-shadow: 0 1px 1px #ccc;         
+            }
+            /* body { 
+            text-align:justify; widows:0; orphans:0; font-family: Arial Unicode MS; 
+            font-size:14px 
+            } */
+            
+        </style>
+        
+    </head>
+    <apex:form >
+        <table width="100%" style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; "  border="1" cellSpacing="0" cellPadding="0" >
+            <tbody>
+                <TR style=" mso-height-source: userset" height="62">
+                    <TD colSpan="2">
+                        <apex:image id="theImage" value="{!$Resource.logo}" style="height:84px; width:130px" />
+                    </TD>
+                    <TD height="62" colSpan="6" align="center" vAlign="middle">
+                        <FONT color="#000000" style="float:left;">
+                            <STRONG>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROFORMA INVOICE
+                            </STRONG>
+                        </FONT>
+                    </TD>
+                </TR>
+                
+                <TR style=" mso-height-source: userset" height="20">
+                    <TD colspan="2" rowSpan="7" align="center" valign="top" >
+                        
+                    </TD>
+                </TR>
+                
+                <TR style=" mso-height-source: userset" height="20">
+                    <TD colspan="6" align="right" valign="top" >
+                        www.jinkosolar.com
+                    </TD>
+                </TR>
+                
+                <TR style=" mso-height-source: userset" height="20">
+                    <TD height="20" colspan="8" >
+                        <STRONG>
+                            <FONT color="#000000">
+                                INVOICE NO: 
+                                <FONT color="#000000">
+                                    {!Contract.Contract_NO__c}
+                                </FONT>
+                            </FONT>
+                        </STRONG>
+                    </TD>
+                </TR>
+                <TR style=" mso-height-source: userset" height="20">
+                    <TD height="20" colspan="8" valign="middle" >
+                        <STRONG>
+                            <FONT color="#000000">
+                                INVOICE DATE:
+                            </FONT>
+                        </STRONG> 
+                        {! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }
+                    </TD>
+                </TR>
+                
+                <TR style=" mso-height-source: userset" height="20">
+                    <TD height="20" colspan="8" valign="middle" >
+                        <STRONG>
+                            <FONT color="#000000">
+                                SELLER:
+                            </FONT>
+                        </STRONG> 
+                        {!Contract.SELLER__c  }
+                    </TD>
+                </TR>
+                
+                <TR style=" mso-height-source: userset" height="30">
+                    <TD height="20" colspan="8" valign="middle" >
+                        <STRONG>
+                            <FONT color="#000000">
+                                BUYER:
+                            </FONT>
+                        </STRONG> 
+                        {!buyer.Name }
+                    </TD>
+                </TR>
+                
+                <TR style=" mso-height-source: userset" height="39">
+                    <TD height="20" colspan="8" valign="left" >
+                        <STRONG>
+                            <FONT color="#000000">
+                                BUYER ADDRESS:
+                            </FONT>
+                        </STRONG>
+                        {!buyerAddress}
+                    </TD>
+                </TR>       
+                
+                <tr>
+                    <td colspan="8" height="20" >
+                        <strong>BUYER CONTACT:</strong>
+                        {!Contract.Contact_Name__c} &nbsp; / &nbsp;{!Contract.Phone__c} &nbsp; / &nbsp;{!Contract.Email__c}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8" height="20" >
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <table border="0" width="100%" style="font-family : Arial; font-size:14px; border-collapse: collapse;" cellSpacing="0" cellPadding="0">     
+            
+            <tr >
+                <td style="border:black 0.5pt solid;" colspan="8" align="left" valign="center" >
+                    <strong>PURCHASE INVOICE DETAILS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Currency:{!Contract.CurrencyIsoCode}</strong>
+                </td>
+            </tr>
+            <tr >
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" width="60">
+                    <strong>Item</strong>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" width="80">
+                    <strong>HS Code</strong>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" width="120">
+                    <strong>Goods Description</strong>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" width="150">
+                    <strong>Specification <BR />(W)</strong>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" width="150">
+                    <strong>Quantity<BR />(PCS)</strong>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" width="70">
+                    <strong>Unit Price <br/>({!Contract.CurrencyIsoCode}/PC)</strong>
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" colspan="2" width="280">
+                    <strong>Purchase Price  ({!Contract.CurrencyIsoCode})</strong>
+                </td>
+            </tr>
+            
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                <apex:variable var="index" value="{!index+1}" />
+
+                 <tr style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};">
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="60">
+                        {!index}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="80">
+                        {!$Label.HS_Code}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="120">
+                        {!line.Product_name__c} <br/>
+                        (SOLAR MODULE)   
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="150">
+                        <apex:outputText value="{0, number, #,##0.0}">
+                            <apex:param value="{!line.Total_W__c}"/>
+                        </apex:outputText>
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="150">
+                     <apex:outputText value="{0, number, #,##0}">
+                     <apex:param value="{!line.Quantity__c}"/>
+                        
+                        </apex:outputText> 
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="70">
+                        <apex:outputText value="{0, number, #,##0.0000}">
+                            <apex:param value="{!line.Unit_Price__c}"/>
+                        </apex:outputText>
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="90">
+                        <apex:outputField value="{!Contract.Trade_term__c}"> total: </apex:outputField>
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="90">
+                        <apex:outputText value="{0, number, #,##0.00}">
+                            <apex:param value="{!line.Total_Price__c}"/>
+                        </apex:outputText>
+                    </td>
+                </tr>
+
+
+                  <tr style="display:{!IF(Contract.PFI_Enadble__c =true,'run-in','none')};">
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="60">
+                        {!index}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="80">
+                        {!$Label.HS_Code}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="120">
+                        {!line.Product_name__c} <br/>
+                        (SOLAR MODULE)   
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="150">
+                        <apex:outputText value="{0, number, #,##0.0}">
+                            <apex:param value="{!line.Total_W__c}"/>
+                        </apex:outputText>
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="150">
+                    
+                         <apex:outputText value="{0, number, #,##0}">
+                         <apex:param value="{!line.Quantity__c}"/>
+                        
+                        </apex:outputText> 
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="70">
+                        <apex:outputText value="{0, number, #,##0.00000}"><apex:param value="{!line.FOB_Unit_Price__c * line.Unit_WM__c}"/></apex:outputText>
+                    </td>
+                 <!--   <td style="border:black 0.5pt solid;" align="center" valign="middle" width="70">
+                        <apex:outputText >
+                            {!line.Unit_FOB_Price__c}
+                        </apex:outputText>
+                    </td>
+                   <td style="border:black 0.5pt solid;" align="center" valign="middle" width="70">
+                        <apex:outputText value="{0, number, #,##0.0000}">
+                            <apex:param value="{!line.Unit_Price_Without_Commission__c}"/>
+                        </apex:outputText>
+                    </td> -->
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="90">
+                        <apex:outputText > FOB total: </apex:outputText>
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="center" valign="middle" width="90">
+                        <apex:outputText value="{0, number, #,##0.00000}"><apex:param value="{!line.FOB_Unit_Price__c * line.Unit_WM__c * line.Quantity__c}"/></apex:outputText>
+                    </td>
+                </tr>
+            </apex:repeat>
+            <tr style="display:{!IF(Contract.PFI_Enadble__c =true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="5">
+                    Freight 
+                </td>
+                                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                <apex:outputText value="{0, number, #,##0.00000}"><apex:param value="{!fright*Contract.Total_W__c}"/></apex:outputText>
+                    
+
+                </td>
+
+            </tr>
+              <tr style="display:{!IF(Contract.PFI_Enadble__c =true && Contract.iscif__c=true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="5">
+                    Insurance(For CIF)
+                </td>
+                               <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                <apex:outputText value="{0, number, #,##0.00000}"><apex:param value="{!Contract.Insurance_for_CIF__c}"/></apex:outputText>
+                  
+                </td>
+
+            </tr>
+            
+               <tr style="display:{!IF(contract.Tax_Rate__c!=null,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    TAX
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  >
+                    {!contract.Tax_Rate__c}%
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  colspan="5">
+                   
+                </td>
+               
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                  <apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!contract.Tax__c}"/></apex:outputText>
+                </td>
+            </tr>
+            <tr style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  rowspan="2">
+                    <strong>TOTAL</strong>
+                </td> 
+               <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};border:black 0.5pt solid;" align="center" valign="middle" colspan="3">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2010
+                </td>
+                <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};border:black 0.5pt solid;" align="center" valign="middle" colspan="3">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2020
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText>
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle">
+                    <apex:outputField value="{!Contract.Trade_term__c}"> total: </apex:outputField>
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    <apex:outputText value="{0, number, #,##0.00}">
+                        <apex:param value="{!Contract.Total_Price_Tax__c}"/>
+                    </apex:outputText>  
+                </td> 
+            </tr>
+
+
+              <tr style="display:{!IF(Contract.PFI_Enadble__c =true &&   Contract.iscif__c=false,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  rowspan="2">
+                    <strong>TOTAL</strong>
+                </td> 
+                <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};border:black 0.5pt solid;" align="center" valign="middle" colspan="3">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2010
+                </td>
+                <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};border:black 0.5pt solid;" align="center" valign="middle" colspan="3">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2020
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText>
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle">
+                    <apex:outputField value="{!Contract.Trade_term__c}"> total: </apex:outputField>
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    <apex:outputText value="{0, number, #,##0.00000}">
+                        <apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+fright*Contract.Total_W__c}"/>
+                    </apex:outputText>  
+                </td> 
+
+            </tr>
+             <tr style="display:{!IF(Contract.PFI_Enadble__c =true  && Contract.iscif__c=true ,'run-in','none')};">
+                <td style="border:black 0.5pt solid;" align="center" valign="middle"  rowspan="2">
+                    <strong>TOTAL</strong>
+                </td> 
+                <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};border:black 0.5pt solid;" align="center" valign="middle" colspan="3">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2010
+                </td>
+                <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};border:black 0.5pt solid;" align="center" valign="middle" colspan="3">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2020
+                </td>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText>
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle">
+                    <apex:outputField value="{!Contract.Trade_term__c}"> total: </apex:outputField>
+                </td> 
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" >
+                    <apex:outputText value="{0, number, #,##0.00000}">
+                        <apex:param value="{!Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+Contract.Insurance_for_CIF__c+fright*Contract.Total_W__c}"/>
+                    </apex:outputText>  
+                </td> 
+
+            </tr>
+            <tr>
+                <td style="border:black 0.5pt solid;" align="center" valign="middle" colspan="7">
+                    <strong><apex:outputField value="{!Contract.Total_Price_translation__c}" style="font-weight:bold"/> </strong>
+                    <!-- US Dollar Seventy-five thousand eight hundred sevety-eight and fourty scents -->
+                    
+                </td>
+            </tr>
+                <!-- 1 -->
+           <apex:repeat value="{!pay}" var="Pay1" id="pay_List1" >
+            <TR style="display:{!IF(Contract.PFI_Enadble__c =false,'run-in','none')};">
+                    <TD  style="border:black 0.5pt solid;" align="center" valign="middle" colspan="7" >{!Pay1.Down_Balance_Payment__c} ({!Pay1.comments__c})</TD>
+                <TD style="border:black 0.5pt solid;"  align="center" valign="middle">    <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.Total_Price__c*(0.01*Pay1.Percentage__c)}"/></apex:outputText> </TD>
+                </TR>  
+
+           <!-- 2 -->
+           <TR style="display:{!IF(Contract.PFI_Enadble__c =true && Contract.iscif__c=false,'run-in','none')};">
+                    <TD  style="border:black 0.5pt solid;" align="center" valign="middle" colspan="7" >{!Pay1.Down_Balance_Payment__c} ({!Pay1.comments__c})</TD>
+                <TD style="border:black 0.5pt solid;"  align="center" valign="middle">    <apex:outputText value="{0, number, #,##0.00000}" ><apex:param value="{!(Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+fright*Contract.Total_W__c)*(Pay1.Percentage__c/100)}"/></apex:outputText> </TD>
+                </TR>  
+          
+           <!-- 3 -->
+           <TR style="display:{!IF(Contract.PFI_Enadble__c =true  && Contract.iscif__c=true,'run-in','none')};">
+                    <TD  style="border:black 0.5pt solid;" align="center" valign="middle" colspan="7" >{!Pay1.Down_Balance_Payment__c} ({!Pay1.comments__c})</TD>
+                <TD style="border:black 0.5pt solid;"  align="center" valign="middle">    <apex:outputText value="{0, number, #,##0.00000}" ><apex:param value="{!(Contract.FOB_Total_Price__c*(1+if(Contract.Tax_Rate__c!=null,Contract.Tax_Rate__c,0))+Contract.Insurance_for_CIF__c+fright*Contract.Total_W__c)*(Pay1.Percentage__c/100)}"/></apex:outputText> </TD>
+                </TR>  
+            
+            </apex:repeat>
+            <tr>
+                <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="8">
+                    <strong>BANK INFORMATION</strong>
+                </td>
+            </tr>
+            <tr >
+                <td style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " align="left" valign="middle" colspan="8" rowspan="10">
+                    {!Contract.Bank_Information_Content__c}
+                </td>
+            </tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr style="border-left:black 0.5pt solid;border-right:black 0.5pt solid " ></tr>
+            <tr>
+                <td style=" border-left:black 0.5pt solid;border-right:black 0.5pt solid "  align="left" valign="middle" colspan="8">
+                    Contact person:{!Contract.Contact_Person__c}
+                    <!-- <span style="font-family: Arial Unicode MS;"> </span> -->
+                </td>           
+            </tr>
+            <tr>
+                <td style="border-left:black 0.5pt solid;border-right:black 0.5pt solid "  align="left" valign="middle" colspan="8">
+                    Email: {!ContactEmail}
+                </td>           
+            </tr>
+            <tr>
+                <td style="border-left:black 0.5pt solid;border-right:black 0.5pt solid "  align="left" valign="middle" colspan="8">
+                    Tel: {!ContactTel}
+                </td>           
+            </tr>
+            <apex:outputPanel style=" border-left:black 0.5pt solid;border-right:black 0.5pt solid " rendered="{!IF(Contract.Region__c == 'Middle East&Africa'||Contract.Region__c == 'MENA'||Contract.Region__c == 'SSA',true,false)}"> 
+            <tr>
+                <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="8">                                 
+                    Payment Reference:      Please use Jinko Contract No.{!Contract.Contract_NO__c}
+                </td>
+            </tr>
+            <tr>
+                <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="8">
+                    Payment Terms: {!Contract.Payment_Term_Description__c}
+                </td>
+            </tr>
+            </apex:outputPanel>            
+            <apex:outputPanel style=" border-left:black 0.5pt solid;border-right:black 0.5pt solid " rendered="{!Contract.MEA_PI_additional_information__c}">            
+                 <tr >
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="8">
+                        Shipment details:
+                    </td>
+                    
+                </tr>
+                <tr >
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Country of origin:  {!Contract.Country_of_Origin__c}
+                    </td>
+                    
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Total weight (Gross ):  {!Contract.Total_weight_Gross__c}
+                    </td>
+                    
+                </tr>
+                <tr >
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4" >
+                        Port of Origin:  {!Contract.Port_of_Origin__c}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Total weight (Net ):  {!Contract.Total_weight_Net__c}
+                    </td>
+                    
+                </tr>
+                <tr >
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Port of Transshipment:  {!Contract.Port_of_Transshipment__c}
+                    </td>
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Total Pallets.:  <apex:outputField value="{!Contract.Total_Pallets__c}"/> 
+                    </td>
+                    
+                </tr>
+                <tr >
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Port of Discharge:  {!Contract.Delivery_point__c}
+                    </td>
+                    
+                    <td style="border:black 0.5pt solid;" align="left" valign="middle" colspan="4">
+                        Country of Supply:  {!Contract.Country_of_Supply__c}
+                    </td>                    
+                </tr>
+            </apex:outputPanel>
+            <tr>
+                <td style="border:black 0.5pt solid;" rowspan="5" colspan="8">
+                    <strong>This PI is issued in accordance with Purchase Agreement ({!Contract.Contract_NO__c}) executed by the Seller and Buyer. To the extent that there is any conflict between this PI and the Purchase Agreement, the terms and the conditions of the Purchase Agreement shall prevail.</strong>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr>
+                <td style="border:black 0.5pt solid;" align="left" colspan="8">
+                    <strong>The PI shall become effective and binding on the Seller only after being chopped with Seller's seal.</strong>
+                </td>
+            </tr>
+            <tr >
+                <td style="border:black 0.5pt solid;" align="left" colspan="8">
+                    <strong>SIGNATURE / STAMP</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="border:black 0.5pt solid;" colspan="4">
+                    <strong>Seller Representative:</strong>
+                </td>
+                
+                <td style="border:black 0.5pt solid;" colspan="4">Buyer Representative:</td>
+            </tr>
+            <tr>
+                <td style="border:black 0.5pt solid;" colspan="4">
+                    Date:&nbsp;{! TEXT(YEAR(tod)) & "/"  &  TEXT(MONTH(tod))&  "/"  & TEXT(DAY(tod)) }  
+                </td>
+                
+                <td style="border:black 0.5pt solid;" colspan="4">Date:</td>
+            </tr>
+        </table>
+    </apex:form>
+    
+</apex:page>

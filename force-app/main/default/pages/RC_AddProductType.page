@@ -1,0 +1,75 @@
+<apex:page title="申请类型" standardController="leanx__pm_Project__c" extensions="RC_AddproductAppCtrl" 
+           showHeader="true" lightningStylesheets="true">
+    <apex:pageMessages />
+    <apex:slds />
+    <div >
+        <pre align="left" style="font-size:15px ;color:red ;"><strong>选择申请的产品类型:</strong></pre>
+        <!-- <pre align="left" style="font-size:15px ;color:red ;"><strong>库存申请:对于有库存的产品，申请后可以快速添加。请在使用前与SOC确认库存。</strong></pre> -->
+        <pre align="left" style="font-size:15px ;color:red ;"><strong>新生产申请:非主流产品缺货需要新生产的，需审批新增流程，审批周期为2~7天。</strong> </pre>
+    </div>
+    <apex:form >
+        <div style="text-align:center">
+            <apex:commandButton value="创建【新生产申请】" action="{!NewProduct}" />
+            <apex:commandButton value="取消" onclick="redirect('{!$CurrentPage.parameters.Id}')"/>
+        </div>
+    </apex:form>
+    
+    <!-- <apex:form >
+        
+        <apex:pageBlock >
+            <table style="width: auto;">
+                <tr style="height: 50%;">
+                    <th style="text-align: left;width: 10%;font-size: 15px;">
+                      产品名
+                    </th>
+                    <th style="text-align: left;width: 10%;font-size: 15px;">
+                      瓦数
+                    </th>
+                    <th style="text-align: left;width: 10%;font-size: 15px;">
+                      销售价格
+                    </th>
+                    <th style="text-align: left;width: 10%;font-size: 15px;">
+                      数量
+                    </th>
+                    <th style="text-align: left;width: 10%;font-size: 15px;">
+                      保证交货日期
+                    </th>
+                    <th style="text-align: left;width: 10%;font-size: 15px;">
+                        操作
+                    </th>
+                    
+                </tr>
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!newpdList}" var="p">
+                    <apex:variable var="index" value="{!index+1}" />
+                    <tr>
+                        <td style="font-size: 15px;">{!p.Name}</td>
+                        <td style="font-size: 15px;">{!p.W__c}</td>
+                        <td style="font-size: 15px;">{!p.Sales_Price__c}</td>
+                        <td style="font-size: 15px;">{!p.Discount__c}</td>
+                        <td style="font-size: 15px;"><apex:outputField value="{!p.Guaranteed_Delivery_Date__c}"></apex:outputField></td>
+                        <td><a href="apex/Rc_AddProductDetail?Id={!p.Product_Application__r.Project__c}&ProId={!p.Id}" style="font-size: 15px;">编辑</a></td>
+                    </tr> 
+                    
+                </apex:repeat>
+                
+                
+            </table>
+            
+        </apex:pageBlock>
+        
+    </apex:form> -->
+
+    <script>
+      /* Redirect */
+      function redirect(objId) {
+        if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+          window.location.href = '/' + objId
+        } else {
+          if (sforce && sforce.one) {
+            sforce.one.navigateToSObject(objId)
+          }
+        }
+      }
+    </script>
+</apex:page>

@@ -1,0 +1,61 @@
+<apex:page standardController="Opportunity" id="AddOppItem" extensions="AddOppItemCtrl" showHeader="false" >
+<script>
+    function gotoEdit(){
+        window.location.href = '/apex/AddQuoteProduct?addTo={!Editid}&retURL=%2F{!Editid}&id={!Editid};
+    }
+    
+</script>
+
+<apex:form Id="QuoteForm">
+
+     <apex:inputHidden value="{!EditID}" id="EditID"/>
+    <apex:pageBlock id="Quote_Line_Block">
+   <p align="center"><font style="font-size:25px">Please choose quote to sync from below list. Thanks.</font></p>
+ <apex:pageBlockSection title="Quote" >
+
+    <apex:commandButton action="{!back}" value="Back to Opportunity" />
+
+ <apex:pageBlockTable value="{!quoteLst}" var="Q" rowClasses="odd,even"  styleClass="list" width="100%" rules="rows">
+    <apex:column headerValue="Action" style="width:100% ">
+    <apex:commandButton action="{!UpdateQuoteItem}" onclick="Edit('{!Q.id}');" value="Sync Prodect" />
+   </apex:column>
+  <apex:column headerValue="    Name    "  >
+<p style="border-collapse: collapse;margin:20px auto; width:180px ">{!Q.QuoteNumber} </p>
+ </apex:column>
+   <apex:column headerValue="    Quote Name    ">
+<p style="border-collapse: collapse;margin:20px auto; width:180px ">{!Q.Name} </p>
+ </apex:column>
+    <apex:column headerValue="    Opportunity Name    ">
+ <apex:outputField value="{!Q.Opportunityid}" />
+ </apex:column>
+    <apex:column headerValue="    Account Name    ">
+ <apex:outputField value="{!Q.Accountid}"  />
+ </apex:column>
+    <apex:column headerValue="    Region    ">
+<p style="border-collapse: collapse;margin:20px auto; width:180px ">{!Q.Region__c} </p>
+ </apex:column>
+    <apex:column headerValue="    Grand Total    ">
+<p style="border-collapse: collapse;margin:20px auto; width:180px ">{!Q.CurrencyIsoCode} {!Q.GrandTotal} </p>
+ </apex:column>
+
+   <apex:column headerValue="Discount" >
+<p style="border-collapse: collapse;margin:20px auto; width:180px ">{!Q.Discount__c} </p>
+ </apex:column>
+
+  </apex:pageBlockTable>
+ </apex:pageBlockSection>
+    </apex:pageBlock> 
+</apex:form>
+<script>
+ function Edit(Editid){
+        if(confirm("Are you sure edit?")){
+            
+            var hidden1 = document.getElementById("AddOppItem:QuoteForm:EditID");
+
+            hidden1.value = Editid;
+            
+        }
+    }
+
+     </script>
+</apex:page>

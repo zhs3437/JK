@@ -1,0 +1,244 @@
+<apex:page language="ja"
+           sidebar="false"
+           showHeader="false" standardStylesheets="false" renderAs="PDF" standardController="leanx__lg_Contract__c"  extensions="RC_PDFController"><!-- standardController="Contract"  extensions="PA_Japan_Ctrl"  -->
+    
+    <head>
+         
+        <style type="text/css">
+            @page {
+                size: 'A4';
+                margin: 0.3in 0.5in;
+            }
+            
+            body {
+                font-size:12px; 
+                font-weight:unset;
+            }
+
+            h1, div, body, html {
+                padding: 0px;
+                margin: 0px;
+            }
+            
+        </style>
+    </head>
+    <body style="font-family:Arial Unicode MS;font-size:12px;">
+        <h1 style = "text-align:center">
+            组件买卖合同
+        </h1>
+        <table width="100%" style=" font-size:12px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+            <tr>
+                <td colspan="8" style="text-align:right">合同编号:{!leanx__lg_Contract__c.Contract_NO__c}</td>                
+            </tr>
+            <tr>
+                <td colspan="8" style="text-align:right">日&nbsp;&nbsp;期：{!printDate}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">甲方：{!buyer.Name}</td>
+                <td colspan="4" width="50%">乙方：{!leanx__lg_Contract__c.Seller__c}</td>                
+            </tr>
+            
+            <tr>
+                <td colspan="4" width="50%">地址：{!buyerAddress}</td>
+                <td colspan="4" width="50%">地址：{!Address}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">法定代表人：</td>
+                <td colspan="4" width="50%">法定代表人：</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">邮编：{!buyerPostCode}</td>
+                <td colspan="4" width="50%">邮编：{!postCode}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">电话（Tel）：{!leanx__lg_Contract__c.Account_Contact_Mobile__c}</td>
+                <td colspan="4" width="50%">电话（Tel）：{!leanx__lg_Contract__c.Actual_Sales__r.MobilePhone}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">传真（Fax）：{!buyerFax}</td>
+                <td colspan="4" width="50%">传真（Fax）：{!fax}</td>                
+            </tr>
+            <tr>
+                <td colspan="4" width="50%">联系人：{!leanx__lg_Contract__c.Account_Contact_Name__c}</td>
+                <td colspan="4" width="50%">联系人：{!leanx__lg_Contract__c.Actual_Sales_Name__c}</td>                
+            </tr>
+        </table>
+        <br/>
+              <div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据《中华人民共和国合同法》，经甲乙双方友好协商，在平等、自愿的基础之上，就太阳能组件销售事宜，双方签订本合同，<br/>以资共同遵守：   
+            </div>
+    
+        <p>
+           1. 产品描述、规格、数量、单价、总价如下：
+        </p>
+              <table width="100%" style=" font-size:12px;BORDER-COLLAPSE: collapse; "  border="1" cellSpacing="0" cellPadding="0" >
+           <tr>
+                <td style="text-align: center" width="16%">基地</td>
+                <td style="text-align: center" width="20%">产品等级、类型</td>
+                <td style="text-align: center" width="16%">数量（Pcs）</td>
+                <td style="text-align: center" width="16%">单价（元/Pcs）</td>
+                <td style="text-align: center" width="16%">总价（元）</td>                
+                <td style="text-align: center" width="16%">备注</td>
+            </tr> 
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!pds}" var="line" id="Order_Line_List">
+            <apex:variable var="index" value="{!index+1}" />
+                <tr>
+                    <!-- <td align="center" valign="middle">{!leanx__lg_Contract__c.Departure_Factory__c}</td> -->
+                    <td rowspan="{!if(index == 1, pds.size, 1)}" style="display: {!if(index != 1, 'none', 'table-cell')};" align="center" valign="middle">
+                        <apex:outputField value="{!leanx__lg_Contract__c.Departure_Factory__c}"/>
+                    </td>
+                    <td valign="middle">{!line.Name}</td>
+                    <!--<td align="center" valign="middle">{!line.Product_Series__c}</td>-->
+                    <td align="center" valign="middle">
+                        <apex:outputText value="{0, number, ###,###}">
+                            <apex:param value="{!line.Quantity__c}"/>
+                        </apex:outputText>
+                    </td>
+                    <td align="center" valign="middle">
+                        <apex:outputText value="{0, number, ###,###.00}">
+                            <apex:param value="{!line.Sales_Price__c}"/>
+                        </apex:outputText>  
+                    </td>
+                    <td align="center" valign="middle">
+                        <apex:outputText value="{0, number, ###,###.00}">
+                            <apex:param value="{!line.Total_Price__c}"/>
+                        </apex:outputText>
+                    </td>
+                    <td align="center" valign="middle">{!line.Goods_Description__c}</td>
+                </tr>
+            </apex:repeat>
+            <tr>
+                <td colspan="2">总计</td>
+                <td align="center">
+                    <apex:outputText value="{0, number, ###,###}">
+                        <apex:param value="{!leanx__lg_Contract__c.Total_Quantity__c}"/>
+                    </apex:outputText>
+                </td>
+                <td></td>
+                <td align="center">
+                    <apex:outputText value="{0, number, ###,###.00}">
+                        <apex:param value="{!leanx__lg_Contract__c.Total_Price__c}"/>
+                    </apex:outputText>
+                </td>
+                <td></td>
+            </tr>
+                  <tr>
+                <td colspan="6">以上组件均不承担质保及售后服务</td>                              
+            </tr>
+        </table>
+      
+        
+        <div><br/>
+            2. 包装方式、交货方式:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1 乙方要为所需交付产品提供包装，并担负包装成本。包装需适应长途公路运输。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2 提货时间：在甲方按时、足额支付本合同项下{!leanx__lg_Contract__c.Payment_details__c}组件发货款的情况下，甲方最迟应于{!TEXT(YEAR(lastGDD)) & "年" & Text( MONTH(lastGDD)) & "月"& TEXT(DAY(lastGDD)) & "日" }日前提完本合同下所有<br/>组件。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3 运费承担：由甲方从乙方仓库自提并承担提货后的全部费用（包括但不限于运杂费、运输保险费等），货物风险出厂后由乙方<br/>转移至甲方。<br/>
+            3. 付款日期及结算方式：<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1 本合同甲、乙双方盖章生效后五日内，甲方向乙方支付本合同项下组件全款或批次组件发货款（批次发货款不低于合同总额的<br/>
+            30%），乙方收到本合同项下组件全款或批次组件发货款后安排备货，并通知甲方到指定地点提货。乙方在收到甲方本合同项下约定<br/>
+            的组件全款或批次组件全款前有权不予备货，由此导致乙方无法在合同约定的提货时间备足货物的，乙方不承担任何形式的违约责任。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2 甲方应以电汇或者乙方接受的期限不超过六个月的银行承兑支付上述款项。<br/>
+            4. 验收标准及提出异议期限:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;甲方派人员到乙方工厂进行检验，按双方确认的实际数据出货，待甲方（或甲方授权人员）确认乙方产品符合甲方要求后签收产<br/>品出货单。<br/>
+            5. 保密条款:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.1 甲乙双方对以下各项有关的信息，应当严格保密，若有对任何第三方透露合同条款，泄密方需赔偿守约方的全部损失：<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）本合同之商业关系的存在；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）本合同的各项条款及本合同的谈判；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）本合同的标的及数量；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（4）甲乙双方的在本合同履行过程中所涉及到的一切商业和技术信息。但是，按5.2条可以披露的除外。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.2 仅在下列情况下，本合同双方才可以披露本条第1款所述信息：<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）有关双方适用之法律的强制性要求；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）任何有管辖权的政府机关、监管机构的强制性要求；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）在任一方之专业顾问或律师承诺保密的前提下，由该方向其披露（如有）；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（4）非因任一方过错，信息进入公有领域；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（5）任何一方因上市需要所作的披露；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（6）双方事先给予书面同意。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.3 本协议终止后本条款仍然适用，不受时间限制。<br/>
+            6. 声明、保证和承诺:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.1 双方相互向对方做出声明、保证和承诺，并确认对方依据这些声明、保证和承诺而签署本合同；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.2 双方具备签署本合同的权利能力和行为能力，本合同一经签署即对双方构成具有法律约束力的文件；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.3 双方声明目前不存在对其经营具有重大负面影响的情况，被有关部门或法院吊销营业执照或依法强制执行，
+            可能影响本合同<br/>履行的情况；双方同意，一旦发生上述情况，应在事发之日起两日通知对方。<br/>
+            7. 违约:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.1 违约责任的基本原则<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任何一方违反本协议的规定，应承担相应的违约责任，对由于其违约行为而给予另一方造成的直接经济损失予以赔偿。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.2 甲方违约<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;甲方如存在以下违约行为的；应当按以下规定向乙方承担违约责任。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）违反本合同的规定，甲方延期付款，甲方每日按延迟付款金额的千分之三向乙方支付违约<br/>
+            金。乙方有权解除或要求甲方继续履行合同，在甲方延迟付款期内，乙方有权不予备货而不应被认定为违约。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）违反本协议中第6条的承诺，存在对其经营具有重大影响，可能影响本合同履行的情形而不向乙方披露的，乙方有权单方解
+            除本合同，并要求赔偿损失。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.3 乙方违约<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;乙方如存在以下违约行为，应当按以下规定向甲方承担违约责任。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）违反本合同的规定，乙方延期交货，乙方每日按延迟交货数量的货值的千分之三向乙方支付违约金，违约金不超过延迟交货
+            部分货物总价的5%。逾期超过30天以上的，甲方有权解除或要求乙方继续履行合同。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）违反本协议第6条中的承诺，存在对其经营具有重大影响。可能影响本合同履行的情形而不向甲方披露的，甲方有权单方解<br/>除本合同，并要求赔偿直接经济损失。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.4 除本合同明确规定之外，甲乙双方的任何违约行为除不可抗力的原因，均按我国《合同法》有关规定及一般贸易惯例承担相应
+            经济责任。乙方违约赔偿上限为甲方已付款的5%。<br/>
+            8. 争议的解决:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;凡因本合同引起的或与本合同有关的任何争议，双方均可向江西省上饶经济技术开发区有管辖权的人民法院提起诉讼。 <br/>
+            9．廉洁约定:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;乙方作为合同一方（“晶科”），合同另一方（“相对方”）在此向晶科确认并承诺在业务交往中不会从事下列行为，相对方（或其工<br/>
+            作人员或通过第三方）不论出于何种原因给予晶科工作人员：<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1）佣金、回扣；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2）各种名义和形式的非正当所得超过2000元的（可累计计算）；<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3）以任何形式雇佣晶科员工（含从晶科离职两年内）为相对方工作。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如违反本条约定，则相对方同意向晶科支付双方累计合同金额50%的违约金。当按比例计算的违约金的绝对值低于二十万元时，<br/>
+            相对方同意按二十万元计算并支付。本款的违约金尚不足以弥补晶科的全部损失时，应按晶科的全部损失予以赔偿。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相对方完全理解这里所指的违约金是确定的、经双方一致同意的，晶科有权得到此违约金而无须提供所遭受的实际损失的证明。<br/>
+            晶科有权根据自己的方便从应支付给相对方的合同款项中和/或其它款项中扣减该违约金。若相对方违反本条约定，晶科有权解除或要<br/>
+            求继续履行合同。晶科选择解除合同的，则合同从相对方违反本条约定时即自动解除，合同被解除后，本条约定继续有效。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特别申明：鉴于晶科能源有限公司是晶科控股有限公司旗下公司之一，本合同另一方（亦称相对方）在此特别同意，若相对方对<br/>
+            晶科能源有限公司存在本“廉洁约定”约定的行为，其后果适用于与相对方有业务往来的晶科控股有限公司旗下之全部公司，即相对方除<br/>
+            应对晶科能源有限公司承担本条约定的违约责任外，还应当对与相对方有业务往来的晶科控股有限公司旗下之全部公司承担本条约定<br/>的违约责任。<br/>
+            10. 不可抗力:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10.1 按《民法总则》和《合同法》的有关规定执行。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10.2 合同期内发现不可抗力事件，致使一方履约受阻，对此，双方应协商解决，而且合同的履行也应按双方同意的期限延期。不<br/>
+            可抗力指任何无法预见、不可避免且无法弥补其损害的事件，包括但不限于：水灾、火灾、地震、暴风雪、飓风、旱灾、法律、政府<br/>行为或其他类似事件。<br/>
+            11. 合同变更:
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欲对合同条款做出任何改动，需经双方同意并签署书面协议后方可对合同进行修改。一方受到对方的变更通知后15天内应及时做<br/>
+            出书面答复，若在规定时间内未答复，即认为对方已默认同意变更，则办理变更手续。<br/>
+            12. 禁止商业欺诈:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任何一方违反诚实信用原则向对方提供虚假注册登记资料、资质证明、信息或隐瞒真相从而欺骗对方，违约方应向另一方承但不<br/>
+            高于100万元的违约金。本条约定不影响违约方按其他约定应承担的违约责任。<br/>
+            13. 通知:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双方确认本合同抬头处列明的通信地址、传真号码为双方互相联络、发送书面通知、函件的地址或号码，任何一方因执行本协议<br/>
+            向对方发送的一切通知、函件、按照协议所列地址邮寄给对方或按本协议所列的传真号码发送给对方，视为有效送达。如果一方的联<br/>
+            络地址或号码有变动，应及时书面通知对方，如一方没有通知或者通知延误，则以原地址和号码为通用信地址和联络号码。<br/>
+            14. 特别约定:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本合同项下所有组件产品均为乙方的降级组件，降级组件（下称“本合同设备”）是指其工艺、功率、衰减率和/或隐裂等技术指标<br/>
+            无法达到正常A级组件标准的组件（组件品级详见组件边框标识的英文字母）。鉴于此，甲乙双方约定如下：<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）甲乙双方一致同意，甲方无权依据本合同以外的任何文件（包括但不限于乙方官网公布或甲方通过其他任何渠道获知的乙方<br/>
+            《有限质保书》等文件）要求乙方承担任何形式的质量保证责任或要求乙方作出任何形式的质量承诺。
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）甲方承诺，如本合同设备所有权发生转移，甲方应提前以书面的形式向受让方明确告知合同项下的全部内容（包括但不限于<br/>
+            本特别约定的内容）。甲方未履行本特别约定相关义务的，乙方有权要求甲方按照本合同总价的30%支付违约金（甲方完全理解这里<br/>
+            所指的违约金是确定的且经双方一致同意的，乙方有权基于本款得到此违约金而无须提供所遭受的实际损失的证明），若违约金无法<br/>
+            弥补乙方损失时，甲方认可乙方有权要求甲方赔偿乙方全部损失。<br/>
+            15. 其它:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15.1 本合同任何一方未经另一方同意，不得转让本合同项下全部或部分权利和/或义务（乙方转让本合同项下应收账款权利的除外<br/>）。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15.2 本合同在执行过程中的修改、补充凡经合同各方同意，并形成正式文件，均视为本合同的组成部分，并与本合同具有同等法<br/>律效力。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15.3 合同附件与本合同不可分割具有同等法律效力。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15.4 本合同未尽事宜，合同各方应本着实事求是友好协商的原则解决。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15.5 本合同正本一式肆份，双方各持贰份。双方签章后合同立即生效，传真件具有同等法律效力。<br/>
+
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+            [签字页]
+            <br/><br/><br/><br/>
+            <h5 style="font-size:20px">甲方：{!buyerName}<br/><br/>
+            法定代表人/授权代表：<br/><br/>
+            开户行： {!sellerBankName}<br/><br/>
+            账号：{!sellerBankCode}<br/><br/>
+            日期:  {!printDate}<br/><br/>
+            <br/><br/>
+            乙方：{!bankInfo.BENEFICIARY_s_Name__c}<br/><br/>
+            法定代表人/授权代表：<br/><br/>
+            开户行：{!bankInfo.Bank_Name__c}<br/><br/>
+            账号：{!bankInfo.BENEFICIARY_s_A_C__c}<br/><br/>
+            日期: {!printDate} <br/><br/></h5>
+
+        </div>
+    </body>
+</apex:page>

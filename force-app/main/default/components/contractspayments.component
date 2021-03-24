@@ -1,0 +1,186 @@
+<apex:component Controller="ContractPaymentController" allowDML="true"
+    Id="paymentcpId">
+
+    <style>
+.linkcolor {
+    color: #015ba7;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.ErrorColor {
+    color: red;
+    text-decoration: none;
+    font-weight: normal;
+}
+</style>
+
+    <apex:attribute name="rerender" type="string"
+        description="pass through rerender value" />
+    <apex:attribute name="id" type="String" description="the component id" />
+
+    <apex:form Id="paymentfromId">
+        <apex:pageBlock title="{!$Label.Payment}" id="PaymentGridForm">
+             
+            <apex:pageBlockTable value="{!PaymentGridData}" var="PaymentGridPos"
+                id="PaymentDataTable" rowClasses="odd,even" styleClass="list"
+                width="100%" rules="rows" columnsWidth="=5px,10px,20px,5px,20px,5px,10px,180px,180px,180px">
+                
+                <!-- Payment Name <apex:column headerValue="{!$ObjectType.Payment__c.fields.Name.label}">
+                    <apex:OutputLink id="PaymentGridPos_Col1" target="_parent"
+                        value="/{!PaymentGridPos.id}">{!PaymentGridPos.Name}</apex:OutputLink>
+                </apex:column> -->
+
+                <apex:column headerValue="{!$ObjectType.Payment__c.fields.Percentage__c.label}"
+                    style="width: 10px" width="10">
+                    <apex:inputField id="PaymentGridNrEditfa"
+                        value="{!PaymentGridPos.Percentage__c}" style="width: 30px"
+                        rendered="{!IF(PaymentGridPos.Name == null,true,false)}" />
+                    <apex:outputField id="PaymentGridPos_Groupfa"
+                        value="{!PaymentGridPos.Percentage__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null,false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+
+                <!-- Down/ Balance Payment -->
+                <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Down_Balance_Payment__c.label}">
+                    <apex:inputField id="PaymentGridNrEditPb"
+                        value="{!PaymentGridPos.Down_Balance_Payment__c}"
+                        style="width: 50px"
+                        rendered="{!IF(PaymentGridPos.Name == null,true,false)}" />
+                    <apex:outputField id="PaymentGridPos_Price"
+                        value="{!PaymentGridPos.Down_Balance_Payment__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null,false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                <!-- Payment Method -->
+                <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');"
+                               style="width: 10px" width="10"
+                    headerValue="{!$ObjectType.Payment__c.fields.Payment_Method__c.label}">
+                    <apex:inputField id="PaymentGridNrEditPt"
+                        value="{!PaymentGridPos.Payment_Method__c}" 
+                        rendered="{!IF(PaymentGridPos.Name == null,true,false)}" />
+                    <apex:outputField id="PaymentGridPos_Group"
+                        value="{!PaymentGridPos.Payment_Method__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null,false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                
+                <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Days__c.label}">
+                    <apex:inputField id="PaymentGridNrEditdt"
+                        value="{!PaymentGridPos.Days__c}" style="width: 50px"
+                        rendered="{!IF(PaymentGridPos.Name == null,true,false)}" />
+                    <apex:outputField id="PaymentGridPos_Groupdt"
+                        value="{!PaymentGridPos.Days__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null,false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                <!-- Payment Term -->
+                <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Payment_Term__c.label}">
+                    <apex:inputField id="PaymentGridNrEditday"
+                        value="{!PaymentGridPos.Payment_Term__c}" style="width: 50px"
+                        rendered="{!IF(PaymentGridPos.Name == null,true,false)}" />
+                    <apex:outputField id="PaymentGridPos_Groupday"
+                        value="{!PaymentGridPos.Payment_Term__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null,false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                      <!-- 国际流式 
+                    <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');" rendered="{!IF(crt.Destination_Country__c=='Japan',true,false)}"
+                                 headerValue="{!$ObjectType.Payment__c.fields.Type__c.label}"  >
+                    <apex:outputField value="{!PaymentGridPos.Type__c}"
+                                          rendered="{!IF(PaymentGridPos.Name == null,false,true)}" />
+                    </apex:column>
+                -->
+                <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Precise_Day__c.label}">
+                    <apex:inputField id="PaymentGridNrEditpreDay"
+                        value="{!PaymentGridPos.Precise_Day__c}" style="width: 50px"
+                        rendered="{!IF(PaymentGridPos.Name == null&& (PaymentGridPos.Payment_Term__c != 'After PO date'
+                                || PaymentGridPos.Payment_Term__c != 'The latest payment day at'|| PaymentGridPos.Payment_Term__c != 'At precise day (specify)'|| PaymentGridPos.Payment_Term__c != 'Before goods arrived at the destination'),true,false)}" />
+
+                    <apex:outputField id="PaymentGridPos_GrouppreDay"
+                        value="{!PaymentGridPos.Precise_Day__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null ,false,true )}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                
+                <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.PaymentDescription__c.label}">
+                    <apex:outputField value="{!PaymentGridPos.PaymentDescription__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null&& (PaymentGridPos.Payment_Term__c != 'After PO date'
+                                || PaymentGridPos.Payment_Term__c != 'The latest payment day at'|| PaymentGridPos.Payment_Term__c != 'At precise day (specify)'|| PaymentGridPos.Payment_Term__c != 'Before goods arrived at the destination'),true,false)}" />
+                    <apex:outputField value="{!PaymentGridPos.PaymentDescription__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null ,false,true )}" />
+                </apex:column>
+                
+                  <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');" rendered="{!IF(crt.Destination_Country__c=='Japan',true,false)}"
+                    headerValue="{!$ObjectType.Payment__c.fields.PaymentDescription_Japan__c.label}">
+                    <apex:outputField value="{!PaymentGridPos.PaymentDescription_Japan__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null&& (PaymentGridPos.Payment_Term__c != 'After PO date'
+                                || PaymentGridPos.Payment_Term__c != 'The latest payment day at'|| PaymentGridPos.Payment_Term__c != 'At precise day (specify)'|| PaymentGridPos.Payment_Term__c != 'Before goods arrived at the destination'),true,false)}" />
+                    <apex:outputField value="{!PaymentGridPos.PaymentDescription_Japan__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null ,false,true )}" />
+                </apex:column>
+
+                <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');" rendered="{!IF(crt.Destination_Country__c!='Japan',true,false)}"
+                    headerValue="{!$ObjectType.Payment__c.fields.Comments__c.label}">
+                    <apex:inputField id="PaymentGridNrEditComments"
+                        value="{!PaymentGridPos.Precise_Day__c}" style="width: 50px"
+                        rendered="{!IF(PaymentGridPos.Name == null&& (PaymentGridPos.Payment_Term__c != 'After PO date'
+                                || PaymentGridPos.Payment_Term__c != 'The latest payment day at'|| PaymentGridPos.Payment_Term__c != 'At precise day (specify)'|| PaymentGridPos.Payment_Term__c != 'Before goods arrived at the destination'),true,false)}" />
+
+                    <apex:outputField id="PaymentGridPos_GroupComments"
+                        value="{!PaymentGridPos.Comments__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null ,false,true )}">
+                    </apex:outputField>
+                </apex:column>
+                
+               <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');" rendered="{!IF(crt.Destination_Country__c=='Japan',true,false)}"
+                    headerValue="{!$ObjectType.Payment__c.fields.Comments_English__c.label}">
+                <apex:outputField value="{!PaymentGridPos.Comments_English__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null ,false,true )}">
+                    </apex:outputField>
+                </apex:column>
+                
+                               <apex:column onclick="_SwitchHidden('{!PaymentGridPos.Id}');" rendered="{!IF(crt.Destination_Country__c=='Japan',true,false)}"
+                    headerValue="{!$ObjectType.Payment__c.fields.Comments_Japan__c.label}">
+                <apex:outputField value="{!PaymentGridPos.Comments_Japan__c}"
+                        rendered="{!IF(PaymentGridPos.Name == null ,false,true )}">
+                    </apex:outputField>
+                </apex:column>
+              
+            </apex:pageBlockTable>
+
+            <apex:actionStatus id="PaymentStatus" startText="Requesting..." />&nbsp; <apex:outputPanel id="thePanel" layout="block" styleClass="ErrorColor">{!PaymentStatusText} </apex:outputPanel>
+        </apex:pageBlock>
+
+
+        <apex:outputpanel id="blankId1"></apex:outputpanel>
+        <apex:actionFunction action="{!savePaymentRequest}"
+            name="savePaymentRequest" />
+
+        <!--  <apex:actionFunction action="{!changePaymentTerm}" name="changePaymentTerm"/> -->
+
+    </apex:form>
+
+    <script>
+    function HiddenButton1(){    
+     if (confirm("Confirm to save?")){   
+        savePaymentRequest();
+     }else{
+        return false;
+     }      
+             
+    }
+    </script>
+</apex:component>

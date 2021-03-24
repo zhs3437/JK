@@ -1,0 +1,338 @@
+<apex:page docType="html-5.0" showHeader="false" applyHtmlTag="false" standardStylesheets="false" applyBodyTag="false" sidebar="false"
+  controller="QW_FormViewController" action="{!verify}">
+
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:v-model="http://www.w3.org/1999/vue"
+    xmlns:v-bind="http://www.w3.org/1999/vue" xmlns:v-on="http://www.w3.org/1999/vue">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>项目管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-orientation" content="portrait" />
+
+    <!-- Import the Design System style sheet -->
+    <apex:slds />
+  </head>
+
+  <body>
+    <div class="container" id="container" v-cloak="true" style="position:absolute; overflow:hidden"> 
+      <div class="weui-tab" style="overflow:hidden">
+        <div class="weui-tab__bd" style="overflow:hidden">
+          <!-- TODO : Account -->
+          <div id="tab1" class="weui-tab__bd-item">
+            <div class="tab-header slds-scope slds-grid">
+              <div class="slds-col slds-size_1-of-1 slds-card" style="border: none; border-radius: 0;">
+                <div class="slds-p-around_small">
+                  <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                      <span class="slds-icon_container slds-icon-standard-account" title="account">
+                      </span>
+                    </div>
+                    <div class="slds-media__body slds-p-right_small">
+                      <div class="slds-card__header-title">
+                        <span>省份列表</span>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <button class="slds-button slds-button_neutral button_create-account"  style="visibility: hidden;">新建</button>
+                    </div>
+                  </header>
+                </div>
+              </div>
+            </div>
+            <div class="weui-search-bar" id="search-bar_account">
+              <div class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                  <i class="weui-icon-search"></i>
+                  <input type="text" 
+                         class="weui-search-bar__input" 
+                         id="search_Account" 
+                         placeholder="搜索" 
+                         v-on:input="search_input_Account"
+                         v-model='search.input_Account'/>
+                  <a href="javascript:void(0);" class="weui-icon-clear" v-on:click="search.input_Account = ''"></a>
+                </div>
+                <label class="weui-search-bar__label" onclick="search_click_account()" id="searchText" style="transform-origin: 0px 0px; opacity: 1; transform: scale(1, 1);">
+                  <i class="weui-icon-search"></i>
+                  <span>搜索</span>
+                </label>
+              </div>
+            </div>
+            <div class="weui-tab__panel" v-bind:style="'height:' + (window.screen.height - 115) + 'px'">
+              <div class="weui-cells" style="margin-top: auto;">
+                <a v-for="account in accounts" class="weui-cell weui-cell_access" v-bind:href="'/apex/QW_AccountDetail?userId='+ userId + '&id=' + account.Id">
+                  <div class="weui-cell__bd">
+                    <p>{{ account.Name }}</p>
+                  </div>
+                  <div class="weui-cell__ft">
+                  </div>
+                </a>
+                <!-- <apex:repeat value="{!accounts}" var="account"></apex:repeat>
+                  </apex:repeat>-->
+              </div>
+              <div style="padding-bottom: 4rem">
+
+              </div>
+            </div>
+          </div>
+          <!-- TODO : Project -->
+          <div id="tab2" class="weui-tab__bd-item">
+            <div class="tab-header slds-scope slds-grid">
+              <div class="slds-col slds-size_1-of-1 slds-card" style="border: none; border-radius: 0;">
+                <div class="slds-p-around_small">
+                  <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                      <span class="slds-icon_container slds-icon-standard-account" title="account">
+                      </span>
+                    </div>
+                    <div class="slds-media__body slds-p-right_small">
+                      <div class="slds-card__header-title">
+                        <span>项目列表</span>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <button class="slds-button slds-button_neutral button_create-project">新建</button>
+                    </div>
+                  </header>
+                </div>
+              </div>
+            </div>
+            <div class="weui-search-bar" id="search-bar_project">
+              <div class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                  <i class="weui-icon-search"></i>
+                  <input type="text" 
+                         class="weui-search-bar__input" 
+                         placeholder="搜索" 
+                         v-on:input="search_input" 
+                         v-model="search.input_project" 
+                         id="search_project" />
+                  <a href="javascript:void(0);" class="weui-icon-clear" v-on:click="search.input_project = ''"></a>
+                </div>
+                <label class="weui-search-bar__label" onclick="search_click_project()" id="searchText" style="transform-origin: 0px 0px; opacity: 1; transform: scale(1, 1);">
+                  <i class="weui-icon-search"></i>
+                  <span>搜索</span>
+                </label>
+              </div>
+            </div>
+            <div class="weui-tab__panel" v-bind:style="'height:' + (window.screen.height - 120) + 'px; padding-bottom: 0px'">
+              <div class="weui-cells" style="margin-top: auto;">
+                <a v-for="form in forms" class="weui-cell weui-cell_access" v-bind:href="'/apex/QW_FormDetail?userId=' + userId + '&id=' + form.Id">
+                  <div class="weui-cell__bd">
+                    <p>{{ form.Name }}</p>
+                  </div>
+                  <div class="weui-cell__ft">
+                  </div>
+                </a>
+              </div>
+              <div style="padding-bottom: 4rem">
+
+              </div>
+            </div>
+          </div>
+          <!-- TODO : Report -->
+          <div id="tab3" class="weui-tab__bd-item">
+            <div class="tab-header slds-scope slds-grid">
+              <div class="slds-col slds-size_1-of-1 slds-card" style="border: none; border-radius: 0;">
+                <div class="slds-p-around_small">
+                  <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                      <span class="slds-icon_container slds-icon-standard-account" title="account">
+                      </span>
+                    </div>
+                    <div class="slds-media__body slds-p-right_small">
+                      <div class="slds-card__header-title">
+                        <span>报表</span>
+                      </div>
+                    </div>
+                    <div class="slds-no-flex">
+                      <button class="slds-button slds-button_neutral">刷新</button>
+                    </div>
+                  </header>
+                </div>
+              </div>
+            </div>
+            <div class="slds-scrollable slds-is-relative slds-size_1-of-1" style="padding-bottom: 4rem; height: auto;">
+              <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover">
+                <thead>
+                  <tr class="slds-line-height_reset">
+                    <th class="">
+                      <div class="slds-truncate">月份</div>
+                    </th>
+                    <th class="">
+                      <div class="slds-truncate">数量</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="slds-hint-parent">
+                    <td>
+                      <div class="slds-truncate">
+                        1
+                      </div>
+                    </td>
+                    <td>
+                      <div class="slds-truncate">
+                        10
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- <apex:repeat value="{!forms}" var="form">
+                    </apex:repeat> -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-footer slds-scope">
+          <div class="weui-tabbar slds-p-vertical_small">
+            <a href="#" data-target="#tab1" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">省份</p>
+            </a>
+            <a href="#" data-target="#tab2" class="weui-tabbar__item default">
+              <p style="font-size: initial;" class="weui-tabbar__label">项目</p>
+            </a>
+            <!--<a href="#tab3" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">报表</p>
+            </a>-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui-for-work.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui.min.css')}" />
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/jquery-ui.min.css')}" /> -->
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/jquery-weui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/QW_GlobalStyle.css')}" />
+    <!-- <apex:includeScript value="{!URLFOR($Resource.QW, 'js/weui.min.js')}" /> -->
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery.min.js')}" />
+    <!-- <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery-ui.min.js')}" /> -->
+    <!-- <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery-weui.min.js')}" /> -->
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/vue.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/lodash.js')}" />
+
+    <script>
+      var vm = new Vue({
+        el: "#container",
+        data: function () {
+          return {
+            search: {
+              status: false,
+              input_project: "",
+              input_Account: ""
+            },
+            userId: getUrlParam("userId"),
+            data: {},
+            forms: [],
+            accounts: []
+          }
+        },
+        computed: {
+        },
+        created: function () {
+          var that = this;
+          QW_FormViewController.getForms(JSON.stringify({userId: that.userId}), function (result, event) {
+            if (result != null) {
+              that.data.forms = result;
+              that.forms = result;
+            }
+          });
+
+          QW_FormViewController.getAccounts(function (result, event) {
+            if (result != null) {
+              that.data.accounts = result;
+              that.accounts = result;
+            }
+          });
+        },
+        mounted: function () {
+          var that = this;
+          that.$nextTick(function () {
+            var _elements = {};
+            $("a").each(function (index, element) {
+              var targetId = element.dataset.target;
+              var target = targetId != null ? document.getElementById(targetId.replace("#", "")) : null;
+              if (target != null) {
+                _elements[targetId] = $(this);
+                $(this).bind("click", function () {
+                  // window.location.hash = element.hash;
+                  $(".weui-tab__bd-item--active").removeClass("weui-tab__bd-item--active");
+                  $(".weui-bar__item--on").removeClass("weui-bar__item--on");
+                  $(targetId).addClass("weui-tab__bd-item--active");
+                  $(this).addClass("weui-bar__item--on");
+                });
+
+                if ($(this).hasClass("default")) {
+                  $(targetId).addClass("weui-tab__bd-item--active");
+                  $(this).addClass("weui-bar__item--on");
+                }
+              }
+            });
+
+            var target = window.location.hash;
+            if (target != null && target != "" && _elements[target] != undefined) _elements[target].click();
+            window.location.hash = "#";
+
+            // button bind
+            $("button.button_create-account").bind("click", function () {
+              window.location.assign("QW_AccountDetail?userId=" + that.userId + "&action=new");
+            });
+            $("button.button_create-project").bind("click", function () {
+              window.location.assign("/apex/QW_FormDetail?userId=" + that.userId + "&action=new");
+            });
+          })
+        },
+        methods: {
+          search_input: _.debounce(function () {
+            var that = this;
+            var temp = [];
+            that.data.forms.forEach(form => {
+              if (form.Name.includes(that.search.input_project)) temp.push(form);
+            });
+            that.forms = temp;
+          }, 500),
+
+          search_input_Account: _.debounce(function () {
+            var that = this;
+            var temp = [];
+            that.data.accounts.forEach(account => {
+              if (account.Name.includes(that.search.input_Account)) temp.push(account);
+            });
+            that.accounts = temp;
+          }, 500)
+        }
+      });
+
+      function search_click_account() {
+        document.getElementById("search-bar_account").classList.add("weui-search-bar_focusing");
+        $("#search_Account").focus();
+      }
+
+      function search_click_project() {
+        document.getElementById("search-bar_project").classList.add("weui-search-bar_focusing");
+        $("#search_project").focus();
+      }
+
+      function search_cancel_account() {
+        document.getElementById("search-bar_account").classList.remove("weui-search-bar_focusing");
+      }
+
+      function search_cancel_project() {
+        document.getElementById("search-bar_project").classList.remove("weui-search-bar_focusing");
+      }
+
+      function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+      }
+
+    </script>
+  </body>
+
+  </html>
+
+</apex:page>

@@ -1,0 +1,180 @@
+<apex:page standardController="Contract" sidebar="false" extensions="PIJinkoGermany_Ctrl" showHeader="false" standardStylesheets="false" renderAs="PDF"   applyHtmlTag="false"  action="{!initialize}" >
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8;charset=ISO-8859-1"/>
+        <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 2cm;
+           @bottom-left {
+                    content: element(footer);
+                }
+
+            }
+            body {  widows:0; orphans:0; font-family: Arial Unicode MS; font-size:7.9pt }
+            p { margin:0pt }
+            .divTop{
+            position:fix;
+            top:0;
+            }
+            div.footer {
+            
+                position: running(footer);
+            }
+            .pagenumber:before {
+     content: counter(page);
+ }
+ .pagecount:before {
+     content: counter(pages);
+ }
+        </style>
+    </head>
+        <TABLE border="0" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black"  >
+            <TBODY>
+                <TR  height="62">
+                    <TD height="62" width="170" colspan="2" align="center" vAlign="middle">
+                        <apex:image id="theImage" value="{!$Resource.logo}" style="height:2cm; width:130px" /></TD>
+                    <TD height="62" width="530" colSpan="5" align="center" vAlign="middle">&nbsp;<!--<FONT color="#000000" ><STRONG>PROFORMA INVOICE</STRONG></FONT>--></TD>
+                </TR>
+                
+                <TR  height="20">
+                    <TD colspan="1" rowSpan="8" align="center" valign="top" ></TD>
+                </TR>
+                
+                <TR  height="20">
+                    <TD colspan="6" align="right" valign="top" >www.jinkosolar.eu</TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            <TABLE border="0" width="700px;" style="table-layout:fixed;">
+            <TBODY>
+            
+                <TR  height="20">
+                    <TD height="20" colspan="2" width="40%"><STRONG><FONT color="#000000">DEPOSIT DOCUMENT NO: </FONT></STRONG></TD>
+                    <TD height="20" colspan="4" width="60%"><STRONG><FONT color="#000000">DD-{!contract.Contract_NO__c}-{!printtime2}-0001</FONT></STRONG></TD>
+                </TR>
+                <TR  height="20">
+                    <TD height="20" colspan="2" valign="left" ><STRONG><FONT color="#000000">DOCUMENT DATE:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4" >{! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</TD>
+                </TR>
+                <TR  height="20">
+                    <TD height="20" colspan="2" valign="left" ><STRONG><FONT color="#000000">SELLER:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4" >JinkoSolar GmbH, Freisinger Straße 9, 85716 Unterschleißheim, GERMANY</TD>
+                    </TR>
+                
+                <TR  height="20">
+                    <TD height="20" colspan="2" valign="left" ><STRONG><FONT color="#000000">SELLER's VAT NO.:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4" >DE271823389</TD>
+                    </TR>
+        
+                
+                <TR  height="20">
+                    <TD height="20" colspan="2" valign="left" ><STRONG><FONT color="#000000">BUYER:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4" >{!Contract.BuyerAccount__r.name}, {!buyerAddress}</TD>
+                    </TR>
+                
+                 <TR  height="20">
+                    <TD height="20" colspan="2" valign="left" ><STRONG><FONT color="#000000">BUYER's VAT NO:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4" >{!Contract.BuyerAccount__r.VAT_NO__c}</TD>
+                    </TR>
+                
+                <TR  height="20">
+                    <TD height="20" colspan="2" valign="top" ><STRONG><FONT color="#000000">PAYMENT TERM:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4"  style="word-wrap:break-word;">{!Contract.Payment_Term_Description__c}</TD>
+                    </TR>
+               
+                <TR  height="20">
+                    <TD height="20" colspan="2" valign="left" ><STRONG><FONT color="#000000">TRADE TERM:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4" >{!TradeTerm}</TD>
+                    </TR>
+               <TR  height="20">
+                    <TD height="20" colspan="2" valign="left" ><STRONG><FONT color="#000000">BUYER CONTACT:</FONT></STRONG> </TD>
+                    <TD height="20" colspan="4" >{!Contract.Contact_Name__c} &nbsp; | &nbsp;{!Contract.Phone__c} &nbsp; | &nbsp;{!Contract.Email__c}</TD>
+                    </TR>
+               
+                
+                
+                
+                
+                </TBODY>
+        </TABLE>
+        <TABLE border="1" width="700px;" style="border-collapse:collapse;margin:5px;border: solid black"  >
+            <TBODY>
+                <TR  height="23">
+                    <TD height="23" colSpan="6" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT:  windowtext 0.5pt solid; "><FONT color="#000000"  ><STRONG>PURCHASE DETAILS</STRONG></FONT></TD>
+                </TR>
+                
+                
+                <tr >
+                    <td align="center" >ITEM</td>
+                    <td align="center" >GOODS DESCRIPTION</td>
+                    <td align="center" >Quantity<br/>(PCS)</td>
+                    <td align="center"  >Quantity<br/>(W)</td>
+                    <td align="center" >UNIT PRICE<br/> ({!Contract.CurrencyIsoCode}/W)</td>
+                    <td align="center" > PURCHASE PRICE</td>
+                </tr>
+                
+                
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                    <apex:variable var="index" value="{!index+1}" />
+                    <TR >
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+                    </TR>        
+                </apex:repeat>
+                
+                <TR  style="border-collapse:collapse;margin:10px;border: solid black;" height="23">
+                    <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+                    <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                    <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                    <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_W__c}"/></apex:outputText></TD>
+                    <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+                    <TD vAlign="middle" align="right"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">
+                        <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="" />
+                        </apex:outputText>
+                        
+                        <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText> 
+                    </TD>
+                    
+                </TR>
+                
+                
+
+                <TR style="display:{!IF(DownPay !=null ,'run-in','none')};">
+                    <TD  colspan="5" align="center" vAlign="middle">Down Payment of {!DownPay}%</TD>
+                    <TD  align="right" valign="middle">    <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.Total_Price__c*Percentage1/100}"/></apex:outputText> </TD>
+                </TR>    
+                <TR style="display:{!IF(BanlancePay !=null ,'run-in','none')};">
+                    <TD  colspan="5" align="center" vAlign="middle">Balance Payment of {!BanlancePay}%</TD>
+                    <TD  align="right" valign="middle">    <apex:outputText value="{0, number, #,##0.0000}" ><apex:param value="{!Contract.Total_Price__c*Percentage2/100}"/></apex:outputText> </TD>
+                </TR>   
+                <TR  height="23">
+                    <TD height="23" colSpan="6" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: black 0.5pt solid"><STRONG><FONT color="#000000"  >BANK INFORMATION</FONT></STRONG></TD></TR>
+                
+                <TR  height="3">
+                    <TD height="120" colSpan="6"  >
+                        <pre><FONT color="#000000" style="font-size:7.2pt"  ><STRONG>{!Contract.Bank_Information_Content__c}</STRONG></FONT></pre></TD>
+                </TR>
+               
+                
+                <TR  height="31">
+                    <TD colSpan="6" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: black 0.5pt solid" height="80"><STRONG><FONT color="#000000"  >
+                        This document is issued in accordance with Purchase Agreement {!contract.Contract_NO__c} dated {!printtime1} executed by the Seller and Buyer. To the extent that there is any conflict between this document and the Purchase Agreement, the terms and the conditions of the Purchase Agreement shall prevail.                 
+                        </FONT></STRONG></TD></TR>
+            </TBODY></TABLE>
+        
+        <div class="footer">
+ <div  style="text-align: center;font-size:6pt;"> Page <span class="pagenumber"/>/<span class="pagecount"/></div> 
+           
+    </div>
+ 
+    </html>
+</apex:page>

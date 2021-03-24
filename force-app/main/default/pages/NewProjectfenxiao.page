@@ -1,0 +1,31 @@
+<apex:page standardController="Opportunity" extensions="NewProjectCtrl" 
+  sidebar="false" action="{!getLoginTokenfenxiao}">
+            <apex:pageMessages />
+    
+    <!--<div >
+        <pre align="center" style="font-size:15px ;color:red ;">新建项目。</pre>
+    </div>-->
+    <apex:form >
+        <div style="text-align:center">
+        <apex:commandButton value="Save" action="{!save2}" />
+        <apex:commandButton VALUE="Cancel" onClick="window.close()"/>
+        </div>
+        <table border="1" width="800px;" style="border-collapse:collapse;margin:5px;border: solid black;table-layout:fixed;margin: auto;">
+            
+            
+            <tr>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Sales Sub Type:<apex:inputField value="{!pj.Project_Type__c}" required="true"></apex:inputField></td>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Currency:<apex:inputField value="{!pj.CurrencyIsoCode}" required="true"></apex:inputField></td>
+            </tr>
+            <tr>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Whether to sell across borders:<apex:inputField value="{!pj.Whether_to_sell_across_borders__c}" required="true" ></apex:inputField></td>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Distributor Size:<apex:inputField value="{!pj.Distributor_Size__c}" required="true" ></apex:inputField></td>
+            </tr>
+            <tr>
+               <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong>Signed distribution agreement:<apex:inputField value="{!pj.Signed_distribution_agreement__c}" required="true" ></apex:inputField></td>
+               <td></td>
+            </tr>
+            
+        </table>
+        </apex:form>
+</apex:page>

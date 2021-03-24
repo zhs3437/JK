@@ -1,0 +1,400 @@
+<apex:page standardController="Opportunity" Id="OrderPayment" extensions="OppBookedPageCtrl"   showHeader="false"  >
+    <c:StatusSpinner />
+      <script type="text/javascript">
+ function EDIT(payid,payid2){
+
+            
+            var hidden1 = document.getElementById("OrderPayment:PaymentForm:EDITID");
+
+            hidden1.value = payid;
+            var hidden2 = document.getElementById("OrderPayment:PaymentForm:EDITID2");
+
+            hidden2.value = payid2;  
+            
+    }
+    function EDITid(payid){
+            
+            var hidden1 = document.getElementById("OrderPayment:PaymentForm:EDITID2");
+
+            hidden1.value = payid;
+            
+
+    }
+        function quxiao1(cid,did){
+            if(confirm("Are you sure ?")){
+            var hidden3 = document.getElementById("OrderPayment:PaymentForm:CancelID");
+          
+            hidden3.value = cid;
+            }else{
+            var hidden3 = document.getElementById("OrderPayment:PaymentForm:CancelID");
+          
+            hidden3.value = "E";
+            }
+
+    }
+      function gengxin(cid){
+            
+            var hidden3 = document.getElementById("OrderPayment:PaymentForm:gengxin");
+            hidden3.value = cid;
+            
+
+    }
+    
+    function action1(){
+        if(confirm("Are you sure ?")){
+                 var ss = document.getElementsByName('label1');
+            ss[0].style.display="block";
+            func();
+            }
+        }
+        </script> 
+     <style type="text/css"> 
+.mytable { 
+    table-layout: fixed; 
+    width: 230% border:0px; 
+    margin: 0px; 
+} 
+ 
+.mytable tr td { 
+     overflow: hidden; 
+    white-space: wrap; 
+    border: 1px solid; 
+    text-align: left 
+} 
+</style> 
+
+   
+    <apex:form Id="PaymentForm">
+         <apex:inputHidden value="{!EDITID}" id="EDITID"/>
+        <apex:inputHidden value="{!CancelID2}" id="CancelID"/>
+          <apex:inputHidden value="{!genggai}" id="gengxin"/>
+                <apex:inputHidden value="{!EDITID2}" id="EDITID2"/>
+         <apex:actionFunction name="quxiao" action="{!quxiao}" />
+        
+    <apex:pageBlock >
+       
+        <apex:pageBlockSection title="Products"  >
+
+            <apex:pageBlockTable value="{!data}" var="Os"  rowClasses="odd,even" styleClass="list" style="width:230%;" rules="rows" >
+                <apex:column headerValue="Action">
+                                         <apex:commandButton value="Search MDA"   onclick="EDIT('{!Os.product2.name}','{!Os.id}');"  action="{!add}" />
+                </apex:column>
+                <apex:column headerValue="Product">
+                    <apex:outputField value="{!Os.Product2id}" />
+                </apex:column>
+                    <apex:column headerValue="Quantity">
+                    <apex:outputField value="{!Os.Quantity}" />
+                </apex:column>
+                 <apex:column headerValue="Unit Price">
+                    <apex:outputField value="{!Os.Unit_Price__c}" />
+                </apex:column>
+                <apex:column headerValue="Total Power W">
+                    <apex:outputField value="{!Os.Total_Power_W__c}" />
+                </apex:column>
+                 <apex:column headerValue="Guaranteed Delivery Date">
+                    <apex:outputField value="{!Os.Guaranteed_Delivery_Date__c}" />
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        
+        <apex:messages style=" color:#EE2C2C;font-size:18.0pt" id="baocuo"/>
+        
+                <apex:pageBlockSection title="Successful reservation list" id="chenggongliebiao">
+                    
+            <apex:pageBlockTable value="{!successdata}" var="ss"  rowClasses="odd,even" styleClass="list" style="width:100%;" rules="rows">
+                <apex:column headerValue="Action">
+              <apex:commandButton value="Cancel Reservation" action="{!quxiao}"  onclick="quxiao1('{!ss.id}','{!ss.id}');" />
+                    <apex:commandButton value="Edit"   rendered="{!IF(genggai == ss.id,false,true)}" onclick="gengxin('{!ss.id}');" />
+                     <apex:commandButton value="Save"  action="{!genggai}"  rendered="{!IF(genggai == ss.id,true,false)}"  />
+                </apex:column>
+                <apex:column headerValue="SAP material Desc">
+                    <apex:outputField value="{!ss.MAKTX__c}"  />
+                </apex:column>
+                 <apex:column headerValue="Location">
+                    <apex:outputField value="{!ss.WERKS__c}"  />
+                       </apex:column>
+                     <apex:column headerValue="GDD">
+                    <apex:outputField value="{!ss.ZGDD__c}"  />
+                </apex:column>
+                  <apex:column headerValue="Reserved Quantity">
+                    <apex:outputField value="{!ss.ZBOOKQTY__c   }"  />
+                </apex:column>
+                <apex:column headerValue="Reservation Release Warning Date">
+                    <apex:outputField value="{!ss.ZWARNDATE__c}"   rendered="{!IF(genggai == ss.id,false,true)}" />
+                       <apex:inputField value="{!ss.ZWARNDATE__c}"   rendered="{!IF(genggai == ss.id,true,false)}" />
+                </apex:column>
+                <apex:column headerValue="Planned Release Date">
+                    <apex:outputField value="{!ss.ZDUEDATE__c}"   rendered="{!IF(genggai == ss.id,false,true)}" />
+                     <apex:inputField value="{!ss.ZDUEDATE__c}"   rendered="{!IF(genggai == ss.id,true,false)}" />
+                </apex:column>
+                    
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+       
+                <apex:pageBlockSection title="Filter"  >
+
+            <apex:pageBlockTable value="{!ctbl}" var="Os"  rowClasses="odd,even"  style="width:400;" styleClass="list" rules="rows" id="resultGoods">
+                <apex:column >
+                   <apex:commandButton value="Search Stock" action="{!sync}" status="LoadingStatusSpinner" reRender="kucunliebiao" /><br/>
+                    <table width="1700px" class="mytable">
+                     <tbody style="display:{!IF(Os.id!=null,'run-in','none')};">
+                <tr>
+                   <td width="50px">
+                      Product
+                  </td>
+                    <td width="180px">
+                  {!Os.BookedModule__c}</td>
+                     <td width="50px">
+                      Junction Box Cable Length
+                  </td>
+                  <td width="150px">
+                 <apex:outputField value="{!Os.Junction_Box_Cable_Length__c}" />
+                  </td>
+                  
+                  <td width="60px">
+                        Junction Box Connector
+                  </td>
+                  <td width="200px">
+                <apex:outputField value="{!Os.Junction_Box_Connector__c}" />
+                  </td>
+                   
+                     
+                 
+                    
+                </tr>
+                        <tr>
+                                            <td >
+                      Product Certificate
+                    </td>
+<td >
+                <apex:outputField value="{!Os.Product_Certificate__c}" />
+                  </td>
+
+ <td >
+                      Additional Certificate
+                  </td>
+ <td >
+                <apex:outputField value="{!Os.Additional_Certificate__c}" />
+                  </td>  <td >
+                     Package
+                  </td>
+                    <td >
+                <apex:outputField value="{!Os.Package__c}" />
+                  </td>
+                            
+                            
+                            
+                        </tr>
+                        <tr>
+                        <td >
+                      Module Category
+                  </td>
+                      <td >
+                             <apex:outputField value="{!Os.Module_Series1__c}" />
+                  </td>
+                     <td >
+                        Frame Type
+                  </td>
+                 <td >
+                <apex:outputField value="{!Os.Frame_Type__c}" />
+                  </td>  
+                        </tr>
+                        <tr>
+                      <td >
+                      EVA
+                  </td>
+                <td >
+                <apex:outputField value="{!Os.EVA__c}" />
+                  </td>
+                         
+                  <td >
+                      Regional Mandatory Certification/ List
+                  </td>
+                   <td >
+                <apex:outputField value="{!Os.Mandatory_certification__c}" />
+                  </td>
+                       <td >
+                      LRF
+                  </td>
+                <td >
+                <apex:outputField value="{!Os.LRF__c}" />
+                  </td>     
+                            </tr>
+                        </tbody>
+                        <tbody style="display:{!IF(Os.id==null,'run-in','none')};">
+                <tr>
+                    <td width="50px">
+                      Product
+                  </td>
+                  <td width="100px">
+                  {!Os.BookedModule__c}</td>
+                  <td width="50px">
+                      Junction Box Cable Length
+                  </td>
+                  <td width="150px">
+                 <apex:inputField value="{!Os.Junction_Box_Cable_Length__c}" />
+                  </td>
+                    
+                    <td width="60px">
+                        Junction Box Connector
+                  </td>
+                  <td width="200px">
+                <apex:inputField value="{!Os.Junction_Box_Connector__c}" />
+                  </td>
+                    
+                     
+                 
+                    
+                </tr>
+                        <tr>
+                                                  <td>
+                                                       Product Certificate
+                        
+                  </td>
+                  <td>
+                      <apex:inputField value="{!Os.Product_Certificate__c}" />
+              
+                  </td>
+
+                             <td>
+                    Additional Certificate
+                  </td>
+                         <td>
+                <apex:inputField value="{!Os.Additional_Certificate__c}" />
+                  </td> <td>
+                     Package
+                  </td>
+                         <td>
+                <apex:inputField value="{!Os.Package__c}" />
+                  </td>
+                         
+                        </tr>
+                        <tr>
+                            <td>
+                      Module Category
+                  </td>
+                         <td>
+                              <apex:inputField value="{!Os.Module_Series1__c}" />
+                  </td>
+                             <td>
+                        Frame Type
+                  </td>
+                  <td>
+                <apex:inputField value="{!Os.Frame_Type__c}" />
+                  </td>  
+                        </tr>
+                        <tr>
+                            <td>
+                      EVA
+                  </td>
+                         <td>
+                <apex:inputField value="{!Os.EVA__c}" />
+                  </td>
+                         
+                             <td>
+                      Regional Mandatory Certification/ List
+                  </td>
+                         <td>
+                <apex:inputField value="{!Os.Mandatory_certification__c}" />
+                  </td>
+                             <td>
+                      LRF
+                  </td>
+                         <td>
+                <apex:inputField value="{!Os.LRF__c}" />
+                  </td>   
+                            </tr>
+                        </tbody>
+                    </table>
+              </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+   
+           <apex:pageBlockSection title="Warehouse details"  >
+               <apex:pageBlockTable value="{!RiiLst}" var="Os"  id="kucunliebiao">
+                    <apex:column headerValue="Num">{!Os.Num__c}</apex:column>
+                     <apex:column headerValue="Stock(A)/Planing(B)">{!Os.ZSTOTY__c}</apex:column>
+                     <apex:column headerValue="Opening Type(Region Opening/Global Opening)">{!Os.ZOPENFLAG__c}</apex:column>
+                     <apex:column headerValue="SAP material Desc">{!Os.MAKTX__c}</apex:column>
+                    <apex:column headerValue="SAP material NO.">{!Os.MATNR__c}</apex:column>
+
+                     <apex:column headerValue="Demand QTY" ><p style="display:{!IF(Os.ZSTOTY__c=='A'  ,'run-in','none')};">{!Os.ZREQQTY__c}</p></apex:column>
+                     <apex:column headerValue="Rest of QTY to be reserved on Demand" ><p rendered="{!IF(Os.ZSTOTY__c=='B',false,true )}">{!Os.ZREQAVLQTY__c}</p></apex:column>
+                    <apex:column headerValue="Stock QTY">{!Os.ZINVQTY__c}</apex:column>
+                    <apex:column headerValue="Available Stock QTY">{!Os.ZAVLQTY__c}</apex:column>
+                     <apex:column headerValue="Reserved Stock QTY">{!Os.ZBOOKEDQTY__c}</apex:column>
+                     <apex:column headerValue="Delivered Stock QTY">{!Os.ZDELQTY__c}</apex:column>
+                     <apex:column headerValue="QTY to be reserved">
+                         <apex:inputField value="{!Os.ZBOOKQTY__c}" /></apex:column>
+                    <apex:column headerValue="Unit">{!Os.MEINS__c}</apex:column>
+                     <apex:column headerValue="Reservation Release Warning Date">
+                         <apex:inputField value="{!Os.ZWARNDATE__c}" /></apex:column>
+                    <apex:column headerValue="Planned Release Date">
+                     <apex:inputField value="{!Os.ZDUEDATE__c}" /></apex:column>
+                     <apex:column headerValue="Production Finish Date">{!Os.ZZHHRQ__c}</apex:column>
+                     <apex:column headerValue="Shipping for Manufacturing Plant">{!Os.ZZLCRQ__c}</apex:column>
+                    <apex:column headerValue="P47">{!Os.P47__c}</apex:column>
+                                        <apex:column headerValue="ZGDD">{!Os.ZGDD__c}</apex:column>
+                    <apex:column headerValue="BL NO.">{!Os.BLNO__c}</apex:column>
+                    <apex:column headerValue="ETD">{!Os.ZETD__c}</apex:column>
+                     <apex:column headerValue="ETA">{!Os.ZETA__c}</apex:column>
+                    
+                    <apex:column headerValue="Cell Type">{!Os.S01T__c}</apex:column>
+                     <apex:column headerValue="Cell Length ">{!Os.S41T__c}</apex:column>
+                     <apex:column headerValue="Cell QTY">{!Os.S42T__c}</apex:column>
+                     <apex:column headerValue="Power">{!Os.S44T__c}</apex:column>
+                    <apex:column headerValue="Rank">{!Os.S47T__c}</apex:column>
+                     <apex:column headerValue="Color">{!Os.S49T__c}</apex:column>
+                     <apex:column headerValue="Number of Main grid lines">{!Os.S4BT__c}</apex:column>
+                    <apex:column headerValue="Junction Box Brand">{!Os.P43T__c}</apex:column>
+                    <apex:column headerValue="Cable">{!Os.P44T__c}</apex:column>
+                     <apex:column headerValue="Connector">{!Os.P45T__c}</apex:column>
+                     <apex:column headerValue="Rare Cover">{!Os.P47T__c}</apex:column>
+                    <apex:column headerValue="installing hole ">{!Os.P48T__c}</apex:column>
+                    <apex:column headerValue="Module Frame Size">{!Os.P4AT__c}</apex:column>
+                     <apex:column headerValue="EVA">{!Os.P4GT__c}</apex:column>
+                     <apex:column headerValue="LRF">{!Os.P4HT__c}</apex:column>
+                     <apex:column headerValue="Package">{!Os.P4IT__c}</apex:column>
+                    <apex:column headerValue="Front Glass">{!Os.P4JT__c}</apex:column>
+                     <apex:column headerValue="Production Order NO. ">{!Os.P4K__c}</apex:column>
+                     <apex:column headerValue="Production Item NO.">{!Os.P4L__c}</apex:column>
+                    
+                     <apex:column headerValue="Module Series">{!Os.ZMS1T__c}</apex:column>
+                    <apex:column headerValue="Connector">{!Os.ZJXHJTT__c}</apex:column>
+                     <apex:column headerValue="Cable-MDA">{!Os.ZJXHDLCDT__c}</apex:column>
+                     <apex:column headerValue="LRF">{!Os.ZLRFT__c}</apex:column>
+                    <apex:column headerValue="EVA">{!Os.ZEVAT__c}</apex:column>
+                    <apex:column headerValue="Frame-">{!Os.ZZJT__c}</apex:column>
+                     <apex:column headerValue="Package-">{!Os.ZBZT__c}</apex:column>
+                     <apex:column headerValue="Product Certificate ">{!Os.ZCPHGZT__c}</apex:column>
+                     <apex:column headerValue="Additional Certificate">{!Os.ZFJZST__c}</apex:column>
+                    <apex:column headerValue="Regional Mandatory Certification/list">{!Os.ZQYQZXRZT__c}</apex:column>
+                     <apex:column headerValue="Junction Box Brand">{!Os.ZJXHPPT__c}</apex:column>
+                     <apex:column headerValue="Rare Cover">{!Os.ZBBT__c}</apex:column>
+                    <apex:column headerValue="Front Glass ">{!Os.ZBLT__c}</apex:column>
+                    <apex:column headerValue="Nameplate">{!Os.ZMPT__c}</apex:column>
+                     <apex:column headerValue="Current Sorting">{!Os.ZDQPXT__c}</apex:column>
+                     <apex:column headerValue="Color Sorting style">{!Os.ZYSPXYST__c}</apex:column>
+                    
+                    
+                    
+
+                      </apex:pageBlockTable>
+        </apex:pageBlockSection>
+                    </apex:pageBlock>
+        </apex:form>
+</apex:page>

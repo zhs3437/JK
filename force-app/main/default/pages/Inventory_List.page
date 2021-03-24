@@ -1,0 +1,6 @@
+<apex:page standardController="Apply_Inventory__c" sidebar="fales" showHeader="false">
+<c:InventoryList warehouse="{!Apply_Inventory__c.Warehouse__c}"
+    ProductType="{!Apply_Inventory__c.Product_Type__c}"
+    apply="{!Apply_Inventory__c.Name}"
+    quantity="{!Apply_Inventory__c.Quantity__c}" />
+</apex:page>

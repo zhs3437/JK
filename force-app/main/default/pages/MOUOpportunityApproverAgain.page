@@ -1,0 +1,385 @@
+<apex:page standardController="Opportunity" id="addAgreementOpp" extensions="MOUOpportunityApproveAgainController"
+           showHeader="false">
+    <c:StatusSpinner />
+    <style type="text/css">
+        .table-right {
+            padding-left: 5px;
+            width: 25%;
+            text-align: left;
+            column-span: 1;
+        }
+
+        .table-left {
+            padding-right: 5px;
+            width: 25%;
+            text-align: right;
+            column-span: 1;
+        }
+    </style>
+    <script>
+        function save() {
+            if (confirm("Are you sure Save?")) {
+            }
+        }
+
+        function deleteItem(index) {
+            if (confirm("Are you sure Delete the Product?")) {
+                var ProdId = document.getElementById("addAgreementOpp:AgreementOppFrom:ProdId");
+                ProdId.value = index;
+            }
+        }
+
+        function saveJudgment(index) {
+            var ProdId = document.getElementById("addAgreementOpp:AgreementOppFrom:ProdId");
+            ProdId.value = index;
+        }
+
+        function deletePayment(index) {
+            if (confirm("Are you sure Delete the Payment?")) {
+                var ProdId = document.getElementById("addAgreementOpp:AgreementOppFrom:ProdId");
+                ProdId.value = index;
+            }
+        }
+    </script>
+    <apex:form Id="AgreementOppFrom">
+        <apex:inputHidden value="{!delCount}" id="ProdId"/>
+        <apex:pageBlock id="AgreementOppBlock">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save" action="{!saveAgreement}" status="LoadingStatusSpinner"
+                                    reRender="" onclick="save()"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:messages style=" color:#EE2C2C"/>
+            <apex:pageBlockSection title="Opportunity Header" columns="4">
+                <table border="0" width="150%" style="border-collapse: collapse;margin:10px auto;">
+                    <apex:outputPanel >
+
+                        <tr>
+                            <td class="table-left">Opportunity Name</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Name}"
+                                                 required="true"/>
+                            </td>
+                            <td class="table-left">Close Date</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.CloseDate}"
+                                                 required="true"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Seller</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Seller__c}"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Seller Description</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Seller_Text__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Sales type</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Sales_type__c}"
+                                                 required="true"/>
+                            </td>
+                            <td class="table-left">Sales type Description</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Sales_type_Text__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">GST Classification Region</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.GST_Classification_Region__c}"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">GST Classification Region Description</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.GST_Classification_Region_Text__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Type of Shipping(基地--起运港)</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Type_of_Shipping__c}"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Type of Shipping(基地--起运港) Description</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Type_of_Shipping_Text__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Warehouse Stock or Production</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Type_of_Inventory_or_Production__c    }"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Warehouse Stock or ProductionDescription</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Warehouse_Stock_or_Production_Text__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Expected Delivery Date</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Customer_Delivery_Date__c}"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Expected Delivery Date Description</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Expected_Delivery_Date_Text__c    }"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Estimated Time of Departure</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Confirmed_ETD__c}"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Estimated Time of Departure Description</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Estimated_Time_of_Departure_Text__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="table-left">China Land Freight</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px"
+                                                 value="{!MOUOpportunity.China_Land_Freight__c}"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Freight Ocean</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px"
+                                                 value="{!MOUOpportunity.Freight_Ocean__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Oversea Freight</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Oversea_Freight__c }"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Reason of apply for insurance</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Reason_of_apply_for_insurance__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Destination Country</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Destination_Country__c    }"
+                                                 required="true"/>
+                            </td>
+                            <td class="table-left">Actual Sales Name</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px"
+                                                 value="{!MOUOpportunity.Actual_Sales_Name__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Destination Region</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Region__c}"
+                                                 required="true"/>
+                            </td>
+                            <td class="table-left">Destination Port</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Destination_Port__c}"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="table-left">Total MW</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Total_MW_Framework_Text__c    }"
+                                                 required="false"/>
+                            </td>
+                            <td class="table-left">Total Price</td>
+                            <td class="table-right">
+                                <apex:inputField style="width:200px" value="{!MOUOpportunity.Total_Price_Frameeork_Text__c    }"
+                                                 required="false"/>
+                            </td>
+                        </tr>
+                    </apex:outputPanel>
+                </table>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Payment Term">
+                <apex:commandButton value="new" action="{!addOpportunityPayment}"/>
+                <apex:variable var="index" value="{!1}"/>
+                <apex:pageBlockTable value="{!paymentList}" var="P" rowClasses="odd,even" styleClass="list" width="100%"
+                                     rules="rows">
+                    <apex:column headerValue="Action" width="120px">
+                        <apex:commandButton action="{!savePayment}" onclick="saveJudgment({!index});" value="Save   "
+                                            status="LoadingStatusSpinner" rendered="{!IF(P.Save_Judgment__c, false, true)}"/>
+                        <apex:commandButton action="{!editPayment}" onclick="saveJudgment({!index});" value="Edit   "
+                                            status="LoadingStatusSpinner" rendered="{!IF(P.Save_Judgment__c, true, false)}"/>
+                        <apex:commandButton action="{!delPayment}" onclick="deletePayment({!index});" value="Delete"/>
+                        <apex:variable var="index" value="{!index + 1}"/>
+                    </apex:column>
+                    <div>
+                        <apex:column headerValue="Percentage" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!P.Percentage__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Down/ Balance Payment" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!P.Down_Balance_Payment__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Payment Method" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!P.Payment_Method__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Days" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!P.Days__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Payment Term" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField required="true" value="{!P.Payment_Term__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Credit Valid" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!P.Credit_Valid__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Precise Day" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!P.Precise_Day__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Comments" rendered="{!IF(P.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!P.Comments__c}"/>
+                        </apex:column>
+                    </div>
+                    <div>
+                        <apex:column headerValue="Percentage" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Percentage__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Down/ Balance Payment" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Down_Balance_Payment__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Payment Method" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Payment_Method__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Days" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Days__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Payment Term" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Payment_Term__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Credit Valid" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Credit_Valid__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Precise Day" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Precise_Day__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Comments" rendered="{!IF(P.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!P.Comments__c}"/>
+                        </apex:column>
+                    </div>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Products">
+                <apex:commandButton value="new" action="{!addOpportunityLineItem}"/>
+                <apex:variable var="index" value="{!1}"/>
+                <apex:pageBlockTable value="{!opportunityLineItemList}" var="Item" rowClasses="odd,even"
+                                     styleClass="list" width="100%" rules="rows" id="oppLineItem">
+                    <apex:column headerValue="Action">
+                        <apex:commandButton action="{!saveItem}" onclick="saveJudgment({!index});" value="Save   "
+                                            status="LoadingStatusSpinner" rendered="{!IF(Item.Save_Judgment__c, false, true)}"/>
+                        <apex:commandButton action="{!editItem}" onclick="saveJudgment({!index});" value="Edit   "
+                                            status="LoadingStatusSpinner" rendered="{!IF(Item.Save_Judgment__c, true, false)}"/>
+                        <apex:commandButton action="{!delItem}" onclick="deleteItem({!index});" value="Delete"
+                                            status="LoadingStatusSpinner"/>
+                        <apex:variable var="index" value="{!index + 1}"/>
+                    </apex:column>
+                    <div>
+                        <apex:column headerValue="Product Series" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                                <apex:inputField value="{!Item.Product_Type__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Product" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                                <apex:inputField value="{!Item.Product2Id}" />
+                            </div>
+                        </apex:column>
+                        <apex:column headerValue="Goods Description" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                                <apex:inputField value="{!Item.Goods_Description__c}" />
+                        </apex:column>
+                        <apex:column headerValue="MW" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                                <apex:inputField value="{!Item.MW__c}" />
+                            </div>
+                        </apex:column>
+                        <apex:column headerValue="Sales Price" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <!--<div class="requiredInput">
+                                <div class="requiredBlock"></div>-->
+                                <apex:inputField value="{!Item.UnitPrice}" />
+                            <!--</div>-->
+                        </apex:column>
+                        <apex:column headerValue="Trade Term" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                                <apex:inputField value="{!Item.Trade_Term__c}" />
+                            </div>
+                        </apex:column>
+                        <apex:column headerValue="Quantity" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!Item.Quantity}"/>
+                        </apex:column>
+                        <apex:column headerValue="Remark of price&Quantity" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!Item.Remark_of_price_Quantity__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Guaranteed Delivery Date" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                                <apex:inputField value="{!Item.Guaranteed_Delivery_Date__c}" />
+                            </div>
+                        </apex:column>
+                        <apex:column headerValue="Guaranteed Delivery Date Note" rendered="{!IF(Item.Save_Judgment__c, false, true)}">
+                            <apex:inputField value="{!Item.Guaranteed_Delivery_Date_Note__c}"/>
+                        </apex:column>
+                    </div>
+                    <div>
+                        <apex:column headerValue="Product Series" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!Item.Product_Type__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Product" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!Item.Product2Id}"/>
+                        </apex:column>
+                        <apex:column headerValue="Goods Description" rendered="{!IF(Item.Save_Judgment__c, true,false)}">
+                            <apex:outputField value="{!Item.Goods_Description__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="WM" rendered="{!IF(Item.Save_Judgment__c, true,false)}">
+                            <apex:outputText value="{!Item.MW__c}" />
+                        </apex:column>
+                        <apex:column headerValue="Sales Price" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputText value="{!Item.UnitPrice}"/>
+                        </apex:column>
+                        <apex:column headerValue="Trade Term" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputText value="{!Item.Trade_Term__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Quantity" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!Item.Quantity}"/>
+                        </apex:column>
+                        <apex:column headerValue="Remark of price&Quantity" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!Item.Remark_of_price_Quantity__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Guaranteed Delivery Date" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!Item.Guaranteed_Delivery_Date__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Guaranteed Delivery Date Note" rendered="{!IF(Item.Save_Judgment__c, true, false)}">
+                            <apex:outputField value="{!Item.Guaranteed_Delivery_Date_Note__c}"/>
+                        </apex:column>
+                    </div>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

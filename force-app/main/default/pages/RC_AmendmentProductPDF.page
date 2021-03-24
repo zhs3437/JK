@@ -1,0 +1,91 @@
+<apex:page language="ja"
+           sidebar="false"
+           showHeader="false" standardStylesheets="false" standardController="Amendment_Agreement__c"  extensions="RC_AmendmentProductCtrl">
+    
+    <head>
+        
+       
+    </head>
+    
+    <body style="font-family:Arial Unicode MS">        
+        <apex:form >   
+             <apex:messages style="font-size:18px;color:#EE2C2C"/>
+           
+             
+                <apex:commandButton value="下一步" action="{!nextStep}" style="display: {!IF(flag == false ,'run-in','none')}"/>
+                 <apex:commandButton value="上一步" action="{!reStep}" style="display: {!IF(flag == true ,'run-in','none')}"/>
+                 <apex:commandButton value="打印PDF" action="{!Print}" style="display: {!IF(flag == true ,'run-in','none')}"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            
+            <div style="display : {!IF(flag == false ,'run-in','none')}">
+                
+           
+            <apex:pageBlock title="原订单产品" id="thePageBlock1" >
+                
+                <apex:pageBlockTable value="{!orderPds}" var="Item" 
+                                     width="100%" rules="rows" id="orderPdsItem" style="text-align:center">
+                    
+                    <div>
+                        <apex:column headerValue="" rendered="true">
+                            <apex:inputField value="{!Item.check_box__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="产品型号" rendered="true">
+                            <apex:outputField value="{!Item.Product_Series__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="产品" rendered="true">
+                            <apex:outputField value="{!Item.Name}"/>
+                        </apex:column>
+                        <apex:column headerValue="兆瓦数" rendered="true">
+                            <apex:outputText value="{!Item.Total_MW_Individual_Product__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="单价" rendered="true">
+                            <apex:outputText value="{!Item.Sales_Price__c}"/>
+                        </apex:column>                        
+                        <apex:column headerValue="数量" rendered="true">
+                            <apex:outputField value="{!Item.Quantity__c}"/>
+                        </apex:column>                                              
+                        <apex:column headerValue="交期" rendered="true">
+                            <apex:outputField value="{!Item.Guaranteed_Delivery_Date__c}"/>
+                        </apex:column>  
+                    </div>
+                </apex:pageBlockTable>                
+            </apex:pageBlock>
+             </div>
+            
+            <div style="display : {!IF(flag == true ,'run-in','none')}">
+             <apex:pageBlock title="补充订单产品" id="thePageBlock2" >
+                
+                <apex:pageBlockTable value="{!AmendmentPds}" var="Item" 
+                                     width="100%" rules="rows" id="AmendmentPdsItem" style="text-align:center">
+                    
+                    <div>
+                        <apex:column headerValue="" rendered="true">
+                            <apex:inputField value="{!Item.check_box__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="产品型号" rendered="true">
+                            <apex:outputField value="{!Item.Product_Series__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="产品" rendered="true">
+                            <apex:outputField value="{!Item.Name}"/>
+                        </apex:column>
+                        <apex:column headerValue="兆瓦数" rendered="true">
+                            <apex:outputText value="{!Item.Total_MW_Individual_Product__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="单价" rendered="true">
+                            <apex:outputText value="{!Item.Sales_Price__c}"/>
+                        </apex:column>                        
+                        <apex:column headerValue="数量" rendered="true">
+                            <apex:outputField value="{!Item.Quantity__c}"/>
+                        </apex:column>                                              
+                        <apex:column headerValue="交期" rendered="true">
+                            <apex:outputField value="{!Item.Guaranteed_Delivery_Date__c}"/>
+                        </apex:column>  
+                    </div>
+                </apex:pageBlockTable>
+                
+            </apex:pageBlock>
+                </div>
+        </apex:form>      
+    </body>
+    
+</apex:page>

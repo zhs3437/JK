@@ -1,0 +1,85 @@
+<apex:page standardController="Amendment__c" showHeader="false" sidebar="false" id="thePage"
+                extensions="AmendmentSubmitReviewCtrl">
+
+<!-- Create by Jason 20160601 -->
+
+    <apex:form Id="theForm">
+        
+        <apex:inputHidden value="{!revId}"  id="revId" />
+        <apex:inputHidden value="{!remark}" id="remark" />
+        
+        
+        <apex:pageBlock title="Review" id="theBlock">
+            <apex:pageBlockTable value="{!existReviews}" var="review"
+                width="100%" columnsWidth="150px, 200px, 150px,80px;500px">
+                
+                <!-- 审阅人 -->
+                <apex:column headerValue="{!$ObjectType.SubmitForReview__c.fields.User__c.label}" >
+                    <apex:outputField value="{!review.User__c}">
+                    </apex:outputField>
+                </apex:column>
+                
+                <!-- 角色 -->
+                <apex:column headerValue="{!$ObjectType.SubmitForReview__c.fields.Role__c.label}" >
+                    <apex:outputField value="{!review.Role__c}">
+                    </apex:outputField>
+                </apex:column>
+                
+                <!-- 审阅状态-->
+                <apex:column headerValue="{!$ObjectType.SubmitForReview__c.fields.Status__c.label}" >
+                    <apex:outputField value="{!review.Status__c}">
+                    </apex:outputField>
+                </apex:column>
+                
+                <!-- 审阅状态(Color)-->
+                <apex:column headerValue="{!$ObjectType.SubmitForReview__c.fields.Status__c.label}">
+                    <apex:image url="{!URLFOR($Resource.Green)}"  style="width:10px;height:10px;" rendered="{!review.Status__c == 'Approved'}" />
+                    <apex:image url="{!URLFOR($Resource.Yellow)}" style="width:10px;height:10px;" rendered="{!review.Status__c == 'Pending'}" />
+                    <apex:image url="{!URLFOR($Resource.Red)}"    style="width:10px;height:10px;" rendered="{!review.Status__c == 'Rejected'}" />
+                </apex:column>
+                
+                <!-- 审阅意见 -->
+                <apex:column headerValue="{!$ObjectType.SubmitForReview__c.fields.Remarks__c.label}" width="200px">
+                    <apex:outputField value="{!review.Remarks__c}"/>
+                    <apex:inputField value="{!review.Remarks__c}" rendered="{!IF(userId == review.User__c ||(review.User__c=='00590000002sK0xAAE' && userId=='005900000012GJTAA2') ||(review.User__c=='005900000012GJTAA2' && userId=='00590000002sK0xAAE')||(review.User__c=='005900000012GJTAA2' && userId=='0052t000000cYgXAAU') ||(review.User__c=='0052t000000cYgXAAU' && userId=='005900000012GJTAA2'),true,false)}"/>
+                </apex:column>
+                
+                <!-- 批示时间 -->
+                <apex:column headerValue="{!$ObjectType.SubmitForReview__c.fields.Date__c.label}" >
+                    <apex:outputField value="{!review.Date__c}">
+                    </apex:outputField>
+                </apex:column>
+                
+                <!-- 操作 -->
+                <apex:column headerValue="Action" >
+                    <!-- <apex:commandButton value="Send Email" action="{!SendEmail}" onclick="onReview('{!review.Id}')" oncomplete="emailAlert();" rendered="{!userId == Amendment.CreatedById}" /> -->
+                    
+                    <apex:commandButton rendered="{!IF(userId == review.User__c ||(review.User__c=='00590000002sK0xAAE' && userId=='005900000012GJTAA2') ||(review.User__c=='005900000012GJTAA2' && userId=='00590000002sK0xAAE')||(review.User__c=='005900000012GJTAA2' && userId=='0052t000000cYgXAAU') ||(review.User__c=='0052t000000cYgXAAU' && userId=='005900000012GJTAA2') ,true,false)}" value="Approve" action="{!SubmitApprove}" onclick="onReview('{!review.Id}')"  oncomplete="returnPage();" />
+                    <apex:outputText rendered="{!IF(userId == review.User__c ||(review.User__c=='00590000002sK0xAAE' && userId=='005900000012GJTAA2') ||(review.User__c=='005900000012GJTAA2' && userId=='00590000002sK0xAAE')||(review.User__c=='005900000012GJTAA2' && userId=='0052t000000cYgXAAU') ||(review.User__c=='0052t000000cYgXAAU' && userId=='005900000012GJTAA2'),true,false)}">&nbsp;|&nbsp;</apex:outputText>
+                    <apex:commandButton rendered="{!IF(userId == review.User__c ||(review.User__c=='00590000002sK0xAAE' && userId=='005900000012GJTAA2') ||(review.User__c=='005900000012GJTAA2' && userId=='00590000002sK0xAAE')||(review.User__c=='005900000012GJTAA2' && userId=='0052t000000cYgXAAU') ||(review.User__c=='0052t000000cYgXAAU' && userId=='005900000012GJTAA2'),true,false)}" value="Reject" action="{!SubmitReject}" onclick="onReview('{!review.Id}')"  oncomplete="returnPage();" />
+                </apex:column>
+            </apex:pageBlockTable>
+            
+        </apex:pageBlock>
+        
+    </apex:form>
+    
+    <script>
+        function onReview(revid){
+            var hidden_revid = document.getElementById("thePage:theForm:revId");
+            hidden_revid.value = revid;
+        }
+
+        function returnPage(){
+            alert('Save success');
+            window.location.href = '/apex/AmendmentRviewListPage?id={!requestId}';
+            
+        } 
+        
+        function emailAlert(){
+            alert('Send successful');
+        }
+        
+    </script>
+
+</apex:page>

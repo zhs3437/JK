@@ -1,0 +1,17 @@
+<apex:page standardController="Opportunity" showHeader="false" sidebar="false" extensions="OpprortuntiyHeaderBarCtrl2" >
+   <html xmlns="http://www.w3.org/1999/xhtml">
+       <head>
+<title>无标题文档</title>
+
+</head>
+       <body>
+ 
+    <pre align="center" style="font-size:15px ;color:red ;display:{!IF(opp.finance_approval_not_required__c==true ,'run-in','none')};"><Strong>Finance approval not required</Strong></pre>
+    
+
+
+
+
+       </body>
+    </html>
+</apex:page>

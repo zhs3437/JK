@@ -1,0 +1,85 @@
+<apex:page standardController="Opportunity" action="{!goto}"
+           extensions="ModuleDesignProduct5Controller" sidebar="false"
+           showHeader="false" standardStylesheets="true" id="thePage" recordSetVar="Objs">
+    <apex:form id="fom">
+        <apex:pageMessages />
+        <apex:pageBlock id="pb">
+            <apex:outputPanel >
+                <apex:commandButton value="Select" oncomplete="Run()" />
+                <font color="#FF0000">This MDA is for Jinko Standard module, please double check before submit for approval. </font>
+            </apex:outputPanel>
+            <apex:outputPanel >
+                <apex:commandButton value="New MDA" oncomplete="NewMDA()" />
+            </apex:outputPanel>
+            <apex:inputText id="isNew"  value="{!isNew}" style="display:none"/>
+            <apex:inputText id="isOppId"  value="{!OppId}" style="display:none"/>
+             <apex:inputText id="isP1Id"  value="{!ProductId}" style="display:none"/>
+            <apex:pageBlockTable value="{!MDA}" var="m" width="2000px" >
+                <apex:column >
+                    <apex:inputCheckbox id="cx"  value="{!m.isSelect__c}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:outputField value="{!m.ModuleType1__r.Name}" id="ProductName"/>
+                </apex:column>
+                <apex:column >
+                    <apex:outputField value="{!m.TemplateName__c}" id="MDATemplateName"/>
+                </apex:column>
+                <apex:column >
+                    <P>
+                      {!OppRegion}
+                    </P>
+                </apex:column>
+                <apex:column style="display:none">
+                    <apex:inputField value="{!m.Id}" id="Id"/>
+                </apex:column>
+          
+                <apex:column >
+                    <apex:outputField value="{!m.Name}" id="Name"/>
+                </apex:column>
+                <apex:column >
+                    <a onclick="openUrl('/apex/ComponentTaskBookTemplate?id={!m.Id}')" target="_top"><P clss='text-decoration:underline'>
+                        Preview
+                        </P></a>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <script>
+        function NewMDA(){
+            var isNew = document.getElementById("thePage:fom:pb:isNew").value;
+            var isOppId = document.getElementById("thePage:fom:pb:isOppId").value;
+            var isP1Id = document.getElementById("thePage:fom:pb:isP1Id").value;
+            window.location.href = '/apex/ModuleDesignProduct7Page?OppId='+isOppId+'&p1='+isP1Id;
+        }
+
+        function Run(){
+            debugger;
+            var isNew = document.getElementById("thePage:fom:pb:isNew").value;
+            var isOppId = document.getElementById("thePage:fom:pb:isOppId").value;
+            var isP1Id = document.getElementById("thePage:fom:pb:isP1Id").value;
+            var a = "thePage:fom:pb:j_id31:";
+            var b = ":Id";
+            var m;
+            var countsize =0;
+            var value = document.body.querySelectorAll("input[type='checkbox']");
+            
+            for (var i = 0; i < value.length; i++) {
+                if (value[i].checked) {
+                    countsize = countsize + 1;
+                    m = document.getElementById(a+i+b).innerText;
+                }
+            }
+            
+            if(countsize==1){
+                window.location.href = '/apex/ModuleDesignProduct8Page?id=' + m + '&OppId='+isOppId; 
+            }  else {
+                alert('Please pick one templete.');
+            }
+        }
+        
+        function openUrl(url){
+            window.open(url);
+        }
+    </script>
+</apex:page>

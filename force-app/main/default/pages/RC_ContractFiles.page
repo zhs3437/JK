@@ -1,0 +1,363 @@
+<apex:page lightningStylesheets="true" showHeader="false" sidebar="false" controller="RC_ContractReminderController">
+
+  <apex:slds />
+  <!-- Necessary -->
+
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:v-model="http://www.w3.org/1999/vue"
+    xmlns:v-bind="http://www.w3.org/1999/vue" xmlns:v-on="http://www.w3.org/1999/vue">
+
+  <head>
+    <title>合同文件列表</title>
+
+    <style>
+      body {
+        height: 100%
+      }
+
+      ::-webkit-inner-spin-button {
+        visibility: hidden;
+      }
+
+      custom-text-transform {
+        text-transform: capitalize;
+      }
+
+      [v-cloak] {
+        display: none !important;
+      }
+      
+      .slds-scope .slds-table thead th {
+        min-width: 100px;
+        font-weight: 400;
+        color: #888888;
+        position: sticky;
+        top: 0px;
+        background: #ffffff;
+        z-index: 90;
+        text-align: center;
+        height: 46px;
+      }
+      
+      .slds-scope .slds-table tbody td:nth-child(2) {
+        max-width: 15rem;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- REQUIRED SLDS WRAPPER -->
+    <div id="app" class="slds" v-cloak="true" style="display: flex;height: 100%;align-items: center;">
+      <!-- LOADING / Table -->
+      <div class="slds-spinner_container" v-show="status.pageLoading" style="z-index: 999;">
+        <div role="status" class="slds-spinner slds-spinner_large slds-spinner_brand">
+          <span class="slds-assistive-text">{!$Label.RC_Load}</span>
+          <div class="slds-spinner__dot-a"></div>
+          <div class="slds-spinner__dot-b"></div>
+        </div>
+      </div>
+      <div class="slds-card" style="width: 100%;">
+        <div class="slds-card__body">
+          <div class="slds-scrollable slds-is-relative slds-size_1-of-1" style="height: 450px;">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover">
+              <thead>
+                <tr class="slds-line-height_reset">
+                  <th>
+                    <div class="slds-truncate slds-text-align_center">
+                      <span>{!$Label.RC_Serial_Number}</span>
+                      <button class="slds-button slds-button_icon" title="刷新" v-on:click="init()">
+                        <svg class="slds-button__icon">
+                          <use xlink:href="{!URLFOR($Asset.SLDS, '/icons/utility-sprite/svg/symbols.svg#refresh')}"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{!$Label.RC_Refresh}</span>
+                      </button>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="slds-truncate slds-text-align_center">{!$Label.RC_File_Name}</div>
+                  </th>
+                  <th>
+                    <div class="slds-truncate slds-text-align_center">{!$Label.RC_Latest_Status}</div>
+                  </th>
+                  <th>
+                    <div class="slds-truncate slds-text-align_center">{!$Label.RC_Current_Version}</div>
+                  </th>
+                  <th>
+                    <div class="slds-truncate slds-text-align_center">{!$Label.RC_Upload_Time}</div>
+                  </th>
+                  <th>
+                    <div class="slds-truncate slds-text-align_center">
+                      <span class="slds-p-right_small">{!$Label.RC_Operation}</span>
+                      <a class="slds-button slds-button_outline-brand"
+                        v-bind:href="['http://spcn.jinkosolar.com:82/_layouts/15/Jinko_FileToSP/FileList.aspx?ContractID=' + contract.Id]">
+                        批量下载
+                      </a>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(event, index) in events" v-bind:key="event.Id" >
+                  <td>
+                    <div class="slds-truncate slds-text-align_center">{{ index + 1 }}</div>
+                  </td>
+                  <td>
+                    <div class="slds-truncate slds-text-align_center" v-bind:title="event.ContractFileName__c">{{ event.ContractFileName__c }}</div>
+                  </td>
+                  <td>
+                    <div class="slds-truncate slds-text-align_center" v-bind:disabled="event.currentStatus.includes('签出')">{{ event.currentStatus }}</div>
+                  </td>
+                  <td>
+                    <div class="slds-truncate slds-text-align_center">{{ event.currentVersion }}</div>
+                  </td>
+                  <td>
+                    <div class="slds-truncate slds-text-align_center">{{ event.createdDateStr }}</div>
+                  </td>
+                  <td>
+                    <div class="slds-truncate slds-text-align_center">
+                      <span v-if="event.ContractFileName__c != null && event.ContractFileName__c.includes('.doc')">
+                        <a class="slds-button slds-button_outline-brand"
+                            v-bind:href="['ms-word:ofe|u|http://spcn.jinkosolar.com:82/JinKoDoc/' + event.ContractFileName__c]">
+                            <!-- v-bind:disabled="!(!approvalStatus || approvalStatus == 'Approved')"> -->
+                        {!$Label.RC_Open}
+                        </a>
+                        <a class="slds-button slds-button_outline-brand" target="_blank"
+                           v-bind:download="event.ContractFileName__c"
+                           v-bind:href="['http://spcn.jinkosolar.com:82/JinKoDoc/' + event.ContractFileName__c]">
+                            <!-- v-on:click="openFile(event)" -->
+                        {!$Label.RC_Download}
+                        </a>
+                      </span>
+                      <span v-if="event.ContractFileName__c != null && !event.ContractFileName__c.includes('.doc')">
+                        <a class="slds-button slds-button_outline-brand"
+                            v-bind:href="['http://spcn.jinkosolar.com:82/JinKoDoc/' + event.ContractFileName__c]">
+                        {!$Label.RC_Preview}
+                        </a>
+                      </span>
+                      <a class="slds-button slds-button_destructive"
+                          v-on:click="deleteFile(event)">
+                        {!$Label.RC_Delete}
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- blank space -->
+            <div style="height: 1rem;">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / REQUIRED SLDS WRAPPER -->
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/element-ui.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/sweetalert2.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/vue.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/element-ui.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/sweetalert2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/lodash.js')}" />
+
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: () => {
+          return {
+            contract: {},
+            user: {},
+            owner: {},
+            events: [],
+            approvals: [],
+            status: {
+              pageLoading: true,
+              uploading: false
+            }
+          }
+        },
+
+        watch: {
+          events: function (newValue, oldValue) {
+            if (newValue != null) {
+              let timeStamp = 0;
+              let url;
+              newValue.forEach(event => {
+                if (event.Event_Datetime__c >= timeStamp) {
+                  url = 'http://spcn.jinkosolar.com:82/JinKoDoc/' + event.ContractFileName__c;
+                  timeStamp = event.Event_Datetime__c;
+                }
+              });
+              this.contract.url = url;
+            }
+          }
+        },
+
+        computed: {
+          newContractUrl: function () {
+            if (this.contract == undefined || this.user == undefined) return '/';
+            return 'http://spcn.jinkosolar.com:82/_layouts/15/Jinko_FileToSP/UpLoadFile.aspx?' +
+                   '&id=' + this.contract.Id +
+                   '&contractnum=' + this.contract.Contract_No__c +
+                   '&sfuserId=' + this.user.Id +
+                   '&mail=' + (this.user.Email.includes('@jinkosolar.com') ? this.user.Email : 'gongyi.shi@jinkosolar.com') +
+                   '&token=6a6c00f2bcf5c0a41b1cfd7330bef0ec';
+          },
+
+          approvalStatus: function () {
+            if (this.approvals.length == 0) return false;
+            return this.approvals[0].Status;
+          }
+        },
+
+        mounted() {
+          this.init();
+        },
+
+        methods: {
+          init: function() {
+            let that = this;
+            that.status.pageLoading = true;
+            RC_ContractReminderController.init(JSON.stringify({id: getQueryVariable('id')}), function (result, event) {
+              if (event.statusCode == 200) {
+                that.contract = result.contract;
+                _.reverse(result.events);
+                that.events = [...result.events];
+                _.remove(result.events, function(event){
+                  return event.Action_Type__c == 'save';
+                });
+                let temp = {};
+                result.events.forEach(event => {
+                  let user = event.Related_User_Name__c != null ? event.Related_User_Name__c : '未知'
+                  if (event.Action_Type__c == 'upload') event.action = user + ' 上传文档';
+                  else if (event.Action_Type__c == 'open') event.action = user + ' 打开文档';
+                  else if (event.Action_Type__c == 'signout') event.action = user + ' 签出文档';
+                  else if (event.Action_Type__c == 'signin') event.action = user + ' 签入文档';
+                  else if (event.Action_Type__c == 'confirm') event.action = user + ' 确认文档';
+                  else if (event.Action_Type__c == 'save') event.action = user + ' 保存文档';
+                  // else if (event.Action_Type__c == 'save') continue;
+                  _.set(temp, event.ContractSPId__c, event);
+                });
+                let sfversion = 0;
+                that.events.forEach(event => {
+                  event.createdDateStr = new Date(event.Event_Datetime__c).format('yyyy-MM-dd hh:mm');
+                  event.currentVersion = sfversion + '.' + _.get(temp, event.ContractSPId__c + '.ContractVersion__c', '无');
+                  event.currentStatus = _.get(temp, event.ContractSPId__c + '.action', '无');
+                  if (event.Action_Type__c == 'confirm') sfversion ++;
+                });
+                
+                _.remove(that.events, function(event){
+                  return event.Action_Type__c != 'upload' || event.IsActive__c == false;
+                });
+                that.user = result.user;
+                that.owner = result.owner;
+                that.approvals = result.approvals.sort(function(a, b){
+                  if (a.CreatedDate < b.CreatedDate) return 1;
+                  else return -1;
+                });
+              }
+              that.status.pageLoading = false;
+            });
+          },
+
+          newContract: function() {
+            let that = this;
+            redirect(that.newContractUrl);
+          },
+
+          openFile: function(sp_event) {
+            if(!confirm('确认下载文件?')) return;
+                      window.open(sp_event.ContractUrl__c);
+            // redirect('http://spcn.jinkosolar.com:82/JinKoDoc/' + sp_event.ContractFileName__c);
+          },
+
+          deleteFile: function(sp_event) {
+            let that = this;
+            if (_.includes(sp_event.currentStatus, '签出')) return alert('签出状态无法删除');
+            let delete_str = '###Delete-' + Date.now() + ' ';
+            if (!confirm('确认删除该文件？')) return false;
+            that.status.pageLoading = true;
+            RC_ContractReminderController.deleteFile(JSON.stringify({id: sp_event.Id, fileName: delete_str + sp_event.ContractFileName__c}), function (result, event) {
+              if (event.statusCode == 200) {
+                alert('删除成功');
+                that.init();
+              } else {
+                alert(result.msg);
+                that.status.pageLoading = false;
+              }
+            });
+          }
+        }
+      })
+      
+      /* Generate Instance Url */
+      function instanceUrl(restUrl) {
+        var elements = location.hostname.split('.'),
+          instance = null,
+          instanceUrl = null;
+        if (elements.length === 4 && elements[1] === 'my') {
+          instance = elements[0] + '.' + elements[1];
+        } else if (elements.length === 3) {
+          instance = elements[0];
+        } else {
+          instance = elements[1];
+        }
+        return 'https://' + instance + '.salesforce.com' + '/services/apexrest' + restUrl;
+      }
+
+      /* Get Url Params */
+      function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split("=");
+          if (pair[0] == variable) {
+            return pair[1];
+          }
+        }
+        return (false);
+      }
+
+      /* Redirect */
+      function redirect(url) {
+        if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+          window.location.href = url
+        } else {
+          if (sforce && sforce.one) {
+            sforce.one.navigateToURL(url)
+          }
+        }
+      }
+
+      Date.prototype.format = function (fmt) {
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + ""));
+        for (var k in o) {
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+        return fmt;
+      };
+
+      function success() {
+        swal.fire({
+          title: '成功',
+          text: '提交成功',
+          showCancelButton: false,
+          showConfirmButton: true,
+          type: 'success',
+          confirmButtonText: '确认'
+        })
+      }
+    </script>
+  </body>
+
+  </html>
+
+</apex:page>

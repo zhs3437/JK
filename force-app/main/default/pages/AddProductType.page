@@ -1,0 +1,16 @@
+<apex:page standardController="Opportunity" extensions="AddproductAppCtrl" 
+           sidebar="false" >
+    <apex:pageMessages />
+    <div >
+        <pre align="left" style="font-size:15px ;color:red ;"><strong>Select the type of products applied:</strong></pre>
+            <pre align="left" style="font-size:15px ;color:red ;"><strong>Inventory application: For products that are in stock, they can be added quickly after application. Please check with SOC for the stock before application.</strong></pre>
+        <pre align="left" style="font-size:15px ;color:red ;"><strong>Newly produced product application: For non-mainstream products that are out of stock and shall be new produced, the adding process needs approval and the period is around 1~6 days.</strong> </pre>
+    </div>
+    <apex:form >
+        <div style="text-align:center">
+        <apex:commandButton value="Create newly produced product application" action="{!NewProduct}" />
+        <apex:commandButton VALUE="Create inventory application" action="{!NewStock}"/>
+        <apex:commandButton VALUE="Cancel" onClick="window.close()"/>
+        </div>
+    </apex:form>
+</apex:page>

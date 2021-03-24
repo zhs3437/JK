@@ -1,0 +1,112 @@
+<apex:page standardController="Agreement__c" id="addAmendmentOrder" extensions="RC_TerminationAgreementCtrl" showHeader="false" >
+    <c:StatusSpinner />
+    <script>
+        function returnPage(){
+            window.location.href = '/apex/China_AmendmentOrderAgain?id={!requestId}';
+        }
+
+    </script>
+
+    <apex:form Id="ProductLineForm">
+        <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+
+        <apex:pageBlock id="Product_Line_Block">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save All" action="{!SelectDailyDetail}" status="LoadingStatusSpinner" reRender="" onclick="SaveAll()"/><!-- onclick="SaveAll()"-->
+                <apex:commandButton value="Back to Agreement" action="{!Cancel}"/>
+                <!--<apex:commandButton value="Replace All" oncomplete="returnPage()" />-->
+            </apex:pageBlockButtons>
+            <apex:messages style=" color:#EE2C2C"/>
+            <apex:pageBlockSection title="Agreement details"   columns="4">
+                <table border="0" width="250%"  style="border-collapse: collapse;margin:10px auto;font-size:16px" >
+                   <apex:outputPanel >
+                        <tr >
+
+                            <td colspan="1"  width="25%" align="center" valign="middle">总价</td>
+                            <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Total_Price__c}" required="false"/></td>
+                            <td colspan="1"  width="25%" align="center" valign="middle">已收到货款</td>
+                                <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputText style="width:200px" value="{!AmountPaid}"  required="true"></apex:inputText></td>
+                            
+                        </tr>
+                        <tr>
+                            <td colspan="1"  width="25%" align="center" valign="middle">备注</td>
+                                <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputText style="width:200px" value="{!Note}"></apex:inputText></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                    </apex:outputPanel>
+                </table>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Agreement Products"   columns="10">
+                <apex:pageBlockTable value="{!aop}" var="Os"  width="100%" columns="10" style="border-collapse: collapse;margin:10px auto;font-size:16px">
+                    <apex:column headerValue="行号" width="10%">
+                        <apex:outputField value="{!Os.Request_No__c}" />
+                    </apex:column>
+                    <apex:column headerValue="产品" width="10%">                        
+                            <apex:outputField value="{!Os.Name}" />                                              
+                    </apex:column>
+                    <apex:column headerValue="单价" width="10%">
+                        <apex:outputText value="{0, number, #,##0.0}"><apex:param value="{!Os.Sales_Price__c}"/></apex:outputText>
+                       
+                    </apex:column>
+                    <apex:column headerValue="数量" width="10%">
+                        <apex:outputField value="{!Os.Quantity__c}" />
+                    </apex:column>
+                    <apex:column headerValue="总瓦数" width="10%">
+                        <apex:outputField value="{!Os.Total_Power_W__c}" />
+                    </apex:column>
+                    <apex:column headerValue="价格" width="10%">
+                        <apex:outputField value="{!Os.Total_Price__c}" />
+                    </apex:column>
+                
+
+                    <apex:column headerValue="认证" width="10%">
+                        <apex:outputField value="{!Os.Certification__c}" />
+                    </apex:column>
+                    <apex:column headerValue="组件类型" width="10%">
+                        <apex:outputField value="{!Os.Type_Of_Module__c}" />
+                    </apex:column>
+                    <apex:column headerValue="交期" width="10%">
+                        <apex:outputField value="{!Os.Guaranteed_Delivery_Date__c}" />
+                    </apex:column>
+                   <!-- <apex:column headerValue="Cheetah">
+                        <apex:outputField value="{!Os.Cheetah__c}" />
+                    </apex:column>-->
+                    <apex:column headerValue="发货数量" width="10%">
+                        <apex:inputField value="{!Os.Quantity_shipped__c}"  required="true"></apex:inputField>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <script>
+        function SaveAll(){
+            if(confirm("Are you sure Save?")){
+
+
+
+            }
+
+        }
+        function deletePayment(payid){
+            if(confirm("Are you sure Delete?")){
+
+                var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+                hidden1.value = payid;
+
+            }
+        }
+        function deleteItem(itemid){
+            if(confirm("Are you sure Delete?")){
+
+                var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+                hidden1.value = itemid;
+
+            }
+        }
+    </script>
+</apex:page>

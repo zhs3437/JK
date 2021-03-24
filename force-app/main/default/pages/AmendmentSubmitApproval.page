@@ -1,0 +1,15 @@
+<apex:page standardController="Amendment__c" showHeader="false" sidebar="false" extensions="AmendmentSubmitApprovalCtrl">
+    <head>
+        <title>无标题文档</title>
+    </head>
+    <body>
+    <div >
+        <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flag==true  ,'run-in','none')};">数据已更改请重新提交审批 </pre>
+        <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flag==true  ,'run-in','none')};">Data has been changed, please resubmit for approval. </pre>
+        <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flags==true  ,'run-in','none')};">正在审批中 </pre>
+        <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flags==true  ,'run-in','none')};">Approving </pre>
+        <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flage==true  ,'run-in','none')};">审批已完成,可以下载PDF </pre>
+        <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flage==true  ,'run-in','none')};">Approval is complete, PDF file can be downloaded. </pre>
+    </div>
+    </body>
+</apex:page>

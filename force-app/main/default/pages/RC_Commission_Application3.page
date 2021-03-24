@@ -1,0 +1,713 @@
+<apex:page showHeader="false" sidebar="false"  id="commission" controller="RC_CommissionApplication"><!-- standardController="leanx__lg_Contract__c  " -->
+<apex:messages style=" color:#EE2C2C;font-size:18.0pt"/>
+<apex:form Id="commissionForm">
+  
+<apex:commandButton action="{!Addsobj}"  value="Send email to approver"  style="margin-left:15px;"/>
+    
+    <!--
+    <apex:commandButton value="Cancel" oncomplete="Close()"  style="margin-left:15px;"/> 
+-->
+    <p style=" color:#EE2C2C">  点击按钮后请耐心等待,请勿重复点击</p>
+    
+<table border="1" width="95%" style="border-collapse:collapse;margin:10px">
+<tr>
+<td colspan="4" align="center"> 销售合同信息</td>
+</tr>
+<tr>
+        <td width="5%" align="center">No.</td>
+         <td width="30%" align="center">项目</td>
+          <td width="40%" align="center">填写/选择</td>
+        <td width="30%" align="center"> 
+         必要附件
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">1.</td>
+         <td width="35%" align="center">买方公司名称</td>
+          <td width="40%" align="center">{!acc}</td>
+        <td width="30%" align="center"> 
+         
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">2.</td>
+         <td width="35%" align="center">买方注册地址</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Registered_address_of_Buyer__c}"/></td>
+        <td width="30%" align="center"> 
+        <a style="display:{!IF(ca.file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.file_id__c}" target="_blank">
+            营业执照和税务登记证
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.file_id__c==null,'run-in','none')};"  >请上传文件:营业执照和税务登记证</p>
+
+             <apex:inputFile value="{!blob1}" filename="{!blob1name}"/>
+                   </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">3.</td>
+         <td width="35%" align="center">买方办公地址</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Office_address_of_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">4.</td>
+         <td width="35%" align="center">买方联系人姓名</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Contact_person_of_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+
+            
+             <a style="display:{!IF(ca.X1_4_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_4_file_id__c}" target="_blank">
+                名片或员工卡
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_4_file_id__c==null,'run-in','none')};"  >请上传文件:名片或员工卡</p>
+                <apex:inputFile value="{!blob14}" filename="{!blob14name}"/>
+            
+             
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">5.</td>
+         <td width="35%" align="center">买方联系人职位</td>
+          <td width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.Position_of_contact_person_in_the_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+       
+            <a style="display:{!IF(ca.X1_5_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_5_file_id__c}" target="_blank">
+                员工卡或名片
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_5_file_id__c==null,'run-in','none')};"  >请上传文件:员工卡或名片</p>
+                
+                <apex:inputFile value="{!blob15}" filename="{!blob15name}"/>
+             
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">6.</td>
+         <td width="35%" align="center">买方公司股东情况、控股比例</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Shareholder_of_Buyer__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+       
+            
+            <a style="display:{!IF(ca.X1_6_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_6_file_id__c}" target="_blank">
+                任何官方文件证明
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_6_file_id__c==null,'run-in','none')};"  >请上传文件:任何官方文件证明</p>
+                <apex:inputFile value="{!blob16}" filename="{!blob16name}"/>
+                
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">7.</td>
+         <td width="35%" align="center">买方公司完整组织架构图</td>
+          <td width="40%" align="center"></td>
+        <td width="30%" align="center"> 
+        
+
+            <a style="display:{!IF(ca.X1_7_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X1_7_file_id__c}" target="_blank">
+                组织架构图
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X1_7_file_id__c==null,'run-in','none')};"  >请上传文件:组织架构图</p>
+                <apex:inputFile value="{!blob17}" filename="{!blob17name}"/>
+                
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">8.</td>
+         <td width="35%" align="center">合同采购量MW</td>
+          <td width="40%" align="center">{!totalPower}</td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">9.</td>
+         <td width="35%" align="center">合同单价</td>
+          <td width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.Contract_Unit_price__c}"/>
+              </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">10.</td>
+         <td width="35%" align="center">贸易方式</td>
+          <td width="40%" align="center">{!tradeTerm}</td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">11.</td>
+         <td width="35%" align="center">合同总价</td>
+          <td width="40%" align="center">
+             <apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!totalPrice}"/></apex:outputText>
+</td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">12.</td>
+         <td width="35%" align="center">项目所在国</td>
+          <td width="40%" align="center">
+              <apex:inputfield style="width: 95%;" required="true" value="{!ca.Project_Location_Coutry__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">13.</td>
+         <td width="35%" align="center">项目所在地</td>
+          <td width="40%" align="center">
+                <apex:inputfield style="width: 95%;" required="true" value="{!ca.Project_location_Address__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">14.1</td>
+         <td width="35%" align="center">买方角色及职责
+</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Role_of_Buyer_in_the_project__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+
+<tr>
+        <td width="5%" align="center">14.2</td>
+         <td width="35%" align="center">请指定是否选择其他选项</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;"  value="{!ca.Role_of_Buyer_in_the_project_Text__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">15</td>
+         <td width="35%" align="center">项目性质
+</td>
+          <td width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Nature_of_project__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+
+</table>
+<table border="1" width="95%" style="border-collapse:collapse;margin:10px">
+<tr>
+<td colspan="5" align="center">佣金信息</td>
+</tr>
+<tr>
+        <td width="5%" align="center">No.</td>
+         <td width="35%" align="center">项目</td>
+          <td colspan="2" width="40%" align="center">填写/选择</td>
+        <td width="30%" align="center"> 
+        必要附件
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">1.</td>
+         <td width="35%" align="center">合同佣金（/瓦）</td>
+          <td colspan="2" width="40%" align="center">
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.Commission_Per_watt__c}"/><br/>
+                 金额超过错误，佣金金额不允许超过总额的1％，有关更多详细信息，请与财务Alex或CFO助理Russell联系。 谢谢！
+              
+              </td>
+        <td width="30%" align="center"> 
+         
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">2.</td>
+         <td width="35%" align="center">佣金收款方公司名称</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.Commission_Payee_Company__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">3.</td>
+         <td width="35%" align="center">联系人</td>
+          <td colspan="2" width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Name_of_contact_person_of_Payee__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+        
+               <a style="display:{!IF(ca.X2_3_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_3_file_id__c}" target="_blank">
+                名片或员工卡
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_3_file_id__c==null,'run-in','none')};"  >请上传文件:名片或员工卡</p>
+                
+<apex:inputFile value="{!blob23}" filename="{!blob23name}"/>               
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">4.</td>
+         <td width="35%" align="center">联系人职位</td>
+          <td colspan="2" width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Position_of_contact_person_in_the_Payee__c}"/>
+              
+    </td>
+        <td width="30%" align="center"> 
+        
+               <a style="display:{!IF(ca.X2_4_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_4_file_id__c}" target="_blank">
+                员工卡或名片
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_4_file_id__c==null,'run-in','none')};"  > 请上传文件:员工卡或名片</p>
+                
+          <apex:inputFile value="{!blob24}" filename="{!blob24name}"/>
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">5.</td>
+         <td width="35%" align="center">联系人电话</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.Mobile_Number_of_contact_person_of_Payee__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+        
+               <a style="display:{!IF(ca.X2_5_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_5_file_id__c}" target="_blank">
+                名片或员工卡
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_5_file_id__c==null,'run-in','none')};"  >请上传文件:名片或员工卡</p>
+                <apex:inputFile value="{!blob25}" filename="{!blob25name}"/>
+        
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">6.</td>
+         <td width="35%" align="center">联系人身份证</td>
+          <td colspan="2" width="40%" align="center">
+               <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_photocopy_of_ID_card__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+        
+             <a style="display:{!IF(ca.X2_6_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_6_file_id__c}" target="_blank">
+                身份证
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_6_file_id__c==null,'run-in','none')};"  >请上传文件:身份证</p>
+                <apex:inputFile value="{!blob26}" filename="{!blob26name}"/>
+  
+                </td>
+
+</tr>
+<tr >
+        <td  width="5%" align="center">7.</td>
+         <td  width="35%" align="center">收款方公司注册信息</td>
+             <td colspan="2"  width="40%" align="center"> 
+             <table width="100%" border="1" required="true" style="border-collapse:collapse;margin:0px">
+             <tr>
+             <td width="50%">
+             1.成立日期
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_1_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             2.注册资本
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_2_TEXT__c}"/>
+             </td>
+             </tr>
+              <tr>
+             <td width="50%">
+             3.营业范围
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_3__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             4.注册地址
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X7_4_TEXT__c}"/>
+             </td>
+             </tr>
+             
+             </table>
+             </td>
+              
+              
+             
+              
+                <td   width="30%" align="center"> 
+        
+  <a style="display:{!IF(ca.X2_7_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_7_file_id__c}" target="_blank">
+    营业执照和税务登记证
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_7_file_id__c==null,'run-in','none')};"  >请上传文件:营业执照和税务登记证</p>
+                <apex:inputFile value="{!blob27}" filename="{!blob27name}"/>
+
+                </td>  
+
+
+</tr>
+<tr>
+        <td width="5%" align="center">8.</td>
+         <td width="35%" align="center">收款方办公地址</td>
+          <td colspan="2" width="40%" align="center">
+              <apex:inputfield style="width: 95%;" required="true" value="{!ca.Address_of_Payee__c}"/>
+    </td>
+        <td width="30%" align="center"> 
+         
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">9.</td>
+         <td width="35%" align="center">收款方股东情况、控股比例</td>
+          <td colspan="2" width="40%" align="center">
+      <apex:inputfield style="width: 95%;" required="true" value="{!ca.Shareholder_of_Payee__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+            
+  <a style="display:{!IF(ca.X2_9_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_9_file_id__c}" target="_blank">
+    任何官方文件证明
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_9_file_id__c==null,'run-in','none')};"  >请上传文件:任何官方文件证明</p>
+                <apex:inputFile value="{!blob29}" filename="{!blob29name}"/>
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">10.</td>
+         <td width="35%" align="center">收款方实际控制人</td>
+          <td colspan="2" width="40%" align="center">
+      <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_actual_controller_of_Payee__c}"/>
+              
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">11.</td>
+         <td width="35%" align="center">收款方公司完整组织架构图</td>
+          <td colspan="2" width="40%" align="center"></td>
+        <td width="30%" align="center"> 
+        
+             <a style="display:{!IF(ca.X2_11_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_11_file_id__c}" target="_blank">
+                组织架构图
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_11_file_id__c==null,'run-in','none')};"  >请上传文件:组织架构图</p>
+                <apex:inputFile value="{!blob211}" filename="{!blob211name}"/>
+
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">12.</td>
+         <td width="35%" align="center">股东身份证</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_photocopy_of_ID_card_of_shareholders__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+        
+             <a style="display:{!IF(ca.X2_12_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_12_file_id__c}" target="_blank">
+                身份证
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_12_file_id__c==null,'run-in','none')};"  >请上传文件:身份证</p>
+                
+<apex:inputFile value="{!blob212}" filename="{!blob212name}"/>
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">13.</td>
+         <td width="35%" align="center">实际控制人身份证</td>
+          <td colspan="2" width="40%" align="center">
+     <apex:inputfield style="width: 95%;" required="true" value="{!ca.The_photocopy_of_ID_card_of_actual_contr__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+              <a style="display:{!IF(ca.X2_13_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_13_file_id__c}" target="_blank">
+                身份证
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_13_file_id__c==null,'run-in','none')};"  >请上传文件:身份证</p>
+                <apex:inputFile value="{!blob213}" filename="{!blob213name}"/>
+  
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">14.</td>
+         <td width="35%" align="center">收款方公司员工人数</td>
+          <td colspan="2" width="40%" align="center">
+      <apex:inputfield style="width: 95%;" required="true" value="{!ca.Number_of_employees_of_Payee__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr >
+        <td  width="5%" align="center">15.</td>
+         <td  width="35%" align="center">收款方与晶科的关系</td>
+             <td colspan="2"  width="40%" align="center"> 
+             <table width="100%" border="1" style="border-collapse:collapse;margin:0px">
+             <tr>
+             <td width="50%">
+             1.收款人和晶科之间是否有过去的业务记录？
+             </td>
+             <td>
+                  <apex:inputfield style="width: 95%;" required="true" value="{!ca.X15_1__c}"/>
+                  如果选择“是”，请说明与晶科的业务及历史合同。
+                  <apex:inputfield style="width: 95%;"   value="{!ca.X15_1_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             2.晶科有没有人担任过收款人的职位？
+             </td>
+             <td>
+                  <apex:inputfield style="width: 95%;" required="true" value="{!ca.X15_2__c}"/>
+                  如果选择“是”，请指定名称及职位。
+                  <apex:inputfield style="width: 95%;"  value="{!ca.X15_2_TEXT__c}"/>
+             </td>
+             </tr>
+              <tr>
+             <td width="50%">
+             3.收款人中是否有人在晶科担任过任何职位？
+             </td>
+             <td>
+                  <apex:inputfield style="width: 95%;" required="true" value="{!ca.X15_3__c}"/>
+                  如果选择“是”，请指定名称及职位。
+                  <apex:inputfield style="width: 95%;"  value="{!ca.X15_3_TEXT__c}"/>
+             </td>
+             </tr>
+             
+             
+             </table>
+             </td>
+              
+              
+             
+              
+                <td   width="30%" align="center"> 
+       
+ <a style="display:{!IF(ca.X2_15_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_15_file_id__c}" target="_blank">
+    合同/电子邮件/其他文件记录
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_15_file_id__c==null,'run-in','none')};"  >请上传文件：合同/电子邮件/其他文件记录</p>
+                <apex:inputFile value="{!blob215}" filename="{!blob215name}"/>
+
+
+                </td>  
+
+
+</tr>
+<tr>
+        <td width="5%" align="center">16.</td>
+         <td width="35%" align="center">收款方在项目中角色</td>
+          <td colspan="2" width="40%" align="center">
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Role_of_the_Payee_in_the_Project__c}"/>
+              
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr>
+        <td width="5%" align="center">17.</td>
+         <td width="35%" align="center">收款方在项目中对晶科的作用</td>
+          <td colspan="2" width="40%" align="center">请指定（> = 50个字）
+    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Work_done_by_the_Payee_for_Jinko__c}"/>
+    
+    </td>
+        <td width="30%" align="center"> 
+                </td>
+
+</tr>
+<tr >
+        <td  width="5%" align="center">18.</td>
+         <td  width="35%" align="center">收款方与买方关系</td>
+             <td colspan="2"  width="40%" align="center"> 
+             <table width="100%" border="1" style="border-collapse:collapse;margin:0px">
+             <tr>
+             <td width="50%">
+             1.收款人是买方的子公司吗？
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_1__c}"/>
+                 如果选择“是”，请指定持股比例
+                 <apex:inputfield style="width: 95%;" value="{!ca.X18_1_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td>
+             2.收款人是否持有买方的任何股份？
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_2__c}"/>
+                 如果选择“是”，请指定持股比例
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_2_TEXT__c}"/>
+             </td>
+             </tr>
+              <tr>
+             <td width="50%">
+             3.买方是收款人的实际控制人吗？
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_3__c}"/>
+                 如果选择“是”，请说明如何实现此实际控制
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_3_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             4.收款人是买方的实际控制人吗？
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_4__c}"/>
+                 如果选择“是”，请说明如何实现此实际控制
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_4_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             5.买方是否有人担任收款人的职位？
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_5__c}"/>
+                 如果选择“是”，请指定位置
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_5_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             6.收款人中是否有人担任买方的任何职位？
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_6__c}"/>
+                 如果选择“是”，请指定位置
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_6_TEXT__c}"/>
+             </td>
+             </tr>
+             <tr>
+             <td width="50%">
+             7.收款人与买方之间是否存在利益冲突？
+             </td>
+             <td>
+                 <apex:inputfield style="width: 95%;" required="true" value="{!ca.X18_7__c}"/>
+                 请指定是否选择“是”
+                 <apex:inputfield style="width: 95%;"  value="{!ca.X18_7_TEXT__c}"/>
+             </td>
+             </tr>
+             
+             </table>
+             </td>
+              
+              
+             
+              
+                <td   width="30%" align="center"> 
+
+
+                </td>  
+                <tr>
+        <td width="5%" align="center">19.</td>
+         <td width="35%" align="center">收款方与晶科关于该项目的沟通记录
+</td>
+          <td colspan="2"  width="40%" align="left">时间/位置/主题/结论/等。
+                    <apex:inputfield style="width: 95%;" required="true" value="{!ca.Brief_Record_of_the_Discussion__c}"/> </td>
+                 
+        <td width="30%" align="center"> 
+       
+<a style="display:{!IF(ca.X2_19_file_id__c!=null,'run-in','none')};" href="/servlet/servlet.FileDownload?file={!ca.X2_19_file_id__c}" target="_blank">
+    电子邮件/音频/视频/其他记录记录（多个）
+                                </a> 
+            <br/>
+            <p style="display:{!IF(ca.X2_19_file_id__c==null,'run-in','none')};"  > 请上传文件：电子邮件/音频/视频/其他记录记录（多个）</p>
+                <apex:inputFile value="{!blob219}" filename="{!blob219name}"/>
+
+                </td>
+
+</tr>
+
+ 
+</tr>
+</table>
+
+ </apex:form>
+ 
+   <script>
+    function Close(){
+        //  window.opener.location.href = "/{!requestId}";
+        window.top.close();
+    }       
+function SaveRequest(){  
+      if (confirm("Confirm to save?")){   
+        }else{
+           return false;
+        }      
+    }
+   
+    </script>
+</apex:page>

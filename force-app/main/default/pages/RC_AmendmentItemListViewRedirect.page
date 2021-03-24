@@ -1,0 +1,49 @@
+<apex:page docType="html-5.0" lightningStylesheets="true" showHeader="false" sidebar="false" standardController="Amendment_Agreement_Product__c" recordSetVar="records" extensions="RC_RedirectController">
+    <script src="/soap/ajax/48.0/connection.js"></script>
+    <script src="/soap/ajax/48.0/apex.js"></script> 
+    <script>
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        /* Redirect */
+        function redirect (url) {
+            if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+                window.location.href = url
+            } else {
+                if (sforce && sforce.one) {
+                    sforce.one.navigateToURL(url)
+                }
+            }
+        }
+
+        (function s(){
+            debugger;
+            let recordIds = {!recordIds};
+            let recordId = "{!recordId}";
+            if (recordIds.length == 0) {
+                alert("至少选择一个产品.");
+                redirect('/' + recordId);
+            } else if(recordIds.length > 3){
+                alert("一个组件任务书最多支持3个不同的产品,请重新选择！");
+                redirect('/' + recordId);
+            } else {
+                let p1 = '', p2 = '', p3 = '';
+                if(recordIds.length >= 1){
+                    p1 = recordIds[0];
+                }
+                if(recordIds.length >= 2){
+                    p2 = recordIds[1];
+                }
+                if(recordIds.length >= 3){
+                    p3 = recordIds[2];
+                }
+
+                redirect('/apex/Redirect?action=createMDA&id=' + recordId +
+                    '&p1=' + p1 + 
+                    '&p2=' + p2 +
+                    '&p3=' + p3 +
+                    '&itemObject=Amendment_Agreement_Product__c' +
+                    '&parentField=iAmendment_Agreement__c'
+                );
+            }
+        })()
+    </script>
+</apex:page>

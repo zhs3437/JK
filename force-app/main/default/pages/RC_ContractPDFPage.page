@@ -1,0 +1,62 @@
+<apex:page standardController="leanx__lg_Contract__c"   showHeader="false" sidebar="false"  extensions="RC_ContractPDFCtrl">
+<apex:messages style="font-size:20px;"/>
+<apex:form style="background:#CADEF1 ; color:#EE2C2C">
+<pre >标准合同模板打印</pre>
+<pre >非标合同模板不在这里</pre>
+<!-- display:{!IF( $User.Id !='00590000002rep3AAA' && opp.recordtypeid=='0126F000001BRlRQAW' ,'run-in','none')}; -->
+<apex:commandButton value="降级组件买卖合同模板" action="{!Action30}" style="margin-left:15px;"/>    
+<apex:commandButton id="sum" value="能源组件合同模板（库存A级组件合同）" action="{!Action40}" style="margin-left:15px;"/>
+    
+<apex:commandButton value="能源组件小合同模板" action="{!Action50}"  style="margin-left:15px;"/>
+<apex:commandButton value="组件销售合同模板（出口限制）" action="{!Action10}"  style="margin-left:15px;"/>
+<apex:commandButton value="组件销售合同模板" action="{!Action20}"  style="margin-left:15px;"/>
+<apex:commandButton value="降级英文合同模板" action="{!Action60}"  style="margin-left:15px;"/>
+<apex:commandButton value="返回" action="{!Cancal}"  style="margin-left:15px;"/>   
+</apex:form>
+<script>
+var isclick= true;
+function Close(){
+    window.top.close();
+}       
+function SaveRequest(){   
+if(isclick){
+
+        isclick= false; 
+        if (confirm("Are you sure? (Please do not send email multiple times)")){   
+           Action1();
+            //  window.location.href = '/apex/Commission_Application?id={!requestId}';
+        }else{
+           
+        }      
+        setTimeout(function(){ 
+
+            isclick = true;
+
+        }, 5000); 
+    }
+    }        
+ function SaveRequest3(){   
+ 
+if(isclick){
+
+        isclick= false;
+       
+         if (confirm("Are you sure? (Please do not send email multiple times)")){   
+           Action3();
+         
+        }else{
+        
+           
+        }  
+        
+setTimeout(function(){ 
+
+            isclick = true;
+
+        }, 5000); 
+ }
+          
+    }  
+   
+</script>
+</apex:page>

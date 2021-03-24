@@ -1,0 +1,8 @@
+<apex:page standardController="Opportunity" action="{!goto}"
+            extensions="subOpportunityController" sidebar="false"
+           showHeader="false" standardStylesheets="true" id="thePage" recordSetVar="Objs" >
+      <script type="text/javascript">
+    
+    
+</script>
+</apex:page>

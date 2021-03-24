@@ -1,0 +1,332 @@
+<apex:page controller="SpilitToolCtrl" sidebar="false" showHeader="false" standardStylesheets="true" action="{!modeBasicData}" id="thePage">
+<html>
+    <head>
+        <style>
+        
+        body {
+            width: 900px;
+            margin: auto 40px;
+            font-family: 'trebuchet MS', 'Lucida sans', Arial;
+            font-size: 14px;
+            color: #444;
+        }
+        
+        table {
+            *border-collapse: collapse; /* IE7 and lower */
+            border-spacing: 0;
+            width: 100%;    
+        }
+        
+        .bordered {
+            border: solid #ccc 1px;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            -webkit-box-shadow: 0 1px 1px #ccc; 
+            -moz-box-shadow: 0 1px 1px #ccc; 
+            box-shadow: 0 1px 1px #ccc;         
+        }
+        
+        .bordered tr:hover {
+            background: #fbf8e9;
+            -o-transition: all 0.1s ease-in-out;
+            -webkit-transition: all 0.1s ease-in-out;
+            -moz-transition: all 0.1s ease-in-out;
+            -ms-transition: all 0.1s ease-in-out;
+            transition: all 0.1s ease-in-out;     
+        }    
+            
+        .bordered td, .bordered th {
+            border-left: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;    
+        }
+        
+        .bordered th {
+            background-color: #dce9f9;
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+            background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+            background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+            background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+            background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+            background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+            -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+            -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+            box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+            border-top: none;
+            text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+        }
+        
+        .bordered td:first-child, .bordered th:first-child {
+            border-left: none;
+        }
+        
+        .bordered th:first-child {
+            -moz-border-radius: 6px 0 0 0;
+            -webkit-border-radius: 6px 0 0 0;
+            border-radius: 6px 0 0 0;
+        }
+        
+        .bordered th:last-child {
+            -moz-border-radius: 0 6px 0 0;
+            -webkit-border-radius: 0 6px 0 0;
+            border-radius: 0 6px 0 0;
+        }
+        
+        .bordered th:only-child{
+            -moz-border-radius: 6px 6px 0 0;
+            -webkit-border-radius: 6px 6px 0 0;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .bordered tr:last-child td:first-child {
+            -moz-border-radius: 0 0 0 6px;
+            -webkit-border-radius: 0 0 0 6px;
+            border-radius: 0 0 0 6px;
+        }
+        
+        .bordered tr:last-child td:last-child {
+            -moz-border-radius: 0 0 6px 0;
+            -webkit-border-radius: 0 0 6px 0;
+            border-radius: 0 0 6px 0;
+        }
+        
+        
+        
+        /*----------------------*/
+        
+        .zebra td, .zebra th {
+            padding: 10px;
+            border-bottom: 1px solid #f2f2f2;    
+        }
+        
+        .zebra tbody tr:nth-child(even) {
+            background: #f5f5f5;
+            -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+            -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+            box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+        }
+        
+        .zebra th {
+            text-align: left;
+            text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+            border-bottom: 1px solid #ccc;
+            background-color: #eee;
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#eee));
+            background-image: -webkit-linear-gradient(top, #f5f5f5, #eee);
+            background-image:    -moz-linear-gradient(top, #f5f5f5, #eee);
+            background-image:     -ms-linear-gradient(top, #f5f5f5, #eee);
+            background-image:      -o-linear-gradient(top, #f5f5f5, #eee); 
+            background-image:         linear-gradient(top, #f5f5f5, #eee);
+        }
+        
+        .zebra th:first-child {
+            -moz-border-radius: 6px 0 0 0;
+            -webkit-border-radius: 6px 0 0 0;
+            border-radius: 6px 0 0 0;  
+        }
+        
+        .zebra th:last-child {
+            -moz-border-radius: 0 6px 0 0;
+            -webkit-border-radius: 0 6px 0 0;
+            border-radius: 0 6px 0 0;
+        }
+        
+        .zebra th:only-child{
+            -moz-border-radius: 6px 6px 0 0;
+            -webkit-border-radius: 6px 6px 0 0;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .zebra tfoot td {
+            border-bottom: 0;
+            border-top: 1px solid #fff;
+            background-color: #f1f1f1;  
+        }
+        
+        .zebra tfoot td:first-child {
+            -moz-border-radius: 0 0 0 6px;
+            -webkit-border-radius: 0 0 0 6px;
+            border-radius: 0 0 0 6px;
+        }
+        
+        .zebra tfoot td:last-child {
+            -moz-border-radius: 0 0 6px 0;
+            -webkit-border-radius: 0 0 6px 0;
+            border-radius: 0 0 6px 0;
+        }
+        
+        .zebra tfoot td:only-child{
+            -moz-border-radius: 0 0 6px 6px;
+            -webkit-border-radius: 0 0 6px 6px
+            border-radius: 0 0 6px 6px
+        }
+          
+        </style>
+    </head>
+    
+    <body>
+        
+        <br/>
+                
+        <h1>【Shipment Schedule】</h1><br/><br/>
+        
+        <table class="bordered">
+            <apex:form id="theForm">
+                <apex:pageMessages />
+                
+                <apex:inputHidden value="{!requestItemId}"    id="requestItemId" />
+                <apex:inputHidden value="{!requestQuantity}"  id="requestQuantity" />
+                <apex:inputHidden value="{!requestPricebookEntryId}"  id="requestPricebookEntryId" />
+                <apex:inputHidden value="{!requestNumber}"  id="requestNumber" />
+                
+                <apex:outputPanel rendered="{!isSpilit}">
+                    <tr style="margin:auto 40px;">
+                        <td colspan="10" style="text-align: center;">
+                            I want to split this product into
+                            <apex:inputText value="{!requestQuantity}" style="margin-left:5px;width:20px;"/>
+                            (batch)
+                            <apex:commandButton action="{!addItem}" value="Confirm" style="margin-left:15px;"/>
+                        </td>
+                    </tr>
+                </apex:outputPanel>
+                
+                <tr style="margin:auto 40px;">
+                    <td>Product Name</td>
+                    <td>Quantity</td>
+                    <td>Unit Price</td>
+                    <td>Guaranteed Delivery date<BR/>(要求发货日期)</td>
+                    <td>Requested Goods Ready date<BR/>(要求货物完工时间)</td>
+                   <!-- <td>Guaranteed Delivery Date</td> -->
+                    <td>Guaranteed Ex-work date<BR/>(要求离厂日期)</td>
+                    <td>Guaranteed ETD<BR/>(要求离港日期)</td>
+                    
+					<td>Remarks<BR/>(备注)</td>
+                    <td>Action</td>
+                </tr>
+                
+                <apex:repeat value="{!orderItemList}" var="item" rendered="{!!isSpilit}" >
+                    <tr style="margin:auto 40px;">
+                        <td>
+                            {!item.Product_Name__c}
+                        </td>
+                        <td>
+                            {!item.Quantity}
+                        </td>
+                        <td>
+                            <apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!item.UnitPrice}"/></apex:outputText>
+                        </td>
+                        <!--
+                        <td>
+                            {! CASE( MONTH(item.Expected_delivery_date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(item.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(item.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                        -->
+                        <td>
+                            {! CASE( MONTH(item.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(item.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(item.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                        
+                        <td>
+                            {! CASE( MONTH(item.Requested_Goods_Ready_date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(item.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(item.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                        
+                        <td>                        	
+                            {! CASE( MONTH(item.Requested_Ex_work_date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(item.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(item.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                        
+                        <td>
+                            {! CASE( MONTH(item.Requested_ETD__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(item.Guaranteed_Delivery_Date__c)) & ", " &  TEXT(YEAR(item.Guaranteed_Delivery_Date__c)) }
+                        </td>
+                       
+                        
+                        <td>
+                        	{!item.Remarks__c}
+                        </td>
+                        	
+                        <td>
+                            <apex:commandButton onclick="Split('{!item.Id}','{!item.PricebookEntryId}');" action="{!goSpilit}" value="Split" />
+                        </td>
+                    </tr> 
+                </apex:repeat>
+                
+                <!-- Split Module -->
+                <apex:repeat value="{!spilitItemList}" var="item" rendered="{!isSpilit}" >
+                    <tr style="margin:auto 40px;">
+                        <td>
+                            {!item.Product_Name__c}
+                        </td>
+                        <td>
+                            <apex:inputField value="{!item.Quantity}" style="width:60px" />
+                        </td>
+                        <td>
+                            <apex:inputField value="{!item.UnitPrice}" style="width:60px"/>
+                        </td>
+                        <td>
+                            <apex:inputField value="{!item.Guaranteed_Delivery_Date__c}" style="width:60px"/>
+                        </td>
+                        
+                        <td>
+                            <apex:inputField value="{!item.Requested_Goods_Ready_date__c}" style="width:60px"/>
+                        </td>
+                        
+                        <td>
+                            <apex:inputField value="{!item.Requested_Ex_work_date__c}" style="width:60px"/>
+                        </td>
+						
+                        <td>
+                            <apex:inputField value="{!item.Requested_ETD__c}" style="width:60px"/>
+                        </td>
+                        
+                        <!--
+                        <td>
+                            <apex:inputField value="{!item.Expected_delivery_date__c}" style="width:60px"/>
+                        </td>
+                        -->
+                        
+                        <td>
+                            <apex:inputField value="{!item.Remarks__c}" style="width:100px"/>
+                        </td>
+                        <td>
+                            <apex:commandButton onclick="Remove('{!item.Request_No__c}');" action="{!remove}" value="Remove" rendered="{!IF(item.Request_No__c == null,false,true)}"/>
+                        </td>
+                    </tr> 
+                </apex:repeat>
+                
+                <apex:outputPanel rendered="{!isSpilit}">
+                    <tr style="margin:auto 40px;">
+                        <td colspan="10" style="text-align: center;">
+                            <apex:commandButton action="{!saveItems}" value="Save" oncomplete="Close();"/>
+                            <apex:commandButton action="{!reSelect}" value="Reselect" style="margin-left:18px;"/>
+                        </td>
+                    </tr>
+                </apex:outputPanel>
+            </apex:form>
+        </table>
+
+    </body>
+    
+    <script>
+        function Split(itemid,entryid){
+            var hidden_itemid = document.getElementById("thePage:theForm:requestItemId");
+            hidden_itemid.value = itemid;
+            
+            var hidden_entryid = document.getElementById("thePage:theForm:requestPricebookEntryId");
+            hidden_entryid.value = entryid;
+        }
+        
+        function Close(){
+            window.opener.location.href = "/{!requestId}";
+            window.top.close();
+        }
+        
+        function Remove(num){
+            var hidden_number = document.getElementById("thePage:theForm:requestNumber");
+            hidden_number.value = num;
+        }
+        
+    </script>
+    
+</html>
+
+
+</apex:page>

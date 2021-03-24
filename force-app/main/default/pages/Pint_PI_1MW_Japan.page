@@ -1,0 +1,234 @@
+<apex:page standardController="Contract" extensions="PA_Japan_Ctrl" sidebar="false" showHeader="false" applyHtmlTag="false" renderAs="PDF">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+                <title>
+        </title>
+        <style type="text/css">
+            body { text-align:justify; widows:0; orphans:0; font-family: Arial Unicode MS; font-size:10.5pt }
+            p { margin:0pt }
+            @page{ size: A4;margin : 20pt .2in .5in .2in;
+            @top-center {content : element(header); } }
+            @font-face{
+            font-family: "MS Mincho";
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;}
+            li, table { margin-top:0pt; margin-bottom:0pt }
+            .BalloonText { text-align:justify; widows:0; orphans:0; font-family:Cambria; font-size:9pt }
+            .CommentSubject { text-align:left; widows:0; orphans:0; font-size:10.5pt; font-weight:bold }
+            .CommentText { text-align:left; widows:0; orphans:0; font-size:10.5pt }
+            .Footer { text-align:left; widows:0; orphans:0; font-size:9pt }
+            .Header { text-align:center; widows:0; orphans:0; border-bottom-style:solid; border-bottom-width:0.75pt; border-bottom-color:#000000; padding-bottom:1pt;border-bottom-style:solid; border-bottom-width:0.75pt; border-bottom-color:#000000; padding-bottom:1pt; font-size:9pt }
+            .ListParagraph { margin-left:42pt; text-align:justify; widows:0; orphans:0; font-size:10.5pt }
+            span.CommentReference { font-size:10.5pt }
+            span.Hyperlink { text-decoration:underline; color:#0000ff }
+            span.Char3 { font-weight:bold }
+            span.Char1 { font-family:Cambria; font-size:9pt }
+            span.Char { font-size:9pt }
+            span.Char0 { font-size:9pt }
+        </style>
+    </head>
+    <body>
+        <div>
+            <p>&#xa0;</p>
+            <p>&#xa0;</p>
+            <table cellspacing="0" cellpadding="0" border="1" style="border-collapse:collapse; margin-left:0pt; width:431pt;margin:0 auto;border-bottom-style:solid;border-right-style: solid;">
+                <tr style="height:33pt;">
+                    <td colspan="6" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; ">
+                        <p style="text-align:center; widows:2; orphans:2;"><strong><span>請求書</span></strong></p>
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><strong><span>PROFORMA</span></strong><strong><span style="font-family:Arial; font-size:8pt; "> </span></strong><strong><span style="font-family:Arial; font-size:8pt; ">INVOICE</span></strong></p>
+                    </td>
+                </tr>
+                
+                <tr style="height:14.25pt">
+                    <td colspan="6" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:424pt">
+                        <p style="text-align:justify; widows:2; orphans:2; font-size:8pt"><span>{!Contract.Company_Name__c}</span><span style="font-family:'MS Gothic'">御中</span><span style="font-family:'MS Mincho'; font-size:8pt">　</span><span style="font-family:'MS Mincho'; font-size:8pt">  </span>            <span style="font-family:'MS Mincho'; font-size:8pt">  </span><span style="font-family:'MS Mincho'; font-size:8pt">  </span><span style="font-family:'MS Mincho'; font-size:8pt">　　　</span><span style="font-size:8pt">   </span><span style="font-family:'MS Gothic'; font-size:8pt">発行日</span><span style="font-family:Arial; font-size:8pt">I</span><span style="font-family:Arial; font-size:8pt">nvoice Date</span><span style="font-family:Arial; font-size:8pt">  </span><span style="font-family:Arial; font-size:8pt;">{!tt.Year}</span><span style="font-family:'MS Gothic'; font-size:8pt">年</span><span style="font-family:Arial; font-size:8pt;">{!tt.Month}</span><span style="font-family:'MS Gothic'; font-size:8pt">月</span><span style="font-family:Arial; font-size:8pt;">{!tt.Day}</span><span style="font-family:'MS Gothic'; font-size:8pt">日</span></p>
+                        <p style="margin-right:8pt; text-align:right; widows:2; orphans:2; font-size:8pt"><span>請求番号</span><span style="font-family:Arial; font-size:8pt">I</span><span style="font-family:Arial; font-size:8pt">nvoice No</span><span style="font-family:Arial; font-size:8pt">.</span><span style="font-family:'MS Gothic'; font-size:8pt">  </span><span style="font-family:Arial; font-size:8pt; ">{!Contract.Contract_NO__c} </span></p>
+                    </td>
+                </tr>
+                <tr style="height:33pt">
+                    <td colspan="6" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt">
+                        <p style="text-indent:180pt;text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:8pt">            </span><span style="font-family:Arial; font-size:8pt">                 
+                       </span><span style="font-family:Arial; font-size:8pt"> </span><apex:image id="theImage" value="{!$Resource.logo}" style="height:58px; width:120px;position:absolute; left:100px; top:125px;" /></p>
+                        <p style="text-indent:235pt; text-align:left; widows:2; orphans:2; font-size:8pt"><span>ジンコソーラージャパン株式会社</span><span style="font-size:8pt">　　　印</span></p>
+                        <p style="text-indent:235pt; text-align:left; widows:2; orphans:2; font-size:8pt"><span>〒</span><span style="font-family:Arial; font-size:8pt">103-0026</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> 東京都中央区日本</span><span style="font-family:'Arial Unicode MS; font-size:8pt">橋</span><span style="font-family:'Arial Unicode MS; font-size:8pt">兜</span><span style="font-family:'Arial Unicode MS; font-size:8pt">町</span><span style="font-family:Arial; font-size:8pt">13</span><span style="font-family:'Arial Unicode MS; font-size:8pt">番</span><span style="font-family:Arial; font-size:8pt">2</span><span style="font-family:'Arial Unicode MS; font-size:8pt">号 </span></p>
+                        <p style="text-indent:235pt; text-align:left; widows:2; orphans:2; font-size:8pt"><span>兜町偕成ビル本館</span><span style="font-family:Arial; font-size:8pt">9</span><span style="font-family:'Arial Unicode MS; font-size:8pt">階</span></p>
+                        <p style="text-indent:235pt; text-align:left; widows:2; orphans:2; font-size:8pt">TEL:03-6661-0899<span style="font-family:Arial; font-size:8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAX:03-6661-0129</span></p>
+                    </td>
+                </tr>
+                <tr style="height:33pt">
+                    <td colspan="6" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-size:8pt">平素は格別のご高配を賜り厚く御礼申し上げます。</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-size:8pt">下記の通りご請求申し上げます。宜しくお願いいたします。</span></p>
+                    </td>
+                </tr>
+                <tr style="height:33pt">
+                    <td colspan="6" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt">
+                        <p style="text-align:left; widows:2; orphans:2"><strong><span style="font-family:'Arial Unicode MS; font-size:11pt; ">&#xa0;</span></strong></p>
+                        <p style="text-align:left; widows:2; orphans:2"><strong><u><span style="font-family:'Arial Unicode MS; font-size:11pt; ">ご請求金額</span></u></strong><strong><u><span style="font-family:Arial; font-size:10pt; ">Invoice Value</span></u></strong>&nbsp;<span style="font-family:Arial; font-size:11pt; "><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText></span> <strong><u><span style="font-family:'Arial Unicode MS; font-size:11pt; ">円</span></u></strong></p>
+                        <p style="text-align:left; widows:2; orphans:2"><strong><span style="font-family:'Arial Unicode MS; font-size:11pt; ">&#xa0;</span></strong></p>
+                        <p style="text-align:left; widows:2; orphans:2"><strong><u><span style="font-family:'Arial Unicode MS; font-size:11pt; ">お</span></u></strong><strong><u><span style="font-family:'Arial Unicode MS; font-size:11pt; ">支払</span></u></strong><strong><u><span style="font-family:'Arial Unicode MS; font-size:11pt; ">条件</span></u></strong><strong><u><span style="font-family:Arial; font-size:10pt; ">Payment </span></u></strong><strong><u><span style="font-family:Arial; font-size:10pt; ">T</span></u></strong><strong><u><span style="font-family:Arial; font-size:10pt; ">erm</span></u></strong>&nbsp; <span style="font-family:Arial; font-size:11pt;">{!Contract.Payment_Term_Description__c}</span></p>
+                        <p style="text-align:left; widows:2; orphans:2"><strong><span style="font-family:'Arial Unicode MS; font-size:11pt; ">&#xa0;</span></strong></p>
+                    </td>
+                </tr>
+                <tr style="height:15.95pt">
+                    <td colspan="6" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span>請求明細</span><span style="font-family:Arial; font-size:8pt">Invoice Details</span></p>
+                    </td>
+                </tr>
+                
+                <!---->
+                <tr style="height:27.75pt;">
+                    <td rowspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:57.45pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-size:8pt">項目</span></p>
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">Item</span></p>
+                    </td>
+                    <td rowspan="2" style="background-color:#ffffff;  border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt;  border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt;border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt;border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:156.95pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-size:8pt">商品明細</span></p>
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-size:8pt">Goods Description</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; padding-right:5.4pt;border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; vertical-align:middle; width:76.95pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt;">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-size:8pt">数量</span></p>
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">Quantity</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; padding-right:5.4pt;border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; vertical-align:middle; width:76.95pt;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt;">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style=" font-size:8pt">単</span><span style=" font-size:8pt">価</span></p>
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">Unit Price</span></p>
+                    </td>
+                    <td colspan="2" rowspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:82.95pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-size:8pt">総</span><span style="font-size:8pt">価</span><span style="font-size:8pt">格</span><span style="font-family:Arial; font-size:8pt">({!Contract.CurrencyIsoCode}</span><span style="font-family:Arial; font-size:8pt">)</span></p>
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt"> Total Amount</span></p>
+                    </td>
+                </tr>
+                <tr style="height:16.65pt">
+                    <td style="background-color:#e0f5e3; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt;; padding-right:5.4pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; vertical-align:middle; width:76.95pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:宋体; font-size:8pt">（枚）</span><span style="font-family:Arial; font-size:8pt">(PCS)</span></p>
+                    </td>
+                    <td style="background-color:#e0f5e3; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; padding-right:5.4pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; vertical-align:middle; width:56.7pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">(</span><span style="font-family:Arial; font-size:8pt">{!Contract.CurrencyIsoCode}</span><span style="font-family:Arial; font-size:8pt">/W)</span></p>
+                    </td>
+                </tr>
+                
+                <!-- detail -->
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                <apex:variable var="index" value="{!index+1}" />
+                <TR style="height:14.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:57.45pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">{!index}</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt;border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; vertical-align:top; width:156.95pt">
+                        <p style="text-align:center; widows:0; orphans:0; font-size:8pt">{!line.Product_Name__c}</p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; padding-right:5.4pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; vertical-align:top; width:76.95pt">
+                        <p style="text-align:center; widows:0; orphans:0; font-size:8pt"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt;border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; vertical-align:middle; width:56.7pt">
+                        <p style="text-align:center; widows:0; orphans:0; font-size:8pt"><span style="font-size:9pt"><apex:outputText value="{0, number, #,##0.000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></span></p>
+                    </td>
+                    <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000;  padding-right:5.4pt; vertical-align:top; width:82.95pt">
+                        <p style="text-align:right; widows:0; orphans:0; font-size:8pt"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></p>
+                    </td>
+                </TR>
+                
+                </apex:repeat>
+                
+                <tr style="height:14.35pt">
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:214.4pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:133.65pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">Transit Fees</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:82.95pt">
+                        <p style="text-align:right; widows:0; orphans:0; font-size:8pt"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText></p>
+                    </td>
+                </tr>
+                <tr style="height:14.35pt">
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:214.4pt">
+                        <p style="text-align:center; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:133.65pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'font-size:8pt">小</span><span style="font-family:'Arial Unicode MS; font-size:8pt">  </span><span style="font-family:'Arial Unicode MS; font-size:8pt">計</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">S</span><span style="font-family:Arial; font-size:8pt">ubtotal</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:82.95pt">
+                        <p style="text-align:right; widows:0; orphans:0; font-size:8pt"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Transit__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Price_Transit__c}"/></apex:outputText></p>
+                    </td>
+                </tr>
+                <tr style="height:14.35pt">
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:214.4pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">&#xa0;</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:133.65pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">消費税</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">Tax (8%)</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:82.95pt">
+                        <p style="text-align:right; widows:0; orphans:0; font-size:8pt"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Tax_Transit__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Tax_Transit__c}"/></apex:outputText></p>
+                    </td>
+                </tr>
+                <tr style="height:14.35pt">
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:214.4pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">&#xa0;</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:133.65pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">合</span><span style="font-family:'Arial Unicode MS; font-size:8pt">  </span><span style="font-family:'Arial Unicode MS; font-size:8pt">計</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">Sum Total</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:82.95pt">
+                        <p style="text-align:right; widows:0; orphans:0; font-size:8pt"><strong><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText></strong></p>
+                    </td>
+                </tr>
+                
+                <!---->
+                
+                <tr style="height:14.35pt">
+                    <td colspan="6" style="background-color:#ffffff; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">&#xa0;</span></p>
+                    </td>
+                </tr>
+                <tr style="height:14.35pt">
+                    <td colspan="6" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">振込先</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">B</span><span style="font-family:Arial; font-size:8pt">ank</span><span style="font-family:Arial; font-size:8pt"> I</span><span style="font-family:Arial; font-size:8pt">nformation</span></p>
+                    </td>
+                </tr>
+                <tr style="height:91.45pt">
+                    <td colspan="6" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">銀行名称</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">Bank Info Name</span><span style="font-family:'Arial Unicode MS; font-size:8pt">  　　        </span><span style="font-family:'Arial Unicode MS; font-size:8pt">三井住友銀行（銀行コード：</span><span style="font-family:Arial; font-size:8pt">0009</span><span style="font-family:'Arial Unicode MS; font-size:8pt">）日本橋支店（支店コード：</span><span style="font-family:Arial; font-size:8pt">695</span><span style="font-family:'Arial Unicode MS; font-size:8pt">）</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">名義人</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">BENEFICIARY</span><span style="font-family:Arial; font-size:8pt">’s</span><span style="font-family:Arial; font-size:8pt"> Name</span><span style="font-family:'Arial Unicode MS; font-size:8pt">    　　  </span><span style="font-family:'Arial Unicode MS; font-size:8pt">ジンコソーラージャパン株式会社</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">口座番号</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">BENEFICIARY</span><span style="font-family:Arial; font-size:8pt">’s</span><span style="font-family:Arial; font-size:8pt"> A/C</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:'Arial Unicode MS; font-size:8pt">　　    </span><span style="font-family:Arial; font-size:8pt">8204555</span><span style="font-family:'Arial Unicode MS; font-size:8pt">（</span><span style="font-family:'Arial Unicode MS; font-size:8pt">普通口座</span><span style="font-family:'Arial Unicode MS; font-size:8pt">）</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:'Arial Unicode MS; font-size:8pt">名義人住所</span><span style="font-family:'Arial Unicode MS; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">BENEFICIARY</span><span style="font-family:Arial; font-size:8pt">’s</span><span style="font-family:Arial; font-size:8pt"> Address</span><span style="font-family:'Arial Unicode MS; font-size:8pt">　　</span><span style="font-family:'Arial Unicode MS; font-size:8pt">東京都中央区日本橋兜町</span><span style="font-family:Arial; font-size:8pt">13</span><span style="font-family:'Arial Unicode MS; font-size:8pt">番</span><span style="font-family:Arial; font-size:8pt">2</span><span style="font-family:'Arial Unicode MS; font-size:8pt">号 兜町偕成ビル本館</span><span style="font-family:Arial; font-size:8pt">9</span><span style="font-family:'Arial Unicode MS; font-size:8pt">階</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">SWIFT</span><span style="font-family:'Arial Unicode MS'; font-size:8pt">　　　　                       </span><span style="font-family:Arial; font-size:8pt">SMBCJPJT</span></p>
+                        <ul type="disc" style="margin:0pt; padding-left:0pt">
+                            <li class="ListParagraph" style="font-size:8pt"><span style="font-size:8pt">&nbsp;&nbsp;&nbsp;&nbsp;別段の定めがない限り、振込手数料は貴社の負担とさせていただきます。</span></li>
+                        </ul>
+                        <p class="ListParagraph" style="margin-left:18pt; text-align:left; widows:2; orphans:2"><span style="font-family:Arial; font-size:8pt">Except as agreed otherwise, remittance charges shall be borne by your company.</span></p>
+                    </td>
+                </tr>
+                <tr style="height:12.35pt">
+                    <td colspan="6" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-family:Arial; font-size:8pt">&#xa0;</span></p>
+                    </td>
+                </tr>
+                <tr style="height:73.5pt">
+                    <td colspan="6" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span>本</span><span>請求書</span><span>は、</span><span>貴社と弊社が</span><span>締</span><span >結した</span><span>売買契約書</span><span> </span><span>番号:{!Contract.Contract_NO__c}</span><span > </span><span >に基づき発</span><span>行されたものである</span><span >。</span><span>本請求書に記載のない事項、及び</span><span>本</span><span >請求書</span><span >と</span><span>売買契約書</span><span>の内容が一致しない</span><span >事項について</span><span>、</span><span >売買契約書</span><span>の条項及び条件</span><span >に準ずる</span><span>。</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">This </span><span style="font-family:Arial; font-size:8pt">P</span><span style="font-family:Arial; font-size:8pt">I is issued in accordance with Purchas</span><span style="font-family:Arial; font-size:8pt">e </span><span style="font-family:Arial; font-size:8pt">Agreement</span><span style="font-family:Arial; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt;">NO.:{!Contract.Contract_NO__c}</span><span style="font-family:Arial; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">executed by</span><span style="font-family:Arial; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">your company</span><span style="font-family:Arial; font-size:8pt"> and </span><span style="font-family:Arial; font-size:8pt">us</span><span style="font-family:Arial; font-size:8pt">.</span><span style="font-family:Arial; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">For matters not addressed in this PI</span><span style="font-family:Arial; font-size:8pt"> </span><span style="font-family:Arial; font-size:8pt">and t</span><span style="font-family:Arial; font-size:8pt">o the extent that ther</span><span style="font-family:Arial; font-size:8pt">e is any conflict between this </span><span style="font-family:Arial; font-size:8pt">P</span><span style="font-family:Arial; font-size:8pt">I and the Purchase </span><span style="font-family:Arial; font-size:8pt">Agreement</span><span style="font-family:Arial; font-size:8pt">, the terms and the conditions of the Pu</span><span style="font-family:Arial; font-size:8pt">rchase </span><span style="font-family:Arial; font-size:8pt">Agreement </span><span style="font-family:Arial; font-size:8pt">shall prevail.</span></p>
+                    </td>
+                </tr>
+                <tr style="height:31.4pt">
+                    <td colspan="6" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.58pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span >本</span><span >請求書</span><span>は、</span><span >弊社</span><span>の捺印をもって発効し、且つ</span><span >弊社</span><span>に対して拘束力を有する。</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span style="font-family:Arial; font-size:8pt">Th</span><span style="font-family:Arial; font-size:8pt">is</span><span style="font-family:Arial; font-size:8pt"> PI shall beco</span><span style="font-family:Arial; font-size:8pt">me effective and binding on </span><span style="font-family:Arial; font-size:8pt">us</span><span style="font-family:Arial; font-size:8pt"> only after being chopped with </span><span style="font-family:Arial; font-size:8pt">our </span><span style="font-family:Arial; font-size:8pt">seal.</span></p>
+                    </td>
+                </tr>
+                <tr style="height:27.6pt">
+                    <td colspan="6" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.8pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:431pt">
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span >本</span><span style="font-family:'Arial Unicode MS; font-size:8pt">請求書</span><span>は、</span><span>日本語</span><span>と</span><span>英語</span><span>で</span><span>作成され、両言語に</span><span>齟齬がある場合には</span><span>、</span><span>日本語</span><span>に準ずる。</span></p>
+                        <p style="text-align:left; widows:2; orphans:2; font-size:8pt"><span >This </span><span style="font-family:Arial; font-size:8pt">P</span><span style="font-family:Arial; font-size:8pt">I is drafted in Japanese and English. In case of any discrepancy, the Japanese version shall prevail. </span><span>                                                           </span></p>
+                    </td>
+                </tr>
+                </table>
+        </div>
+</body>
+
+</apex:page>

@@ -1,0 +1,41 @@
+<apex:component access="global" controller="BatchOppSendEmailCtrl">
+    <apex:attribute access="global" Id="requestId" name="OppDiffId" assignTo="{!requestId}" description="Order Difference ID" type="String" required="true"/>
+    <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+        <tr bgcolor="#4DFFFF">
+            <td style="font-size:13px;">
+                Opportunity Name
+            </td>
+            <td style="font-size:13px;">
+                Earliest Expected Delivery Date
+            </td>
+            <td style="font-size:13px;">
+                Owner
+            </td>
+            <td style="font-size:13px;">
+                AccountName
+            </td>
+            <td style="font-size:13px;">
+                Link
+            </td>
+        </tr>
+         <apex:repeat value="{!OppLst}" var="line"> 
+            <tr>
+                <td  style="text-align: center;">
+                    {!line.name}
+                </td>
+                <td  style="text-align: center;">
+                   {! TEXT(YEAR(line.Earliest_Expected_Delivery_Date__c)) & " ." &  CASE( MONTH(line.Earliest_Expected_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Earliest_Expected_Delivery_Date__c))  }
+                </td>
+                <td  style="text-align: center;">
+                    {!line.Owner.name}
+                </td>
+                <td  style="text-align: center;">
+                    {!line.Account.name}
+                </td>
+                <td  style="text-align: center;">
+                    {!Left($Api.Enterprise_Server_URL_190,(find('/services',$Api.Enterprise_Server_URL_190))) + line.Id}
+                </td>
+             </tr>                
+        </apex:repeat>
+    </table>
+</apex:component>

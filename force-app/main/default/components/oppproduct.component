@@ -1,0 +1,41 @@
+<apex:component access="global" controller="oppproductctrl">
+      <apex:attribute access="global" Id="requestId" name="OppDiffId" assignTo="{!requestId}" description="opp ID" type="String" required="true"/>
+    <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+        <tr bgcolor="#4DFFFF">
+            <td style="font-size:13px;">
+                 Product
+            </td>
+        </tr>
+    </table>
+    
+    <table border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+        <tr>
+               
+                <td colspan="1"><p style="text-align:center;"><span>Product</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Sales Price</span></p></td>
+            <td colspan="1" ><p style="text-align:center;"><span>Quantity</span></p></td>
+                 <td colspan="1"><p style="text-align:center;"><span>Guaranteed Delivery Date</span></p></td>
+            </tr>
+        <apex:repeat value="{!opportunityitemList}" var="line"> 
+            <tr>
+                <td  style="text-align: center;">
+                    {!line.Product2.name}
+                </td>
+                 <td  style="text-align: center;">
+                    {!line.unitprice}
+                </td>
+                 <td  style="text-align: center;">
+                      {!line.Quantity}
+                </td>
+
+
+                 <td  style="text-align: center;">
+                 {!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}
+
+                </td>
+              
+          
+                </tr>
+            </apex:repeat>
+        </table>
+</apex:component>

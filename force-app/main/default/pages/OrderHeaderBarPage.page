@@ -1,0 +1,56 @@
+<apex:page standardController="Order" showheader="false" sidebar="false"
+           extensions="OrderHeaderBarPageCtrl">
+    <apex:form >
+        <div style="COLOR: BLUE; font-size: 16px; font-weight: important;">
+            <div align="center">
+                <apex:outputText escape="false" 
+                                 value="★如果要修改此订单的Buyer信息，由于SAP端无法直接进行同步修改，需要线下联系SAP 工作人员：戴忱 联系方式（内线）：7103 !"
+                                 rendered="{!Order.Lock__c == false}" />
+                <BR />
+                <apex:outputText escape="false" 
+                                 style="font-size:18px;font-weight:important;"
+                                 value="注意:在CRM端支持修改Buyer，但是同步到SAP端Buyer的信息不会成功!"
+                                 rendered="{!Order.Lock__c == false}" />
+                <BR />
+            </div>   
+            <BR/>
+            <!--- OA Syn Info ----->
+            <div style="COLOR: BLUE; font-size: 14px; font-weight: important;width:600px; margin:0 auto;">
+                <apex:outputText style="text-align: center" value="温馨提示:  客户 {!Order.Buyer__r.Name} OA审批进行中......"
+                                 rendered="{!(Order.OA_External_ID__c != null && Order.Account_Id__c==null && Order.SAP_Describe__c==null && Order.Lock__c == false)}" />                
+                <apex:outputText style="text-align: center" value="温馨提示:  客户 {!Order.Buyer__r.Name} 审批通过！"
+                                 rendered="{!(Order.OA_External_ID__c != null && Order.Account_Id__c!=null && Order.SAP_Describe__c==null &&Order.Lock__c == false)}"/>                  
+                <apex:outputText style="text-align: center" value="温馨提示:  客户 {!Order.Buyer__r.Name} 创建失败，失败原因 ：{!Order.SAP_Describe__c}"
+                                 rendered="{!(Order.OA_External_ID__c != null && Order.Account_Id__c==null &&  Order.SAP_Describe__c!=null && Order.Lock__c == false)}"/> 
+                
+            </div>       
+            <div style="width:600px; margin:0 auto;COLOR: RED;font-size: 16px;">
+                <BR/>
+                <apex:outputText style="text-align: center" value="该客户在SAP端没有维护，请参考以下步骤：" rendered="{!Order.Buyer__r.SAP_External_ID__c == null && Order.OA_External_ID__c == null }" /><BR/> 
+                <apex:outputText style="text-align: center" value=" ①、请在CRM全局搜索该客户的关键子，查看此客户是否存在同人不同名的情况。" rendered="{!Order.Buyer__r.SAP_External_ID__c == null && Order.OA_External_ID__c == null}" /><BR />
+                <apex:outputText style="text-align: center" value=" ②、若存在同人不同名的客户，请合并该客户下的所有单子到同一名字下，确保一个客户对应一个名字。" rendered="{!Order.Buyer__r.SAP_External_ID__c == null && Order.OA_External_ID__c == null}" /><BR />
+                <apex:outputText style="text-align: center" value=" ③、合并后，请联系CRM 管理员和SAP的相关负责人对合并后的客户进行维护。" rendered="{!Order.Buyer__r.SAP_External_ID__c == null && Order.OA_External_ID__c == null}" /><BR />
+                <apex:outputText style="text-align: center" value=" ④、若不存在同人不同名的客户(即新客户) 请走OA申请流程。" rendered="{!Order.Buyer__r.SAP_External_ID__c == null && Order.OA_External_ID__c == null}" /><BR />
+            </div>
+                 
+            <!--   
+<apex:outputText escape="false"
+value="Tips: SAP Materiel No 不存在，请参照SAP products 表中的数据进行填写信息获取 SAP Materiel No！SAP produects : "
+rendered="{! getSapProductCode }" />
+<apex:outputLink value="https://cs31.salesforce.com/a0N"
+rendered="{! getSapProductCode }" target="_blank"> Click Me </apex:outputLink>
+<BR />
+-->
+        </div>
+        <div style="width:600px; margin:0 auto;COLOR: RED;font-size: 16px;">
+            <BR/>
+            <apex:outputText style="text-align: left" value="产品中SAP物料号不存在的参考操作步骤 :" rendered="{!Order.MaterielNo__c != 0}" /><BR />
+            <apex:outputText style="text-align: center" value=" ①、手动同步SAP产品(点击Manually Sync SAP Product)" rendered="{!Order.MaterielNo__c != 0}" /><BR />
+            <apex:outputText style="text-align: center" value=" ②、重新编辑没有物料号的产品，选择需要的物料信息。" rendered="{!Order.MaterielNo__c != 0}" /><BR />
+            <apex:outputText style="text-align: center" value=" ③、如果此提示依然存在，请联系管理员 David。" rendered="{!Order.MaterielNo__c != 0}" />
+        </div>
+        
+        
+        
+    </apex:form>
+</apex:page>

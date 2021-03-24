@@ -1,0 +1,182 @@
+<apex:page standardController="Contract"   showHeader="false" sidebar="false" renderAs="PDF" extensions="PIUkraine1_Ctrl" applyHtmlTag="false" standardStylesheets="false" action="{!initialize}" ><!--contentType="application/vnd.ms-excel#PA.xls"  -->
+   
+     <style type="text/css">
+            body { text-align:justify; widows:0; orphans:0; font-family: Arial Unicode MS; font-size:10.5pt }
+            p { margin:0pt }
+            @page{ size: A4;margin : 20pt .2in .5in .2in;
+            @top-center {content : element(header); } }
+           
+          
+        </style>
+    
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        
+    </head>
+    
+    <apex:messages />
+    <apex:form >
+        <!--<img src="https://c.ap1.content.force.com/servlet/servlet.ImageServer?id=01590000000B873&oid=00D90000000b4ZI&lastMod=1320902785000" />-->
+        <apex:image value="{!$Resource.JnkoLogo}" style="height:60px; width:150px" />       
+        <table border="0"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="100px" align="center">
+                <td style="font-size:30px" text-align="center"><strong>{!ios.Seller__c}</strong>
+                </td>
+            </tr>
+            <tr height="60px" align="center">
+                <td text-align="center"  style="font-size:15px"><strong>{!ios.Address__c}</strong></td>                                                                                   
+            </tr>
+            <tr height="60px" align="center">
+                <td text-align="center"  style="font-size:30px"><strong><u>Payment Invoice</u></strong></td>                                                                                   
+            </tr>
+        </table>
+        
+        <table border="0"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" >
+                <td width="15%">Date  : 
+                </td>
+                <td width="40%">{!printtime}
+                </td>
+                <td colspan="2"  style="display:{!IF(coo.Invoice_No__c!=null,'run-in','none')};" >Invoice No.:{!coo.Invoice_No__c}
+                </td>
+                
+            </tr>
+            <tr height="30px" >
+                <td width="15%">Buyer:</td>
+                <td width="40%">{!coo.BuyerAccount__r.Name}
+                </td>       
+                <td colspan="2">PA No.:{!coo.Contract_NO__c} dated {!printtime} 
+                </td>
+                       
+                
+            </tr>
+            <tr height="30px" >
+                <td width="15%">Address:</td>  
+                <td colspan="3">{!buyerAddress}                 
+                </td>
+            </tr>
+            <tr height="30px" >
+                <td width="15%">Payment Term:</td>  
+                <td  colspan="3">{!coo.Payment_Term_Description__c}                 
+                </td>
+            </tr>
+            <tr height="30px" >
+                <td width="15%">Trade Term :</td>  
+                <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2010
+                </td>
+                 <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">
+                    {!Contract.Trade_term__c}&nbsp;{!Contract.Destination__c} under Incoterms 2020
+                </td> 
+                           <TD width="30%" style="display:{!IF(Contract.SELLER__c=='JINKOSOLAR TECHNOLOGY LIMITED','run-in','none')};">
+                Country of Origin:Vietnam      
+                </TD>
+            <TD width="30%" style="display:{!IF(Contract.SELLER__c=='JINKOSOLAR TECHNOLOGY LIMITED','none','run-in')};">
+                Country of Origin:China     
+                </TD>
+            </tr>
+        </table>
+        <br/>
+        
+        <TABLE width="95%"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; "  border="1" cellSpacing="0" cellPadding="0" >
+            <TR style=" mso-height-source: userset" height="23">
+                <TD height="23" colSpan="9" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT:  windowtext 0.5pt solid; "><FONT color="#000000"  ><STRONG>PURCHASE INVOICE DETAILS</STRONG></FONT></TD>
+            </TR>
+            <TR style=" mso-height-source: userset" height="49">
+                <TD width="170" height="49" colspan="2" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;   BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000"  ><STRONG>Item</STRONG></FONT></TD>
+                <TD width="170" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT >Description<BR /></FONT></STRONG></TD>
+                <TD width="100" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT color="#000000"  >Quantity<BR /> (PCS)</FONT></STRONG></TD>
+                <TD width="100" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT >Unit Price<BR />({!Contract.CurrencyIsoCode}/Wp)</FONT></STRONG></TD>
+                <TD width="100" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT >Unit Price<BR />({!Contract.CurrencyIsoCode}/PC)</FONT></STRONG></TD>
+                <TD width="100" colspan="2" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT >Amount of Goods ({!Contract.CurrencyIsoCode})<BR /></FONT></STRONG></TD>
+                <TD width="100" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT >Expected ETD<BR /></FONT></STRONG></TD></TR>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!pds}" var="line" id="Order_Line_List">   
+                <!--<apex:dataList value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">-->
+                <apex:variable var="index" value="{!index+1}" />
+                <TR style=" mso-height-source: userset" height="49">
+                    <TD height="49" colspan="2" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;   BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD> 
+                    <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid" >{!line.Product_name__c}</TD> 
+                    <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid" >{!line.Quantity__c}</TD>
+                    <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+                    <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c*line.Unit_WM__c}"/></apex:outputText></TD>
+                    <TD colspan="2" height="49" align="center" vAlign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+                    <TD height="49" align="center" vAlign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.GuaranteedDeliveryDateAuto2__c}</TD>
+                </TR>
+            </apex:repeat>
+            <!--</apex:dataList>-->
+            
+            <TR style=" mso-height-source: userset" height="49">
+                <TD height="49" colspan="2" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;  " ><STRONG> <FONT >TOTAL<BR /></FONT></STRONG></TD>
+                <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;" >&nbsp; </TD>
+                <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;" ><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">&nbsp;   </TD>
+                <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">&nbsp;   </TD>
+                <TD colspan="2" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">&nbsp;   </TD>
+            </TR>
+            
+            <TR style=" mso-height-source: userset" height="49">
+                <TD height="49" colspan="6" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;  "><STRONG> <FONT >{!DownPay}% as Down Payment ({!Contract.CurrencyIsoCode})   <BR /></FONT></STRONG></TD>
+                
+                <TD colspan="4" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!DownPayD*Contract.Total_Price__c/100}"/></apex:outputText></TD>
+            </TR> 
+              <TR style=" mso-height-source: userset;display:{!IF(DownPay2!=null,'run-in','none')};" height="49" >
+                <TD height="49" colspan="6" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;  " ><STRONG> <FONT >{!DownPay2}% as Down Payment ({!Contract.CurrencyIsoCode})<BR /></FONT></STRONG></TD>
+                
+                <TD colspan="4" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!DownPayD2*Contract.Total_Price__c/100}"/></apex:outputText></TD>
+            </TR>   
+            
+            <TR style=" mso-height-source: userset;display:{!IF(BanlancePay!=null,'run-in','none')};" height="49" >
+                <TD height="49" colspan="6" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;  " ><STRONG> <FONT >{!BanlancePay}% Settled by  irrevocable T/T ({!Contract.CurrencyIsoCode})<BR /></FONT></STRONG></TD>
+                
+                <TD colspan="4" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!BanlancePayB*Contract.Total_Price__c/100}"/></apex:outputText></TD>
+            </TR>   
+             <TR style=" mso-height-source: userset;display:{!IF(BanlancePay2!=null,'run-in','none')};" height="49" >
+                <TD height="49" colspan="6" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;  " ><STRONG> <FONT >{!BanlancePay2}% Settled by  irrevocable T/T ({!Contract.CurrencyIsoCode})<BR /></FONT></STRONG></TD>
+                
+                <TD colspan="4" align="center" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!BanlancePayB2*Contract.Total_Price__c/100}"/></apex:outputText></TD>
+            </TR>   
+            
+           
+        </TABLE>
+        <TABLE width="95%"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; "  border="1" cellSpacing="0" cellPadding="0" >
+         <TR style=" mso-height-source: userset" height="23">
+                <TD height="23" colSpan="9" valign="middle" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT color="#000000"  >BANK INFORMATION</FONT></STRONG></TD></TR>
+            
+            <TR style=" mso-height-source: userset" height="3">
+                <TD height="146" colSpan="9" style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: white;   BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;" >
+                      <p style="white-space: pre-line;word-wrap: break-word;">{!Contract.Bank_Information_Content__c}</p></TD>
+            </TR>
+            
+        </TABLE>  
+        <br></br>
+        <br></br>
+        <TABLE width="95%"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+            
+            <TR><TD>
+               <DIV align="right">
+                    ____________________
+                </DIV>
+                </TD></TR>
+
+            <TR><TD>
+                <DIV align="right">
+                    Authorised Signature
+                </DIV>   
+                </TD></TR>
+            
+            
+            
+            
+        </TABLE>
+        
+    </apex:form>
+    
+    
+    <apex:outputPanel id="msg">
+        <apex:messages />
+    </apex:outputPanel> 
+    
+</apex:page>

@@ -1,0 +1,1157 @@
+<apex:component access="global" controller="OrderDiffListCtrl" >
+    <apex:attribute access="global" Id="requestId" name="OppDiffId" assignTo="{!requestId}" description="Order Difference ID" type="String" required="true"/>
+    <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+        <tr bgcolor="#4DFFFF">
+            <td style="font-size:13px;">
+                Order difference  
+            </td>
+        </tr>
+    </table>
+    
+    
+    <table  border="0" width="100%"  style="border-collapse: collapse;margin:10px auto;" >
+        <tr style="font-size:13px;">
+            <td colspan="1"  width="10%"><strong>Field name</strong></td>
+            <td colspan="1" width="15%"><strong>Before modify</strong></td>
+            <td colspan="1" width="15%"><strong>After modify</strong></td>
+            <td colspan="1" width="15%"><strong>Difference</strong></td>
+        </tr>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Destination_Country_New__c == orderDiffLst[0].Destination_Country_Old__c ,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Destination Country</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Destination_Country_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Destination_Country_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Contract_PO_PI_Owner_New__r.name == orderDiffLst[0].Contract_PO_PI_Owner_Old__r.name ,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Contract/PO/PI Owner</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Contract_PO_PI_Owner_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Contract_PO_PI_Owner_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Contract_PO_PI_Owner_New__r.name == orderDiffLst[0].Contract_PO_PI_Owner_Old__r.name ,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Contract/PO/PI Owner</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Contract_PO_PI_Owner_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Contract_PO_PI_Owner_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Actual_Sales_Name_New__c == orderDiffLst[0].Actual_Sales_Name_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Actual Sales Name</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Actual_Sales_Name_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Actual_Sales_Name_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Actual_Sales_Name_New__c == orderDiffLst[0].Actual_Sales_Name_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Actual Sales Name</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Actual_Sales_Name_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Actual_Sales_Name_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Opportunity_New__r.name == orderDiffLst[0].Opportunity_Old__r.name,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Opportunity</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Opportunity_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Opportunity_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Opportunity_New__r.name == orderDiffLst[0].Opportunity_Old__r.name,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Opportunity</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Opportunity_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Opportunity_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Account_Name_New__r.name == orderDiffLst[0].Account_Name_Old__r.name,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Account</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Account_Name_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Account_Name_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Account_Name_New__r.name == orderDiffLst[0].Account_Name_Old__r.name,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Account</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Account_Name_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Account_Name_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Destination_Country_New__c == orderDiffLst[0].Destination_Country_Old__c ,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Destination Country</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Destination_Country_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Destination_Country_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].SELLER_New__c == orderDiffLst[0].SELLER_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Seller</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].SELLER_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].SELLER_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].SELLER_New__c == orderDiffLst[0].SELLER_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Seller</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].SELLER_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].SELLER_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].SAP_User_ID_New__c == orderDiffLst[0].SAP_User_ID_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">SAP User ID</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].SAP_User_ID_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].SAP_User_ID_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].SAP_User_ID_New__c == orderDiffLst[0].SAP_User_ID_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">SAP User ID</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].SAP_User_ID_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].SAP_User_ID_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>                                
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Contract_PO_PI_No_New__c == orderDiffLst[0].Contract_PO_PI_No_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Contract/PO/PI No</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Contract_PO_PI_No_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Contract_PO_PI_No_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Contract_PO_PI_No_New__c == orderDiffLst[0].Contract_PO_PI_No_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Contract/PO/PI No</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Contract_PO_PI_No_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Contract_PO_PI_No_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Supply_By_New__c == orderDiffLst[0].Supply_By_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Supply By</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Supply_By_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Supply_By_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Supply_By_New__c == orderDiffLst[0].Supply_By_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Supply By</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Supply_By_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Supply_By_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Status_New__c == orderDiffLst[0].Status_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Status</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Status_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Status_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Status_New__c == orderDiffLst[0].Status_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Status</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Status_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Status_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Buyer_New__r.name == orderDiffLst[0].Buyer_Old__r.name,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Buyer</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Buyer_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Buyer_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Buyer_New__r.name == orderDiffLst[0].Buyer_Old__r.name,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Buyer</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Buyer_Old__r.name}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Buyer_New__r.name}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Order_Start_Date_New__c == orderDiffLst[0].Order_Start_Date_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Order Start Date</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Order_Start_Date_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Order_Start_Date_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Order_Start_Date_New__c == orderDiffLst[0].Order_Start_Date_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Order Start Date</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Order_Start_Date_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Order_Start_Date_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Destination_New__c == orderDiffLst[0].Destination_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Destination</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Destination_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Destination_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Destination_New__c == orderDiffLst[0].Destination_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Destination</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Destination_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Destination_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Factory_WH_New__c == orderDiffLst[0].Factory_WH_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Factory/WH</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Factory_WH_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Factory_WH_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Factory_WH_New__c == orderDiffLst[0].Factory_WH_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Factory/WH</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Factory_WH_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Factory_WH_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Shipping_type_New__c == orderDiffLst[0].Shipping_type_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Shipping type</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Shipping_type_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Shipping_type_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Shipping_type_New__c == orderDiffLst[0].Shipping_type_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Shipping type</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Shipping_type_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Shipping_type_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Warranty_Insurance_New__c == orderDiffLst[0].Warranty_Insurance_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Warranty Insurance</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Warranty_Insurance_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Warranty_Insurance_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Warranty_Insurance_New__c == orderDiffLst[0].Warranty_Insurance_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Warranty Insurance</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Warranty_Insurance_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Warranty_Insurance_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Region_New__c == orderDiffLst[0].Region_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Region</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Region_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Region_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Region_New__c == orderDiffLst[0].Region_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Region</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Region_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Region_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Warranty_On_Material_and_Workmanship_New__c == orderDiffLst[0].Warranty_On_Material_and_Workmanship_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Warranty On Material and Workmanship</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Warranty_On_Material_and_Workmanship_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Warranty_On_Material_and_Workmanship_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Warranty_On_Material_and_Workmanship_New__c == orderDiffLst[0].Warranty_On_Material_and_Workmanship_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Warranty On Material and Workmanship</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Warranty_On_Material_and_Workmanship_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Warranty_On_Material_and_Workmanship_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Customer_Order_Reference_PO_New__c == orderDiffLst[0].Customer_Order_Reference_PO_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Customer Order Reference / PO</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Customer_Order_Reference_PO_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Customer_Order_Reference_PO_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Customer_Order_Reference_PO_New__c == orderDiffLst[0].Customer_Order_Reference_PO_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Customer Order Reference / PO</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Customer_Order_Reference_PO_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Customer_Order_Reference_PO_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Commission_Value_sync_to_SAP_New__c == orderDiffLst[0].Commission_Value_sync_to_SAP_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Commission Value sync to SAP</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Commission_Value_sync_to_SAP_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Commission_Value_sync_to_SAP_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Commission_Value_sync_to_SAP_New__c == orderDiffLst[0].Commission_Value_sync_to_SAP_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Commission Value sync to SAP</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Commission_Value_sync_to_SAP_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Commission_Value_sync_to_SAP_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Commission_Type_New__c == orderDiffLst[0].Commission_Type_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Commission Type</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Commission_Type_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Commission_Type_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Commission_Type_New__c == orderDiffLst[0].Commission_Type_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Commission Type</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Commission_Type_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Commission_Type_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].VAT_NO_New__c == orderDiffLst[0].VAT_NO_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">VAT NO</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].VAT_NO_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].VAT_NO_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].VAT_NO_New__c == orderDiffLst[0].VAT_NO_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">VAT NO</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].VAT_NO_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].VAT_NO_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].GST_Classification_Region_New__c == orderDiffLst[0].GST_Classification_Region_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">GST Classification Region</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].GST_Classification_Region_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].GST_Classification_Region_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].GST_Classification_Region_New__c == orderDiffLst[0].GST_Classification_Region_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">GST Classification Region</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].GST_Classification_Region_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].GST_Classification_Region_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BMO_SH_New__c == orderDiffLst[0].BMO_SH_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">BMO SH</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BMO_SH_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BMO_SH_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BMO_SH_New__c == orderDiffLst[0].BMO_SH_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">BMO SH</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BMO_SH_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BMO_SH_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BMO_SR_New__c == orderDiffLst[0].BMO_SR_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">BMO SR</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BMO_SR_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BMO_SR_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BMO_SR_New__c == orderDiffLst[0].BMO_SR_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">BMO SR</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BMO_SR_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BMO_SR_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Special_New__c == orderDiffLst[0].Special_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Special/特批下单</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Special_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Special_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Special_New__c == orderDiffLst[0].Special_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Special/特批下单</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Special_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Special_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Normal_New__c == orderDiffLst[0].Normal_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Normal/正常下单</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Normal_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Normal_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Normal_New__c == orderDiffLst[0].Normal_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Normal/正常下单</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Normal_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Normal_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Special_Requirements_New__c == orderDiffLst[0].Special_Requirements_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Special Requirements/相关特殊要求</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Special_Requirements_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Special_Requirements_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Special_Requirements_New__c == orderDiffLst[0].Special_Requirements_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Special Requirements/相关特殊要求</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Special_Requirements_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Special_Requirements_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Special_Approvals_New__c == orderDiffLst[0].Special_Approvals_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Special Approvals/特批</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Special_Approvals_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Special_Approvals_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Special_Approvals_New__c == orderDiffLst[0].Special_Approvals_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Special Approvals/特批</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Special_Approvals_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Special_Approvals_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Intercompany_Seller_POs_New__c == orderDiffLst[0].Intercompany_Seller_POs_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Intercompany Seller POs/内部交易信息</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Intercompany_Seller_POs_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Intercompany_Seller_POs_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Intercompany_Seller_POs_New__c == orderDiffLst[0].Intercompany_Seller_POs_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Intercompany Seller POs/内部交易信息</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Intercompany_Seller_POs_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Intercompany_Seller_POs_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Requested_supplier_New__c == orderDiffLst[0].Requested_supplier_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Requested supplier/要求供货方</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Requested_supplier_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Requested_supplier_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Requested_supplier_New__c == orderDiffLst[0].Requested_supplier_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Requested supplier/要求供货方</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Requested_supplier_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Requested_supplier_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Other_New__c == orderDiffLst[0].Other_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Other/其它</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Other_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Other_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Other_New__c == orderDiffLst[0].Other_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Other/其它</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Other_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Other_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].PMC_confirm_New__c == orderDiffLst[0].PMC_confirm_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">PMC confirm/生产确认</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].PMC_confirm_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].PMC_confirm_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].PMC_confirm_New__c == orderDiffLst[0].PMC_confirm_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">PMC confirm/生产确认</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].PMC_confirm_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].PMC_confirm_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Tax_Rate_New__c == orderDiffLst[0].Tax_Rate_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Tax Rate</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Tax_Rate_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Tax_Rate_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Tax_Rate_New__c == orderDiffLst[0].Tax_Rate_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Tax Rate</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Tax_Rate_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Tax_Rate_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Transit_Fees_New__c == orderDiffLst[0].Transit_Fees_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Transit Fees</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Transit_Fees_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Transit_Fees_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Transit_Fees_New__c == orderDiffLst[0].Transit_Fees_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Transit Fees</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Transit_Fees_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Transit_Fees_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].SELLER_New__c == orderDiffLst[0].SELLER_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Seller</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].SELLER_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].SELLER_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Contact_Name_New__c == orderDiffLst[0].Contact_Name_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Contact Name</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Contact_Name_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Contact_Name_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Contact_Name_New__c == orderDiffLst[0].Contact_Name_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Contact Name</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Contact_Name_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Contact_Name_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Customer_country_New__c == orderDiffLst[0].Customer_country_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Customer country</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Customer_country_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Customer_country_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Customer_country_New__c == orderDiffLst[0].Customer_country_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Customer country</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Customer_country_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Customer_country_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Fax_New__c == orderDiffLst[0].Fax_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Fax</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Fax_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Fax_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Fax_New__c == orderDiffLst[0].Fax_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Fax</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Fax_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Fax_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Phone_New__c == orderDiffLst[0].Phone_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Phone</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Phone_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Phone_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Phone_New__c == orderDiffLst[0].Phone_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Phone</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Phone_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Phone_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].SELLER_New__c == orderDiffLst[0].SELLER_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Seller</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].SELLER_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].SELLER_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Customer_Business_Scale_New__c == orderDiffLst[0].Customer_Business_Scale_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Customer Business Scale</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Customer_Business_Scale_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Customer_Business_Scale_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Customer_Business_Scale_New__c == orderDiffLst[0].Customer_Business_Scale_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Customer Business Scale</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Customer_Business_Scale_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Customer_Business_Scale_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Email_New__c == orderDiffLst[0].Email_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Email</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Email_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Email_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Email_New__c == orderDiffLst[0].Email_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Email</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Email_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Email_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Title_New__c == orderDiffLst[0].Title_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Title</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Title_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Title_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Title_New__c == orderDiffLst[0].Title_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Title</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Title_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Title_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Authorized_Representative_New__c == orderDiffLst[0].Authorized_Representative_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Authorized Representative</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Authorized_Representative_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Authorized_Representative_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Authorized_Representative_New__c == orderDiffLst[0].Authorized_Representative_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Authorized Representative</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Authorized_Representative_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Authorized_Representative_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingCountry_New__c == orderDiffLst[0].BillingCountry_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Billing Country</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingCountry_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingCountry_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingCountry_New__c == orderDiffLst[0].BillingCountry_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Billing Country</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingCountry_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingCountry_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingState_New__c == orderDiffLst[0].BillingState_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Billing State/Province</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingState_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingState_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingState_New__c == orderDiffLst[0].BillingState_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Billing State/Province</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingState_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingState_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingCity_New__c == orderDiffLst[0].BillingCity_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Billing City</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingCity_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingCity_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingCity_New__c == orderDiffLst[0].BillingCity_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Billing City</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingCity_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingCity_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Bank_Street_New__c == orderDiffLst[0].Bank_Street_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Billing Street</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Bank_Street_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Bank_Street_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Bank_Street_New__c == orderDiffLst[0].Bank_Street_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Billing Street</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Bank_Street_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Bank_Street_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingPostalCode_New__c == orderDiffLst[0].BillingPostalCode_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Billing Zip/Postal Code</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingPostalCode_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingPostalCode_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].BillingPostalCode_New__c == orderDiffLst[0].BillingPostalCode_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Billing Zip/Postal Code</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].BillingPostalCode_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].BillingPostalCode_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+       
+       
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Trade_term_New__c  == orderDiffLst[0].Trade_term_Old__c ,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Trade term</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Trade_term_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Trade_term_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Trade_term_New__c  == orderDiffLst[0].Trade_term_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Trade term</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Trade_term_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Trade_term_New__c}</td>
+                <td colspan="1" width="15%"></td>                                        
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Commission_New__c== orderDiffLst[0].Commission_Old__c,true,false)}">
+            <tr >
+                <td colspan="1"  width="10%">Commissioin/Discount/Rebate/Etc</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Commission_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Commission_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].Commission_New__c== orderDiffLst[0].Commission_Old__c,false,true)}">
+            <tr bgcolor="Yellow">
+                <td colspan="1"  width="10%">Commissioin/Discount/Rebate/Etc</td>
+                <td colspan="1"  width="15%"> {!orderDiffLst[0].Commission_Old__c}</td>
+                <td colspan="1" width="15%">{!orderDiffLst[0].Commission_New__c}</td>
+                <td colspan="1" width="15%"></td>
+            </tr>
+        </apex:outputPanel>
+        
+        
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].DiffMW__c = 0 || orderDiffLst[0].DiffMW__c= 0.0,true,false)}">
+            <tr>
+                <td>Total MW</td>
+                <td>{!orderDiffLst[0].Total_MW_Old__c}</td>
+                <td>{!orderDiffLst[0].Total_MW_New__c}</td>
+                <td>{!orderDiffLst[0].DiffMW__c}</td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].DiffMW__c = 0 || orderDiffLst[0].DiffMW__c = 0.0,false,true)}"> 
+            <tr bgcolor="Yellow">
+                <td>Total MW</td>
+                <td>{!orderDiffLst[0].Total_MW_Old__c}</td>
+                <td>{!orderDiffLst[0].Total_MW_New__c}</td>
+                <td>{!orderDiffLst[0].DiffMW__c}</td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].DiffPrice__c = 0 || orderDiffLst[0].DiffPrice__c = 0.0,true,false)}">
+            <tr>
+                <td>Total Price</td>
+                <td>{!orderDiffLst[0].Total_Price_Old__c}</td>
+                <td>{!orderDiffLst[0].Total_Price_New__c}</td>
+                <td>{!orderDiffLst[0].DiffPrice__c}</td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].DiffPrice__c = 0 || orderDiffLst[0].DiffPrice__c  = 0.0,false,true)}"> 
+            <tr bgcolor="Yellow">
+                <td>Total Price</td>
+                <td>{!orderDiffLst[0].Total_Price_Old__c}</td>
+                <td>{!orderDiffLst[0].Total_Price_New__c}</td>
+                <td>{!orderDiffLst[0].DiffPrice__c}</td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].DiffQuantity__c = 0 || orderDiffLst[0].DiffQuantity__c = 0.0,true,false)}">
+            <tr>
+                <td>Total Quantity</td>
+                <td>{!orderDiffLst[0].Total_Quantity_Old__c}</td>
+                <td>{!orderDiffLst[0].Total_Quantity_New__c}</td>
+                <td>{!orderDiffLst[0].DiffQuantity__c}</td>
+            </tr>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(orderDiffLst[0].DiffQuantity__c = 0 || orderDiffLst[0].DiffQuantity__c = 0.0,false,true)}"> 
+            <tr bgcolor="Yellow">
+                <td>Total Quantity</td>
+                <td>{!orderDiffLst[0].Total_Quantity_Old__c}</td>
+                <td>{!orderDiffLst[0].Total_Quantity_New__c}</td>
+                <td>{!orderDiffLst[0].DiffQuantity__c}</td>
+            </tr>
+        </apex:outputPanel>
+        
+    </table>
+    
+    
+    
+    
+    
+    
+    <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+        <tr bgcolor="#4DFFFF">
+            <td style="font-size:13px;">
+                Order Product difference 
+            </td>
+        </tr>
+    </table>
+    
+    <table border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+        <tr>
+                <td colspan="1" ><p style="text-align:center;"><span>ProductName </span></p></td>
+                <td colspan="1" ><p style="text-align:center;"><span>Quantity(Before)</span></p></td>
+                <td colspan="1" ><p style="text-align:center;"><span>Quantity(After)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>UnitPrice(Before)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>UnitPrice(After)</span></p></td>
+            <td colspan="1" ><p style="text-align:center;"><span>Total MW(Before)</span></p></td>
+                <td colspan="1" ><p style="text-align:center;"><span>Total MW(After)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Total Price(Before)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Total Price(After)</span></p></td>
+                 <td colspan="1"><p style="text-align:center;"><span>Delivery Date(Before)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Delivery Date(After)</span></p></td>
+            </tr>
+        <apex:repeat value="{!orderLinDiffLst}" var="line"> 
+            <tr>
+                <td  style="text-align: center;">
+                    {!line.Product_New__r.name}
+                </td>
+                <apex:outputPanel rendered="{!IF(line.Quantity_Old__c==line.Quantity_New__c,true,false)}">
+                    <td  style="text-align: center;">
+                        {!line.Quantity_Old__c}
+                    </td>
+                    <td  style="text-align: center;">
+                        {!line.Quantity_New__c}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(line.Quantity_Old__c==line.Quantity_New__c ,false,true)}">
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.Quantity_Old__c}
+                    </td>
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.Quantity_New__c}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF( line.UnitPrice_Old__c == line.UnitPrice_New__c ,false,true)}">
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.UnitPrice_Old__c}
+                    </td>
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.UnitPrice_New__c}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF( line.UnitPrice_Old__c == line.UnitPrice_New__c ,true,false)}">
+                    <td  style="text-align: center;">
+                        {!line.UnitPrice_Old__c}
+                    </td>
+                    <td  style="text-align: center;">
+                        {!line.UnitPrice_New__c}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(line.Total_MW_Old__c == line.Total_MW_New__c ,true,false)}">
+                    <td  style="text-align: center;">
+                        {!line.Total_MW_Old__c}
+                    </td>
+                    <td  style="text-align: center;">
+                        {!line.Total_MW_New__c}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(line.Total_MW_Old__c == line.Total_MW_New__c ,false,true)}">
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.Total_MW_Old__c}
+                    </td>
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.Total_MW_New__c}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF( line.total_Price_Old__c == line.total_Price_New__c ,true,false)}">
+                    <td  style="text-align: center;">
+                        {!line.Total_Price_Old__c}
+                    </td>
+                    <td  style="text-align: center;">
+                        {!line.Total_Price_New__c}
+                    </td>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF( line.total_Price_Old__c == line.total_Price_New__c ,false,true)}">
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.Total_Price_Old__c}
+                    </td>
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        {!line.Total_Price_New__c}
+                    </td>
+                </apex:outputPanel>
+                
+                <apex:outputPanel rendered="{!IF(line.Guaranteed_Delivery_Date_Old__c ==  line.Guaranteed_Delivery_Date_New__c,true,false)}">
+                     <td  style="text-align: center;" >
+                        <apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date_Old__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date_Old__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date_Old__c))}"/>
+                
+                    </td>
+                    <td  style="text-align: center;">
+                        <apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date_New__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date_New__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date_New__c))}"/>
+                   
+                    </td>
+                </apex:outputPanel>
+                
+                <apex:outputPanel rendered="{!IF(line.Guaranteed_Delivery_Date_Old__c ==  line.Guaranteed_Delivery_Date_New__c,false,true)}">
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        <apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date_Old__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date_Old__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date_Old__c))}"/>
+                
+                    </td>
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                        <apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date_New__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date_New__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date_New__c))}"/>
+                   
+                    </td>
+                </apex:outputPanel>
+                
+            </tr>
+            <tr>
+                
+                
+            </tr>
+        </apex:repeat>
+    </table>
+<table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+                                <tr bgcolor="#4DFFFF">
+                                 <td style="font-size:13px;">
+                                   Order Payment difference
+                                 </td>
+                                </tr>
+     </table>
+    <table border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;">
+        <tr>
+                <td colspan="1" ><p style="text-align:center;"><span>Amount(Before)</span></p></td>
+                <td colspan="1" ><p style="text-align:center;"><span>Amount(After)</span></p></td>
+                <td colspan="1" ><p style="text-align:center;"><span>Percentage(Before)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Percentage(After)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Payment Method(Before)</span></p></td>
+                <td colspan="1"><p style="text-align:center;"><span>Payment Method(After)</span></p></td>
+            <td colspan="1"><p style="text-align:center;"><span>Down Balance Payment(Before)</span></p></td>
+            <td colspan="1"><p style="text-align:center;"><span>Down Balance Payment(After)</span></p></td>
+            <td colspan="1"><p style="text-align:center;"><span>Days(Before)</span></p></td>
+            <td colspan="1"><p style="text-align:center;"><span>Days(After)</span></p></td>
+            <td colspan="1"><p style="text-align:center;"><span>Payment Term(Before)</span></p></td>
+            <td colspan="1"><p style="text-align:center;"><span>Payment Term(After)</span></p></td>
+            </tr>
+        <apex:repeat value="{!payDiffLst}" var="lin"> 
+                            <tr>
+                <apex:outputPanel rendered="{!IF(lin.Amount_Old__c == lin.Amount_New__c ,true,false)}">
+                    <td  style="text-align: center;">
+                       {!lin.Amount_Old__c}
+                    </td>
+                     <td  style="text-align: center;">
+                       {!lin.Amount_New__c}
+                    </td>
+                      </apex:outputPanel>
+                 <apex:outputPanel rendered="{!IF(lin.Amount_Old__c == lin.Amount_New__c ,false,true)}">
+                    <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Amount_Old__c}
+                    </td>
+                     <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Amount_New__c}
+                    </td>
+                      </apex:outputPanel>
+                   <apex:outputPanel rendered="{!IF(lin.Percentage_Old__c ==lin.Percentage_New__c ,true,false)}">
+                     <td  style="text-align: center;">
+                       {!lin.Percentage_Old__c}
+                    </td>
+                     <td  style="text-align: center;">
+                       {!lin.Percentage_New__c}
+                    </td>
+                        </apex:outputPanel>
+                    <apex:outputPanel rendered="{!IF(lin.Percentage_Old__c ==lin.Percentage_New__c ,false,true)}">
+                     <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Percentage_Old__c}
+                    </td>
+                     <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Percentage_New__c}
+                    </td>
+                 </apex:outputPanel>
+                     <apex:outputPanel rendered="{!IF(lin.Payment_Method_Old__c ==lin.Payment_Method_New__c ,false,true)}">            
+                     <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Payment_Method_Old__c}
+                    </td>
+                      <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Payment_Method_New__c}
+                    </td>
+                         </apex:outputPanel>
+                     <apex:outputPanel rendered="{!IF(lin.Payment_Method_Old__c ==lin.Payment_Method_New__c ,true,false)}">            
+                     <td  style="text-align: center;">
+                       {!lin.Payment_Method_Old__c}
+                    </td>
+                      <td  style="text-align: center;">
+                       {!lin.Payment_Method_New__c}
+                    </td>
+                         </apex:outputPanel>
+                     <apex:outputPanel rendered="{!IF(lin.Down_Balance_Payment_Old__c ==lin.Down_Balance_Payment_New__c,true,false)}">     
+                     <td  style="text-align: center;">
+                       {!lin.Down_Balance_Payment_Old__c}
+                    </td>
+                                         <td  style="text-align: center;">
+                       {!lin.Down_Balance_Payment_New__c}
+                    </td>
+                         </apex:outputPanel>
+                      <apex:outputPanel rendered="{!IF(lin.Down_Balance_Payment_Old__c ==lin.Down_Balance_Payment_New__c,false,true)}">     
+                     <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Down_Balance_Payment_Old__c}
+                    </td>
+                       <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Down_Balance_Payment_New__c}
+                    </td>
+                         </apex:outputPanel>
+                       <apex:outputPanel rendered="{!IF(lin.Days_Old__c ==lin.Days_New__c,true,false)}">  
+                      <td  style="text-align: center;">
+                       {!lin.Days_Old__c}
+                    </td>
+                                         <td  style="text-align: center;">
+                       {!lin.Days_New__c}
+                    </td>
+                           </apex:outputPanel>
+                                                       <apex:outputPanel rendered="{!IF(lin.Days_Old__c ==lin.Days_New__c,false,true)}">  
+                      <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Days_Old__c}
+                    </td>
+                                         <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Days_New__c}
+                    </td>
+                           </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(lin.Payment_Term_Old__c ==lin.Payment_Term_New__c,true,false)}">  
+                                         <td  style="text-align: center;">
+                       {!lin.Payment_Term_Old__c}
+                    </td>
+                                         <td  style="text-align: center;">
+                       {!lin.Payment_Term_New__c}
+                    </td>
+                                    </apex:outputPanel>
+                                 <apex:outputPanel rendered="{!IF(lin.Payment_Term_Old__c ==lin.Payment_Term_New__c,false,true)}">  
+                                         <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Payment_Term_Old__c}
+                    </td>
+                                         <td  style="text-align: center;" bgcolor="Yellow">
+                       {!lin.Payment_Term_New__c}
+                    </td>
+                                    </apex:outputPanel>
+                </tr>
+            <tr>
+            
+            
+            </tr>
+        </apex:repeat>
+    </table>    
+</apex:component>

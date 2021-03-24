@@ -1,0 +1,160 @@
+<apex:page controller="LogisticMaintenanceCtrl" id="logspage">
+<style>
+body {
+            font-family: 'trebuchet MS', 'Lucida sans', Arial;
+            font-size: 14px;
+            color: #444;
+        }
+  table {
+            *border-collapse: collapse; /* IE7 and lower */
+            border-spacing: 0;
+            width: 100%;    
+        }
+        
+        .bordered {
+            border: solid #ccc 1px;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            -webkit-box-shadow: 0 1px 1px #ccc; 
+            -moz-box-shadow: 0 1px 1px #ccc; 
+            box-shadow: 0 1px 1px #ccc;         
+        }
+</style>
+
+<apex:form id="myform">
+<apex:inputHidden value="{!editID}" id="editID"/> 
+<apex:pageMessages ></apex:pageMessages>
+	<apex:pageBlock title="物流数据查询">
+	 <apex:pageBlockButtons location="top">
+                    <apex:commandButton value="Searching" action="{!searchstart}"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="清空选择项" action="{!remove}"/>
+     </apex:pageBlockButtons>
+		<table id="mytable">
+			<td>
+				<c:MultiselectPicklist leftLabel="基地"
+									   leftOptions="{!allfactory}"
+									   rightLabel="已选基地"
+									   rightOptions="{!factory}"
+									   size="6"
+									   width="100px" />
+			</td> 
+			<td>					   
+				<c:MultiselectPicklist leftLabel="起运港"
+									   leftOptions="{!allDport}"
+									   rightLabel="已选起运港"
+									   rightOptions="{!Dport}"
+									   size="6"
+									   width="100px" />
+			</td>
+			<td>
+				<c:MultiselectPicklist leftLabel="目的国"
+									   leftOptions="{!allDesCon}"
+									   rightLabel="已选目的国"
+									   rightOptions="{!DesCon}"
+									   size="6"
+									   width="100px" />
+			
+			</td>
+			<td>
+				<c:MultiselectPicklist leftLabel="目的港"
+									   leftOptions="{!allDesPort}"
+									   rightLabel="已选目的港"
+									   rightOptions="{!DesPort}"
+									   size="6"
+									   width="100px" />
+			</td>	
+		<!--	<td>
+				<apex:outputText style="color: red; font-size:18px;">片数:</apex:outputText>
+				<apex:selectList size="1" value="{!Gtype}"> 
+        		<apex:selectOptions value="{!Goods}"/>  
+   				</apex:selectList>
+			</td>	-->
+		</table>
+	</apex:pageBlock>
+	<div style="overflow-x: auto; overflow-y: auto; height: 680px; width:100%;border-right:1px solid blue;">
+		<table id="dataTable" class="bordered">
+			   <tr style="margin:auto 40px;">
+			   		<td>记录编号</td>
+                    <td>基地</td>
+                    <td>运输方式</td>
+                    <td>起运港</td>
+                    <td>包干费</td>
+                    <td>基地至起运港运输费</td>
+                    <td>目的国</td>
+                    <td>目的港</td>
+                    <td>起运港至目的港运输费</td>
+                    <td>片数</td>
+                    <td>Action</td>
+                </tr>
+            <apex:repeat value="{!ocean}" var="oce">
+             <tr style="margin:auto 40px;">
+                        <td>
+                            <apex:outputLink value="https://cs58.salesforce.com/{!oce.Logistic__r.ID}">{!oce.Logistic__r.Name}</apex:outputLink>
+                           
+                        </td>
+                        <td>
+                           {!oce.Logistic__r.Departure_Factory__c}
+
+                        </td>
+                        <td>
+                            {!oce.Logistic__r.Type_of_Shipping__c}
+                        </td>
+                        <td>
+                            {!oce.Logistic__r.Departure_Port__c}
+                        </td>
+                        <td>
+                            
+                            <apex:inputField value="{!oce.Logistic__r.Freight_Price_All__c}" 
+                            rendered="{!IF(oce.Logistic__r.Name == null|| (editID == oce.ID && oce.ID != null),true,false)}"/>
+                            <apex:outputField value="{!oce.Logistic__r.Freight_Price_All__c}" 
+                            rendered="{!IF(oce.Logistic__r.Name == null|| (editID == oce.ID && oce.ID != null),false,true)}"/>
+                        </td>
+                         <td>
+                            
+                            <apex:inputField value="{!oce.Logistic__r.Freight_Price_Trans__c}" 
+                            rendered="{!IF(oce.Logistic__r.Name == null|| (editID == oce.ID && oce.ID != null),true,false)}"/>
+                            <apex:outputField value="{!oce.Logistic__r.Freight_Price_Trans__c}" 
+                            rendered="{!IF(oce.Logistic__r.Name == null|| (editID == oce.ID && oce.ID != null),false,true)}"/>
+                        </td>
+                     
+                        <td>
+                            {!oce.Destination_Country__c}
+                        </td>
+                        <td>
+                            {!oce.Destination_Port__c}
+                        </td>
+                        <td>
+                            <apex:inputField value="{!oce.Freight_Price_Ocean__c}" 
+                            rendered="{!IF(oce.Logistic__r.Name == null|| (editID == oce.ID && oce.ID != null),true,false)}"/>
+                            <apex:outputField value="{!oce.Freight_Price_Ocean__c}" 
+                            rendered="{!IF(oce.Logistic__r.Name == null|| (editID == oce.ID && oce.ID != null),false,true)}"/>
+                        </td>
+                        <td>
+                            {!oce.Logistic__r.Box_Amount__c}
+                        </td>
+                         <td>
+                             <apex:commandButton value="Edit" onclick="editrecord('{!oce.ID}');" rendered="{!IF(editID == oce.ID && oce.ID != null,false,true)}"/>
+                    			<apex:commandButton action="{!saveEditLogs}" value="Save" rendered="{!IF(editID == oce.ID && oce.ID != null,true,false)}" />
+                    			<apex:outputText value="|"  rendered="{!IF(editID == oce.ID && oce.ID != null,true,false)}"/>
+                    			<apex:commandButton value="Cancel" action="{!Cancel}" rendered="{!IF(editID == oce.ID && oce.ID != null,true,false)}" immediate="true" />
+                  		</td>
+                </tr>  		
+            </apex:repeat>
+		</table>
+	</div>
+</apex:form>
+
+
+<script>
+	function editrecord(logsid)
+	{
+		var hidden = document.getElementById("logspage:myform:editID");
+		hidden.value = logsid;
+	}
+</script>
+</apex:page>

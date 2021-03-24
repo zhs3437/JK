@@ -1,0 +1,708 @@
+<apex:page lightningStylesheets="true" showHeader="false" sidebar="false" controller="RC_AmendmentAgreementProductController">
+
+  <apex:slds />
+  <!-- Necessary -->
+
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:v-model="http://www.w3.org/1999/vue"
+    xmlns:v-bind="http://www.w3.org/1999/vue" xmlns:v-on="http://www.w3.org/1999/vue">
+
+  <head>
+    <title>补充订单产品维护</title>
+
+    <style>
+      thead th {
+        min-width: 100px;
+        font-weight: 400;
+        color: #888888;
+        position: sticky;
+        top: 0px;
+        background: #ffffff;
+        z-index: 90;
+        text-align: center;
+        height: 46px;
+      }
+
+      .slds-scope .slds-input-has-icon_right .slds-input__icon,
+      .slds-scope .slds-input-has-icon--right .slds-input__icon {
+        right: 1.50rem;
+      }
+
+      .slds-scope .slds-card .slds-card {
+        background: rgb(241 241 241);
+        border: 1px solid rgb(221, 219, 218);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.10);
+      }
+
+      .slds-scope input {
+        height: 32px;
+      }
+
+      .el-select {
+        display: inline;
+      }
+
+      .el-date-editor.el-input {
+        width: 100%;
+      }
+
+      ::-webkit-inner-spin-button {
+        visibility: hidden;
+      }
+
+      custom-text-transform {
+        text-transform: capitalize;
+      }
+
+      [v-cloak] {
+        display: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- REQUIRED SLDS WRAPPER -->
+    <div id="app" class="slds" v-cloak="true">
+      <!-- LOADING / Table -->
+      <div class="slds-spinner_container" v-show="status.pageLoading" style="z-index: 1;">
+        <div role="status" class="slds-spinner slds-spinner_large slds-spinner_brand">
+          <span class="slds-assistive-text">加载</span>
+          <div class="slds-spinner__dot-a"></div>
+          <div class="slds-spinner__dot-b"></div>
+        </div>
+      </div>
+
+      <!-- Search form -->
+      <div class="slds-card">
+        <div class="slds-card__header slds-grid">
+          <header class="slds-media slds-media_center slds-has-flexi-truncate" style="height: 4rem;">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container slds-icon-standard-record">
+                <svg class="slds-icon" aria-hidden="true">
+                  <use xlink:href="{!URLFOR($Asset.SLDS, '/icons/standard-sprite/svg/symbols.svg#record')}"></use>
+                </svg>
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <div class="slds-grid slds-grid_vertical">
+                <div>补充订单产品维护</div>
+                <div style="font-size: large;">{{ order.Name }}</div>
+              </div>
+            </div>
+            <div class="slds-grid" style="width: 50%;">
+              <div class="slds-col slds-size_1-of-2">
+                <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                  <label class="slds-form-element__label">
+                    搜索产品
+                  </label>
+                  <div class="slds-form-element__control slds-grid slds-grid">
+                    <el-select 
+                      v-model="product"
+                      value-key="productName"
+                      filterable="true"
+                      remote="true"
+                      placeholder=" "
+                      v-bind:remote-method="search"
+                      v-bind:loading="status.searchLoading">
+                      <el-option
+                        v-for="product in option.products"
+                        v-bind:key="product.productName"
+                        v-bind:label="product.productName"
+                        v-bind:value="product">
+                      </el-option>
+                    </el-select>
+                    <button v-if="product != null" class="slds-button slds-button_neutral slds-m-left_small" v-on:click="add()">
+                      添加
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="slds-col slds-size_1-of-2">
+                <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                  <label class="slds-form-element__label">
+                    &nbsp;
+                  </label>
+                  <div class="slds-form-element__control slds-grid slds-grid">
+                    <button class="slds-button slds-button_neutral slds-m-left_small" v-on:click="addCustom()">
+                      添加定制组件
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="slds-no-flex">
+              <button type="button" class="slds-button slds-button_neutral" v-on:click="back()">
+                取消
+              </button>
+              <button type="button" class="slds-button slds-button_neutral" v-on:click="saveCheck()">
+                保存
+              </button>
+              <button type="button" class="slds-button slds-button_neutral" v-bind:disabled="status.pageLoading" v-on:click="save(true)">
+                保存并退出
+              </button>
+            </div>
+          </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+          <div class="slds-card" v-for="(item, index) in items" v-bind:class="[item.isDelete ? 'slds-hide' : '']">
+            <el-form v-bind:model="item" v-bind:rules="rules" v-bind:ref="'item' + item.key">
+              <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate" style="height: 4rem;">
+                  <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-relationship">
+                      <svg class="slds-icon" aria-hidden="true">
+                        <use xlink:href="{!URLFOR($Asset.SLDS, '/icons/standard-sprite/svg/symbols.svg#relationship')}"></use>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                      <span v-if="!item.isCustom && !!item.productId">{{ item.productName }} - {{ item.productSeries }} - {{ item.productSeriesType }}</span>
+                      <span v-if="!!item.isCustom || !item.productId">
+                          <input type="text" 
+                                class="slds-input" 
+                                v-model="item.name"
+                                v-bind:value="item.name" />
+                      </span>
+                      <span>&nbsp;{{ item.id == null ? '(New)' : '' }}</span>
+                    </h2>
+                  </div>
+                  <div class="slds-no-flex">
+                    <button type="button" class="slds-button slds-button_neutral" v-on:click="copy(item, index)">
+                      复制
+                    </button>
+                    <button type="button" class="slds-button slds-button_neutral" v-on:click="del(item)">
+                      删除
+                    </button>
+                  </div>
+                </header>
+              </div>
+              <div class="slds-card__body slds-card__body_inner">
+                <div class="slds-form" role="list">
+                  <div class="slds-form__row">
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          数量
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.quantity'"
+                                      prop="quantity">
+                          <el-input type="number" 
+                                    v-model.number="item.quantity" 
+                                    v-on:change="checkNA(item, 'quantity')"/>
+                        </el-form-item>
+                        <!-- <div class="slds-form-element__control">
+                          <input type="number" 
+                                class="slds-input" 
+                                v-model.number="item.quantity"
+                                v-bind:value="item.quantity" 
+                                v-on:change="checkNA(item, 'quantity')"/>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          售价 - {{ order.CurrencyIsoCode }}
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.price'"
+                                      prop="price">
+                          <el-input type="number" 
+                                    v-model="item.price" 
+                                    v-on:change="checkNA(item, 'price')"/>
+                        </el-form-item>
+                        <!-- <div class="slds-form-element__control">
+                          <input type="number" 
+                                class="slds-input" 
+                                v-model.number="item.price"
+                                v-bind:value="item.price"
+                                v-on:change="checkNA(item, 'price')"/>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          电池类型
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.batteryType'"
+                                      prop="batteryType">
+                          <el-select v-model="item.batteryType">
+                            <el-option
+                              v-for="item in option.batteryType"
+                              v-bind:key="item.value"
+                              v-bind:label="item.label"
+                              v-bind:value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          边框高度
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.frameHeight'"
+                                      prop="frameHeight">
+                          <el-select v-model="item.frameHeight">
+                            <el-option
+                              v-for="item in option.frameHeight"
+                              v-bind:key="item.value"
+                              v-bind:label="item.label"
+                              v-bind:value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-form__row">
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          M/P
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.mp'"
+                                      prop="mp">
+                          <el-select v-model="item.mp">
+                            <el-option
+                              v-for="item in option.mp"
+                              v-bind:key="item.value"
+                              v-bind:label="item.label"
+                              v-bind:value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <!-- <abbr class="slds-required" title="required">* </abbr> -->
+                          预计交货时间
+                        </label>
+                        <div class="slds-form-element__control">
+                          <el-date-picker
+                            v-model="item.expectedDeliveryDate"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择日期">
+                          </el-date-picker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          保证交货时间
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.guaranteedDeliveryDate'"
+                                      prop="guaranteedDeliveryDate">
+                          <el-date-picker
+                            v-model="item.guaranteedDeliveryDate"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择日期">
+                          </el-date-picker>
+                        </el-form-item>
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          交货时间描述
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.deliveryDateDescription'"
+                                      prop="deliveryDateDescription">
+                          <el-input type="text"
+                                    v-model="item.deliveryDateDescription"
+                                    v-bind:value="item.deliveryDateDescription" />
+                        </el-form-item>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-form__row">
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          产品等级
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.productGrade'"
+                                      prop="productGrade">
+                          <el-select v-model="item.productGrade">
+                            <el-option
+                              v-for="item in option.productGrade"
+                              v-bind:key="item.value"
+                              v-bind:label="item.label"
+                              v-bind:value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </div>
+                    </div>
+                    <div v-if="!!item.isCustom || !item.productId" class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          定制组件瓦数（W）
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.power'"
+                                      prop="power">
+                          <el-input type="number" 
+                                    v-model.number="item.power" 
+                                    v-on:change="checkNA(item, 'power')"/>
+                        </el-form-item>
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          <abbr class="slds-required" title="required">* </abbr>
+                          产品显示名称（合同用）
+                        </label>
+                        <el-form-item class="slds-form-element__control"
+                                      v-bind:key="item.key + '.productContractName'"
+                                      prop="productContractName">
+                          <el-select v-model="item.productContractName">
+                            <el-option
+                              v-for="item in option.productContractName"
+                              v-bind:key="item.value"
+                              v-bind:label="item.label"
+                              v-bind:value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                      <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                        <label class="slds-form-element__label">
+                          货物描述
+                        </label>
+                        <div class="slds-form-element__control">
+                          <textarea class="slds-textarea" 
+                                    v-model="item.goodsDescription"
+                                    v-bind:value="item.goodsDescription" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-form>
+          </div>
+        </div>
+        <footer>
+          <div class="slds-scrollable slds-is-relative slds-size_1-of-1" style="height: 31rem;">
+            <!-- <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover">
+              <thead>
+                <tr class="slds-line-height_reset">
+                  <th style="position: sticky;">
+                    <div class="slds-truncate slds-text-align_center">产品名称</div>
+                  </th>
+                  <th style="position: sticky;">
+                    <div class="slds-truncate slds-text-align_center">产品单价（USD/W）</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody aura:id="tbody">
+                <tr class="slds-hint-parent" v-for="(product, index) in option.products" v-bind:key="product.id" style="height: 40px;">
+                  <td>
+                    <div class="slds-truncate slds-text-align_center" v-bind:title="product.productName">
+                      {{ product.name }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="slds-truncate slds-text-align_center" v-bind:title="product.quantity">
+                      {{ product.price }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table> -->
+            <div style="height: 1rem;">
+
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- / REQUIRED SLDS WRAPPER -->
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/element-ui.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/sweetalert2.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/vue.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/element-ui.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/sweetalert2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/lodash.js')}" />
+
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: () => {
+          return {
+            props: { multiple: true },
+            product: null,
+            order: {},
+            items: [],
+            option: {
+              batteryType: [],
+              frameHeight: [],
+              mp: [],
+              products: [],
+              productGrade: [],
+              productContractName: [
+                {label: '太阳能组件', value: '太阳能组件'},
+                {label: '专用工具', value: '专用工具'},
+                {label: '连接件', value: '连接件'}
+              ]
+            },
+            status: {
+              pageLoading: true,
+              searchLoading: false
+            },
+            rules: {
+              quantity: [
+                { required: true, message: '请输入数量', trigger: 'blur' },
+                { type: "number", min: 1, message: '数量无效', trigger: 'blur' }
+              ],
+              price: [
+                { required: true, message: '请输入售价', trigger: 'blur' }
+              ],
+              power: [
+                { required: true, message: '请输入定制组件瓦数', trigger: 'blur' }
+              ],
+              batteryType: [
+                { required: true, message: '请选择电池类型', trigger: 'blur' }
+              ],
+              frameHeight: [
+                { required: true, message: '请选择边框高度', trigger: 'blur' }
+              ],
+              mp: [
+                { required: true, message: '请选择M/P', trigger: 'blur' }
+              ],
+              guaranteedDeliveryDate: [
+                { required: true, message: '请选择保证交货时间', trigger: 'blur' }
+              ],
+              deliveryDateDescription: [
+                { required: true, message: '请输入交货时间描述', trigger: 'blur' }
+              ],
+              productGrade : [
+                { required: true, message: '请选择产品等级', trigger: 'blur' }
+              ],
+              productContractName : [
+                { required: true, message: '请选择产品显示名称（合同用）', trigger: 'blur' }
+              ]
+            }
+          }
+        },
+        mounted() {
+          var that = this;
+          that.init();
+        },
+        methods: {
+          init() {
+            let that = this;
+            that.status.pageLoading = true;
+            RC_AmendmentAgreementProductController.getComponentsByProjectId(JSON.stringify({ orderId: getQueryVariable('id') }), function (result, event) {
+              if (event.statusCode == 200) {
+                debugger;
+                that.order = result.order;
+                that.items = [...result.items];
+                that.items.forEach(item => {
+                  item.key = item.id;
+                  item.frameHeight = _.unescape(item.frameHeight);
+                });
+                that.option.batteryType = [...result.batteryType];
+                that.option.frameHeight = [...result.frameHeight];
+                that.option.frameHeight.forEach(element => {
+                  element.label = _.unescape(element.label);
+                  element.value = _.unescape(element.value);
+                });
+                that.option.mp = [...result.mp];
+                that.option.productGrade = [...result.productGrade];
+              }
+              that.status.pageLoading = false;
+            });
+          },
+
+          saveCheck(exit) {
+            debugger;
+            let that = this;
+            let flag = true;
+            _.toArray(that.$refs).forEach(ref => {
+              if (!ref[0] || ref[0].model.isDelete) return;
+              ref[0].validate((valid) => {
+                if (!valid) {
+                  flag = false;
+                }
+              });
+            });
+            if (flag) that.save(exit);
+          },
+
+          save(exit) {
+            // order 相关的数据
+            // order component 相关数据
+            // json 格式传递后端
+            debugger;
+            let that = this;
+            that.status.pageLoading = true;
+            // if (!that.check()) return;
+            RC_AmendmentAgreementProductController.setComponentsByProjectId(JSON.stringify({orderId: getQueryVariable('id'), items: [...that.items]}), function (result, event) {
+              if (event.statusCode == 200) {
+                if (result.code === 'success') {
+                  success();
+                  if (exit) that.back();
+                  else that.init();
+                } else {
+                  swal.fire(result.msg);
+                  that.status.pageLoading = false;
+                }
+              }
+            });
+          },
+                                                                   
+          checkNA (temp, name) {
+            if (temp[name] == "") temp[name] = null;
+          },
+
+          search: function (query) {
+            let that = this;
+            that.status.searchLoading = true;
+            if (_.isEmpty(query)) {
+              that.option.products = [];
+              that.status.searchLoading = false;
+              return;
+            }
+            RC_AmendmentAgreementProductController.getProducts(JSON.stringify({query: query}), function (result, event) {
+              if (event.statusCode == 200) {
+                that.option.products = result.data;
+              }
+
+              that.status.searchLoading = false;
+            });
+          },
+
+          copy(item, index) {
+            let temp = JSON.parse(JSON.stringify(item));
+            temp.id = null;
+            temp.key = Date.now();
+            this.items.splice(index, 0, temp);
+          },
+
+          del(item) {
+            item.isDelete = true;
+          },
+
+          add() {
+            let that = this;
+            let temp = JSON.parse(JSON.stringify(that.product));
+            temp.id = null;
+            temp.key = Date.now();
+            temp.batteryType = "Others";
+            temp.frameHeight = "Others";
+            temp.productGrade = "Normal";
+            temp.orderId = that.order.Id;
+            temp.name = temp.productName;
+            temp.isoCode = that.order.CurrencyIsoCode;
+            that.items.unshift(temp);
+          },
+
+          addCustom() {
+            let that = this;
+            let temp = {
+              isDelete: false
+            };
+            temp.isCustom = true;
+            temp.id = null;
+            temp.key = Date.now();
+            temp.batteryType = "Others";
+            temp.frameHeight = "Others";
+            temp.productGrade = "Normal";
+            temp.name = "";
+            temp.isoCode = that.order.CurrencyIsoCode;
+            temp.orderId = that.order.Id;
+            that.items.unshift(temp);
+          },
+
+          back() {
+            this.status.pageLoading = true;
+            redirect(getQueryVariable('retId'));
+          }
+        }
+      })
+      
+
+      /* Generate Instance Url */
+      function instanceUrl(restUrl) {
+        var elements = location.hostname.split('.'),
+          instance = null,
+          instanceUrl = null;
+        if (elements.length === 4 && elements[1] === 'my') {
+          instance = elements[0] + '.' + elements[1];
+        } else if (elements.length === 3) {
+          instance = elements[0];
+        } else {
+          instance = elements[1];
+        }
+        return 'https://' + instance + '.salesforce.com' + '/services/apexrest' + restUrl;
+      }
+
+      /* Get Url Params */
+      function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split("=");
+          if (pair[0] == variable) {
+            return pair[1];
+          }
+        }
+        return (false);
+      }
+
+      /* Redirect */
+      function redirect(objId) {
+        if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+          window.location.href = '/' + objId
+        } else {
+          if (sforce && sforce.one) {
+            sforce.one.navigateToSObject(objId)
+          }
+        }
+      }
+
+      function success() {
+        swal.fire({
+          title: '成功',
+          text: '提交成功',
+          showCancelButton: false,
+          showConfirmButton: true,
+          type: 'success',
+          confirmButtonText: '确认'
+        })
+      }
+    </script>
+  </body>
+
+  </html>
+
+</apex:page>

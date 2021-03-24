@@ -1,0 +1,4 @@
+<apex:page controller="OANoticeSiteCtrl" showHeader="false" sidebar="false" cache="false" standardStylesheets="false"
+           contentType="text/css" action="{!createObj}">
+<apex:messages />
+</apex:page>

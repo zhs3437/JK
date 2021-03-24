@@ -1,0 +1,106 @@
+<apex:page standardController="Opportunity" extensions="AddproductAppCtrl" id="addProductDetail"
+          >
+    <apex:messages style="font-size:20px;"/>
+    <c:jqueryui />
+    <script type="text/javascript" >
+    $(function() {
+               var xxx = "{!prod}";
+               ss = xxx.split(",");
+        $("#inp").autocomplete({
+                source: ss
+            });
+    });
+    function openwin() {
+    
+    //window.open ("AddProductApp?id="+{!opp.id}, "newwindow", "height=100, width=400, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no") //写成一行
+window.open('/apex/AddProductType?id={!opp.Id}');
+}
+    function deletePayment(payid){
+        if(confirm("Are you sure Delete?")){
+            
+            var hidden1 = document.getElementById("addProductDetail:addPro:deleteID");
+
+            hidden1.value = payid;
+            
+        }
+    }
+</script>
+    <div >
+        <pre  style="font-size:15px ;color:red ;"><strong>Please select the products in stock after check with SOC for the stage of the stock: The products in the list below are in stock.</strong></pre> 
+  <pre  style="font-size:15px ;color:red ;"><strong>If the required products are not within the list, please go back to the previous page to create Newly produced product application</strong></pre>
+    </div>
+
+    <apex:form id="addPro">
+         <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+             <apex:pageBlock title="Product Selection" id="pgbk"  mode="Edit" >
+                  <apex:pageBlockButtons >
+        <apex:commandButton value="Apply for the products in stock" oncomplete="ApplyNextStock()" />
+                       <apex:commandButton value="Back" action="{!toback}" />
+        <apex:commandButton VALUE="Cancel" onClick="window.close()"/>
+                       </apex:pageBlockButtons>
+                 <apex:pageBlockTable value="{!pdList}" var="line"
+                                 id="currentProductsTable" rules="rows">
+<apex:column headerValue="Product" style="vertical-align:top">
+                 <table>
+            <tr>
+                  <td><apex:commandButton action="{!DeletePay}" onclick="deletePayment('{!line.Request_No__c}');" value="Delete" />
+                </td>
+                <td>Name:</td>
+                
+                    <td>{!line.name}</td>
+                </tr>
+            
+        </table>
+                 </apex:column>
+                      </apex:pageBlockTable>
+        </apex:pageBlock>
+                 <apex:pageBlock >
+            
+          
+                    <input type="text" id="inp"/> 
+                   
+                   <input type="button" value="Add products" name="botton" onclick="showPosition()"/>
+                 </apex:pageBlock>
+                   <apex:pageBlock >
+                 
+                <apex:commandButton value="Add to list" action="{!howManyCheck}" />
+        <apex:pageBlockTable value="{!pstockList}" var="line" >
+            <apex:column >
+                        <apex:inputCheckbox value="{!line.IsOrNotCheck__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Name">
+                           {!line.name}
+                    </apex:column>
+          </apex:pageBlockTable>
+      
+                 </apex:pageBlock>
+    </apex:form>
+    <script>
+    function showPosition(){ 
+        var pro = document.getElementById("inp");
+        func(pro.value);
+        
+    }
+      function ApplyNextStock(){
+            
+             if (confirm("Please confirm with SOC that the inventory quantity is satisfied. Otherwise, it will be rejected in the contract.")){ 
+             if (confirm("Communicate with SOC and have sufficient inventory.")){   
+           ApplyNextStock2();
+           }else{
+         
+        }   
+          
+        }else{
+        }      
+    }  
+    </script>
+        
+        <apex:form >
+        <apex:actionFunction name="func" action="{!NumberSearch}"  reRender="pgbk" >
+           
+           <apex:param id="pro" name="pro" value="" assignTo="{!surchText}" />
+        </apex:actionFunction>
+         <apex:actionFunction name="ApplyNextStock2" action="{!ApplyNextStock}"  />
+   </apex:form>
+    
+</apex:page>

@@ -1,0 +1,100 @@
+<apex:page standardController="Contract" extensions="ContractInlineSection" sidebar="false" showHeader="false">
+
+    <apex:form >
+    <apex:pageBlock >
+        <apex:outputPanel id="replacePanel">
+        <apex:pageBlockSection columns="1" >
+        
+            <apex:outputField value="{!con.PO_Remarks_1__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField value="{!con.PO_Remarks_2__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField value="{!con.PO_Remarks_3__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField value="{!con.PO_Remarks_4__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField value="{!con.PO_Remarks_5__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_6__c!=null}" value="{!con.PO_Remarks_6__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_7__c!=null}" value="{!con.PO_Remarks_7__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_8__c!=null}" value="{!con.PO_Remarks_8__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_9__c!=null}" value="{!con.PO_Remarks_9__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_10__c!=null}" value="{!con.PO_Remarks_10__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_11__c!=null}" value="{!con.PO_Remarks_11__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_12__c!=null}" value="{!con.PO_Remarks_12__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_13__c!=null}" value="{!con.PO_Remarks_13__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_14__c!=null}" value="{!con.PO_Remarks_14__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_15__c!=null}" value="{!con.PO_Remarks_15__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_16__c!=null}" value="{!con.PO_Remarks_16__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_17__c!=null}" value="{!con.PO_Remarks_17__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_18__c!=null}" value="{!con.PO_Remarks_18__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_19__c!=null}" value="{!con.PO_Remarks_19__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            <apex:outputField rendered="{!con.PO_Remarks_20__c!=null}" value="{!con.PO_Remarks_20__c}">
+                <apex:inlineEditSupport />
+            </apex:outputField>
+            
+            
+        </apex:pageBlockSection>
+        	<center>
+                <apex:commandButton action="{!doSave}" value="Save New Line" />&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:commandButton action="{!doNewLine}" reRender="replacePanel" onclick="document.body.scrollTop=document.body.clientHeight;" value="Create New Line" />&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:commandButton action="{!doDelLine}" reRender="replacePanel" onclick="document.body.scrollTop=document.body.clientHeight;" value="Delete Last Line" />
+            </center>
+        
+        </apex:outputPanel>
+        
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

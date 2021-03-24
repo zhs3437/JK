@@ -1,0 +1,379 @@
+<apex:page standardController="contract" id="addAmendmentOrder" extensions="ConAmendmentOrderCtrl" showHeader="false" >
+<script>
+    function returnPage(){
+        window.location.href = '/apex/ConAmendmentOrder?id={!conId}'; 
+    }
+    
+</script>
+
+<apex:form Id="ProductLineForm">
+ <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+    
+    <apex:pageBlock id="Product_Line_Block">
+        <apex:pageBlockButtons location="top">
+            <apex:commandButton value="Save All" action="{!SelectDailyDetail}"/>
+            <apex:commandButton value="Back to Order" action="{!Cancel}"/>
+            <apex:commandButton value="Replace All" oncomplete="returnPage()" />
+        </apex:pageBlockButtons>
+         <apex:messages style=" color:#EE2C2C"/>
+  <apex:pageBlockSection title="Order details"   columns="4">
+                  <table border="0" width="150%"  style="border-collapse: collapse;margin:10px auto;" >
+                        <apex:outputPanel >
+                                <tr >
+                                <td colspan="1"  width="25%" align="center" valign="middle">Contract/PO/PI Owner</td>
+                                <td colspan="1" width="25%" align="center" valign="middle"><apex:inputField style="width:200px"   value="{!Orderlst[0].Contract_Owner__c}" required="false"/>  </td>
+                                <td colspan="1"  width="25%" align="center" valign="middle">Opportunity</td>
+                                <td colspan="1" width="25%" align="center" valign="middle"><apex:inputField style="width:200px"   value="{!Orderlst[0].Opportunity__c}" required="false"/></td>
+                                </tr>
+                           
+                                <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Actual Sales Name</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Actual_Sales_Name__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">SAP User ID</td>
+                                <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].SAP_User_ID__c}" required="false"/></td>
+                                </tr>
+                                <tr>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"></TD>
+                                  <td colspan="1"  width="25%" align="center" valign="middle"></TD>
+                                  <!--
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Account Name</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].AccountID}" required="false"/></td>
+                                -->
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Supply By</td>
+                                <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Supply_By__c}" required="false"/></td>
+                                </tr>
+                                 <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Contract/PO/PI No</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"   value="{!Orderlst[0].Contract_No__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Status</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Status}" required="false"/></td>
+                                </tr>
+                                
+                                 <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">SELLER</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"   value="{!Orderlst[0].SELLER__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Order Start Date</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].EffectiveDate}" required="false"/></td>
+                                </tr>
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Buyer</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Buyer__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Total Price</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Total_Price__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Trade term</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Trade_term__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Total Price(Tax)</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Total_Price_Tax__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Destination Country</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Destination_Country__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Total MW</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Total_MW__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Destination</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Destination__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Total Quantity</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Total_Quantity__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Factory/WH</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Factory__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Warranty Insurance</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Warranty_Insurance__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Shipping type</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Shipping_type__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Warranty On Material and Workmanship</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Warranty_On_Material_and_Workmanship__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Region</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Region__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Lock</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Lock__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Customer Order Reference / PO</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].delivery_note_CI__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Commission Type</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Commission_Type__c}" required="false"/></td>
+                                </tr>
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Commission Value sync to SAP</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Commission_Value_sync_to_SAP__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Commissioin</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Commission__c}" required="false"/></td>
+                                </tr>
+                                                                 <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Discount</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Discount__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Rebate</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Rebate__c}" required="false"/></td>
+                                </tr>
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">VAT NO</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].VAT_NO__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">GST Classification Region</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].GST_Classification_Region__c}" required="false"/></td>
+                                </tr>
+                                <tr>
+                                
+                                                                 <td colspan="1"  width="25%" align="center" valign="middle">Summary Comments</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Summary_Comments__c}" required="true"/></td>
+                                    <td colspan="1"  width="25%" align="center" valign="middle">物流費/Logistics cost(JPY)<br/>(incluced stock fees)</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputText style="width:200px"  value="{!LogisticsCost}" required="false"/></td>
+
+</tr>
+
+
+
+                                 </apex:outputPanel>
+                            </table>  
+</apex:pageBlockSection>
+
+  <apex:pageBlockSection title="Production Order Notice" columns="4">
+                  <table border="0" width="200%"  style="border-collapse: collapse;margin:10px auto;" >
+                        <apex:outputPanel >
+                        
+                         <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">BMO SH</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BMO_SH_SR__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">BMO SR</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BMO_SR__c}" required="false"/></td>
+                                </tr>
+
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Special/特批下单</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Special__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Normal/正常下单</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Normal__c}" required="false"/></td>
+                                </tr>
+
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Special Requirements/相关特殊要求</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Special_Requirements__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Special Approvals/特批</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Special_Approvals__c}" required="false"/></td>
+                                </tr>
+
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Intercompany Seller/内部交易信息</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Intercompany_Seller_POs__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Requested supplier/要求供货方</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Requested_supplier__c}" required="false"/></td>
+                                </tr>
+
+
+ <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Other/其它</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Other__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">PMC confirm/生产确认</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].PMC_confirm__c}" required="false"/></td>
+                                </tr>
+
+
+                        
+                         </apex:outputPanel>
+                            </table>  
+</apex:pageBlockSection>
+
+  <apex:pageBlockSection title="Tax Information" columns="4">
+                  <table border="0" width="100%"  style="border-collapse: collapse;margin:10px auto;" >
+                        <apex:outputPanel >
+                         <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Tax Rate</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Tax_Rate__c}" required="false"/></td>
+                                  </tr>
+                        </apex:outputPanel>
+                            </table>  
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Transit Information" columns="4">
+                  <table border="0" width="100%"  style="border-collapse: collapse;margin:10px auto;" >
+                        <apex:outputPanel >
+                         <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Transit Fees</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Transit_Fees__c}" required="false"/></td>
+                                  </tr>
+                        </apex:outputPanel>
+                            </table>  
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="Customer Information" columns="4">
+                  <table border="0" width="200%"  style="border-collapse: collapse;margin:10px auto;" >
+                        <apex:outputPanel >
+                         <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Contact Name</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Contact_Name__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Customer country</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Customer_country__c}" required="false"/></td>
+                                </tr>
+                                 <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Fax</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Fax__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Phone</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Phone__c}" required="false"/></td>
+                                </tr>
+                                 <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Customer Business Scale</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField value="{!Orderlst[0].Customer_Business_Scale__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Email</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Email__c}" required="false"/></td>
+                                </tr>
+                                 <tr >
+                                  <td colspan="1"  width="25%" align="center" valign="middle">Authorized Representative</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Authorized_Representative__c}" required="false"/></td>
+                                <td colspan="1"  width="25%" align="center" valign="middle">Title</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Title__c}" required="false"/></td>
+                                </tr>
+                                <tr >
+                                  <td colspan="1"  width="25%" align="center" valign="middle">BillingCity</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BillingCity}" required="false"/></td>
+                                <td colspan="1"  width="25%" align="center" valign="middle">BillingCountry</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BillingCountry}" required="false"/></td>
+                                </tr>
+                                <tr >
+                                  <td colspan="1"  width="25%" align="center" valign="middle">BillingState</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BillingState}" required="false"/></td>
+                                <td colspan="1"  width="25%" align="center" valign="middle">BillingPostalCode</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BillingPostalCode}" required="false"/></td>
+                                </tr>
+                                <tr >
+                                  <td colspan="1"  width="25%" align="center" valign="middle">BillingStreet</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BillingStreet}" required="false"/></td>
+                                <td colspan="1"  width="25%" align="center" valign="middle"></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"></td>
+                                </tr>
+                               
+                        </apex:outputPanel>
+                            </table>  
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="Finance Information" columns="4">
+                  <table border="0" width="200%"  style="border-collapse: collapse;margin:10px auto;" >
+                        <apex:outputPanel >
+                         <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">BankInfo</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].BankInfo__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Payment Term Description</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"  value="{!Orderlst[0].Payment_Term_Description__c}" required="false"/></td>
+                                </tr>
+                                
+                                 <tr >
+                                 <td colspan="1"  width="25%" align="center" valign="middle">Bank Information Content</td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"><apex:inputField style="width:200px"   value="{!Orderlst[0].Bank_Information_Content__c}" required="false"/></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"></td>
+                                 <td colspan="1"  width="25%" align="center" valign="middle"></td>
+                                </tr>
+                         </apex:outputPanel>
+                            </table>  
+</apex:pageBlockSection>
+
+ <apex:pageBlockSection title="Payment Term"   columns="4">
+    <apex:commandButton value="new" action="{!addPayment}"/>
+ <apex:pageBlockTable value="{!aps}" var="P"  rowClasses="odd,even" styleClass="list" width="100%" rules="rows">
+   <apex:column headerValue="Action" width="120px">
+   <apex:commandButton action="{!DeletePay}" onclick="deletePayment('{!P.Request_No__c}');" value="Delete"  />
+   </apex:column>
+  <apex:column headerValue="Percentage">
+ <apex:inputField value="{!P.Percentage__c}" />
+ </apex:column>
+   <apex:column headerValue="Down/ Balance Payment">
+  <apex:inputField value="{!P.Down_Balance_Payment__c}" />
+   </apex:column>
+      <apex:column headerValue="Payment Method">
+  <apex:inputField value="{!P.Payment_Method__c}" />
+   </apex:column>
+      <apex:column headerValue="Days">
+  <apex:inputField value="{!P.Days__c}" />
+   </apex:column>
+      <apex:column headerValue="Payment Term">
+  <apex:inputField required="true" value="{!P.Payment_Term__c}" />
+   </apex:column>
+      <apex:column headerValue="Credit Valid">
+  <apex:inputField value="{!P.Credit_Valid__c}" />
+   </apex:column>
+      <apex:column headerValue="Precise Day">
+  <apex:inputField value="{!P.Precise_Day__c}" />
+   </apex:column>
+      <apex:column headerValue="Comments">
+  <apex:inputField value="{!P.Comments__c}" />
+   </apex:column>
+ </apex:pageBlockTable>
+ </apex:pageBlockSection>
+
+
+
+ <apex:pageBlockSection title="Order Products"   columns="4">
+   <apex:commandButton value="new" action="{!addOrderItem}"/>
+ <apex:pageBlockTable value="{!aop}" var="Os"  rowClasses="odd,even" styleClass="list" width="100%" rules="rows">
+    <apex:column headerValue="Action" width="120px">
+   <apex:commandButton action="{!DeleteiTEM}" onclick="deletePayment('{!Os.Request_No__c}');" value="Delete"  />
+   </apex:column>
+  <apex:column headerValue="Product">
+ <apex:inputField value="{!Os.Product2__c}" />
+ </apex:column>
+   <apex:column headerValue="Unit Price">
+  <apex:inputField value="{!Os.UnitPrice__c}" />
+   </apex:column>
+      <apex:column headerValue="Quantity">
+  <apex:inputField value="{!Os.Quantity__c}" />
+   </apex:column>
+      <apex:column headerValue="Total MW">
+  <apex:outputField value="{!Os.Total_MW__c}" />
+   </apex:column>
+      <apex:column headerValue="Total Price">
+  <apex:outputField value="{!Os.total_Price__c}" />
+   </apex:column>
+      <apex:column headerValue="Certification">
+  <apex:inputField value="{!Os.Certification__c}" />
+   </apex:column>
+      <apex:column headerValue="Type of module">
+  <apex:inputField value="{!Os.Type_of_module__c}" />
+   </apex:column>
+      <apex:column headerValue="Guaranteed Delivery Date">
+  <apex:inputField value="{!Os.Guaranteed_Delivery_Date__c}" />
+   </apex:column>
+        <apex:column headerValue="Cheetah">
+  <apex:inputField value="{!Os.Cheetah__c}" />
+   </apex:column>
+ </apex:pageBlockTable>
+ </apex:pageBlockSection>
+    </apex:pageBlock> 
+</apex:form>
+<script>
+ function deletePayment(payid){
+        if(confirm("Are you sure Delete?")){
+            
+            var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+            hidden1.value = payid;
+            
+        }
+    }
+    function deleteItem(itemid){
+        if(confirm("Are you sure Delete?")){
+            
+            var hidden1 = document.getElementById("addAmendmentOrder:ProductLineForm:deleteID");
+
+            hidden1.value = itemid;
+            
+        }
+    }
+     </script>
+</apex:page>

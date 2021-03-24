@@ -1,0 +1,12 @@
+<apex:page standardController="Contract" Id="ContractPaymentId"
+    showHeader="false" sidebar="true" wizard="true">
+
+    <style>
+body {
+    width: 1600px;
+}
+</style>
+
+    <c:contractspayments id="ContractId" />
+
+</apex:page>

@@ -1,0 +1,7 @@
+<apex:page controller="SapTestPageCtrl"  >
+    
+    <apex:form >
+        <apex:commandButton action="{!doTest}" value="此按钮用于测试物料主数据集成"/>
+    </apex:form>
+  
+</apex:page>

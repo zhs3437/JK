@@ -1,0 +1,167 @@
+.slds-template_default {
+    /* padding: 0 0; */
+    background-color: rgb(243, 243, 243);
+}
+
+.shadow{
+    border-radius: .25rem;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.10);
+}
+
+.modal-body {
+    padding: 0px;
+}
+
+.slds-template_default.slds-brand-band:before {
+    position: absolute;
+    height: 0;
+}
+
+html{
+    font-size: 20px;
+    background-color: rgb(243, 243, 243);
+}
+
+.slds-brand-band:before{
+    background-color: rgb(243, 243, 243);
+    background-image: none;
+}
+
+.slds-brand-band:after{
+    position: absolute !important;
+    background-color: rgb(243, 243, 243);
+    background-image: none;
+}
+
+input[type=number]::-webkit-outer-spin-button, 
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+    text-align: center;
+    -moz-appearance:textfield;
+    padding: 0px;
+}
+
+.slds-input-has-icon_right .slds-input{
+    padding-right: 3.5rem;
+    padding-left: 1rem;
+}
+
+.error {
+    color: red;
+    /* color: rgb(194, 57, 52); */
+}
+
+.success {
+    color: rgb(2, 126, 70);
+}
+
+.slds-has-error .slds-input {
+    border-color: red;
+    box-shadow: red;
+}
+
+.slds-has-error .slds-input__icon {
+    fill: none;
+    color: black;
+}
+
+.cEnv_ButtonAction.slds-button {
+    color: rgb(0, 96, 178)!important;
+}
+
+.slds-button_brand.cEnv_ButtonAction {
+    color: rgb(255, 255, 255)!important;
+}
+
+.slds-button_neutral {
+    border: 1px solid rgb(221, 219, 218)!important;
+}
+
+.slds-table thead th {
+    background: rgb(255, 255, 255);
+}
+
+.slds-table tbody th{
+    background: rgb(255, 255, 255);
+}
+
+.slds-card .sign-header {
+    border-left: 3px solid rgb(54, 177, 237);
+    margin: 0;
+    padding-bottom: .75rem;
+    background-color: rgba(218, 226, 234, 0.29);
+}
+
+.slds-card .slds-card__body {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.slds-text-color_weak,
+.slds-text-color--weak {
+    font-size: 12px;
+    color: #888888;
+}
+
+.slds-table thead th,
+.slds-table tbody td {
+    max-width: 3rem;
+}
+
+a:hover, 
+a:focus {
+    text-decoration: none!important;
+}
+
+.tab-header {
+    z-index: 3;
+    position: static;
+    top: 0;
+}
+
+.tab-footer {
+    z-index: 3;
+    position: static;
+    bottom: 0;
+}
+
+.weui-search-bar {
+    top: 3.5rem;
+    z-index: 3;
+    position: static;
+}
+
+.weui-tabbar__item.weui-bar__item--on .weui-tabbar__label {
+    color:rgb(0, 112, 210);
+}
+
+.weui-search-bar__cancel-btn {
+    color:rgb(0, 112, 210);
+}
+
+.container,
+.page {
+    height: 100%; 
+    background-color: #f7f7fa;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+}
+
+.weui-tab__bd .weui-tab__bd-item {
+    display: none;
+    overflow: unset;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+.weui-tab__bd .weui-tab__bd-item.weui-tab__bd-item--active {
+    display: block;
+}

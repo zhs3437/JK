@@ -1,0 +1,86 @@
+<apex:page language="ja"
+           sidebar="false"
+           showHeader="false" standardStylesheets="false" renderAs="PDF" standardController="Amendment_Agreement__c"  extensions="RC_AmendmentCtrl">
+    <head>
+        
+        <style type="text/css">
+            @page
+            {       size: A4;
+            margin : 20pt .2in .5in .2in;
+            @top-center {
+            content : element(header);
+            }
+            @bottom-center {
+            content: " (  " counter(page) "  /  " counter(pages) "  )";
+            }
+            }
+            @font-face{
+            
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+            }
+            .page-break {
+            display:block;
+            page-break-after:always;
+            }
+            div.header {
+            position : running(header) ;
+            }
+           
+            table{
+            width:560pt;
+            }
+            
+        </style>
+    </head>
+    <body style="font-family:Arial Unicode MS">
+        <h1 style = "text-align:center">
+            合同变更补充协议
+        </h1>
+        <p>
+            甲方(买方)：{!buyerName}
+        </p>
+        <p>
+            乙方(卖方)：{!Amendment_Agreement__c.SELLER__c}
+        </p>
+        <p>
+            鉴于：<br/>
+            甲乙双方于{!ContractDate}签署了合同编号为{!ContractNumber}的《组件买卖合同》，约定由甲方<br/>向乙方采
+            购型号为{!ordName}的光伏组件{!ordMW}MW，合计{!ordQuantity}块，合同总价均为人民币<apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!ordTotalPrice}"/></apex:outputText>元。
+            现甲乙双方经友好协商一致，就以上《组件买卖合同》部分光伏组件型号的变更事宜订立本补充协<br/>
+            议，以资共同遵照执行。<br/>
+
+            一、以上《组件买卖合同》的合同总价均不作变更,仍为人民币<apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!ordTotalPrice}"/></apex:outputText>元，组件块数仍为{!ordQuantity}<br/>
+            块。甲乙双方一致同意，就以上《组件买卖合同》合计{!ordMW}MW的采购量中，其中{!amdQuantity}<br/>
+            块的光伏组件型号由{!ordName}变更为{!amdName}
+            二、本协议由双方签字盖章后生效。本协议生效后，即成为上述《组件买卖合同》不可分割的组成<br/>
+            部分，除本协议涉及的变更之外，上述《组件买卖合同》的条款应继续有效。
+            三、本协议一式肆份，双方各执贰份，具有同等法律效力。
+        </p>
+        <table width="100%" style=" font-size:14px;BORDER-COLLAPSE: collapse; "  border="0" cellSpacing="0" cellPadding="0" >
+            <tr>
+                <td>甲方：{!buyerName}</td>
+                <td>乙方：晶科能源有限公司</td>
+            </tr>
+            <tr>
+                <td>授权代表：{!contactPeople}</td>
+                <td>授权代表：{!AuthorizedSignatory}</td>
+            </tr>
+            <tr>
+                <td>地址：{!buyerAddress}</td>
+                <td>地址：{!Address}</td>
+            </tr>
+            <tr>
+                <td>电话：{!buyerPhone}</td>
+                <td>电话：{!phone}</td>
+            </tr>
+            <tr>
+                <td>传真：{!buyerFax}</td>
+                <td>传真：{!fax}</td>
+            </tr>
+        </table>
+                   
+    </body>
+    
+</apex:page>

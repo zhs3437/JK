@@ -1,0 +1,83 @@
+<apex:page standardController="Opportunity" extensions="MOUOpportunityCloneController" cache="true" id="opportunityId"
+           docType="html-5.0"
+           showheader="false">
+
+
+    <apex:form >
+        <apex:message />
+        <apex:pageBlock title="Please select the record type" id="thePageBlock">
+            <apex:pageMessages />
+
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!doSaveAndClone}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+
+            <div>
+                <span style="color: red"> Record Type :* </span>
+                <apex:selectList size="1" label="Record Type :" value="{!RecordTypeName}">
+                    <apex:selectOptions value="{!RecordTypeNameList}"/>
+                </apex:selectList>
+
+                <span> Opportunity Name : </span>
+                <apex:input value="{!OpportunityName}"/>
+                
+                <span> Delivery Point : </span>
+                <apex:input value="{!DeliveryPoint}"/>
+            </div>
+            <br/>
+
+            <apex:pageBlock title="Opportunity Products" id="thePageBlock1">
+
+                <apex:pageBlockTable value="{!opportunityLineItemList}" var="Item" rowClasses="odd,even"
+                                     styleClass="list" width="100%" rules="rows" id="oppLineItem">
+
+                    <div>
+                        <apex:column headerValue="Select" rendered="true">
+                            <apex:inputField value="{!Item.MOU_Used__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Product Series" rendered="true">
+                            <apex:outputField value="{!Item.Product_Type__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Product" rendered="true">
+                            <apex:outputField value="{!Item.Product2Id}"/>
+                        </apex:column>
+                        <apex:column headerValue="Goods Description" rendered="true">
+                            <apex:outputField value="{!Item.Goods_Description__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="WM" rendered="true">
+                            <apex:outputText value="{!Item.MW__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Sales Price" rendered="true">
+                            <apex:outputText value="{!Item.UnitPrice}"/>
+                        </apex:column>
+                        <apex:column headerValue="Trade Term" rendered="true">
+                            <apex:outputText value="{!Item.Trade_Term__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Quantity" rendered="true">
+                            <apex:outputField value="{!Item.Quantity}"/>
+                        </apex:column>
+                        <apex:column headerValue="Remark of price&Quantity" rendered="true">
+                            
+                            <apex:outputField value="{!Item.Remark_of_price_Quantity__c}"/>
+                           
+                        </apex:column>
+                        <apex:column headerValue="Guaranteed Delivery Quarter" rendered="true">
+                            <apex:outputField value="{!Item.Guaranteed_Delivery_Quarter__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Guaranteed Delivery Date" rendered="true">
+                            <apex:outputField value="{!Item.Guaranteed_Delivery_Date__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Guaranteed Delivery Date Note" rendered="true">
+                            <apex:outputField value="{!Item.Guaranteed_Delivery_Date_Note__c}"/>
+                        </apex:column>
+                    </div>
+                </apex:pageBlockTable>
+
+            </apex:pageBlock>
+        </apex:pageBlock>
+
+
+    </apex:form>
+
+</apex:page>

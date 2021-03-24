@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="../ckeditor.js"></script>
+	<script src="js/sample.js"></script>
+	<link rel="stylesheet" href="css/samples.css">
+	<link rel="stylesheet" href="toolbarconfigurator/lib/codemirror/neo.css">
+</head>
+<body id="main">
+<main>
+
+    <div class="cke4-inline">
+      <div contenteditable="true" style="text-align: center;">
+        <h2>Simply delicious newsletter</h2>
+      </div>
+          <div contenteditable="true"> abc
+          </div>
+    </div>
+
+    <textarea name="editor1" id="editor" rows="5">Initial editor content.</textarea>
+
+    <script>
+	window.onload = function() {
+
+
+
+
+		/*
+		//CKEDITOR.disableAutoInline = false;
+        //var editor =CKEDITOR.inline( 'editor1' );
+        //var editor = CKEDITOR.replace( 'editor1' );
+		//editor.config.width = 500;     // 500 pixels wide.
+
+		CKEDITOR.editorConfig = function( config ) {
+			config.width = 500;     // 500 pixels wide.
+			config.width = '75%';   // CSS unit (percent).
+			config.height = 500;        // 500 pixels high.
+			config.height = '25em';     // CSS unit (em).
+			config.extraPlugins = 'autogrow';
+			config.autoGrow_minHeight = 250;
+			config.autoGrow_maxHeight = 600;
+			config.autoGrow_onStartup = true;
+			config.autoGrow_bottomSpace = 50;
+			config.removePlugins = 'resize';
+			config.readOnly = true;
+
+			config.sharedSpaces = {
+			    top: 'someElementId',
+			    bottom: 'anotherId'
+			};
+		};
+		*/
+		initSample();
+    };
+	</script>
+</main>
+
+</body>
+</html>

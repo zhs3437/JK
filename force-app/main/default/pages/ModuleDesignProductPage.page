@@ -1,0 +1,6 @@
+<apex:page standardController="Product_Detail__c" action="{!goto}"
+           extensions="ModuleDesignProductController" sidebar="false"
+           showHeader="false" standardStylesheets="true" id="thePage" recordSetVar="Objs">
+    
+    
+</apex:page>

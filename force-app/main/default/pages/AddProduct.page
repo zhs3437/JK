@@ -1,0 +1,1122 @@
+<apex:page standardController="Opportunity" extensions="AddOppProductCtrl" id="pg">
+    <c:jqueryui />
+    <apex:include pageName="JinkoSolar" />
+    <apex:includeScript value="{!$Resource.main}"/>
+    <style>
+        div.hideCurrDate span.dateInput span.dateFormat {
+            display: none;
+        }
+    </style>
+    <script>
+        var products = [];
+        var containervalue;
+        var PriceBookName = "{!opp.pricebook2.Name}";
+    </script>
+  <script LANGUAGE="JavaScript">
+    function openwin() {
+        //window.open ("AddProductApp?id="+{!opp.id}, "newwindow", "height=100, width=400, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no") //写成一行
+        window.open('/apex/AddProductType?id={!opp.Id}', '_blank' , 'height=600,width=1600,scrollbars=no,location=no');
+    }
+    </script>
+    
+    <apex:sectionHeader title="{!$ObjectType.Opportunity.Label} {!Opportunity.Name}" />
+    
+    <apex:outputPanel id="pageMessages">
+        <apex:pageMessages />
+    </apex:outputPanel>
+    
+    <div id="ChangeProduct-dialog" title="Change Product">
+        <form id="changeProduct_form">
+
+            <fieldset>
+                <input type="hidden" name="ChangeProductChoice_lkid"
+                       id="ChangeProductChoice_lkid" value="000000000000000" />
+                <input type="hidden" name="ChangeProductChoice_lkold"
+                       id="ChangeProductChoice_lkold" value="null" /> 
+                <input type="hidden" name="ChangeProductChoice_lktp"
+                       id="ChangeProductChoice_lktp" value="01t" /> 
+                <input type="hidden" name="ChangeProductChoice_lspf" id="ChangeProductChoice_lspf"
+                       value="0" /> 
+                <input type="hidden" name="ChangeProductChoice_lspfsub" id="ChangeProductChoice_lspfsub" value="0" /> 
+                <input type="hidden" name="ChangeProductChoice_mod"
+                       id="ChangeProductChoice_mod" value="0" /> 
+                <input type="hidden" name="LineItemToChange" id="LineItemToChange" value="" />
+                <span class="lookupInput"> 
+                    <label for="ChangeProductChoice">{!$Label.Choose_Product}</label>
+                    <input type="text" name="ChangeProductChoice"
+                        id="ChangeProductChoice"
+                        class="text ui-widget-content ui-corner-all" size="20"
+                        maxlength="255" /> 
+                    <script>
+                        $("#ChangeProductChoice").change(
+                            function() {
+                            setupLookup("changeProduct_form",
+                                        "ChangeProductChoice");
+                            }
+                        );
+                        
+                        $().ready(
+                            function() {
+                                setupLookup("changeProduct_form",
+                                            "ChangeProductChoice");
+                                makeAutocomplete("changeProduct_form",
+                                                "ChangeProductChoice");                        
+                            }
+                        );
+                    </script> 
+                    <a id="ChangeProductChoice_lkwgt" name="ChangeProductChoice_lkwgt" onclick="setLastMousePosition(event)" title="Product Lookup (New Window)">
+                        <img src="/s.gif"
+                            class="lookupIcon" onblur="this.className = 'lookupIcon';"
+                            onfocus="this.className = 'lookupIconOn';"
+                            onmouseout="this.className = 'lookupIcon';"
+                            onmouseover="this.className = 'lookupIconOn';"
+                            title="Product Lookup (New Window)" />
+                    </a>
+                </span>
+            </fieldset>
+        </form>
+    </div>
+    
+    <apex:form id="frm">
+        
+        <apex:actionFunction name="AddProductAF" action="{!AddProduct}"
+                             oncomplete="hideLoading(currentProductsTable());MoveCursor();"
+                             rerender="currentProductsTable,pageMessages"
+                             status="currentProductsTableStatus">
+                             <!-- hideLoading(currentProductsTable());MoveCursor();checkContainer(); -->
+            <apex:param name="NewProductID" value="" assignTo="{!NewProductID}" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="cloneLineAF" action="{!CloneLineItem}"
+                             oncomplete="hideLoading(currentProductsTable());MoveCursor();"
+                             rerender="currentProductsTable,pageMessages"
+                             status="currentProductsTableStatus">
+                            <!--  oncomplete="hideLoading(currentProductsTable());MoveCursor();checkContainer();" -->
+            <apex:param name="SelectedLineItem" value="" assignTo="{!SelectedLineItem}" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="ChangeProductAF" action="{!ChangeLineItem}"
+                             oncomplete="hideLoading(currentProductsTable());MoveCursor();"
+                             rerender="currentProductsTable,pageMessages"
+                             status="currentProductsTableStatus">
+                             <!-- oncomplete="hideLoading(currentProductsTable());MoveCursor();checkContainer();" -->
+            <apex:param name="SelectedLineItem" value="" assignTo="{!SelectedLineItem}" />
+            <apex:param name="NewProductID" value="" assignTo="{!NewProductID}" />
+        </apex:actionFunction>
+        
+        <apex:actionStatus id="Status1"
+                           onstart="showLoading(currentProductsTable())"
+                           onstop="hideLoading(currentProductsTable());"></apex:actionStatus>
+        
+        <apex:actionFunction name="loadPage" action="{!loadPage}"
+                             rerender="currentProductsTable" status="Status1">
+        </apex:actionFunction>
+        
+        
+        <apex:pageBlock title="Product Selection" id="pgbk"  mode="Edit" >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="{!$Label.site.save}"
+                                    action="{!SaveAndReturn}"
+                                    onclick="showLoading(currentProductsTable())" />
+                <apex:commandButton value="Quick Save"
+                                    action="{!SaveChanges}"
+                                    rerender="currentProductsTable,pageMessages"
+                                    onclick="showLoading(currentProductsTable())"
+                                    oncomplete="hideLoading(currentProductsTable());" />
+                                   <!--  oncomplete="hideLoading(currentProductsTable());checkContainer();" -->
+                <apex:commandButton onclick="openwin()" value="Apply for non-mainstream product"/>
+                <apex:commandButton value="{!$Label.site.cancel}" action="{!Cancel}" />
+            </apex:pageBlockButtons>
+            
+                        
+            <!-- <apex:pageBlockButtons location="Bottom">
+            <apex:commandButton value="Clone Selected Line Items" action="{!CloneLineItems}" onclick="showLoading(currentProductsTable())"/>
+            </apex:pageBlockButtons> -->
+                       
+            <div id="msieSpinner"></div>
+            <apex:pageBlockTable value="{!currentProducts}" var="prod"
+                                 id="currentProductsTable" rules="rows">
+                <apex:facet name="footer">
+                    
+                    <input type="hidden" name="AddProductName_lkid"
+                           id="AddProductName_lkid" value="000000000000000" />
+                    <input type="hidden" name="AddProductName_lkold"
+                           id="AddProductName_lkold" value="null" />
+                    <input type="hidden" name="AddProductName_lktp"
+                           id="AddProductName_lktp" value="01t" />
+                    <input type="hidden" name="AddProductName_lspf"
+                           id="AddProductName_lspf" value="0" />
+                    <input type="hidden" name="AddProductName_lspfsub"
+                           id="AddProductName_lspfsub" value="0" />
+                    <input type="hidden" name="AddProductName_mod"
+                           id="AddProductName_mod" value="0" />
+                    
+                     <span class="lookupInput"> 
+
+                     <input id="AddProductName"
+                            name="AddProductName" type="text" value="Product Name" size="20"
+                            maxlength="255" /> 
+
+                      <!--  <a id="AddProductName_lkwgt"
+                            name="AddProductName_lkwgt" onchange="lookupOnComplete()"
+                            onclick="clearDefaultProductName(); setupLookup('pg:frm','AddProductName'); setLastMousePosition(event);"
+                            title="Product Lookup (New Window)"> 
+                            <img src="/s.gif"
+                                class="lookupIcon" id="AddProductImageIcon"
+                                name="AddProductImageIcon"
+                                onblur="this.className = 'lookupIcon';"
+                                onfocus="this.className = 'lookupIconOn';"
+                                onmouseout="this.className = 'lookupIcon';"
+                                onmouseover="this.className = 'lookupIconOn';"
+                                title="Product Lookup (New Window)" />
+                       </a>
+                       -->
+                    </span>
+                    <input id="AddProductButton" name="AddProductButton" type="button"
+                           class="btn" value="Choose Product"
+                           onclick="clickedAddProductButton()" />
+                   
+                    
+                    <p id="product-description"></p>
+                    <script>
+                    $().ready(                        
+                        function() { 
+
+                            console.log("======::>"); 
+                                              
+                            $("#AddProductName").click(
+                                function() {clearDefaultProductName();
+                                            //alert("The new ID is " + $("#AddProductName_lkid").val());
+                                           });
+                            $("#AddProductName").change(
+                                function() {
+                                    if ($("#AddProductName_lkid").val() != "000000000000000") {
+                                        $("#AddProductButton").removeAttr("disabled");
+                                        $("#AddProductName").attr("style",
+                                                                  "background=#FFC; font-family: Arial, Helvetica, sans-serif; font-weight: bold");
+                                    }
+                                    if ($(
+                                        "#AddProductName_lkold").val() != $("#AddProductName").val()) {
+                                        $("#AddProductName").attr("style",
+                                                                  "background=white; font-family: 'Lucida Grande'; font-weight: normal");
+                                    }
+                                    setupLookup("pg:frm","AddProductName");
+                                });
+                            
+                            setupLookup("pg:frm","AddProductName");
+                            makeAutocomplete("pg:frm","AddProductName");    
+                        });
+                    </script>
+                    
+                </apex:facet>
+                
+                
+                <apex:column headerValue="{!$ObjectType.Product2.Label}"
+                             style="{!IF(prod.needsSaving,'background-color:#FFC','')};vertical-align:top">
+                    <apex:outputField value="{!prod.data.PricebookEntry.Name}" />
+                    &nbsp;{!IF(prod.data.PricebookEntry.Productcode!=null,':','')}&nbsp;
+                    <apex:outputField value="{!prod.data.PricebookEntry.Productcode}" />
+                    
+                    <div style="text-align: right">
+                        
+                        <!-- <apex:outputPanel id="moreProductsHidden">
+                            <apex:image id="plusImage" url="/img/setup_plus.gif" height="12"
+                                        width="12" title="Show Alternate Products"
+                                        onclick="showMoreProducts(this)" />
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="moreProductsShown">
+                            <apex:image id="minusImage" url="/img/setup_minus.gif"
+                                        height="12" width="12" title="Hide Alternate Products"
+                                        onclick="hideMoreProducts(this)" />
+                            <div style="text-align: right">
+                                2nd&nbsp;&nbsp;
+                                
+                            </div>
+                        </apex:outputPanel> -->
+                    </div>
+                    
+                    <div id="actionBlock_{!prod.id}" style="text-color: grey">
+                        <p>
+                            <a style="text-decoration: none;" class="ui-state-disabled"
+                               href="javascript: void(0);"
+                               onclick="showLoading(currentProductsTable());cloneLineAF('{!prod.id}')"
+                               onmouseover="$(this).removeClass('ui-state-disabled')"
+                               onmouseout="$(this).addClass('ui-state-disabled')"><i>Clone Line</i>
+                            </a>
+                        </p>
+                        
+                        <div id="changeProduct_{!prod.id}">
+                            <a style="text-decoration: none;" class="ui-state-disabled"
+                               href="javascript: void(0);"
+                               onclick="ChangeProductClick('{!prod.id}')"
+                               onmouseover="$(this).removeClass('ui-state-disabled')"
+                               onmouseout="$(this).addClass('ui-state-disabled')"><i>Change Product</i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                </apex:column> 
+
+                <apex:column headerValue="Basic parameters"
+                     style="{!IF(prod.needsSaving,'background-color:#FFC','')};vertical-align:top;">
+                    <apex:facet name="header"></apex:facet>
+                    
+                    <div style="text-align: right" class="hideCurrDate">
+                        
+                        <table cellpadding="0" cellspacing="0" border="0">
+                        <!--
+                           <tr>
+                                
+                                <td style="text-align: left" colspan="2">
+                                    <apex:outputText rendered="{!IF(prod.data.PricebookEntry.Product2.Product__c=='stock',true,false)}">
+                                       <h1 style="text-align: left;color: red">
+                                       This is an inventory product.Please confirm with SOC that the inventory quantity is satisfied. Otherwise, it will be rejected in the contract.
+                                        </h1>
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                            -->
+                            <tr>
+                                <td style="text-align: left">Quantity</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"></span>
+                                        <apex:inputField value="{!prod.data.Quantity}" onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr >
+                                <td style="text-align: left">Sales Price </td>  
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.UnitPrice}"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>                                 
+                            </tr>
+                            <!-- <tr>
+                                <td style="text-align: left">List Price</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">                                                                             
+                                       <apex:inputField value="{!prod.data.ListPrice}"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>                                
+                                
+                            </tr> -->
+                             <tr style="display:{!IF(opp.Trade_Term__c!='FOB' && (opp.Region__c==''||opp.Region__c == 'SSA'||opp.Region__c == 'MENA'),'run-in','none')};">
+                                <td style="text-align: left">FOB Sales Price</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span> 
+                                        
+                                       <apex:inputField value="{!prod.data.FOB_Sales_Price__c}"/>
+                                       <!--  <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div> -->
+                                    </div>
+                                </td> 
+                                
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">Discount</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <!-- <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span> -->
+                                        
+                                       <apex:inputField value="{!prod.data.Discount}" />
+                                       <!--  <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div> -->
+                                    </div>
+                                </td> 
+                                
+                            </tr>
+                            <!--
+                            <tr>
+                            <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Battery_Type__c.Label}</td>
+                                  <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.Battery_Type__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                        onchange="this.style.background='#FFC'" />
+  
+                                    </div>
+                                </td>     
+                                </tr>
+                                -->
+                            
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Frame_B_side_Height__c.Label}</td>
+                                <td style="text-align: left" >
+                                    <apex:inputField value="{!prod.data.Frame_B_side_Height__c}"  required="{!IF(prod.data.PricebookEntry.Name!='MC4','true','fasle')}"  style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"/>
+                                </td>
+                            </tr>   
+                             <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.MP__c.Label}</td>
+                                <td style="text-align: left" > 
+                                    <apex:inputField value="{!prod.data.MP__c}"  required="true"  style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"/>
+                                </td>
+ 
+                            </tr>
+                         
+                            <!--
+                              <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Cheetah__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Cheetah__c}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            -->
+                             <tr style="display:{!IF(prod.data.Product_Type__c=='' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Product_Type__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Product_Type__c}" required="true"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF(prod.data.Product_Type__c!='' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Product_Type__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:outputField value="{!prod.data.Product_Type__c}" 
+                                              />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                             <tr style="display:{!IF(opp.Sales_Region__c=='Middle East&Africa'||opp.Sales_Region__c == 'SSA'||opp.Sales_Region__c == 'MENA' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Inventorytype__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Inventorytype__c}" required="{!IF(opp.Sales_Region__c=='Middle East&Africa'||opp.Sales_Region__c == 'SSA'||opp.Sales_Region__c == 'MENA' ,'true','false')}"  onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF($UserRole.Name=='BMO Specialist' ||  $Profile.Name=='System Administrator' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Stock_age__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Stock_age__c}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Goods_Description__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Goods_Description__c}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                    <br />
+                    <br />                    
+                </apex:column>         
+                
+              
+               
+                             
+                      
+              <!--
+                <apex:column headerValue="Detailed parameters"
+                     style="{!IF(prod.needsSaving,'background-color:#FFC','')};vertical-align:top;">
+                    <apex:facet name="header">
+                    </apex:facet>
+                    
+                    <div style="text-align: right" class="hideCurrDate">
+                        
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="text-align: left">Certification</td>  
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.Certification__c}" required="true"/>
+
+                                    </div>
+                                </td>                                 
+                            </tr>
+                            
+                            
+                            
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Battery_Type__c.Label}</td>  
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.Battery_Type__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                        onchange="this.style.background='#FFC'" />
+  
+                                    </div>
+                                </td>                                 
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Wire_Length__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>                                        
+                                       <apex:inputField value="{!prod.data.Wire_Length__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>                                
+                                
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Connector__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.Connector__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td> 
+                                
+                            </tr>
+                           <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Type_of_module__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Type_of_module__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF(opp.Destination_Country__c=='Ukraine'  ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Number_of_Cells__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Number_of_Cells__c}"  required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF(opp.Destination_Country__c=='Ukraine' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Weight__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Weight__c}" required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF(opp.Destination_Country__c=='Ukraine' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Cable_length_UK__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Cable_length_UK__c}" required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF( opp.Destination_Country__c=='Ukraine' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Dimensions__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Dimensions__c}" required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                    <br />                    
+                </apex:column>
+                <apex:column headerValue="Detailed parameters"
+                     style="{!IF(prod.needsSaving,'background-color:#FFC','')};vertical-align:top;">
+                    <apex:facet name="header">
+                    </apex:facet>
+                    
+                    <div style="text-align: right" class="hideCurrDate">
+                        
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Grade__c.Label}</td>  
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.Grade__c}" required="true"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>                                 
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Color_of_Module__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>                                        
+                                       <apex:inputField value="{!prod.data.Color_of_Module__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>                                
+                                
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Special_required__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.Special_required__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td> 
+                                
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Bus_bars_of_cell__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                       <apex:inputField value="{!prod.data.Bus_bars_of_cell__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
+                                        onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td> 
+                                
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Special_Lable__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Special_Lable__c}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                    <br />                    
+                </apex:column>
+                -->
+                <apex:column headerValue=""
+                             style="{!IF(prod.needsSaving,'background-color:#FFC','')};vertical-align:top">
+                    <div style="text-align: right" class="hideCurrDate">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                             <tr style="display:{!IF(opp.Destination_Country__c=='Ukraine'  ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Number_of_Cells__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Number_of_Cells__c}"  required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF(opp.Destination_Country__c=='Ukraine' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Weight__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Weight__c}" required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF(opp.Destination_Country__c=='Ukraine' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Cable_length_UK__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Cable_length_UK__c}" required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                             <tr style="display:{!IF( opp.Destination_Country__c=='Ukraine' ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Dimensions__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Dimensions__c}" required="{!IF(opp.Destination_Country__c=='Ukraine' ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            
+                        <tr style="display:{!IF( opp.Test_code_Australia__c=true ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Test_code__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Test_code__c}" required="{!IF(opp.Test_code_Australia__c=true ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            
+                            
+                            <tr style="display:{!IF( opp.Test_code_Australia__c=true ,'run-in','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Opp_Description__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <span style="white-space: nowrap"> 
+                                           
+                                        </span>
+                                        
+                                        <apex:inputField value="{!prod.data.Opp_Description__c}" required="{!IF(opp.Test_code_Australia__c=true ,'true','false')}"
+                                                onchange="this.style.background='#FFC'" />
+                                        <div class="errorMsg">
+                                            <strong>{!prod.QuantityErrorMsg}</strong>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            
+                            
+                            
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Guaranteed_Delivery_Date__c.Label}</td>
+                                <td style="text-align: left">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                                                                
+                                        <apex:inputField id="requestedShip"
+                                        value="{!prod.data.Guaranteed_Delivery_Date__c}"
+                                        onchange="this.style.background='#FFC'" />
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left"> {!$ObjectType.OpportunityLineItem.fields.Guaranteed_Delivery_Date_japan__c.Label}
+                                    <span class="helpButton" id="RequestedArrival-_help">   
+                                    <img src="/s.gif" alt="" class="helpOrb" title="" /> 
+                                    <script type="text/javascript">
+                                        sfdcPage
+                                        .setHelp(
+                                            'RequestedArrival',
+                                            'This is the Customer Requested Arrival Date (CRD).');
+                                    </script>
+                                    </span>
+                                </td>
+                                <td style="text-align: left">
+                                    <apex:inputField id="requestedDelivery" value="{!prod.data.Guaranteed_Delivery_Date_japan__c}" onchange="this.style.background='#FFC'" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Expected_Delivery_Date__c.Label}</td>
+                                <td style="text-align: left">
+                                <apex:inputField id="requestedPickup" value="{!prod.data.Expected_Delivery_Date__c}"
+                                    onchange="this.style.background='#FFC'" />
+                                </td>
+                            </tr>
+                            <tr style="display:{!IF(opp.Destination_Country__c == CountryAustralia && opp.Owner.Region__c == 'ROA','','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Opp_Description__c.Label}</td>
+                                <td style="text-align: left">
+                                    <apex:inputField value="{!prod.data.Opp_Description__c}" onchange="this.style.background='#FFC'"/>
+                                </td>
+                            </tr>
+                            <tr style="display:{!IF(opp.Destination_Country__c == CountryAustralia && opp.Owner.Region__c == 'ROA','','none')};">
+                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Test_code__c.Label}</td>
+                                <td style="text-align: left">
+                                    <apex:inputField  value="{!prod.data.Test_code__c}" onchange="this.style.background='#FFC'" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">
+                                    <apex:outputText rendered="{!IF(opp.Region__c =='Middle East&Africa'||opp.Region__c == 'MENA'||opp.Region__c == 'SSA',true,false)}">
+                                       <h1 style="text-align: left;color: red">
+                                        Special Packaging Requirement:2 Pieces Per Carton
+                                        </h1>
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+
+                            <!-- <tr>
+                                <td style="text-align: left;">Expected Revenue</td>
+                                   <td style="text-align: left">
+                                   <apex:outputField value="{!prod.data.Revenue_Expected_f__c}" />
+                                   </td>
+                            </tr> -->
+                        </table>
+                    </div>
+                </apex:column>
+                <apex:column headerValue="Delete"
+                             style="{!IF(prod.needsSaving,'background-color:#FFC','')};vertical-align:top">
+                    <div style="text-align: right" class="ui-state-disabled"
+                         onmouseover="$(this).removeClass('ui-state-disabled')"
+                         onmouseout="$(this).addClass('ui-state-disabled')">
+                        <a href="javascript:DeleteRowAF('{!prod.id}')"
+                           onclick="showLoading(currentProductsTable());"><img
+                                                                               src="/img/func_icons/remove12_on.gif"
+                                                                               title="Remove row {!prod.id}" /> </a>
+                    </div>
+                    
+                    <!-- Put Line errors here, as a hack we will display them on the next table row -->
+                    <apex:outputText value="</td></tr><tr><td colspan='10' style='text-align:center;{!IF(prod.needsSaving,'background-color:#FFC','')}'><div class='errorMsg' ><strong>{!prod.RecordErrorMsg}</strong></div>"
+                                     escape="false" rendered="{!prod.RecordErrorMsg!=null}" />
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        
+    </apex:form>
+    
+  <apex:form >
+        <apex:pageBlock title="Product Catalog ({!opp.pricebook2.Name})" id="pgbk2">
+            
+            <apex:pageBlockButtons location="top">
+                <apex:outputPanel layout="none"
+                                  rendered="{!IF(ISNULL(opp.pricebook2id),'false','true')}">
+                    <apex:commandButton value="Add Selected Products"
+                                        action="{!AddProducts}"
+                                        onclick="showLoading(currentProductsTable());"
+                                        oncomplete="hideLoading(currentProductsTable());MoveCursor();"
+                                        rerender="currentProductsTable,pageMessages,catalogTable"
+                                        status="currentProductsTableStatus" />
+                                        <!-- checkContainer(); -->
+                </apex:outputPanel>
+                <apex:outputPanel layout="none"
+                                  rendered="{!IF(ISNULL(opp.pricebook2id),'true','false')}">
+                    <input type="button" class="btn" value="Choose Pricebook"
+                           onclick="window.location.href = '/oppitm/choosepricebook.jsp?id={!opp.id}&retURL=%2Fapex%2FAddProduct?id={!opp.id}'" />
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection collapsible="true" columns="1"
+                                   title="Product Catalog" id="pgbk2s">
+                <apex:pageBlockTable value="{!catalog}" var="prod" id="catalogTable">
+                    <apex:column >
+                        <apex:inputCheckbox value="{!prod.isSelected}" />
+                    </apex:column>
+                    <apex:column value="{!prod.data.Product2id}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="{!$ObjectType.Product2.Fields['Name'].Label}"
+                                              action="{!sortCatalog}" onclick="showLoadingCatalog();"
+                                              oncomplete="hideLoadingCatalog();">
+                                <apex:param name="sortField" value="Name"
+                                            assignTo="{!sortField}" />
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <!-- <apex:column value="{!prod.data.ListPrice}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="{!$ObjectType.Product2.Fields['ListPrice'].Label}"
+                                              action="{!sortCatalog}" onclick="showLoadingCatalog();"
+                                              oncomplete="hideLoadingCatalog();">
+                                <apex:param name="sortField" value="ListPrice"
+                                            assignTo="{!sortField}" />
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column> -->
+                    <!-- <apex:column value="{!prod.data.Product2.IsActive}">
+                        <apex:facet name="header">
+                            <apex:commandLink value="{!$ObjectType.Product2.Fields['IsActive'].Label}"
+                                              action="{!sortCatalog}" onclick="showLoadingCatalog();"
+                                              oncomplete="hideLoadingCatalog();">
+                                <apex:param name="sortField" value="IsActive"
+                                            assignTo="{!sortField}" />
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column> -->
+                   <!--  <apex:column >
+                        <apex:facet name="header">
+                                                    
+                        <apex:commandLink value="{!$ObjectType.Product2.Fields['Watts_per_panel__c'].Label}"
+                        action="{!sortCatalog}" onclick="showLoadingCatalog();"
+                        oncomplete="hideLoadingCatalog();">
+                        <apex:param name="sortField" value="Watts_per_panel__c"
+                        assignTo="{!sortField}" />
+                        </apex:commandLink> 
+                        </apex:facet>
+                        
+                    </apex:column> -->
+                    <!-- <apex:column value="{!prod.data.Product2.ListPrice}" /> -->
+                    <apex:column value="{!prod.data.Product2.IsActive}" />
+                    <apex:column value="{!prod.data.Product2.Description}"/>
+                    <!-- <apex:column value="{!prod.data.Product2.SAP_Materiel_No__c}" /> -->
+                    <apex:column value="{!prod.data.Product2.Cell_Type__c }" />
+                    <apex:column value="{!prod.data.Product2.Maximum_Power_at_STC_Pmax__c}" />
+                    <apex:column value="{!prod.data.Product2.Applicable_Area__c}" />
+
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+           
+        </apex:pageBlock>
+        
+       <!--  <div width="100%" style="padding-top:8px;">
+            <span>
+              <apex:outputText value="{!currentSizeFrom} - {!currentSizeTo} of  {!ResultSize}" />
+            </span>
+            <span style="padding-left:32%">
+              <apex:outputText value="◀◀"  rendered="{!NOT(hasFirst)}" style="color:#AAAAAA" />
+              <apex:commandLink action="{!firstRecord}" value="◀◀" rendered="{!hasFirst}" style="text-decoration:none" />&nbsp;  
+              
+              <apex:outputText value="◀ Previous"  rendered="{!NOT(hasPrevious)}" style="color:#AAAAAA" />
+              <apex:commandLink action="{!previous}"  value="◀ Previous" rendered="{!hasPrevious}"  style="text-decoration:none"/> &nbsp;&nbsp;|&nbsp;&nbsp;
+              
+              <apex:outputText value="Next ▶"  rendered="{!NOT(hasNext)}" style="color:#AAAAAA" />
+              <apex:commandLink action="{!next}" value="Next ▶" rendered="{!hasNext}"  style="text-decoration:none"/>&nbsp;
+              
+              <apex:outputText value=" ▶▶"  rendered="{!NOT(hasLast)}" style="color:#AAAAAA"  />
+              <apex:commandlink action="{!lastRecord}" value=" ▶▶" rendered="{!hasLast}" style="text-decoration:none" />
+            </span>
+            <span style="padding-left:32%">
+               
+              Page &nbsp;
+                  <apex:outputtext value="{!pageNumber}" id="pageNumber"  style="width:20px"/> &nbsp; of &nbsp;
+                  <apex:outputtext value="{!totalPageSize}"  />
+            </span>   
+        </div> -->
+        
+        <apex:actionFunction name="DeleteRowAF" action="{!DeleteRow}"
+                             oncomplete="hideLoading(currentProductsTable());MoveCursor();"
+                             rerender="currentProductsTable,pageMessages"
+                             status="currentProductsTableStatus">
+                             <!-- checkContainer(); -->
+            <apex:param name="q" value="" assignTo="{!idToDelete}" />
+        </apex:actionFunction>
+
+    </apex:form>   
+
+    
+    <apex:repeat value="{!catalog}" var="prod">
+        <script>       
+        products.push({
+                value : "{!prod.data.Product2id}",
+                label : "{!prod.data.Name}",
+                desc : "{!prod.data.Name}"
+        });
+        </script>
+    </apex:repeat>
+    
+    
+    <script>
+    window.onload = function() {
+        checkContainer();
+        loadPage();
+    }
+    
+    function checkContainer() {
+        var t = document
+        .getElementById('pg:frm:pgbk:currentProductsTable:tb');
+        console.log("=====t :" + t.value);
+        //alert(t.rows.length);
+        for (var i = 0; i < t.rows.length; i++) {
+            var isLinecontainers = document
+            .getElementsByName('pg:frm:pgbk:currentProductsTable:'
+                               + i + ':theCheckbox')[0];
+            var containersNode = document
+            .getElementsByName('pg:frm:pgbk:currentProductsTable:'
+                               + i + ':containers')[0];
+            // alert(containersNode.value);
+            
+            if (containersNode.value <= 1) {
+                isLinecontainers.disabled = true;
+            } else if (containersNode.value > 1) {
+                isLinecontainers.disabled = false;
+            } 
+
+            /*if (PriceBookName == EuropeLabel && containersNode.value <= 1) {
+                isLinecontainers.disabled = true;
+            } else if (PriceBookName == EuropeLabel
+                       && containersNode.value > 1) {
+                isLinecontainers.disabled = false;
+            }    */       
+        }        
+    }
+    </script>
+</apex:page>

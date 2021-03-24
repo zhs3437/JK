@@ -1,0 +1,215 @@
+<apex:component Controller="OppPaymentController" allowDML="true"
+    Id="paymentopId">
+
+    <style>
+.linkcolor {
+    color: #015ba7;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.ErrorColor {
+    color: red;
+    text-decoration: none;
+    font-weight: normal;
+}
+</style>
+
+    <apex:attribute name="rerender" type="string"
+        description="pass through rerender value" />
+    <apex:attribute name="id" type="String" description="the component id" />
+
+    <apex:form Id="paymentfrom">
+        <apex:inputHidden value="{!editID}" id="editID"/>
+        <apex:inputHidden value="{!deleteID}" id="deleteID"/>
+        
+        <apex:pageBlock title="{!$Label.Payment}" id="PaymentGridForm">
+             <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!CancelPaymentRequest}"
+                    value="{!$Label.Cancel}" id="CancelPaymentRequestButton"
+                    rerender="PaymentGridForm, ServiceGridForm" status="PaymentStatus"
+                    rendered="{!IF(PaymentInsertFlag == 'true'|| editID != null,true,false)}" style="margin:5px 0 0 0" />
+                <apex:commandButton action="{!CancelPaymentRequest}"
+                    value="{!$Label.Refresh}" id="RefreshPaymentRequestButton"
+                    rerender="PaymentGridForm, ServiceGridForm" status="PaymentStatus"
+                    rendered="{!IF(PaymentInsertFlag == 'true'|| editID != null,false,true)}"
+                    style="margin:5px 0 0 0" />
+                <apex:commandButton action="{!addPaymentRequest}"
+                    value="{!$Label.New}" id="addPaymentRequestButton"
+                    rerender="PaymentGridForm" status="PaymentStatus" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockTable value="{!PaymentGridData}" var="Payment"
+                id="PaymentTable" rowClasses="odd,even" styleClass="list"
+                width="100%" rules="rows" columnsWidth="80px, 110px, 300px">
+                <apex:column headerValue="{!$Label.Action}" width="120px"
+                    rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}">
+                    <div id="_DefaultDiv_{!Payment.Id}">
+                        
+                        <apex:commandButton value="Edit" onclick="editPayment('{!Payment.ID}');" / >
+                        <apex:outputText value=" | "/>
+                        <apex:commandButton action="{!DeletePay}" onclick="deletePayment('{!Payment.ID}');" value="Delete" oncomplete="returnPage();" />
+                        
+                        
+                        
+                    </div>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Action}"
+                    rendered="{!IF(Payment.Name == null,true,false)}">
+                    <apex:commandButton onclick="HiddenButton1()"
+                        value="{!$Label.Save}" id="savePaymentRequestButton"
+                        rerender="blankId1" status="PaymentStatus"
+                        style="margin:5px 0 0 0" />
+                </apex:column>
+                
+                <apex:column headerValue="{!$Label.Action}"
+                    rendered="{!IF(editID == Payment.ID && Payment.ID != null,true,false)}">
+                    <apex:commandButton action="{!saveEditPayment}" oncomplete="returnPage();"
+                        value="{!$Label.Save}" id="saveEditPaymentButton"
+                        rerender="blankId1" status="PaymentStatus"
+                        style="margin:5px 0 0 0" />
+                </apex:column>
+                
+                <!-- Payment Name <apex:column headerValue="{!$ObjectType.Payment__c.fields.Name.label}">
+                    <apex:OutputLink id="Payment_Col1" target="_parent"
+                        value="/{!Payment.id}">{!Payment.Name}</apex:OutputLink>
+                </apex:column> -->
+                
+                <apex:column headerValue="{!$ObjectType.Payment__c.fields.Percentage__c.label}"
+                     width="60px">
+                    <apex:inputField id="PaymentGridNrEditfa"
+                        value="{!Payment.Percentage__c}" style="width: 30px"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                    <apex:outputField id="Payment_Groupfa"
+                        value="{!Payment.Percentage__c}"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+
+                <!-- Down/ Balance Payment -->
+                <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Down_Balance_Payment__c.label}">
+                    <apex:inputField id="PaymentGridNrEditPb"
+                        value="{!Payment.Down_Balance_Payment__c}"
+                        style="width: 50px"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                    <apex:outputField id="Payment_Price"
+                        value="{!Payment.Down_Balance_Payment__c}"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                <!-- Payment Method -->
+                <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Payment_Method__c.label}">
+                    <apex:inputField id="PaymentGridNrEditPt"
+                        value="{!Payment.Payment_Method__c}" style="width: 50px"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                    <apex:outputField id="Payment_Group"
+                        value="{!Payment.Payment_Method__c}"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                
+                <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Days__c.label}">
+                    <apex:inputField id="PaymentGridNrEditdt"
+                        value="{!Payment.Days__c}" style="width: 50px"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                    <apex:outputField id="Payment_Groupdt"
+                        value="{!Payment.Days__c}"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                <!-- Payment Term -->
+                <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Payment_Term__c.label}">
+                    <apex:inputField id="PaymentGridNrEditday"
+                        value="{!Payment.Payment_Term__c}" style="width: 50px"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+                    <apex:outputField id="Payment_Groupday"
+                        value="{!Payment.Payment_Term__c}"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null),false,true)}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                
+                <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Precise_Day__c.label}">
+                    <apex:inputField id="PaymentGridNrEditpreDay"
+                        value="{!Payment.Precise_Day__c}" style="width: 50px"
+                        rendered="{!IF(Payment.Name == null&& (Payment.Payment_Term__c != 'After PO date'
+                                || Payment.Payment_Term__c != 'The latest payment day at'|| Payment.Payment_Term__c != 'At precise day (specify)'|| Payment.Payment_Term__c != 'Before goods arrived at the destination')|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+
+                    <apex:outputField id="Payment_GrouppreDay"
+                        value="{!Payment.Precise_Day__c}"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null) ,false,true )}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                
+                
+                <apex:column onclick="_SwitchHidden('{!Payment.Id}');"
+                    headerValue="{!$ObjectType.Payment__c.fields.Comments__c.label}">
+                    <apex:inputField id="PaymentGridNrEditComments"
+                        value="{!Payment.Comments__c}" style="width: 50px"
+                        rendered="{!IF(Payment.Name == null&& (Payment.Payment_Term__c != 'After PO date'
+                                || Payment.Payment_Term__c != 'The latest payment day at'|| Payment.Payment_Term__c != 'At precise day (specify)'|| Payment.Payment_Term__c != 'Before goods arrived at the destination')|| (editID == Payment.ID && Payment.ID != null),true,false)}" />
+
+                    <apex:outputField id="Payment_GroupComments"
+                        value="{!Payment.Comments__c}"
+                        rendered="{!IF(Payment.Name == null|| (editID == Payment.ID && Payment.ID != null) ,false,true )}">
+                        <!-- <apex:inlineEditSupport event="ondblClick" /> -->
+                    </apex:outputField>
+                </apex:column>
+                
+              
+            </apex:pageBlockTable>
+
+            <apex:actionStatus id="PaymentStatus" startText="Requesting..." />&nbsp; <apex:outputPanel id="thePanel" layout="block" styleClass="ErrorColor">{!PaymentStatusText} </apex:outputPanel>
+        </apex:pageBlock>
+
+
+        <apex:outputpanel id="blankId1"></apex:outputpanel>
+        <apex:actionFunction action="{!savePaymentRequest}"
+            name="savePaymentRequest" />
+
+        <!--  <apex:actionFunction action="{!changePaymentTerm}" name="changePaymentTerm"/> -->
+
+    </apex:form>
+
+    <script>
+    function HiddenButton1(){    
+     if (confirm("Confirm to save?")){   
+        savePaymentRequest();
+     }else{
+        return false;
+     }      
+             
+    }
+    
+    function deletePayment(payid){
+        if(confirm("Are you sure Delete?")){
+            
+            var hidden1 = document.getElementById("OpportunityPaymentId:OppId:paymentopId:paymentfrom:deleteID")
+
+            hidden1.value = payid;
+            
+        }
+    }
+    
+    function editPayment(payid){
+            
+            var hidden2 = document.getElementById("OpportunityPaymentId:OppId:paymentopId:paymentfrom:editID");
+            
+            hidden2.value = payid;
+
+    }
+    
+    function returnPage(){
+        window.location.href = '/apex/OpportunityPaymentPage?id={!requestId}'
+    }
+    </script>
+</apex:component>

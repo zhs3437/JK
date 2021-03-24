@@ -1,0 +1,25 @@
+<apex:page standardController="Opportunity" showHeader="false" sidebar="false" >
+   <html xmlns="http://www.w3.org/1999/xhtml">
+       <head>
+<title>无标题文档</title>
+
+</head>
+       <body>
+    
+        <BR/>
+  
+ <div>
+        <pre align="left" style="font-size:15px ;color:gray ;">Tips </pre>
+        <pre align="left" style="font-size:10px ;color:gray ;">1.竞争对手产品如存在多个挡位，则提供平均值。如竞争对手产品功率为400/410，则选择405W为填写项 </pre>
+        <pre align="left" style="font-size:10px ;color:gray ;">Please provide average power output when there are multiple powers of competitor’s product. </pre>
+        <pre align="left" style="font-size:10px ;color:gray ;">For example, power of competitor’s product is 400/410, then choose 405 as your option.</pre>
+        <pre align="left" style="font-size:10px ;color:gray ;">2.如果竞争对手选择未知，系统会自动推送此信息至数据分析及对应主管部门  </pre>
+        <pre align="left" style="font-size:10px ;color:gray ;">A message will be sent to data analysis team and corresponding team leader automatically if ‘don’t know’ was chosen in competitor. </pre>
+
+        </div>
+
+
+<br/>
+       </body>
+    </html>
+</apex:page>

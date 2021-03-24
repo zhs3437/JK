@@ -1,0 +1,239 @@
+<apex:page standardController="Contract" extensions="PA_Japan_Ctrl" sidebar="false" showHeader="false" standardStylesheets="false" contentType="application/vnd.ms-excel#PA.xls" >
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+<TABLE width="800"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; " border="0" cellSpacing="0" cellPadding="0" >
+<TBODY>
+<TR style="HEIGHT: 18.75pt" height="25">
+<TD style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: transparent; WIDTH: 80px; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0" height="25" vAlign="middle" align="left"><img src="https://c.ap1.content.force.com/servlet/servlet.ImageServer?id=01590000000B873&oid=00D90000000b4ZI&lastMod=1320902785000" /></TD>
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; WIDTH: 1px; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD colSpan="5" align="center" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; WIDTH: 211px; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0"><FONT size="4"><STRONG><FONT color="#000000">PURCHASE<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>AGREEMENT</FONT></STRONG></FONT></TD>
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; WIDTH: 120px; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0"><STRONG>&nbsp;</STRONG></TD>
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; WIDTH: 120px; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0"><STRONG>&nbsp;</STRONG></TD></TR>
+
+<TR style=" " height="55">
+<TD colspan="9" align="right" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: transparent;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0"><font  color="#000000" size="3"><strong><U>www.jinkosolar.com</U></strong></font></TD>
+</TR>
+<TR >
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">　</TD>
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD colSpan="7" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0; mso-ignore: colspan"><STRONG><FONT color="#000000">PURCHASE AGREEMENT NO: <FONT  color="#000000">{!Contract.Contract_NO__c}</FONT></FONT></STRONG></TD>
+</TR>
+<TR >
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">　</TD>
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD> 
+<TD colSpan="7" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0"><STRONG><FONT color="#000000">EXECUTION DATE:</FONT></STRONG> {! CASE( MONTH(Contract.PO_PI_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(Contract.PO_PI_Date__c)) & ", " &  TEXT(YEAR(Contract.PO_PI_Date__c)) }</TD></TR>
+            
+
+
+<TR height="20">
+<TD height="20" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">　</TD>
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD colSpan="7" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">
+<STRONG><FONT color="#000000">SELLER:</FONT></STRONG> JINKO SOLAR AUSTRALIA HOLDINGS CO. PTY LTD<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACN: 154 662 889<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add: Suite 2A, Level 2, 152 Marsden Street, Paramatta NSW 2150 
+</TD></TR>
+
+<TR height="23">
+<TD height="23" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD colspan="7" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">
+<STRONG><FONT color="#000000">BUYER:</FONT></STRONG> {!Contract.BuyerAccount__r.name}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ABN/ACN:{!Contract.BuyerAccount__r.Registration_No__c}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add:{!Contract.BuyerAccount__r.BillingStreet}&nbsp;{!Contract.BuyerAccount__r.BillingState}&nbsp;{!Contract.BuyerAccount__r.BillingCity}&nbsp;{!Contract.BuyerAccount__r.BillingCountry}&nbsp;
+</TD>
+</TR>
+
+<apex:outputPanel rendered="{!Contract.Trade_term__c == 'DDP'}">
+<TR height="21">
+<TD height="40" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD colSpan="7" valign="middle"  style="height:40px; BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: transparent;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">
+<FONT color="#000000"><STRONG>TRADE TERM:&nbsp;</STRONG></FONT>DDP {!Contract.Destination__c} Incoterms 2010
+</TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!Contract.Trade_term__c == 'EXW'}">
+<TR height="21">
+<TD height="40" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: white; BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">&nbsp;</TD>
+<TD colSpan="7" valign="middle"  style="height:40px; BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: transparent;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: #f0f0f0">
+<FONT color="#000000"><STRONG>TRADE TERM:&nbsp;</STRONG></FONT>EXW Seller's warehouse in {!Contract.Opportunity__r.Warehouse__r.Name} Incoterms 2010
+</TD></TR>
+</apex:outputPanel>
+
+<TR style=" " height="23">
+<TD height="23" colSpan="9" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" size="3" ><STRONG>PURCHASE AGREEMENT DETAILS</STRONG> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <STRONG>Currency:{!Contract.CurrencyIsoCode}</STRONG></FONT></TD>
+</TR>
+<TR style=" ">
+
+<!-- Item -->
+<TD rowSpan="2" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #FFFFFF;   BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" size="2"><STRONG>Item</STRONG></FONT></TD>
+<!-- Goods Description -->
+<TD rowSpan="2" align="center" valign="middle"  style="WIDTH: 100px;BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="2" color="#000000">Goods<BR />Description</FONT></STRONG></TD>
+<!-- Quantity -->
+<TD colSpan="2" align="center" valign="middle"  style="WIDTH: 180px;BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" size="2"><STRONG>Quantity</STRONG></FONT></TD>
+<!-- Unit Price ({!Contract.CurrencyIsoCode}/W) -->
+<TD rowSpan="2" align="center" valign="middle"  style="WIDTH: 120px;BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="2" color="#000000">Unit Price<BR />(AUD/W)</FONT></STRONG></TD>
+<!-- Total Amount (EUR) -->
+<TD rowSpan="2" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="2" color="#000000"> Amount<BR />(NET)(AUD)</FONT></STRONG></TD>
+<!-- Shipment Expected Time -->
+<TD rowSpan="2" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="2" color="#000000">10% GST (AUD)</FONT></STRONG></TD>
+<TD rowSpan="2" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="2" color="#000000">Total Amount including 10% GST<BR />(AUD)</FONT></STRONG></TD>
+<apex:outputPanel rendered="{!Contract.Trade_term__c == 'DDP'}">
+<TD rowSpan="2" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="2" color="#000000">Expected Time of Delivery at Destination</FONT></STRONG></TD>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!Contract.Trade_term__c == 'DDP'}">
+<TD rowSpan="2" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="2" color="#000000">Expected Time of Picking up Goods</FONT></STRONG></TD>
+</apex:outputPanel>
+</TR>
+
+<TR style=" ">
+<!-- Goods Description -->
+<!-- Quantity PCS -->
+<TD align="center" valign="middle"  style="WIDTH: 90px;BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" size="2"><STRONG>PCS</STRONG></FONT></TD>
+<!-- Quantity MW -->
+<TD align="center" valign="middle"  style="WIDTH: 90px;BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: #FFFFFF;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" size="2"><STRONG>MW</STRONG></FONT></TD>
+</TR>
+</TBODY>
+</table>
+
+<apex:variable var="index" value="{!0}" />
+<apex:repeat value="{!Contract.Product_Detail__r}" var="line">
+<apex:variable var="index" value="{!index+1}" />
+<table width="800"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; " border="0" cellSpacing="0" cellPadding="0">
+<TR height="23">
+<TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+<TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Total_MW__c}</TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+<TD width="50" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.GST_AUD__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price_GST__c}"/></apex:outputText></TD>
+
+<apex:outputPanel rendered="{!Contract.Trade_term__c == 'DDP'}">
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">{! TEXT(YEAR(line.Estimated_Time_of_Departure_ETD__c)) & "-" & TEXT(MONTH(line.Estimated_Time_of_Departure_ETD__c)) & "-" & TEXT(DAY(line.Estimated_Time_of_Departure_ETD__c))}</TD>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!Contract.Trade_term__c == 'EXW'}">
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">{! TEXT(YEAR(line.Expected_Delivery_Date_ETA__c)) & "-" & TEXT(MONTH(line.Expected_Delivery_Date_ETA__c)) & "-" & TEXT(DAY(line.Expected_Delivery_Date_ETA__c))}</TD>
+</apex:outputPanel>
+</TR>
+</table>
+</apex:repeat>
+
+<table width="800"  style="font-family : Arial; font-size:14px;BORDER-COLLAPSE: collapse; " border="0" cellSpacing="0" cellPadding="0">
+<TR  height="23">
+<TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+<TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:param value="{!Contract.Total_MW__c}"/></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+<TD style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: #f0f0f0; BACKGROUND-COLOR: transparent;  BORDER-TOP: #f0f0f0; BORDER-RIGHT: windowtext 0.5pt solid;" vAlign="middle" align="center"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.GST_AUD__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_GST__c}"/></apex:outputText></TD>
+<TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+</TR>
+
+<TR >
+<TD height="160" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" >{!Contract.PO_Remarks_1__c}</FONT></TD></TR>
+<TR>
+<TD height="220" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" >{!Contract.PO_Remarks_2__c}</FONT></TD></TR>
+<TR>
+<TD height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000" >{!Contract.PO_Remarks_3__c}</FONT></TD></TR>
+<TR>
+<TD height="80" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_4__c}</FONT></TD></TR>
+<TR>
+<TD height="75" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_5__c}</FONT></TD></TR>
+<TR>
+<TD height="75" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_6__c}</FONT></TD></TR>
+<TR>
+<TD height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_7__c}</FONT></TD></TR>
+
+
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_8__c)>0}">
+<TR>
+<TD  height="100" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_8__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_9__c)>0}">
+<TR>
+<TD  height="70" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_9__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_10__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_10__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_11__c)>0}">
+<TR>
+<TD  height="70" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_11__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_12__c)>0}"><TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_12__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_13__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_13__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_14__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_14__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_15__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_15__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_16__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_16__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_17__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_17__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_18__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_18__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_19__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_19__c}</FONT></TD></TR>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!LEN(Contract.PO_Remarks_20__c)>0}">
+<TR>
+<TD  height="50" colSpan="9" valign="top"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >{!Contract.PO_Remarks_20__c}</FONT></TD></TR>
+</apex:outputPanel>
+
+<TR>
+<TD  height="15" colSpan="9" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >SIGNED as an agreement by</FONT></TD></TR>
+
+<TR>
+<TD  height="90" colSpan="9" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >
+<pre>
+Seller
+EXECUTED by JINKO SOLAR AUSTRALIA HOLDINGS CO. PTY LTD in accordance with section 127 of the Corporations Act 2001 by:
+ 
+Director:________________________________;         Director:________________________________;
+Name: [                       ]                    Name: [                       ]      
+</pre>
+</FONT></TD></TR>
+<TR>
+<TD  height="90" colSpan="9" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><FONT color="#000000" >
+<pre>
+Buyer
+EXECUTED by {!buyer.Name} in accordance with section 127 of the Corporations Act 2001 by:
+ 
+Director/Sole Director and Secretary:_________________________;  Director/Secretaty:_________________________;
+Name: [                       ]                                  Name [                       ]  
+</pre>
+</FONT></TD></TR>
+
+
+<!--<TR  height="23">-->
+<!--  <TD height="23" colSpan="9" valign="middle"  style="BORDER-BOTTOM: #f0f0f0; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: #1fb714; BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT color="#ffffff" size="3" >SIGNATURE</FONT></STRONG></TD></TR> -->
+
+
+</TABLE>
+</body>
+
+</apex:page>

@@ -1,0 +1,288 @@
+<apex:page standardController="Contract" renderAs="PDF" extensions="PIJapan" showHeader="false" applyHtmlTag="false" sidebar="false"  >
+     <head>
+         <style  type="text/css" >
+            body {font-family: Arial Unicode MS; font-size:10pt}
+            @page{
+            size:  A4;
+            margin-top: 10px;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            @top-center {
+                content: element(header);
+            };
+            }
+            div.header {
+                padding: 6px;
+                position: running(header);
+            }
+            
+        </style>
+</head>
+ <div class="header">
+        <div style="width:100%;">
+            <div style="color:#A9A9A9; font-size:10.0pt;text-align:right;">
+                JKS Ver.20190702
+            </div>
+            <div>
+                 &nbsp;
+            </div>
+        </div>
+    </div>
+<body>
+
+<p style="text-align: center;font-size:14pt">
+   <Strong> 注文請書<br/>
+ORDER ACCEPTANCE
+
+</Strong>
+    </p>
+        <table style="font-size:11pt">
+            <tr>
+                <td>
+                    West Begin Co. ,Ltd. /株式会社ウエストビギン&nbsp;&nbsp;&nbsp;&nbsp;御中</td>
+                <td style="text-align: right">
+        発行日 Issue Date  {!Year}年{!Month}月{!Day}日<br/>
+管理番号 Confirmation No. {!Contract.Contract_NO__c}
+                </td>
+                </tr>
+        <tr>
+        <td  width="360" ></td> <td>
+ <p style="text-align: left;font-size:11pt;">
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:image id="theImage" value="{!$Resource.logo}" style="height:2cm; width:170px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!Contract.SELLER__c}　　  　  印<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No.58 Yuanxi Road, Yuanhua Industrial Park,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Yuanhua Town, Haining City, Zhejiang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Province, China<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEL:03-6262-6009  &nbsp;&nbsp; FAX:03-6265-3339
+    </p>
+    </td>
+    </tr>
+            
+    </table>
+<p style="font-size:11pt">
+  平素は格別のご高配を賜り厚く御礼申し上げます。<br/>
+ 下記の通りご請求申し上げます。宜しくお願いいたします。
+    
+    </p> 
+        ご注文内容　Order Details
+    <table width="700"   style="font-size:10pt;border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto;"  border="1" cellSpacing="0" cellPadding="0">
+        <tr>
+        <td  width="220">
+            注文番号 Order No.
+            </td>
+            <td>
+           {!Contract.Order_No__c}
+            </td>
+        </tr>
+            <tr>
+            <td>
+            受 注 日 Order Date
+            </td>
+            <td>
+            同注文書「発注日」
+            </td>
+                </tr>
+        <tr>
+            <td>
+            件　　名 Subject
+            </td>
+            <td>
+            同注文書
+            </td>
+            </tr>
+        <tr>
+            <td>
+            取引条件 Trade Term
+            </td>
+            <td>
+            {!Contract.Trade_term__c}
+           
+            </td>
+            </tr>
+        <tr>
+            <td>
+                中国の主要港における船積予定日<br/>Expected Time of Shipment from <br/>Chinese Main Port
+            </td>
+            <td>
+           {!Contract.ExpectedTimeofShipment__c}
+            </td>
+            </tr>
+        <tr>
+            <td>
+            納品回数Number of Shipments
+            </td>
+            <td>
+            {!Contract.Productreturn__c}
+            </td>
+            </tr>
+        <tr>
+            <td>
+            納品場所 Delivery Destination
+            </td>
+            <td>
+            中国船積港本船上
+            </td>
+            </tr>
+        <tr >
+            <td>
+            支払条件 Payment Term 
+            </td>
+            <td style="font-size:10pt">
+            {!Description}
+            </td>
+        </tr>
+                         <tbody style="display:{!IF(Contract.Transit_Fees__c==0 ,'run-in','none')};">
+        <tr>
+            <td  style="font-size:11pt;">
+                <p><u>ご注文金額Order Value </u></p>
+            </td>
+             <TD  width="190" align="left" vAlign="middle"><u>{!Contract.CurrencyIsoCode}
+                    <apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!1.0*(Contract.Total_Price__c)}"/></apex:outputText>
+                    <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!1.0*ROUND(Contract.Total_Price__c,0)}"/></apex:outputText>
+                    </u>
+                    </TD>
+        </tr>
+       </tbody>
+          <tbody style="display:{!IF(Contract.Transit_Fees__c>0 ,'run-in','none')};">
+        <tr>
+            <td  style="font-size:11pt;">
+                <p><u>ご注文金額Order Value </u></p>
+            </td>
+             <TD  width="190" align="left" vAlign="middle"><u>{!Contract.CurrencyIsoCode}
+                    <apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!1.0*(Contract.Total_Price__c+Contract.Transit_Fees__c)}"/></apex:outputText>
+                    <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!1.0*ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+                    </u>
+                    </TD>
+        </tr>
+       </tbody>
+       
+    </table>
+    <table width="700"   style="font-size:10pt;border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto;"  border="1" cellSpacing="0" cellPadding="0">
+          <tr >
+                    <td align="center" >項目<br/>ITEM</td>
+                    <td align="center" >商品明細<br/>GOODS DESCRIPTION</td>
+                    <td align="center" colspan="2" width="10%">数量<br/>Quantity<br/>
+                        <table style="font-size:10pt;border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto;"  border="1" cellSpacing="0" cellPadding="0">
+                            <tr>
+                                <td width="50%">PCS</td>
+                                 <td width="50%">W</td>
+                            </tr>
+                        </table>
+                        </td>
+                    
+                    <td align="center" >単価<br/>UNIT PRICE<br/> ({!Contract.CurrencyIsoCode}/W)</td>
+                    <td align="center" > 総価格({!Contract.CurrencyIsoCode}/W)<br/>Total Amount</td>
+                    
+                </tr>
+                
+                
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                    <apex:variable var="index" value="{!index+1}" />
+                    <TR >
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Total_W__c}"/></apex:outputText></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;">
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0.000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c }"/></apex:outputText></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">
+                         <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!ROUND(line.Total_Price__c,0)}"/></apex:outputText>
+                        <apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c }"/></apex:outputText></TD>
+                        
+                        
+                    
+                    </TR>        
+                </apex:repeat>
+                 <tbody style="display:{!IF(Contract.Transit_Fees__c==0 ,'run-in','none')};">
+               <tr>
+                    <td colspan="2"></td>
+                    <td colspan="3">合  計 Sum Total</td>
+                      <td align="right" valign="middle">
+                      
+                      <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText>
+                    <apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText>
+                    </TD>
+                </tr>
+</tbody>
+           <tbody style="display:{!IF(Contract.Transit_Fees__c>0 ,'run-in','none')};">
+            <TR >
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">送料</TD>
+                        <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"></TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;">
+                         
+                        
+                        
+                        
+                        </TD>
+                        <TD align="right" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">
+                        
+                          <apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!1*(Contract.Transit_Fees__c)}"/></apex:outputText>
+                    <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!1*(Contract.Transit_Fees__c)}"/></apex:outputText>
+                        </td>
+
+                    
+                    </TR>  
+               <tr>
+                    <td colspan="2"></td>
+                    <td colspan="3">合  計 Sum Total</td>
+                      <td align="right" valign="middle">
+                      
+                      <apex:outputText style="display:{!IF(Contract.currencyisocode=='JPY' ,'run-in','none')};" value="{0, number, #,##0}"><apex:param value="{!ROUND(Contract.Total_Price__c+Contract.Transit_Fees__c,0)}"/></apex:outputText>
+                    <apex:outputText style="display:{!IF(Contract.currencyisocode!='JPY' ,'run-in','none')};" value="{0, number, #,##0.0000}"><apex:param value="{!Contract.Total_Price__c+Contract.Transit_Fees__c}"/></apex:outputText>
+                    </TD>
+                </tr>
+</tbody>
+    </table>
+   
+    
+        備考Remarks
+    <table width="700"  style=" font-size:11px;BORDER-COLLAPSE: collapse; "  border="1" cellSpacing="0" cellPadding="0">
+        <tr>
+        
+        <td>
+            ※ 対象商品については、[{!Contract.Baozhengshu__c}]が適用される。<br/>
+※ 別段の定めがある場合を除き、買主が商品代金等の振込手数料を負担いたします。<br/>
+            ※ 本契約の締結後、買主が納期及び/又は納入場所の変更を求める場合、両当事者は、当該変更及びそれに関連<br/>
+            する費用についてまず合意するものとする。ただし、変更は一回限りとする。買主は、3ヶ月前までに売主に通<br/>
+            知し、かつ、両当事者がそれ（追加倉庫料（もしあれば）を含む）について書面にて合意した場合に限り、<br/>
+           納期延長をすること ができる。売主は買主に対し、延長期間の最初の10日間については納期延長に関する追加倉<br/>
+           庫保管料を請求せず、延 長期間の11日目からは納期延長に関する追加倉庫保管料を請求する。納期延長に係る対象商品<br/>
+            の追加倉庫保管料の金額は、(ⅰ)30円/枚/期と(ⅱ)実際に発生した費用のうちいずれか高い金額とする。疑義を<br/>
+            避けるため、両当事者が共に認める変更合意がない限り、いかなる変更も効力が生じないものとする。<br/>
+※ 次の場合、買主は追加輸送費を売主に支払うものとする。<br/>
+(ⅰ)買主が指定する納品回数が本契約に定めた回数を超えた場合、<br/>
+(ⅱ)買主が指定する納入場所の数量が本契約に定める数量を超えた場合、又は<br/>
+(ⅲ)DDP取引条件の場合、買主が特殊なトラックによる配送を依頼した場合。
+  <br/>
+            </td></tr>
+        
+    </table>
+    <br/>
+    <table width="700"  style=" font-size:11px;BORDER-COLLAPSE: collapse; "  border="1" cellSpacing="0" cellPadding="0">
+        <tr>
+        
+        <td>
+           本注文請書は、2014年10月1日付で貴社と弊社が締結した取引基本契約書 (番号: MCAPSZ14Q401) に基づき発行されたものである。
+This OA is issued in accordance with Basic Purchase Agreement (NO.: MCAPSZ14Q401) executed by your company and us on Oct. 1, 2014. 
+ 
+  <br/>
+            </td></tr>
+        <tr>
+        <td>
+        本注文請書は、弊社の捺印をもって発効し、且つ弊社に対して拘束力を有する。
+This OA shall become effective and binding on us only after being chopped with our seal.
+            </td>
+</tr>
+        <tr>
+        <td>
+            本注文請書は、日本語と英語で作成され、両言語に齟齬がある場合には、日本語に準ずる。
+This OA is drafted in Japanese and English. In case of any discrepancy, the Japanese version shall prevail.    
+            </td>
+        </tr> 
+    </table>
+    </body>
+</apex:page>

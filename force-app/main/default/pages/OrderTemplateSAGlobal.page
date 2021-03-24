@@ -1,0 +1,301 @@
+<apex:page Controller="AmendmentPurchaseAgreementCtrl" sidebar="false" showHeader="false" standardStylesheets="false">
+
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+	
+	<style> body { font-family: Arial Unicode MS; } </style>
+		
+	<style type="text/css">
+	
+	@page Section1 {
+		size:8.27in 11.69in; 
+		margin:1.0in 1.0in 1.0in 1.0in; 
+        mso-header-margin:.5in; 
+		mso-footer-margin:.5in; 
+		mso-paper-source:0; 
+	}
+	div.Section1 {
+		page:Section1;
+	} 
+	/*
+	@page
+	{    
+		size:8.27in 11.69in; 
+		margin:.5in .5in .5in .5in; 
+		mso-header-margin:.5in; 
+		mso-footer-margin:.5in; 
+		mso-paper-source:0; 
+		 
+		size: A4;
+        margin : 20pt .2in .5in .2in;
+        @top-center {
+            content : element(header);
+        }
+        @bottom-center {
+            content: " (  " counter(page) "  /  " counter(pages) "  )";
+        }
+    }
+    */
+	@font-face{
+        font-family: "MS Mincho";
+        src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+        -fs-pdf-font-embed: embed;
+        -fs-pdf-font-encoding: Identity-H;
+	}
+	.page-break {
+	    display:block;
+	    page-break-after:always;
+    }
+	div.header {
+	    position : running(header) ;
+	}
+	body {
+	    font-family: 'MS Mincho';
+    }
+	table{
+	    width:560pt;
+	}
+	.p1{
+		font-size:16pt; line-height:115%; margin:4pt 0pt 12pt
+	}
+
+	</style>
+</head>           
+
+<body>
+	<div class="Section1">
+		<p class = "p1"><a name="bmkNotParty2_001"><span style="font-family:Arial; font-size:16pt">&nbsp;</span></a></p>
+		<p class = "p1"><span style="font-family:Arial; font-size:16pt">&nbsp;</span></p>
+		<p class = "p1"><span style="font-family:Arial; font-size:16pt">&nbsp;</span></p>
+		<p class = "p1"><span style="font-family:Arial; font-size:16pt; font-weight:bold">{! CASE( sa.SEQ__c , 1 , '1st' , 2 , '2nd' , 3 , '3rd' , TEXT(sa.SEQ__c) & 'th' )}&nbsp; Amendment &nbsp; to &nbsp;{!recordType}</span></p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt"><span style="font-family:Arial; font-size:11pt;">Between</span></p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt">&nbsp;</p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt"><span style="font-family:Arial; font-size:11pt; font-weight:bold">{!sa.Buyer_Name__c}</span></p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt"><span style="font-family:Arial; font-size:11pt; font-weight:normal">(the “Buyer”)</span></p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt 0pt 12pt"><span style="font-family:Arial; font-size:11pt">&nbsp;</span></p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt"><span style="font-family:Arial; font-size:11pt;">and</span></p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt 0pt 12pt"><span style="font-family:Arial; font-size:11pt">&nbsp;</span></p>
+		<p style="font-size:11pt; line-height:115%; margin:0pt"><span style="font-family:Arial; font-size:11pt; font-weight:bold">{!sa.Seller_Name__c} </span></p>
+		<p style="font-size:10pt; line-height:115%; margin:12pt 0pt 0pt"><span style="font-family:Arial; font-size:10pt;">(the “Seller”)</span></p>
+	</div><br style="clear:both; mso-break-type:section-break; page-break-before:always" />
+	
+	<br/>
+	
+    <div class="Section1">
+        <p style="font-size:12pt; line-height:115%; margin:6px 0px 12px">
+            <a name="main" id="main"><span style="font-family:Arial; font-size:12pt; font-weight:bold">Execution &nbsp; Date:&nbsp; {! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }</span></a>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:6px 0px 12px">
+            <span style="font-family:Arial; font-size:12pt;">Between</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-style:normal">(1)</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt; font-weight:bold">{!sa.Buyer_Name__c}</span> <span style="font-family:Arial; font-size:12pt">(“the &nbsp; Buyer”)</span> <span style="font-family:Arial; font-size:12pt">registered in &nbsp; {!sa.Billing_Address__c}</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px">
+            <span style="font-family:Arial; font-size:12pt">and</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-style:normal">(2)</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <a name="bmkNotParty2_002" id="bmkNotParty2_002"><span style="font-family:Arial; font-size:12pt; font-weight:bold">{!sa.Seller_Name__c}</span> <span style="font-family:Arial; font-size:12pt">(“the &nbsp; Seller”)&nbsp; whose registered office is at &nbsp;{!sa.Seller_Address__c}</span></a>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:6px 0px 12px; text-align:center">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">Recitals</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-style:normal">A</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt">The</span> <span style="font-family:Arial; font-size:12pt">Buyer</span> <span style="font-family:Arial; font-size:12pt">and the</span> <span style="font-family:Arial; font-size:12pt">Seller</span> <span style="font-family:Arial; font-size:12pt">have entered into a</span> <span style="font-family:Arial; font-size:12pt">Purchase</span> <span style="font-family:Arial; font-size:12pt">Agreement</span> <span style="font-family:Arial; font-size:12pt">(</span><span style="font-family:Arial; font-size:12pt">No.:</span> <span style="font-family:Arial; font-size:12pt;font-weight:bold">{!sa.Contract_No__c}</span><span style="font-family:Arial; font-size:12pt">)</span> <span style="font-family:Arial; font-size:12pt">on</span> <span style="font-family:Arial; font-size:12pt; font-weight:bold">{! CASE( MONTH(sa.Print_Contract_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(sa.Print_Contract_Date__c)) & ", " &  TEXT(YEAR(sa.Print_Contract_Date__c)) }</span> <span style="font-family:Arial; font-size:12pt">&nbsp;</span><span style="font-family:Arial; font-size:12pt">for the</span> <span style="font-family:Arial; font-size:12pt">sale and purchase of</span> <span style="font-family:Arial; font-size:12pt">approximately</span><span style="font-family:Arial; font-size:12pt;font-weight:bold">&nbsp;{!sa.Total_MW__c}</span> <span style="font-family:Arial; font-size:12pt">MW</span> <span style="font-family:Arial; font-size:12pt">of</span> <span style="font-family:Arial; font-size:12pt">photovoltaic</span> <span style="font-family:Arial; font-size:12pt">modules, as amended on </span><span style="font-family:Arial; font-size:12pt;font-weight:bold">&nbsp;{!sa.Previous_Amendment_Generation_Date__c}</span> <span style="font-family:Arial; font-size:12pt">(the</span> <span style="font-family:Arial; font-size:12pt">“</span><span style="font-family:Arial; font-size:12pt; font-weight:bold">Purchase</span> <span style="font-family:Arial; font-size:12pt; font-weight:bold">Agreement</span><span style="font-family:Arial; font-size:12pt; font-weight:bold">”</span><span style="font-family:Arial; font-size:12pt">).</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-style:normal">B</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt">Both Parties agrees to amend</span> <span style="font-family:Arial; font-size:12pt">the</span> <span style="font-family:Arial; font-size:12pt;">{!amendmentPoint}&nbsp;</span><span style="font-family:Arial; font-size:12pt">stipulated under the Purchase Agreement</span><span style="font-family:Arial; font-size:12pt">.</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:6px 0px 12px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">NOW, THEREFORE, in con</span><span style="font-family:Arial; font-size:12pt; font-weight:bold">sideration of the foregoing Recitals, the mutual premises and covenants set forth herein, and other good and valuable consideration</span><span style="font-family:Arial; font-size:12pt; font-weight:bold">, t</span><span style="font-family:Arial; font-size:12pt; font-weight:bold">he Buyer and the Seller</span> <span style="font-family:Arial; font-size:; font-weight:bold">hereby</span> <span style="font-family:Arial; font-size:; font-weight:bold">agree to amend the</span> <span style="font-family:Arial; font-size:; font-weight:bold">Purchase</span> <span style="font-family:Arial; font-size:; font-weight:bold">Agreement</span> <span style="font-family:Arial; font-size:; font-weight:bold">on the terms set out</span> <span style="font-family:Arial; font-size:; font-weight:bold">below</span><span style="font-family:Arial; font-size:; font-weight:bold">:</span>
+        </p>
+        <h1 style="font-size:12pt; line-height:115%; margin:12px 0px 12px 36px; page-break-after:avoid; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">1</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt; font-weight:bold">Defined Terms</span>
+        </h1>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px">
+            <span style="font-family:Arial; font-size:12pt">Unless otherwise defined in this</span> <span style="font-family:Arial; font-size:12pt">Amendment</span><span style="font-family:Arial; font-size:12pt">, all capitalised terms used in this</span> <span style="font-family:Arial; font-size:12pt">Amendment</span> <span style="font-family:Arial; font-size:12pt">shall have the meanings given to them in the</span> <span style="font-family:Arial; font-size:12pt">Purchase Agreement</span><span style="font-family:Arial; font-size:12pt">.</span>
+        </p>
+        <h1 style="font-size:12pt; line-height:115%; margin:12px 0px 12px 36px; page-break-after:avoid; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">2</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-size:12pt; font-weight:bold">Amendment</span>
+        </h1>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px">
+            <span style="font-family:Arial; font-size:12pt">With effect from the date of this</span> <span style="font-family:Arial; font-size:12pt">Amendment</span><span style="font-family:Arial; font-size:12pt">, the</span> <span style="font-family:Arial; font-size:12pt">Purchase Agreement</span> <span style="font-family:Arial; font-size:12pt">is amended as follows:</span>
+        </p>
+        
+        <!-- Amendment -->
+       <!-- Amendment -->
+        
+        <div style="display:{!IF(sa.Amendment1__c == null || sa.Amendment1__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:Arial; font-size:12pt">2.1</span><span style="font:12pt 'Arial';font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sa.Amendment1__c}</span> 
+        </div>
+        <div style="display:{!IF(sa.Amendment2__c == null || sa.Amendment2__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:Arial; font-size:12pt">2.2</span><span style="font:12pt 'Arial';font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sa.Amendment2__c}</span> 
+        </div>
+        <div style="display:{!IF(sa.Amendment3__c == null || sa.Amendment3__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:Arial; font-size:12pt">2.3</span><span style="font:12pt 'Arial';font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sa.Amendment3__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment4__c == null || sa.Amendment4__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:Arial; font-size:12pt">2.4</span><span style="font:12pt 'Arial';font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sa.Amendment4__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment5__c == null || sa.Amendment5__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:Arial; font-size:12pt">2.5</span><span style="font:12pt 'Arial';font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sa.Amendment5__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment6__c == null || sa.Amendment6__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:Arial; font-size:12pt">2.6</span><span style="font:12pt 'Arial';font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sa.Amendment6__c}</span>
+        </div>
+        <div style="display:{!IF(sa.Amendment7__c == null || sa.Amendment7__c == '---------------------- Please Double-Click to Edit the New Line! ----------------------','none','inline')}">
+            <span style="font-family:Arial; font-size:12pt">2.7</span><span style="font:12pt 'Arial';font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!sa.Amendment7__c}</span>
+        </div>
+        
+        
+        <h1 style="font-size:12pt; line-height:115%; margin:12px 0px 12px 36px; page-break-after:avoid; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">3</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt; font-weight:bold">Continuing Effect</span>
+        </h1>
+        <h2 style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt">3.1</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">With effect from the date of this</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Amendment</span><span style="font-family:Arial; font-size:12pt; font-weight:normal">, the</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Purchase Agreement</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">and this</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Amendment</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">shall be read and construed together and (save in this</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Amendment</span><span style="font-family:Arial; font-size:12pt; font-weight:normal">) references to the</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Purchase</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Agreement</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">(including</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">the</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">references in this</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Amendment</span><span style="font-family:Arial; font-size:12pt; font-weight:normal">)</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">shall be deemed to be references to the</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Purchase</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Agreement</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">as amended by this</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Amendment</span><span style="font-family:Arial; font-size:12pt; font-weight:normal">.</span>
+        </h2>
+        <h2 style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt">3.2</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <a name="_Ref77405640"><span style="font-family:Arial; font-size:12pt; font-weight:normal">As amended by this</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Amendment</span><span style="font-family:Arial; font-size:12pt; font-weight:normal">, the provisions of the</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Purchase</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Agreement</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">shall remain in full force and effect</span></a> <span style="font-family:Arial; font-size:12pt; font-weight:normal">and continue to be binding on each party to it.</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">The conclusion of this</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Amendment</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">shall not be construed as a waiver of any past or current right or any claim of either Party which may arise from or in connection to the performance of the</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Purchase</span> <span style="font-family:Arial; font-size:12pt; font-weight:normal">Agreement</span><span style="font-family:Arial; font-size:12pt; font-weight:normal">.</span>
+        </h2>
+        <h1 style="font-size:12pt; line-height:115%; margin:12px 0px 12px 36px; page-break-after:avoid; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">4</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt; font-weight:bold">Effective Date</span>
+        </h1>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px">
+            <span style="font-family:Arial; font-size:12pt">This</span> <span style="font-family:Arial; font-size:12pt">Amendment</span> <span style="font-family:Arial; font-size:12pt">shall be effective from the</span> <span style="font-family:Arial; font-size:12pt">Execution D</span><span style="font-family:Arial; font-size:12pt">ate</span> <span style="font-family:Arial; font-size:12pt">set</span> <span style="font-family:Arial; font-size:12pt">forth</span> <span style="font-family:Arial; font-size:12pt">above</span><span style="font-family:Arial; font-size:12pt">.</span>
+        </p>
+        <h1 style="font-size:12pt; line-height:115%; margin:12px 0px 12px 36px; page-break-after:avoid; text-indent:-36px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">5</span><span style="font:7.0px 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="font-family:Arial; font-size:12pt; font-weight:bold">Counterparts</span>
+        </h1>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px 36px">
+            <span style="font-family:Arial; font-size:12pt">This</span> <span style="font-family:Arial; font-size:12pt">Amendment</span> <span style="font-family:Arial; font-size:12pt">may be executed in</span> <span style="font-family:Arial; font-size:12pt">duplicate</span><span style="font-family:Arial; font-size:12pt">, each of which shall be deemed to be an original and all of which together shall be deemed to be one and the same instrument.</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">In witness</span> <span style="font-family:Arial; font-size:12pt">whereof the parties have executed this</span> <span style="font-family:Arial; font-size:12pt">Amendment</span> <span style="font-family:Arial; font-size:12pt">on the</span> <span style="font-family:Arial; font-size:12pt">Execution Date.</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px 0px 12px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+    </div><br style="clear:both; mso-break-type:section-break; page-break-before:auto" />
+    
+    <div class="Section1">
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">Executed</span> <span style="font-family:Arial; font-size:12pt">by</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+    </div><br style="clear:both; mso-break-type:section-break; page-break-before:auto" />
+    <div class="Section1">
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">{!sa.Buyer_Name__c}</span>
+        </p>
+        <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:0px; width:231.05px">
+            <tr>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:220.25px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">Signature:</span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:220.25px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+                    </p>
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">………………………………………………..</span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:220.25px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:220.25px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+        </p>
+       
+        <p style="font-size:12pt; line-height:115%; margin:0px">
+            <span style="font-family:Arial; font-size:12pt; font-weight:bold">{!sa.Seller_Name__c}</span>
+        </p>
+        <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:0px; width:231.05px">
+            <tr>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:187.1px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">Signature:</span>
+                    </p>
+                </td>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:9.8px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:187.1px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+                    </p>
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">………………………………………………..</span>
+                    </p>
+                </td>
+                <td style="padding-left:5.4px; padding-right:5.4px; vertical-align:top; width:9.8px">
+                    <p style="font-size:12pt; line-height:115%; margin:0px">
+                        <span style="font-family:Arial; font-size:12pt">&nbsp;</span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <p style="font-size:14px; line-height:115%; margin:0px 0px 12px"></p>
+    </div><br style="clear:both; mso-break-type:section-break; page-break-before:auto" />
+    <div class="Section1">
+        <p style="font-size:14px; line-height:115%; margin:0px 0px 12px">
+            <span style="font-family:Arial; font-size:14px; font-weight:bold">&nbsp;</span>
+        </p>
+    </div>
+
+
+</body>
+
+</apex:page>

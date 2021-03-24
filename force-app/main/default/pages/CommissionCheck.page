@@ -1,0 +1,30 @@
+<apex:page standardController="opportunity"   showHeader="false" sidebar="false"  extensions="OppPriceApprovalCtrl">
+<apex:messages style="font-size:20px;"/>
+<apex:form style="background:#CADEF1 ; color:#EE2C2C">
+<pre style="display:{!IF( CALstnum1>0 ,'run-in','none')};">佣金1 当前申请金额 {!CA1.Commission_Per_watt__c}({!opp.CurrencyIsoCode})</pre>
+<pre style="display:{!IF( CALstnum1>0 ,'run-in','none')};">Current application Commission1: {!CA1.Commission_Per_watt__c}({!opp.CurrencyIsoCode})</pre>
+<pre style="display:{!IF( CALstnum2>0 ,'run-in','none')};">佣金2 当前申请金额  {!CA2.Commission2_Type__c}:{!CA2.Contract_Commission2__c}({!opp.CurrencyIsoCode})</pre>
+<pre style="display:{!IF( CALstnum2>0 ,'run-in','none')};">Current application Commission2: {!CA2.Commission2_Type__c}:{!CA2.Contract_Commission2__c}({!opp.CurrencyIsoCode})</pre>
+<pre style="display:{!IF( CALstnum3>0 ,'run-in','none')};">佣金3 当前申请金额  {!CA3.Commission3_Type__c}:{!CA3.Contract_Commission3__c}({!opp.CurrencyIsoCode})</pre>
+<pre style="display:{!IF( CALstnum3>0 ,'run-in','none')};">Current application Commission3: {!CA3.Commission3_Type__c}:{!CA3.Contract_Commission3__c}({!opp.CurrencyIsoCode})</pre>
+    <apex:commandButton value="Create/Update Commission1" action="{!Action2}"  style="margin-left:15px;display:{!IF( opp.CEO_Approval_Status__c==null && opp.CFO_Approval_Status__c==null && opp.VP_Approval_Status__c==null ,'run-in','none')};"/> 
+<apex:commandButton value="Create/Update Commission1"  oncomplete="SaveRequest();"  style="margin-left:15px;display:{!IF( opp.CEO_Approval_Status__c!=null || opp.CFO_Approval_Status__c!=null || opp.VP_Approval_Status__c!=null ,'run-in','none')};"/> 
+<apex:commandButton value="Create/Update Commission2" action="{!Action5}"  style="margin-left:15px;display:{!IF( CALstnum1>0 ,'run-in','none')};"/> 
+<apex:commandButton value="Create/Update Commission3" action="{!Action6}"  style="margin-left:15px;display:{!IF( CALstnum2>0 ,'run-in','none')};"/> 
+    <apex:commandButton value="Close" oncomplete="Close()"  style="margin-left:15px;"/> 
+         <apex:actionFunction name="Action2" action="{!Action2}" />
+</apex:form>
+<script>
+function Close(){
+    window.top.close();
+}       
+function SaveRequest(){    
+        if (confirm("Please note: this opportunity had commission application before, if you go NEXT step, previously CFO/CMO/Finance VP approval will go back to PENDING. Or you can click on CANCEL to close the window.")){   
+           Action2();
+            //  window.location.href = '/apex/Commission_Application?id={!requestId}';
+        }else{
+           return false;
+        }      
+    }        
+</script>
+</apex:page>

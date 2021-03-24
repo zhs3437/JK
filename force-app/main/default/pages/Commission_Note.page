@@ -1,0 +1,7 @@
+<apex:page standardController="opportunity" >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1 style="color:red ;display:{!IF(opportunity.RecordTypeid!='0126F000001MHOKQA4','run-in','none')};"> NOTE: In case there is Commission needed, please select “Price approval(apply for commission)” when you submit this opportunity for approval.</h1>
+ <h1 style="color:red ;display:{!IF(opportunity.RecordTypeid =='0126F000001MHOKQA4','run-in','none')};">NOTE: In case there is Commission needed, please select “Commission Application” when you submit this opportunity for approval.</h1>
+
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

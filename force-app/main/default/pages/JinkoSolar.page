@@ -1,0 +1,424 @@
+<apex:page standardStylesheets="false" showheader="false" sidebar="false">
+	<script type="text/javascript">
+    /*-------------------------------------------------------------------------------------
+    * Ready function ... calls when the page has completed render.
+    *
+    * -------------------------------------------------------------------------------------
+    */
+
+
+
+    $(function() {
+        $( "#ChangeProduct-dialog").dialog({
+            autoOpen : false,
+            height   : 150,
+            width    : 400,
+            modal    : true,
+            buttons  : {
+                "Make Change" : function() {
+                    $( this ).dialog( "close" );
+                    showLoading(currentProductsTable());
+                    ChangeProductAF( $( "#LineItemToChange" ).val(), $( "#ChangeProductChoice_lkid" ).val() );
+                },
+                Cancel : function() {
+                    $( this ).dialog( "close" );
+                }
+            },
+            
+        });
+    });
+    
+    function ChangeProductClick(LineItemID) {
+        $( "#LineItemToChange").val(LineItemID);
+        $( "#ChangeProduct-dialog").dialog( "open" );
+    }
+    
+    /*-------------------------------------------------------------------------------------
+    * clearInitialDatePicker()
+    * On load, the first date is in focus, and the datePicker calendar is displayed.
+    * This forces a close of that datePicker and a re-focus using MoveCursor()
+    * -------------------------------------------------------------------------------------
+    */
+    
+    function clearInitialDatePicker() {
+        $(document.getElementById("pg:frm:pgbk:currentProductsTable:0:requestedDelivery")).focusout();
+        $(document.getElementById("pg:frm:pgbk:currentProductsTable:0:requestedDelivery")).blur();
+        MoveCursor();
+    }
+    
+    /*-------------------------------------------------------------------------------------
+    * currentProductsTable()
+    * Generic function to return the product table as an object.
+    * This function is used so we do not have to maintain the id hierarchy in multiple places.
+    * -------------------------------------------------------------------------------------
+    */
+    
+    function currentProductsTable() {
+        return $(document.getElementById("pg:frm:pgbk:currentProductsTable"));
+    }
+    
+    /*-------------------------------------------------------------------------------------
+    * myCatalogTable()
+    * Generic function to return the catalog table as an object.
+    * This function is used so we do not have to maintain the id hierarchy in multiple places.
+    * -------------------------------------------------------------------------------------
+    */
+
+    function myCatalogTable() {
+        return $(document.getElementById("pg:frm:pgbk2:pgbk2s:catalogTable"));
+    }
+    
+    /*-------------------------------------------------------------------------------------
+    * MoveCursor()
+    * Moves focus to the first sales price entry field that is 0.0
+    * -------------------------------------------------------------------------------------
+    */
+    function MoveCursor() {
+
+       var firstQuantity = $(document.getElementById('pg:frm:pgbk:currentProductsTable:0:salesPrice'));
+       if ( firstQuantity != null ) {
+           firstQuantity.focus();
+           firstQuantity.click();
+       }
+       
+       // First empty sales price
+       // Courtesy of #purplelobsterclaw
+       var yourtable = currentProductsTable();
+       var emptyPriceBoxes = yourtable.find('input:text').filter(function() { return ( /salesPrice$/.test(this.id) && this.value == "0.0") } );
+       emptyPriceBoxes.first().focus();       
+
+
+   }
+    
+
+
+    // call with showLoading(currentProductsTable());
+    function showLoadingCatalog() {
+        showLoading(myCatalogTable());
+    }
+    function showLoading(yourtable) {
+
+      var yourTable = currentProductsTable();
+      
+      // If Browser is IE ... show simple loading
+      if ( $.browser.msie ) {
+          //yourTable.html( '<span style="text-align:center"><img src="/img/loading32.gif" /></span>');
+          $(document.getElementById("msieSpinner")).html('<span style="text-align:center"><img src="/img/loading32.gif" /></span>');
+      } 
+      else { 
+      
+          // If browser is Chrome, Safari, Firefox show fancy loading 
+
+          yourTable.block({ message: '<img src="/img/loading32.gif" />' ,
+                      css: { 
+                            'background-image': 'url(/img/alohaSkin/grid_headerbg.gif)',
+                            border: 'none', 
+                            padding: '15px', 
+                            //backgroundColor: '#000', 
+                            '-webkit-border-radius': '10px', 
+                            '-moz-border-radius': '10px', 
+                            opacity: .5
+                            //color: '#fff' 
+                        }});
+        }
+    }
+
+    //
+
+    function hideLoadingCatalog() {
+        hideLoading(currentProductsTable());
+    }
+    function hideLoading(yourTable) {
+       if ( $.browser.msie )  {
+           $(document.getElementById("msieSpinner")).html('');
+       }
+       else {
+           yourTable.unblock();
+       }
+    }
+
+  /*  function changedPackaging(inputNode, quantityPerPanel, panelsPerPallet, palletsPerContainer) {
+        var rowNumber          = getRowNumber(inputNode.name);
+        var hiddenQuantityNode =    document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':quantityHidden');
+        var quantityNode       =    document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':quantity'); 
+        var panelsNode         = document.getElementsByName('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':panels')[0]; 
+        var palletsNode        = document.getElementsByName('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':pallets')[0]; 
+        var containersNode     = document.getElementsByName('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':containers')[0]; 
+        
+        var newContainers = new Number(); 
+        var newPallets    = new Number();
+        var newPanels     = new Number();
+        var newQuantity   = new Number(); 
+                
+        if ( quantityPerPanel == null || quantityPerPanel == 0  ) { quantityPerPanel = 1; }
+        if ( panelsPerPallet  == null || panelsPerPallet  == 0  ) { panelsPerPallet  = 1; }
+        if ( palletsPerContainer == null || palletsPerContainer == 0 ) { palletsPerContainer = 1; }
+        
+        if ( inputNode == containersNode ) {
+            newContainers = containersNode.value;
+            newPallets    = newContainers * palletsPerContainer;
+            newPanels     = newPallets * panelsPerPallet;
+            newQuantity   = newPanels * quantityPerPanel;
+        }
+        else if ( inputNode == palletsNode ) {
+            newPallets    = palletsNode.value;
+            newContainers = newPallets / palletsPerContainer;
+            newPanels     = newPallets * panelsPerPallet;
+            newQuantity   = newPanels * quantityPerPanel;
+        }
+        else if ( inputNode == panelsNode ) {
+            newPanels     = panelsNode.value;
+            newPallets    = newPanels / panelsPerPallet;
+            newContainers = newPallets / palletsPerContainer;
+            newQuantity   = newPanels * quantityPerPanel;
+        }
+        else if ( inputNode == quantityNode ) {
+            var tmp = quantityNode.value;
+
+            // Remove trailing W's 
+            tmp = tmp.replace(/[wW]$/,'');
+
+            // Check to see if using MW or kW
+            var usingMega = false;
+            var usingKilo = false;
+            
+            
+            //  Are they using Mega?  
+            if (tmp.match(/[mM]$/) ) {
+                usingMega = true;
+                tmp = tmp.replace(/[mM]$/,'');
+            }
+            if (tmp.match(/[kK]$/) ) {
+                usingKilo = true;
+                tmp = tmp.replace(/[kK]$/,'');
+            }
+            
+
+            // Convert to a number.  Note that due to locale, either the . or the , can be used as a decimal indicator.
+            // Therefore, we need to first determine the user's locale!
+            //  Supported locales:
+            //  zh_CN
+            //  zh
+            //  nl
+            //  en_AU
+            //  en_GB
+            //  en_US
+            //  fr
+            //  de 
+            //  de_CH
+            //  el
+            //  it
+            //  ja_JP
+            //  ko
+            //  es
+            
+            floatTmp = parseFloat(tmp);
+            if ( isNaN(floatTmp) ) {
+                // could not figure out the number
+            }
+
+        
+            if ( usingMega ) {
+                floatTmp = floatTmp * 1000000;
+            }
+            if ( usingKilo ) {
+                floatTmp = floatTmp * 1000;
+            }
+            
+            newQuantity   = floatTmp ;
+            //newPanels     = Math.ceil(newQuantity / quantityPerPanel);
+            //newPallets    = Math.ceil(newPanels   / panelsPerPallet);
+            //newContainers = Math.ceil(newPallets / palletsPerContainer);
+            newPanels     = newQuantity / quantityPerPanel;
+            newPallets    = newPanels   / panelsPerPallet;
+            newContainers = newPallets / palletsPerContainer;            
+        }
+
+        hiddenQuantityNode.value = newQuantity;
+        inputNode.style.background="#FFC";
+        
+        if ( quantityNode.value != newQuantity ) {        
+            //quantityNode.value       = newQuantity.toLocaleString();
+            quantityNode.value       = newQuantity.toString();
+            quantityNode.style.background="#FFC";
+        }
+        if ( panelsNode.value != newPanels ) {
+            //panelsNode.value         = newPanels.toLocaleString();
+            panelsNode.value         = newPanels.toString();
+            panelsNode.style.background="#FFC";
+        }
+        if ( palletsNode.value != newPallets ) {
+            //palletsNode.value        = newPallets.toLocaleString();
+            palletsNode.value        = newPallets.toString();
+            palletsNode.style.background="#FFC";
+        }
+        
+        if ( containersNode.value != newContainers ) {
+            //containersNode.value     = newContainers.toLocaleString();
+            containersNode.value     = newContainers.toString();
+            containersNode.style.background="#FFC";
+        }
+
+
+        //  Show Yellow Alert Caution Warning sign if the container is not full
+
+        msgNode1 = document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':containerNotFull');
+        if ( newContainers > Math.floor(newContainers) ) {
+            //  Indicate we have non-full container
+            msgNode1.innerHTML = '<img height="24" width="24" src="/img/msg_icons/warning24.png" title="Warning: The Container is not full"/>';
+        }        
+        else {
+            msgNode1.innerHTML = '';
+        }    
+            
+        //  Show Yellow Alert Caution Warning sign if the pallet is not full
+        msgNode2 = document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':palletNotFull');
+        if ( newPallets > Math.floor(newPallets) ) {
+            //  Indicate we have non-full pallet
+            msgNode2.innerHTML = '<img height="24" width="24" src="/img/msg_icons/warning24.png" title="Warning: The Pallet is not full"/>';
+        }        
+        else {
+            msgNode2.innerHTML = '';
+        }            
+        
+    }*/
+
+    function getRowNumber(nodeName) {
+        
+        rx = /pg:frm:pgbk:currentProductsTable:(.*):/;
+        
+        myMatch = rx.exec(nodeName);
+        if ( myMatch == null ) {
+            alert('Could not determine row number');
+            return;
+        }
+        else {        
+            //alert ('Row number is ' + myMatch[1]);
+            return myMatch[1];
+        }    
+    }
+    
+    function showMoreProducts(node) {
+        var rowNumber = getRowNumber(node.id);
+        document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':moreProductsHidden').style.display = 'none';
+        document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':moreProductsShown').style.display = '';
+
+    }
+    
+    function hideMoreProducts(node) {
+        var rowNumber = getRowNumber(node.id);
+        document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':moreProductsHidden').style.display = '';
+        document.getElementById('pg:frm:pgbk:currentProductsTable:' + rowNumber + ':moreProductsShown').style.display = 'none';
+    }
+    
+
+    function setupLookup(IDform,IDinputField) {
+        // Setup an input field to do a openLookup call
+        
+        IDform       = escapeUTF(IDform);
+        IDinputField = escapeUTF(IDinputField);
+        var filterParams = "&col0=00NE0000000bu1h&oper0=u&fval0=" + escapeUTF(PriceBookName);
+        var url = '/_ui/common/data/LookupPage?' + 
+                   'lkfm='  + IDform + 
+                   '&lknm=' + IDinputField +
+                   filterParams +
+                   '&lktp=' + $(document.getElementById(IDinputField +"_lktp")).val();
+
+           console.log('--------->>>' + $(document.getElementById(IDinputField +"_lktp")).val());
+           console.log('--------->>>' + url);
+
+        var searchParam = '&lksrch=' + escapeUTF($(document.getElementById(IDinputField)).val());
+
+        console.log('=========>>1.' + searchParam );
+
+        var encodedFunction = escapeUTF("openLookup('" + url + "',640,'1','" + searchParam + "')");
+
+        console.log('=========>>2.' + encodedFunction );
+        encodedFunction.replace = encodedFunction.replace("/","%2F");
+        console.log('=========>>3.' + encodedFunction.replace );
+        $(document.getElementById(IDinputField +"_lkwgt")).attr("href","javascript:%20" + encodedFunction); 
+        console.log('=========>>4.' + $(document.getElementById(IDinputField +"_lkwgt")).attr("href","javascript:%20" + encodedFunction));                 
+    }
+
+    // function setupLookup(IDform,IDinputField) {
+    //     // Setup an input field to do a openLookup call
+        
+    //     IDform       = escapeUTF(IDform);
+    //     IDinputField = escapeUTF(IDinputField);
+    //     var filterParams = "&col0=00NE0000000bu1h&oper0=u&fval0=" + escapeUTF(PriceBookName);
+        
+    //     var url = '/_ui/common/data/LookupPage?' + 
+    //                'lkfm='  + IDform + 
+    //                '&lknm=' + IDinputField +
+    //                filterParams +
+    //                '&lktp=' + $(document.getElementById(IDinputField +"_lktp")).val();
+                   
+    //     var searchParam = '&lksrch=' + escapeUTF($(document.getElementById(IDinputField)).val());
+        
+    //     var encodedFunction = escapeUTF("openLookup('" + url + "',640,'1','" + searchParam + "')");
+    //     encodedFunction.replace = encodedFunction.replace("/","%2F");
+    
+    //     $(document.getElementById(IDinputField +"_lkwgt")).attr("href","javascript:%20" + encodedFunction);                 
+    // }
+               
+                    
+    function lookupOnComplete() {
+        $("#AddProductName").attr("style","background=RED;");
+    }
+       
+
+    function makeAutocomplete(IDform, IDinputName) {
+        // Takes an input field and makes it an autocomplete for the products
+       var str = JSON.stringify(products);
+
+        console.log('-------> : ' + str);
+        
+       $(document.getElementById(IDinputName)).autocomplete({
+
+            minLength: 0,
+                    source: products,
+                    focus: function( event, ui ) {
+                        $( document.getElementById(IDinputName) ).val( ui.item.label );
+                        console.log("======>>" + $( document.getElementById(IDinputName) ).val( ui.item.label ).value);
+                        return false;
+                    },
+                    select: function( event, ui ) {
+                        $( document.getElementById(IDinputName) ).val( ui.item.label );
+                        $( document.getElementById(IDinputName+ "_lkold" ) ).val( ui.item.label );
+                        $( document.getElementById(IDinputName + "_lkid" )).val( ui.item.value );
+                        //$( "#product-description" ).html( ui.item.desc );
+                        //setupLookup(IDform, IDinputName);
+                        return false;
+                    }
+                })
+            .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                    .data( "item.autocomplete", item )
+                    .append( "<a>" + item.label + " : " + item.desc + "</a>" )
+                    .appendTo( ul );
+            };
+            
+    }
+    
+
+    function clickedAddProductButton() {
+        
+        if ( $("#AddProductName_lkid").val() != "000000000000000"
+          && $("#AddProductName_lkold").val() == $("#AddProductName").val() ) {
+            console.log("#===AddProduct " + $("#AddProductName").val());
+            showLoading(currentProductsTable());
+            AddProductAF($("#AddProductName_lkid").val());
+        }
+        else {
+            alert("You must first select a valid product.");
+        }
+    }
+    
+    function clearDefaultProductName() {
+        if ( $("#AddProductName").val() == "Product Name" ) {
+            $("#AddProductName").val("");
+        }
+    }
+
+</script>
+</apex:page>

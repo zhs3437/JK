@@ -1,0 +1,7 @@
+<apex:page standardController="Opportunity" extensions="MOUOpportunityCreate" id="OpportunityCreate" action="{!createOpp}">
+    <apex:form >
+        <!--<span style="display:{!IF(message,'run-in','none')};">
+            <h2 style="size: 30px;color: red">Please create a framework Opportunity in Account</h2>
+        </span>-->
+    </apex:form>
+</apex:page>

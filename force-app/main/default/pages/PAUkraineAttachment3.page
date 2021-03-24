@@ -1,0 +1,160 @@
+<apex:page standardController="Contract"   showHeader="false" sidebar="false" extensions="PAUkraineAttachment3_Ctrl" action="{!initialize}" renderAs="PDF" standardStylesheets="false" applyHtmlTag="false">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+            body { text-align:justify; widows:0; orphans:0; font-family: Arial Unicode MS; font-size:10.5pt }
+            p { margin:0pt }
+            @page{ size: A4 landscape;
+            @top-center {content : element(header); }
+            @bottom-left {
+         content: element(footer);
+      } }
+      div.footer {
+     display: block;
+     padding: 5px;
+     position: running(footer);
+ }
+ .pagenumber:before {
+     content: counter(page);
+ }
+ .pagecount:before {
+     content: counter(pages);
+ }
+            @font-face{
+            font-family: "MS Mincho";
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;}
+         table{border-top: 1px solid #e3e3e3;border-left: 1px solid #e3e3e3;}
+        
+        img {
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    image-rendering: -o-crisp-edges; /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+}
+           
+        </style>
+    </head>
+    
+    <apex:messages />
+    <div class="footer">
+     <div style="text-align: center;"> Page <span class="pagenumber"/>/<span class="pagecount"/></div></div>
+    <apex:form >
+        
+        <table border="1" height="17cm"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr style="height:2cm;">
+                <td style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; "  width="50%"><!-- width:424pt;-->
+                   <p>
+                        <strong>Purchase Agreement No:{!coo.Contract_NO__c} </strong>
+                    </p>
+                    <p>
+                        <strong>Purchase Agreement Date:{!printtime}</strong>
+                    </p> </td>
+                <td style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle;  " width="50%"><!-- width:424pt; -->
+                    <p>
+                        <strong>№ Договору купівлі-продажу:{!coo.Contract_NO__c} </strong>
+                    </p>
+                    <p>
+                        <strong>Дата Договору купівлі-продажу:{!printtimeUK}</strong>
+                    </p> </td>
+            </tr>
+            <tr height="15cm" align="center">
+                <td text-align="center"><strong>Attachment #3 / Limited Warranty</strong>   
+                    <br/><apex:image value="{!$Resource.AttThreeLeft1}" style="height:14.5cm; width:100%" />
+                </td>
+                
+                <td text-align="center"><strong>Додаток №3/ Обмежена гарантія</strong>
+                    <br/><apex:image value="{!$Resource.AttThreeRight1}" style="height:14.5cm; width:100%" />
+                </td>
+            </tr>
+        </table>
+        <br/>
+          <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="16.3cm">
+                <td text-align="center"><apex:image value="{!$Resource.AttThreeLeft2}" style="height:16.3cm; width:100%" /></td>
+                <td text-align="center"><apex:image value="{!$Resource.AttThreeRight2}" style="height:16.3cm; width:100%" /></td>
+            </tr>
+        </table>
+        <br/>
+         <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="17.7cm">
+                <td text-align="center"><apex:image value="{!$Resource.AttThreeLeft3}" style="height:17.7cm; width:100%" /></td>
+                <td text-align="center"><apex:image value="{!$Resource.AttThreeRight3}" style="height:17.7cm; width:100%" /></td>
+            </tr>
+        </table>
+        <br/>
+         <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="17.2cm">
+                <td text-align="center"><apex:image value="{!$Resource.AttThreeLeft4}" style="height:17.2cm; width:100%" /></td>
+                <td text-align="center"><apex:image value="{!$Resource.AttThreeRight4}" style="height:17.2cm; width:100%" /></td>
+            </tr>
+        </table>
+      
+         <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px">
+                <td text-align="center"><Strong>Approved and accepted / Погоджено і затверджено</Strong></td>
+                <td text-align="center"><Strong>Approved and accepted / Погоджено і затверджено</Strong></td>
+            </tr>
+            <tr height="200px">
+                <td><p>
+                    <Strong>The Seller / Продавець:{!coo.SELLER__c}</Strong>
+                    </p>
+                    <br/>
+                    <p>
+                        <Strong>Representative / Представник: </Strong> 
+                    </p>
+                    <p>
+                        <Strong> Mr. Wang Zhihua</Strong>
+                    </p>
+                    <br/>
+                    <p>
+                       <Strong> Title/ Посада:</Strong> 
+                    </p>
+                   
+                    <p>
+                        <Strong>Signature/ Підпис: ______________________</Strong>
+                    </p>
+                      
+                </td>
+                <td><Strong>
+                    <p>
+                        The Buyer / Покупець:  {!coo.BuyerAccount__r.Name} /<br/>{!Contract.BuyerAccount__r.Account_Name_Ukrainian__c} 
+                    </p>
+                    <br/>
+                    <p>
+                        Representative / Представник:{!Contract.Buyer_s_representative_English__c} /{!Contract.Buyer_s_representative_Ukraine__c}
+                    </p>
+                    <br/>
+                    <p>
+                        Title / Посада: 
+                    </p>
+                  
+                    <p>
+                        Signature / Підпис: ______________________
+                    </p>
+                    </Strong>   
+                </td>
+            </tr>
+            
+            
+            
+            
+        </table>
+        
+        
+        
+        
+        
+        
+    </apex:form>
+    <style type="text/css">
+       <!--img{ display:block;margin-left:auto;margin-right:auto; }-->
+    </style>
+    
+    <apex:outputPanel id="msg">
+        <apex:messages />
+    </apex:outputPanel> 
+    
+</apex:page>

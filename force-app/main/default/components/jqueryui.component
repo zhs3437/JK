@@ -1,0 +1,6 @@
+<apex:component >
+	<apex:stylesheet value="{!URLFOR($Resource.jquery_ui_1_8_16, 'css/cupertino/jquery-ui-1.8.16.custom.css')}" />
+	<apex:includeScript value="{!URLFOR($Resource.jquery_ui_1_8_16, 'js/jquery-1.6.2.min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.jquery_ui_1_8_16, 'js/jquery-ui-1.8.16.custom.min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.jQuery_blockUI_2_39)}" />
+</apex:component>

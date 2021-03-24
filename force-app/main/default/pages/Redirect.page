@@ -1,0 +1,22 @@
+<apex:page showHeader="false" sidebar="false" controller="RC_RedirectController" action="{!redirect}">
+    <script>
+        /* Redirect */
+        function redirect (url) {
+            if (window.location.href.lastIndexOf(".lightning.force.com") == -1) {
+                window.location.href = url;
+            } else {
+                if (sforce && sforce.one) {
+                    //window.open(url, "_blank");
+                    //window.history.back();
+                    sforce.one.navigateToURL(url);
+                }
+            }
+        }
+
+        (function s(){
+            debugger;
+            if ("{!errorMsg}" != '') alert("{!errorMsg}");
+            redirect('{!redirectUrl}');
+        })()
+    </script>
+</apex:page>

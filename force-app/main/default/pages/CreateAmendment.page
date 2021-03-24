@@ -1,0 +1,5 @@
+<apex:page standardController="Amendment__c" extensions="CreateAmendmentCtrl" action="{!generateAmendment}" >
+
+
+
+</apex:page>

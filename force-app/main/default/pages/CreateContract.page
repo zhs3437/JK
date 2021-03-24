@@ -1,0 +1,18 @@
+<apex:page standardController="Contract" extensions="ContractControllerCreate">
+<apex:form >
+<apex:messages style="font-size:18px;" />
+<apex:pageBlock >
+<apex:pageBlockButtons >
+<apex:commandButton action="{!onCreate}" value="{!$Label.Save}" />
+<apex:commandButton action="{!cancel}" value="{!$Label.Cancel}" />
+</apex:pageBlockButtons>
+<apex:pageBlockSection title="{!$Label.Detail_Info}" columns="2">
+<apex:inputField value="{!Contract.Opportunity__c}" required="true"></apex:inputField>
+<apex:inputField value="{!con.Contract_NO__c}"/>
+<apex:inputField value="{!con.InventoryArea__c}" rendered="{!IF(InventoryRecordTypeId != conRecordTypeId,false,true)}" required="true"/>  
+<apex:inputField value="{!con.daizhi__c}" rendered="{!IF(InventoryRecordTypeId != conRecordTypeId,false,true)}" required="true"/>  
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

@@ -1,0 +1,49 @@
+<apex:page standardController="Product_Application__c" extensions="AddProductVFCCtrl" showHeader="false" >
+
+     <apex:pageMessages />
+    <div >
+        <pre align="center" style="font-size:15px ;color:red ;">请填写申请产品的成本。</pre>
+    </div>
+    <apex:form id="addPro">
+        <div style="text-align:center">
+            <apex:commandButton value="保存并通过审批" action="{!save}" />
+            <apex:commandButton VALUE="取消" onClick="window.close()" />
+             <apex:commandButton VALUE="拒绝该审批" action="{!save2}" />
+          
+            <p>整体备注:<apex:inputField value="{!p.TCM_approval_Feedback__c}"></apex:inputField></p>
+
+        </div>
+         <apex:pageBlock title="Product information" id="pgbk"  mode="Edit" >
+        <table border="1" width="1200px;" style="border-collapse:collapse;margin:5px;border:fixed;margin: auto;">
+            <tr>
+                <td>name</td>
+                <td>W</td> 
+                <td>Discount</td>
+                <td>Guaranteed Delivery Date</td>
+                 <td>Cell size</td>
+<td>基准产品基础上的"附加"成本 单位为USD/W</td>
+                <td>备注</td>
+                </tr>
+            <apex:repeat value="{!ppLists}" var="line" >
+                <tr>
+                    
+                    <td>{!line.name}</td>
+                      <td><apex:outputField value="{!line.W__c}"></apex:outputField></td>
+                    <td><apex:outputField value="{!line.Discount__c}"></apex:outputField></td>
+                    <td><apex:outputField value="{!line.Guaranteed_Delivery_Date__c}"></apex:outputField></td>
+                            <td><apex:outputField value="{!line.Module_size__c}"></apex:outputField></td>
+                   <td><strong style="font-weight: bold; color: #cc0000 ;font-size:20px">|</strong><apex:inputField value="{!line.Cost__c}" ></apex:inputField></td>
+                 
+                    <td><apex:inputField value="{!line.comments__c}" ></apex:inputField></td>
+                </tr>
+            </apex:repeat>
+        
+        </table>
+                  </apex:pageBlock>
+    </apex:form>
+    <script>
+   
+     </script>
+
+
+</apex:page>

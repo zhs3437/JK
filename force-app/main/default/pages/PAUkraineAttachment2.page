@@ -1,0 +1,498 @@
+<apex:page standardController="Contract"   showHeader="false" sidebar="false" extensions="PAUkraineAttachment2_Ctrl" action="{!initialize}" renderAs="PDF" standardStylesheets="false" applyHtmlTag="false">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+            body { text-align:justify; widows:0; orphans:0; font-family: Arial Unicode MS; font-size:10.5pt }
+            p { margin:0pt }
+            @page{ size: A4;margin : 20pt .2in .5in .2in;
+            @top-center {content : element(header); }  
+            @bottom-left {
+         content: element(footer);
+      } }
+      div.footer {
+     display: block;
+     padding: 5px;
+     position: running(footer);
+ }
+ .pagenumber:before {
+     content: counter(page);
+ }
+ .pagecount:before {
+     content: counter(pages);
+ }
+            @font-face{
+            font-family: "MS Mincho";
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;}
+            table{border-top: 1px solid #000000;border-left: 1px solid #000000}
+        #t1{border-top: 0px;border-left: 0px}
+        </style>
+    </head>
+    <apex:messages />
+    <div class="footer">
+     <div style="text-align: center;"> Page <span class="pagenumber"/>/<span class="pagecount"/></div></div>
+    <apex:form >
+        
+        <table  border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr style="height:33pt;">
+                <td style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%">
+                    <p>
+                        <strong>Purchase Agreement No:{!coo.Contract_NO__c} </strong>
+                    </p>
+                    <p>
+                        <strong>Purchase Agreement Date:{!printtime}</strong>
+                    </p>
+                     </td>
+                <td style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%">
+                    <p>
+                        <strong>№ Договору купівлі-продажу:{!coo.Contract_NO__c} </strong>
+                    </p>
+                    <p>
+                        <strong>Дата Договору купівлі-продажу:{!printtimeUK}</strong>                        
+                    </p> </td>
+            </tr>
+        </table>
+        
+        
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" align="center">
+                <td text-align="center" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%"><strong>Attachment #2 /Specification</strong></td>
+                <td text-align="center" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%"><strong>Додаток №2 / Специфікація </strong></td>
+            </tr>
+        </table>
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" >
+                <td width="12%">The Buyer:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Name}</td>
+                <td width="12%">Покупець:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Account_Name_Ukrainian__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">Add:</td>
+                <td width="38%">{!buyerAddress}</td>
+                <td width="12%">Адреса:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Account_Address_Ukrainian__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">VAT number:</td>
+                <td width="38%">{!coo.BuyerAccount__r.VAT_NO__c}</td>
+                <td width="12%">№ ПДВ:</td>
+                <td width="38%">{!coo.BuyerAccount__r.VAT_NO__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">Tel.:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Phone}</td>
+                <td width="12%">Тел.:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Phone}</td>
+            </tr>  
+            <tr height="30px" >
+                <td width="12%">Fax:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Fax}</td>
+                <td width="12%">Факс</td>
+                <td width="38%">{!coo.BuyerAccount__r.Fax}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">Email:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Company_Email__c}</td>
+                <td width="12%">Електронна пошта:</td>
+                <td width="38%">{!coo.BuyerAccount__r.Company_Email__c}</td>
+            </tr>
+        </table>
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" >
+                <td width="12%">The Seller:</td>
+                <td width="38%">{!ios.Seller__c}</td>
+                <td width="12%">Продавець:</td>
+                <td width="38%">{!ios.Seller__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">Add:</td>
+                <td width="38%">{!ios.Address__c}</td>
+                <td width="12%">Адреса:</td>
+                <td width="38%">{!ios.Address__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">VAT number:</td>
+                <td width="38%">{!ios.Seller_VAT_NO__c}</td>
+                <td width="12%">№ ПДВ:</td>
+                <td width="38%">{!ios.Seller_VAT_NO__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">Tel.:</td>
+                <td width="38%">{!coo.Owner.MobilePhone}</td>
+                <td width="12%">Тел.:</td>
+                <td width="38%">{!coo.Owner.MobilePhone}</td>
+            </tr>  
+            <tr height="30px" >
+                <td width="12%">Fax:</td>
+                <td width="38%">{!coo.Owner.Fax}</td>
+                <td width="12%">Факс</td>
+                <td width="38%">{!coo.Owner.Fax}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="12%">Email:</td>
+                <td width="38%">{!coo.Owner.Email}</td>
+                <td width="12%">Електронна пошта:</td>
+                <td width="38%">{!coo.Owner.Email}</td>
+            </tr>
+        </table>
+    
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Strong>1. Description, Price, Amount and shipment date:</Strong>
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="20px" >
+                <td width="10%" rowspan="2"><Strong>Product type</Strong></td>
+                <td width="15%" rowspan="2"><Strong><p>
+                    Peak Power
+                    </p>&nbsp;&nbsp;&nbsp;(Wps/PC)</Strong></td>
+                <td colspan="2" width="25%" style=" text-align:center;"><Strong>Quantity</Strong></td>
+                
+                <td width="10%" rowspan="2"><Strong><p>
+                    Unit price {!Contract.Trade_term__c}  {!coo.Destination__c}
+                    </p> </Strong></td>
+                <td width="15%" rowspan="2"><Strong><p>
+                    Purchase Price
+                    </p>  &nbsp;&nbsp;&nbsp;&nbsp;({!Contract.CurrencyIsoCode})</Strong></td>
+                <td width="25%" rowspan="2" style="display:{!IF(FCA=='0','run-in','none')}"><Strong>
+                    Expected Time of Shipment from {!Contract.Departure_Port__c}
+                    </Strong></td>
+                     <td width="25%" rowspan="2" style="display:{!IF(FCA=='1','run-in','none')}"><Strong>
+                   Expected Time of picking up from Rotterdam, Netherlands
+                    </Strong></td>
+                       <td width="25%" rowspan="2" style="display:{!IF(FCA=='2','run-in','none')}"><Strong>
+                   Expected Time of picking up from Piraeus, Greece
+                    </Strong></td>
+            </tr>
+            <tr height="20px" >
+                <td width="12.5%" style=" text-align:center;"><Strong>PCS</Strong></td>
+                <td width="12.5%" style=" text-align:center;"><Strong>Wps</Strong></td>  
+            </tr>
+            <apex:variable var="index" value="{!0}" />
+ <apex:repeat value="{!pds}" var="line" id="Order_Line_List">   
+<apex:variable var="index" value="{!index+1}" />
+            <tr height="30px" >
+                <td width="10%">{!line.Product_Name__c}</td>
+                <td width="10%">{!line.Unit_WM__c}</td>
+                <td width="15%">{!line.Quantity__c}</td>
+                <td width="15%">{!line.Total_W__c}</td>
+                <td width="10%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></td>
+                <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></td>
+                <td width="20%" style="word-wrap: break-word;word-break: normal;">            
+                    Before {!line.GuaranteedDeliveryDateAuto2__c} on condition that Seller receives the Down Payment in accordance with Section 3</td>
+            </tr>
+            </apex:repeat>
+            <tr height="30px" >
+                <td width="10%"><Strong>Total</Strong></td>
+                <td width="10%"></td>
+                <td width="15%">{!T_PCS}</td>
+                <td width="15%">{!T_WPS}</td>
+                <td width="10%"></td>
+                <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!T_PurchasePrice}"/></apex:outputText></td>
+                <td width="20%"></td>
+            </tr>
+            
+            
+            
+        </table>
+      
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>
+        
+        <Strong>1. Опис, ціна и сума: </Strong></p>
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="20px" >
+                <td width="10%" rowspan="2"><Strong>Тип продукту</Strong></td>
+                <td width="15%" rowspan="2"><Strong><p>
+                    Макс. потужність
+                    </p> &nbsp;&nbsp;&nbsp;(Вт/шт.)</Strong></td>
+                <td colspan="2" width="30%" style=" text-align:center;"><Strong>Кількість</Strong></td>
+                
+                <td width="10%" rowspan="2"><Strong>Ціна за одиницю {!Contract.Trade_term__c}  {!coo.Destination__c}</Strong></td>
+                <td width="15%" rowspan="2"><Strong><p>
+                    Сума, дол.США({!Contract.CurrencyIsoCode})
+                    </p></Strong></td> 
+                <td width="25%" rowspan="2"   style="display:{!IF(FCA=='0','run-in','none')}"><Strong><p>
+                    Очікувана дата відвантаження з</p>
+                    <p style="display:{!IF(Contract.Departure_Port__c=='China Main Port','run-in','none')}"> 
+                    головного порту Китаю
+                    </p>
+                    <p style="display:{!IF(Contract.Departure_Port__c=='Vietnam Main Port','run-in','none')}"> 
+                    головний порт В'єтнаму
+                    </p>
+                    </Strong></td>
+                     <td width="25%" rowspan="2" style="display:{!IF(FCA=='1','run-in','none')}"><Strong>
+                  Очікувана дата відвантаження з Ротердаму, Голандія
+                    </Strong></td>
+                     <td width="25%" rowspan="2" style="display:{!IF(FCA=='2','run-in','none')}"><Strong>
+                   Очікувана дата відвантаження з Пірею, Греція
+                    </Strong></td>
+            </tr>
+            <tr height="20px" >
+                <td width="12.5%" style=" text-align:center;" ><Strong>Шт.</Strong></td>
+                <td width="12.5%" style=" text-align:center;" ><Strong>Вт</Strong></td>  
+            </tr>
+              <apex:variable var="index" value="{!0}" />
+ <apex:repeat value="{!pds}" var="line" id="Order_Line_List2">   
+<!--<apex:dataList value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">-->
+<apex:variable var="index" value="{!index+1}" />
+            <tr height="30px" >
+                <td width="10%">{!line.Product_Name__c}</td>
+                <td width="10%">{!line.Unit_WM__c}</td>
+                <td width="15%">{!line.Quantity__c}</td>
+                <td width="15%">{!line.Total_W__c}</td>
+                 <td width="10%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></td>
+                <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></td>
+                <td width="20%" style="word-wrap: break-word;word-break: normal;">До {! TEXT(DAY(line.Guaranteed_Delivery_Date__c)) & "." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & "." &   TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) } р. за умови, що Продавець отримав Передплату згідно з п.3</td>
+            </tr>
+            </apex:repeat>
+            <tr height="30px" >
+                <td width="10%"><Strong>Всього</Strong></td>
+                <td width="10%"></td>
+                <td width="15%">{!T_PCS}</td>
+                <td width="15%">{!T_WPS}</td>
+                <td width="10%"></td>
+                <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!T_PurchasePrice}"/></apex:outputText></td>
+                <td width="20%"></td>
+            </tr>
+            </table>
+          <table border="0"  width="95%" id="t1">
+                <tr>
+                    <td>
+                         2. Specification:
+                    </td>
+                    <td>
+                         2. Специфікація:
+                    </td>
+                </tr>
+                                <apex:repeat value="{!pds}" var="pd">   
+               <tr>
+               <td width="50%" height="100%">        
+
+                <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+                    <tr height="40px">
+                        <td width="40%" >Product Type </td>    
+                        <td width="60%" >{!pd.Product_Name__c}</td>        
+                    </tr>
+                   
+                    <tr height="40px">
+                        <td width="40%"><p>s
+                            Peak power
+                            </p>&nbsp;&nbsp;&nbsp;(Pmax) </td>    
+                        <td width="60%"  >{!pd.Unit_WM__c} </td>        
+                    </tr>
+                      
+                     <tr height="40px">
+                        <td width="40%" >Cell type </td>    
+                        <td width="60%">{!pd.Battery_Type__c} </td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Number of Cells </td>    
+                        <td width="60%">{!pd.Number_of_Cells__c} </td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Weight </td>    
+                        <td width="60%"> {!pd.Weight__c}</td>        
+                    </tr>
+                    <tr height="40px">
+                        <td width="40%" >Cable Length </td>    
+                        <td width="60%"> {!pd.Cable_length_UK__c}</td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Dimensions </td>    
+                        <td width="60%">{!pd.Dimensions__c} </td>        
+                    </tr>
+                </table>
+               
+        </td>
+            
+           <td width="50%" height="100%">
+               
+                <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+                    <tr height="40px">
+                        <td width="40%" >Тип продукту </td>    
+                        <td width="60%"> {!pd.Product_Name__c}</td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Максимальная потужність (Р макс) </td>    
+                        <td width="60%">{!pd.Unit_WM__c} </td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Тип елементу </td>    
+                        <td width="60%"> {!pd.Battery_Type__c}</td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Кількість елементів</td>    
+                        <td width="60%"> {!pd.Number_of_Cells__c}</td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Вага</td>    
+                        <td width="60%">{!pd.Weight__c} </td>        
+                    </tr>
+                    <tr height="40px">
+                        <td width="40%" >Cable Length </td>    
+                        <td width="60%"> {!pd.Cable_length_UK__c}</td>        
+                    </tr>
+                     <tr height="40px">
+                        <td width="40%" >Розміри </td>    
+                        <td width="60%"> {!pd.Dimensions__c}</td>        
+                    </tr>
+                </table>
+               
+            </td>
+            </tr>
+                            </apex:repeat>   
+                <tr>
+                    <td>
+                         Remark: The "Weight" and "Dimensions" is only for reference
+                    </td>
+                    <td>
+                         Примітка: «Вага» та «Розміри» використовуються лише для довідки.
+                    </td>
+                </tr>
+        </table>
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+             <tr height="100px">
+                <td><Strong>3. Payment terms: </Strong></td>
+                 <td></td>
+                 </tr>
+            
+<tr height="100px" style="display:{!IF(Dpay1==null && Dpay2==null,'run-in','none')};">
+                <td>1.{!DDpay1} </td>
+                 <td>1.{!DDpay2}</td>
+                 </tr>            
+            <tr height="100px" style="display:{!IF(Dpay1==null && Dpay2==null,'none','run-in')};">
+                <td>1.{!Dpay1.Actual_Values__c} </td>
+                 <td>1. {!Dpay2.Actual_Values__c}</td>
+                 </tr>      
+            
+            
+<tr height="100px" style="display:{!IF(Bpay1==null && Bpay2==null,'run-in','none')};">
+                <td>2.{!BBpay1} </td>
+                 <td>2.{!BBpay2}</td>
+                 </tr>                 
+            <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c==null && Bpay2.Actual_Values__c==null,'none','run-in')};">
+                <td>2.{!Bpay1.Actual_Values__c} </td>
+                 <td>2.{!Bpay2.Actual_Values__c} </td>
+                 </tr>          
+            
+          <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c!= null,'run-in','none')}">
+       
+                 <td     style="display:{!IF(coo.incoterm_version__c=='incoterm 2020','run-in','none')};">3. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2020.</td>
+                <td     style="display:{!IF(coo.incoterm_version__c=='incoterm 2020','run-in','none')};">3. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2020.</td>
+         
+                <td     style="display:{!IF(coo.incoterm_version__c!='incoterm 2020','run-in','none')};">3. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2010.</td>
+                <td     style="display:{!IF(coo.incoterm_version__c!='incoterm 2020','run-in','none')};">3. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2010.</td>
+            </tr>     
+            
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c!= null,'run-in','none')}">
+                <td>4. Payment shall be made without any deductions or offset for any reason and will not be considered made until the Seller has a credit entry on its bank account. The Buyer will be responsible for any loss and damages incurred by the Seller arising from its failure to pick up the Goods timely.</td>
+                <td><p>
+                    
+                    4. Оплата здійснюється без будь-яких відрахувань або зарахувань з будь-яких причин і не буде вважатися виконаною, поки Продавець не отримає кошти на банківський рахунок. Покупець нестиме відповідальність за будь-які збитки і шкоду, понесені Продавцем в зв'язку з неспроможністю Покупця забрати товар своєчасно.</p></td>
+                
+            </tr>                 
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c!= null,'run-in','none')}">
+                <td>5. Seller shall be entitled to hold the Bill of Lading and postpone the release of the Goods hereunder before receipt of 100% prepay of the total Purchase Price of the Goods hereunder; and Buyer shall indemnify Seller against all the incurred losses and damages arising from Buyer's default in performing its payment obligations under this Agreement, including but not limit to the detention and demurrages fees and the transportation fees.</td>
+                <td>5. Продавець має право утримувати коносамент та відкласти випуск Товару за цим Договором до отримання   100%  передоплати  загальної продажної вартості Товару, а Покупець повинен компенсувати Продавцю всі понесені збитки, що виникли внаслідок невиконання Покупцем своїх платіжних зобов'язань за цим Договором, в тому числі, але не обмежуючись витратами на зберігання, демередж, а також транспортні збори.</td>
+            </tr>                  
+            
+            
+            
+             <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c== null,'run-in','none')}">
+            
+              <td  style="display:{!IF(coo.incoterm_version__c=='incoterm 2020','run-in','none')};">2. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2020.</td>
+                <td  style="display:{!IF(coo.incoterm_version__c=='incoterm 2020','run-in','none')};">2. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2020.</td>
+          
+                <td  style="display:{!IF(coo.incoterm_version__c!='incoterm 2020','run-in','none')};">2. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2010.</td>
+                <td  style="display:{!IF(coo.incoterm_version__c!='incoterm 2020','run-in','none')};">2. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2010.</td>
+            </tr>     
+            
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c== null,'run-in','none')}">
+                <td>3. Payment shall be made without any deductions or offset for any reason and will not be considered made until the Seller has a credit entry on its bank account. The Buyer will be responsible for any loss and damages incurred by the Seller arising from its failure to pick up the Goods timely.</td>
+                <td><p>
+                    
+                    3. Оплата здійснюється без будь-яких відрахувань або зарахувань з будь-яких причин і не буде вважатися виконаною, поки Продавець не отримає кошти на банківський рахунок. Покупець нестиме відповідальність за будь-які збитки і шкоду, понесені Продавцем в зв'язку з неспроможністю Покупця забрати товар своєчасно.</p></td>
+                
+            </tr>                 
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c== null,'run-in','none')}">
+                <td>4. Seller shall be entitled to hold the Bill of Lading and postpone the release of the Goods hereunder before receipt of 100% prepay of the total Purchase Price of the Goods hereunder; and Buyer shall indemnify Seller against all the incurred losses and damages arising from Buyer's default in performing its payment obligations under this Agreement, including but not limit to the detention and demurrages fees and the transportation fees.</td>
+                <td>4. Продавець має право утримувати коносамент та відкласти випуск Товару за цим Договором до отримання   100%  передоплати  загальної продажної вартості Товару, а Покупець повинен компенсувати Продавцю всі понесені збитки, що виникли внаслідок невиконання Покупцем своїх платіжних зобов'язань за цим Договором, в тому числі, але не обмежуючись витратами на зберігання, демередж, а також транспортні збори.</td>
+            </tr>                  
+            
+            
+ 
+            <tr height="100px">
+                <td><p>
+                            <Strong>Approved and accepted,</Strong> 
+                    </p>
+                    <p>
+                        <Strong>The Seller:{!ios.Seller__c}</Strong> 
+                    </p> 
+                    <p>Representative: Mr.Wang Zhihua</p> 
+                    <br/> 
+                    <p>
+                        Signature: ______________________
+                    </p> 
+                    </td>
+                
+                <td><p>
+                    <Strong>Погоджено і затверджено,</Strong> 
+                    </p> 
+                    
+                    <p><Strong>Продавець:{!ios.Seller__c}</Strong> </p>
+                    <p>
+                       Представник: Mr.Wang Zhihua  
+                    </p>
+                    <br/>
+                    <p>
+                        Підпис:______________________
+                    </p>
+                  
+                </td>
+            </tr>
+            
+            
+            <tr height="100px">
+                <td><p>
+                    <Strong>The Buyer:{!coo.BuyerAccount__r.Name} </Strong>
+                    </p>
+                    <p>
+                        Representative:{!coo.Buyer_s_representative_English__c} 
+                    </p> 
+                    <p>
+                        Title: 
+                    </p>
+                    <p>
+                         Signature: ______________________
+                    </p></td>
+                <td><p>
+                    <Strong>Покупець:{!coo.BuyerAccount__r.Account_Name_Ukrainian__c} </Strong>
+                    </p>
+                    <p>
+                        Представник: {!coo.Buyer_s_representative_Ukraine__c}
+                    </p>
+                    <p>
+                        Посада:
+                    </p>
+                    <p>
+                        Підпис:______________________
+                    </p></td> 
+            </tr>
+            
+        </table>
+        
+    </apex:form>
+    
+    
+    <apex:outputPanel id="msg">
+        <apex:messages />
+    </apex:outputPanel> 
+    
+</apex:page>

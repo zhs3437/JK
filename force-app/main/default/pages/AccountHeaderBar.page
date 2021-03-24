@@ -1,0 +1,24 @@
+<apex:page standardController="Account" showheader="false" sidebar="false">
+    <div style="padding-left:200px;">
+        <STRONG>
+            <!--<span style="BACKGROUND-COLOR:#aaeeaa;COLOR:RED; align:center" >Announcement: Our system has been updated!</span>-->
+        </STRONG><br/>
+        <span style="BACKGROUND-COLOR:#aaeeaa:#aaeeaa;COLOR:RED" > 1.Please do not use Enter to line feed when you input billing address, use space is better idea!</span><br/>
+        <!--<span style="BACKGROUND-COLOR:#aaeeaa" > 2.For any question. you can Contact with your BMO specialist. Or you can Email to system Admin Li Jiebo[ljb@jinkosolar.com]</span>-->
+    </div>
+    <div style="COLOR: BLUE; font-size: 14px; font-weight: important;width:600px; padding-left:200px;">
+                <apex:outputText style="text-align: center" value="温馨提示:  客户 {!Account.Name} OA审批进行中......"
+                                 rendered="{!(Account.OA_External_ID__c != null && Account.SAP_External_ID__c ==null && Account.SAP_Describe__c==null )}" />                
+                <apex:outputText style="text-align: center" value="温馨提示:  客户 {!Account.Name} 审批通过！"
+                                 rendered="{!(Account.OA_External_ID__c != null && Account.SAP_External_ID__c !=null && Account.SAP_Describe__c==null )}"/>                  
+                <apex:outputText style="text-align: center" value="温馨提示:  客户 {!Account.Name} 创建失败，失败原因 ：{!Account.SAP_Describe__c}"
+                                 rendered="{!(Account.OA_External_ID__c != null && Account.SAP_External_ID__c ==null &&  Account.SAP_Describe__c!=null)}"/> 
+                
+                 
+               <apex:outputText style="text-align: center" value="温馨提示:  客户 {!Account.Name} 在OA创建流程失败！"
+                                 rendered="{!Account.SAP_External_ID__c = "-7"}" />
+              
+
+            </div>       
+    
+</apex:page>

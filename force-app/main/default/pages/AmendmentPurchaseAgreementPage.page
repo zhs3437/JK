@@ -1,0 +1,50 @@
+<apex:page standardController="Amendment__c" extensions="AmendmentInlineSection" sidebar="false" showHeader="false"> 
+
+	<apex:form >
+		<apex:pageBlock >
+		    <apex:outputPanel id="replacePanel">
+		    	<center>
+		            <apex:commandButton action="{!doSave}" value="Save New Line" />&nbsp;&nbsp;&nbsp;&nbsp;
+		            <apex:commandButton action="{!doNewLine}" reRender="replacePanel" onclick="document.body.scrollTop=document.body.clientHeight;" value="Create New Line" />&nbsp;&nbsp;&nbsp;&nbsp;
+		          <apex:commandButton action="{!doDelLine}" reRender="replacePanel" onclick="document.body.scrollTop=document.body.clientHeight;" value="Delete Last Line" />
+		        </center>
+		    <apex:pageBlockSection columns="1" >
+		    
+		        <apex:outputField value="{!sa.Amendment1__c}">
+		            <apex:inlineEditSupport />
+		        </apex:outputField>
+		        
+		        <apex:outputField value="{!sa.Amendment2__c}">
+		            <apex:inlineEditSupport />
+		        </apex:outputField>
+		        
+		        
+		        <apex:outputField rendered="{!sa.Amendment3__c!=null}" value="{!sa.Amendment3__c}">
+		            <apex:inlineEditSupport />
+		        </apex:outputField>
+		        
+		        <apex:outputField rendered="{!sa.Amendment4__c!=null}" value="{!sa.Amendment4__c}">
+		            <apex:inlineEditSupport />
+		        </apex:outputField>
+		        
+		        <apex:outputField rendered="{!sa.Amendment5__c!=null}" value="{!sa.Amendment5__c}">
+		            <apex:inlineEditSupport />
+		        </apex:outputField>
+		        
+		        <apex:outputField rendered="{!sa.Amendment6__c!=null}" value="{!sa.Amendment6__c}">
+		            <apex:inlineEditSupport />
+		        </apex:outputField>
+		        
+		        <apex:outputField rendered="{!sa.Amendment7__c!=null}" value="{!sa.Amendment7__c}">
+		            <apex:inlineEditSupport />
+		        </apex:outputField>
+		        
+		        
+		    </apex:pageBlockSection>
+		    
+		    </apex:outputPanel>
+		    
+		</apex:pageBlock>
+	</apex:form>		
+
+</apex:page>

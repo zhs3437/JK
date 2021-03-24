@@ -1,0 +1,809 @@
+<apex:page standardController="Contract" language="ja" 
+           extensions="PA_Japan_Ctrl" sidebar="false"
+           showHeader="false" standardStylesheets="false" applyHtmlTag="false" renderAs="PDF">
+    
+
+    <head>
+     <style> body { font-family: Arial Unicode MS; } </style>
+        <style type="text/css">
+@page
+{       size: A4;
+        margin : 20pt .2in .5in .2in;
+        @top-center {
+            content : element(header);
+        }
+
+    }
+ @font-face{
+            font-family: "MS Mincho";
+            src: url("{!URLFOR($Resource.HGMinchoB,'MSMincho.ttf')}");
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+        }
+.page-break {
+        display:block;
+        page-break-after:always;
+    }
+div.header {
+    position : running(header) ;
+}
+body {
+    font-family: 'MS Mincho';
+    }
+table{
+    width:560pt;
+}
+.xl864
+    {
+    text-align:center;
+    vertical-align:bottom;
+    border-top:none;
+    border-right:none;
+    border-bottom:1.0pt solid black;
+    border-left:none;}
+.xl792
+    {
+    font-size:10.0pt;
+    font-weight:700;
+    font-family:'MS Mincho';
+    text-align:right;
+    vertical-align:top;}
+.xl866
+    {
+    font-family: MS Mincho;
+    font-size:20.0pt;
+    font-weight:700;
+    text-align:center;
+    vertical-align:bottom;
+    border-top:none;
+    border-right:none;
+    border-bottom:5.0pt double;
+    border-left:none;}
+.xl867
+    {
+    font-size:14.0pt;
+    font-weight:700;
+    text-align:center;
+    vertical-align:bottom;
+    white-space:nowrap;
+    border-bottom:5.0pt solid;
+}
+.xl869
+    {
+    font-size:14.0pt;
+    font-weight:700;
+    text-align:center;
+    vertical-align:bottom;
+    border-top:none;
+    border-right:none;
+    border-bottom:none;
+    border-left:none;
+    white-space:nowrap;
+}
+
+.xlall
+    {
+    vertical-align:center;
+    border-top:1.0pt solid;
+    border-right:1.0pt solid;
+    border-bottom:1.0pt solid;
+    border-left:1.0pt solid;
+}
+.akl{
+           test-align:center;
+            }
+</style>
+    </head>    
+    <body>
+<p  style="text-align:center;">PURCHASE AGREEMENT</p>
+<p  style="text-align:center;">売買契約書</p>
+<p  style="margin-left:550px;">NO: [{!Contract.Contract_NO__c} ]<BR/>番号: [{!Contract.Contract_NO__c}]</p>
+
+<p>EXECUTION DATE: {!tt.Month}-{!tt.Day}, {!tt.Year}<br/>
+締結日：[{!tt.Year}]年[{!tt.Month}]月[{!tt.Day}]日</p>
+        
+<p><apex:outputText rendered="{!Contract.Trade_term__c!='CIF'}">SELLER:ジンコソーラージャパン株式会社<br/>売主：ジンコソーラージャパン株式会社</apex:outputText></p>
+<p><apex:outputText rendered="{!Contract.Trade_term__c='CIF'}">SELLER:Zhejiang Jinko Solar Co., Ltd.<br/>売主：浙江晶科能源有限公司
+
+</apex:outputText></p>
+        
+<p>BUYER: [{!buyer.Name}]<br/>
+買主：[{!buyer.Name}]</p>
+
+<p>PAYMENT TERM: See below Article 3.<br/>
+支払い条件については下記の第3条による。</p>
+
+        <p><span style="color:#000000">TRADE T</span><span style="color:#000000">ERM</span><span style="color:#000000">：
+
+</span><span style="color:#000000">{!Contract.Trade_term__c}&nbsp;&nbsp;<apex:outputText rendered="{!Contract.Trade_term__c == 
+
+'EXW'}">{!Contract.Factory__c}</apex:outputText><apex:outputText rendered="{!Contract.Trade_term__c == 'DDP'}">{!
+
+Contract.Destination__c}</apex:outputText></span><span style="color:#000000"></span><span style="color:#000000">&nbsp;in Japan （ under 
+
+Incoterms 2010</span><span style="color:#000000">）<br/>
+取引条件：</span><span style="color:#000000">{!Contract.Trade_term__c}&nbsp;&nbsp;<apex:outputText rendered="{!
+
+Contract.Trade_term__c == 'EXW'}">{!Contract.Factory__c}</apex:outputText><apex:outputText rendered="{!Contract.Trade_term__c == 
+
+'DDP'}">{!Contract.Destination__c}</apex:outputText></span><span style="color:#000000">　</span><span style="color:#000000">（インコタームズ</span><span style="color:#000000">2010</span><span style="color:#000000">による）</span></p>
+
+<p>PURCHASE AGREEMENT DETAILS<br/>
+売買契約の詳細事項</p>
+
+<p><span style="color:#000000">Currency:</span><span style="color:#000000"> </span><span style="color:#000000">{!
+
+Contract.CurrencyIsoCode}<br/>
+            適用される通貨は日本円とする。</span></p>
+
+<table border="1" cellpadding="0" cellspacing="0" style="width:720px;text-align:center;">
+    <tbody>
+        <tr>
+            <td rowspan="2" style="height:10px; width:113px">
+            
+            <strong>Item</strong>
+            項目
+            
+            </td>
+            <td style="height:19px; width:123px">
+            <strong>Goods</strong>
+            商品分類
+            </td>
+            <td colspan="2" style="height:19px; width:142px">
+            <strong>Quantity</strong>数量
+            </td>
+            <td style="height:19px; width:76px">
+            <strong>Unit Price</strong>
+            単価
+            </td>
+            <td style="height:19px; width:76px">
+            <strong>Amoun</strong><strong>t</strong>
+            金額
+            </td>
+            <td rowspan="2" style="height:19px; width:208px">
+            <strong><apex:outputText rendered="{!Contract.Trade_term__c='CIF'}">Expected Time of Shipment from Chinese Main Port<br/>
+                    中国の主要港における船積予定日</apex:outputText>
+                    <apex:outputText rendered="{!Contract.Trade_term__c='DDP'}">Expected Time of Delivery<br/>
+                    引渡予定日</apex:outputText>
+                    <apex:outputText rendered="{!Contract.Trade_term__c='EXW'}">Expected Time to Pick up Goods from Seller’s Warehouse<br/>
+                    売主の倉庫からの商品引取り予定日</apex:outputText>
+             </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:39px; width:123px">
+            <strong>Description</strong>詳細
+            </td>
+            <td style="height:39px; width:57px">
+            <strong>PCS</strong>
+            </td>
+            <td style="height:39px; width:85px">
+            <strong>W</strong>
+            </td>
+            <td style="height:39px; width:76px">
+            <strong>(</strong><strong>{!Contract.CurrencyIsoCode}</strong><strong>/W)</strong>
+            </td>
+            <td style="height:39px; width:76px">
+            <strong>(</strong><strong>{!Contract.CurrencyIsoCode}</strong><strong>)</strong>
+            </td>
+        </tr>
+         <apex:variable var="index" value="{!0}" />
+         <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+         <apex:variable var="index" value="{!index+1}" />
+        <tr>
+            <td style="height:47px; width:113px">
+            {!index}
+            </td>
+            <td style="height:47px; width:123px">
+            {!line.Product_Name__c}
+            </td>
+            <td style="height:47px; width:57px">
+            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText>
+            </td>
+            <td style="height:47px; width:85px">
+            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Total_W__c}"/></apex:outputText>
+            </td>
+            <td style="height:47px; width:76px">
+            {!line.Unit_Price__c}
+            </td>
+            <td style="height:47px; width:76px">
+             <apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText>
+            </td>
+            <td style="height:47px; width:208px">
+                <apex:outputText rendered="{!(line.Guaranteed_Delivery_Date__c = line.Guaranteed_Delivery_Date_japan__c) || ISNULL(line.Guaranteed_Delivery_Date_japan__c)}" > 
+               Estimated Time of Departure<br/>{! TEXT( MONTH(line.Guaranteed_Delivery_Date__c)) & "-" & TEXT(DAY(line.Guaranteed_Delivery_Date__c)) & "-" &  TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) }
+               </apex:outputText>
+               
+               
+               <apex:outputText rendered="{!(line.Guaranteed_Delivery_Date__c!= line.Guaranteed_Delivery_Date_japan__c) && !ISNULL(line.Guaranteed_Delivery_Date_japan__c) }" > 
+               from {! TEXT( YEAR(line.Guaranteed_Delivery_Date__c)) & "-" & TEXT(MONTH(line.Guaranteed_Delivery_Date__c)) & "-" &  TEXT(DAY(line.Guaranteed_Delivery_Date__c)) } to
+              {! TEXT( YEAR(line.Guaranteed_Delivery_Date_japan__c)) & "-" & TEXT(MONTH(line.Guaranteed_Delivery_Date_japan__c)) & "-" &  TEXT(DAY(line.Guaranteed_Delivery_Date_japan__c)) }
+              ,provided that the specific delivery date within aforementioned schedule shall be decided by both Parties at least 14 days in advance.<br/>
+               
+               
+               
+               
+               {! TEXT( YEAR(line.Guaranteed_Delivery_Date__c)) & "年" & TEXT(MONTH(line.Guaranteed_Delivery_Date__c)) & "月" &  TEXT(DAY(line.Guaranteed_Delivery_Date__c))&"日" }
+               から
+               {! TEXT( YEAR(line.Guaranteed_Delivery_Date_japan__c)) & "年" & TEXT(MONTH(line.Guaranteed_Delivery_Date_japan__c)) & "月" &  TEXT(DAY(line.Guaranteed_Delivery_Date_japan__c))&"日" }
+               までの納入とし、当該期間中、各ロット商
+               品の具体的な納期についてはその14日前ま
+               でに双方の合意により決めるものとする。
+               </apex:outputText>
+               <apex:outputText rendered="true" ></apex:outputText>
+            </td>
+        </tr>
+        </apex:repeat>
+<TR style="height:23px; width:113px">
+<TD style="height:23px; width:123px" >Subtotal小計</TD>
+<TD style="height:23px; width:123px" ></TD>
+<TD style="height:23px; width:123px" ></TD>
+<TD style="height:23px; width:123px" ></TD>
+<TD style="height:23px; width:123px" ></TD>
+<TD style="height:23px; width:123px" ><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price__c}"/></apex:outputText></TD>
+<TD style="height:23px; width:123px" ></TD>
+</TR>
+<TR style="height:23px; width:113px">
+<TD style="height:23px; width:123px" >Tax税金</TD>
+<TD style="height:23px; width:123px" ><apex:outputText value="{0, number, #,##0}%" rendered="{!!ISNULL(Contract.Tax_Rate__c)}"><apex:param value="{!Contract.Tax_Rate__c}"/></apex:outputText></TD>
+<TD style="height:23px; width:123px" ></TD>
+<TD style="height:23px; width:123px" ></TD>
+<TD style="height:23px; width:123px" ></TD>
+<TD style="height:23px; width:123px" ><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Tax__c}"/></apex:outputText></TD>
+<TD style="height:23px; width:123px" ></TD>
+</TR>
+        <tr>
+            <td style="height:23px; width:113px">
+            <strong>TOTAL</strong>
+            合計額
+            </td>
+            <td style="height:23px; width:123px">
+            </td>
+            <td style="height:23px; width:57px">
+            
+             <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText>
+            </td>
+            <td style="height:23px; width:85px">
+            <apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Japan_W__c}"/></apex:outputText>
+            </td>
+            <td style="height:23px; width:76px">
+            
+            </td>
+            <td style="height:23px; width:76px">
+            
+             <apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText>
+            </td>
+            <td style="height:23px; width:208px">
+            
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+        <!-- DDP -->
+            <apex:outputPanel rendered="{!Contract.Trade_term__c == 'DDP'}">
+            <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:0pt; width:459pt; font-size:10pt">
+                <tr style="height:17.25pt">
+                    <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; 
+
+border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; 
+
+border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:1pt; padding-left:5.4pt; padding-
+
+right:5.4pt; vertical-align:top; width:459pt">
+                        <p style="margin-left:10pt; text-align:justify; widows:0; orphans:0"><a name="OLE_LINK9"></a><a 
+
+name="OLE_LINK10"></a><a name="OLE_LINK51"><span style="font-family:Calibri; font-size:10pt; color:#000000">Buyer</span><span 
+
+style="font-family:Calibri; font-size:10pt; color:#000000"> requests to use following</span><span style="font-family:Calibri; 
+
+font-size:10pt; color:#000000"> check</span><span style="font-family:Calibri; font-size:10pt; color:#000000">ed truck type for 
+
+transportation to destination. Should no specific type of truck is checked by Buyer, Seller may use any type of truc</span><span 
+
+style=" font-size:10pt; color:#000000">k at its sole discretion. </span><span style="font-family:Calibri; font-size:10pt; 
+
+color:#000000">/</span><span style="font-size:10pt; color:#000000">買主はマークで選択した下記のトラックで</span><span style="font-
+
+size:10pt; color:#000000">対象</span><span style="font-size:10pt; color:#000000">商品を目的地まで運送することを要求する。
+
+</span><span style="font-size:10pt; color:#000000">ただし、買主がトラックの種類を選択してない場合、売主は運送用のトラックの種類を決
+
+める権利を有する。</span></a></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-
+
+color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-
+
+width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:1pt; padding-left:5.4pt; padding-right:5.4pt; 
+
+vertical-align:top; width:230pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000">Common Truck Type</span><span style="font-family:Calibri; font-size:11pt; color:#000000">/</span><span style="font-
+
+size:11pt; color:#000000">汎用</span><span style="font-size:11pt; color:#000000">車種</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-
+
+color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-
+
+width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:229pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000">Special Truck Type</span><span style="font-family:Calibri; font-size:11pt; color:#000000">/</span><span 
+
+style="font-size:11pt; color:#000000">特殊</span><span style="font-size:11pt; color:#000000">車種</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-
+
+color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-
+
+width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:230pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span >4t flatbed truck                     □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-
+
+color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; 
+
+width:229pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span >4t unic truck                                     □</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-
+
+color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-
+
+width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:230pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span>4t wing truck                       □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-
+
+color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; 
+
+width:229pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span >10t unic truck       □</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-
+
+color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-
+
+width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:230pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span >10t flatbed truck                    □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-
+
+color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; 
+
+width:229pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:11pt; color:#000000">　
+
+</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-
+
+color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-
+
+width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:230pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000">10t wing truck                    </span><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000"> </span><span> □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-
+
+color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; 
+
+width:229pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:11pt; color:#000000">　
+
+</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-
+
+color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-
+
+width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:230pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000">20t trailer</span><span style="font-family:Calibri; font-size:11pt; color:#000000">         </span><span 
+
+style="font-family:Calibri; font-size:11pt; color:#000000">    </span><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000">           </span><span style="font-family:Calibri; font-size:11pt; color:#000000"> </span><span 
+
+style="font-family:Calibri; font-size:11pt; color:#000000"> </span><span>□</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-
+
+color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; 
+
+width:229pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:11pt; color:#000000">　
+
+</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-
+
+color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-
+
+width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:230pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000">consolidation truck</span><span style="font-size:11pt; color:#000000">（</span><span style="font-family:Calibri; 
+
+font-size:11pt; color:#000000">only available when the </span><span style="font-family:Calibri; font-size:11pt; 
+
+color:#000000">T</span><span style="font-family:Calibri; font-size:11pt; color:#000000">otal </span><span style="font-
+
+family:Calibri; font-size:11pt; color:#000000">Q</span><span style="font-family:Calibri; font-size:11pt; color:#000000">uantity is 
+
+below 2 pallets</span><span style="font-family:Calibri; font-size:11pt; color:#000000"> </span><span style="font-family:Calibri; 
+
+font-size:11pt; color:#000000">/</span><span style="font-family:Calibri; font-size:11pt; color:#000000"> </span><span style="font-
+
+size:11pt; color:#000000">出荷数が</span><span style="font-family:Calibri; font-size:11pt; color:#000000">2</span><span 
+
+style="font-size:11pt; color:#000000">パレ</span><span style="font-size:11pt; color:#000000">ット</span><span style="font-
+
+size:11pt; color:#000000">未満</span><span style="font-size:11pt; color:#000000">の場合に適用）</span><span style="font-family:宋体
+
+; font-size:11pt; color:#000000">         </span><span>□</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-
+
+color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; 
+
+width:229pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:11pt; color:#000000">　
+
+</span></p>
+                    </td>
+                </tr><!--[if !supportMisalignedColumns]><tr style="height:0pt">
+                    <td style="width:239.3pt; border:none">
+                    </td>
+                    <td style="width:219.7pt; border:none">
+                    </td>
+                </tr><![endif]--></table>
+            </apex:outputPanel>
+
+<ol type="1">
+    <li>The sales between the Seller and the Buyer are subject only to the following terms and conditions as stipulated in this 
+
+Agreement. Any terms and conditions used by Buyer shall not apply. The Goods are Jinko standard modules (Tolerance: 0%~+3%) and 
+
+shall be covered by Limited Warranty (REV. 050114<apex:outputText rendered="{!Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'} || {!Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty'} || {!Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'}">-LINEAR</apex:outputText>) (available on Jinko official website: www.jinkosolar.com) (the &ldquo;Jinko Limited 
+
+Warranty&rdquo;).
+       <br/>売主と買主の間の売買は、本契約に明記された条項および条件のみに従う。買主が使用す
+        る如何なる条項および条件も適用しない。対象商品はJINKO標準モジュールであり（許容誤差
+        を0から3 ％とする）、限定保証書（REV.050114 <apex:outputText rendered="{!
+
+Contract.Warranty_On_Material_and_Workmanship__c='10 linear warranty'} || {!Contract.Warranty_On_Material_and_Workmanship__c='25 linear warranty'} || {!Contract.Warranty_On_Material_and_Workmanship__c='15 linear warranty'}"> －リニア</apex:outputText>）が適用される（ジンコソーラーの
+        オフィシャルウェブサイトで確認できる：<a href="http://www.jinkosolar.com）（「JINKO"
+                              >www.jinkosolar.com）</a>（「JINKO限定保証書」）。<br/>
+       <p>The Goods shall be subject to Jinko Limited Warranty, stipulated in the attached document, provided, however, that Buyer 
+
+acknowledges and agrees that if (and for as long as) Buyer is in breach of its payment obligations hereunder, Seller shall have no 
+
+obligation to comply with Jinko Limited Warranty.
+       <br/>対象商品は別紙のJINKO限定保証書に従って保証されるが、本契約に基づく買主の支払義
+           務に不履行がありその不履行 が治癒されない間は、売主はかかる保証義務を負わないこと
+           を買主は了解し、かつ同意する。</p>
+        
+        The express remedies set forth in this Agreement and in Jinko Limited Warranty by Seller are the sole and exclusive 
+
+remedies for any breach of representation or warranty. 
+        Any other representation or warranties expressed or implied by the Seller, if any, will not be binding, including, without 
+
+limitation, any warranty of non-infringement,
+        merchantability or fitness for a particular purpose.
+        本契約及び売主によるJINKO限定保証書に明示的に定める救済が、売主によるいずれの表明保
+        証違反に対する唯一かつ排他的な救済である。（あるとしても）本契約以外において売主が
+        行った明示的または黙示的な表明保証（これには権利の不侵害、商品性または特定用途への
+        適 合性に関する保証を含むが、これらに限らない。）は、拘束力を持たない。
+        <div>&nbsp;</div>  
+    </li>
+    <li>
+        All supplied Goods remain the Seller&rsquo;s property (reserved property) until the Buyer has paid all outstanding amounts 
+
+payable resulting from their business relationships.<br/>
+        買主が売主との間の取引から生じた支払時期が到来したすべての支払いを行うまで、 売主が
+        供 給したすべての対 象商品は引き続き売主の所 有物である（売主の所有権の保留）。
+        <div>&nbsp;</div>  
+     </li> 
+         
+     <li>[{!Contract.Payment_Term_Description__c}]
+         <div>&nbsp;</div>   
+         Except as agreed otherwise, remittance fees shall be paid by Buyer to its bank directly in addition to the purchase 
+
+price.<br/>
+         別段の定めがある場合を除き、買主は対象商品の代金に加えて、振込手数料を直接その銀行
+         に支払うものとする。
+         <div>&nbsp;</div>    
+         Payment shall be made without any deductions or offset for any reason and will not be considered made until the Seller has 
+
+a credit entry on its bank account.
+         The Buyer will be responsible for any loss and damages incurred by the Seller arising from its failure to pick up the 
+
+Goods timely.<br/>
+         かかる支払いは、いかなる控除または相殺をせずに行うものとし、かつ売主の銀行口座に
+         入金記録が表示されたときに初めて入金がなされたとみなす。 買主は対象商品を適時に受
+         領しなかったために生じた売主の如何 なる損失および損害についても責任を負うものとす
+         る。
+         <div>&nbsp;</div> 
+    </li>    
+    <li>The Seller is entitled to correspondently postpone the transportation and/or the release of Goods in case of any delay in 
+
+payment under this Agreement and
+        /or in case of any delay in payment under other purchase order(s)/agreement(s)/contract(s) between Buyer/Buyer&rsquo;s 
+
+affiliate and Seller/Seller&rsquo;s affiliate.
+        Default interests shall be charged on delayed payment at the rate of 0.04% per day. Buyer shall be charged for any delay in 
+
+picking up Goods at 0.04 % of purchase
+        price of the related Goods per day. In the event that such delay of payment and/or delay of pick-up Goods exceeds one week, 
+
+the Seller is entitled to terminate this
+        Agreement by giving a written notice and retain the payment received （if any）as liquidated damages without prejudice to 
+
+Seller&#39;s other remedies under this Agreement.
+        <br/>本契約における支払遅延がある場合、及び（または）買主もしくはその関連会社と売主
+        もしくはその関連会社との間で締結した 購入注文書、 協議書、契約書における支払遅延が
+        ある場合、 それに応じて、 売主は対象商品の輸送と引渡しを延期することができ、かつ一
+        日あたり支払遅延金額の0.04％の遅延利息を請求する。買主の受領遅滞の場合、一日あたり
+        受領遅滞している対象商品金額の0.04％の遅延利息を支払うものとする。支払遅延及び（ま
+        たは）受領遅滞が一週間を超えた場合、売主は、書面で通知した上で本契約を解除すること
+        ができ、既に受領済みの代金（ある場合）を違約金として保持することができる。なお、こ
+        れらの権利は売主が本契約に基づきその他の救済を受ける権利に何ら影響を及ぼすものでは
+        ない。
+        <div>&nbsp;</div> 
+    </li>
+    
+    <li>If Buyer requests to change the delivery time and/or delivery address after execution of this Agreement,
+        both Parties shall firstly negotiate to reach an agreement for such change as well as related cost. For avoidance of doubt,
+        no change will go into effect unless an amendment is mutually agreed. If both Parties agree to postpone the delivery time, 
+        Seller agrees not to charge additional storage cost for the first ten (10) days of the extension period, and such cost will 
+        be charged starting from the eleventh (11th) day of the extension period.<br/>
+        本契約の締結後、買主が納期及び/又は納入場所の変更を求める場合、両当事者は、当該変更
+        及びそれに関連する費用についてまず合意するものとする。疑義を避けるため、両当事者が共
+        に認める変更合意がない限り、いかなる変更も効力が生じないものとする。両当事者が納期延
+        長に合意した場合、売主は買主に対し、延長期間の最初の10日間については納期延長により生
+        ずる倉庫保管費用を請求せず、延長期間の11日目からは納期延長により生ずる倉庫保管費用を
+        請求する。
+        <div>&nbsp;</div> 
+    </li>
+   
+     <li>Buyer hereby agrees and guarantees that, based on Seller&#39;s Undertaking in connection with the anti-dumping proceedings 
+
+concerning imports of 
+        crystalline silicon photovoltaic modules and key components (i.e. cells) originating in or consigned from the 
+
+People&rsquo;s Republic of China, the Goods 
+        hereunder will not be resold into the European Union. Buyer further understands that breach or any suspected breach of this 
+
+Article is likely to lead to
+        withdrawal of the acceptance of the Undertaking for Seller by the European Commission and Buyer shall be fully responsible 
+
+for all the losses and damages 
+        incurred by Seller arising from such breach or suspected breach.&nbsp;&nbsp;<br/>
+        中国を原産とし、または中国から輸入された太陽光発電用シリコン製品と主要部品（つまり
+         、セル）の輸入に関するアンチダンピング手続に関する売主の承諾に基づき、 買主は対象
+         商品を欧州連合に再販しないことを合意し、かつ保証する。さらに、本条の違反または違
+         反の疑いによって欧州委員会が売主の承諾の受入を取り消す結果を招く おそれがあり、買
+         主は、かかる違反または違反の疑いによって売主が被った一切の損失・損害を賠償する責め
+         を負うことを了解する。
+        <div>&nbsp;</div> 
+    </li>
+    <li>This Agreement shall be construed under and governed by the laws of Japan. Any dispute, controversy or claim arising out of 
+
+or relating to this Agreement,
+    including the existence, validity, interpretation, performance, breach or termination thereof or any dispute regarding non-
+
+contractual obligations arising out 
+    of or relating to it shall be subject to exclusive jurisdiction of Tokyo District Court.<br/>
+    本契約は日本国法に基づき解釈され、同法を準拠法とする。本契約に起因し、もしくは関連する
+        意見の相違、紛争もしくは請求（本契約の存在、効力、解釈、履行、契約違反もしくは終了
+        を含む）、または本契約に起因し、もしくは関連する非契約義務に関する紛争については、
+        東京地方裁判所を専属的合意管轄裁判所とする。
+    <div>&nbsp;</div> 
+    </li>
+    <li>A Party in breach of this Agreement shall be liable to the other Party for all damages and losses arising from that breach. 
+
+However, neither Party shall be 
+    liable for any special, incidental, indirect damages or for any loss of profit, feed-in tariff, subsidies, business, revenue, 
+
+anticipated savings or data and in no
+    event shall the total liability of either party exceed the total purchase price under this Agreement, except where the damage 
+
+and loss is caused by fraud, gross
+    negligence or wilful misconduct by the defaulting Party.<br/>
+    本契約に違反した当事者は、相手方当事者に対してその違反による一切の損害・損失を賠償する。
+    ただし、いずれの当事者も、特別な、付随的な、間接的な損害については賠償の責めを負わない
+        。また、逸失利益、固定価格買取制度、補助金、営業、収益、期待された貯蓄またはデータ
+        の損失についても、賠償の責めを負わない。違反当事者の詐欺、重過失または故 意によって
+        当該損失や損害が発生した場合を除いて、如何なる状況においても、かかる賠償額の合計は
+        、本契約に基づく購入価格の合計を上回らないものとする。
+    <div>&nbsp;</div> 
+    </li>
+    <li>Upon request by the Seller, the Buyer shall collect and furnish to the Seller the pictures and other information related to 
+
+the location and capacity of the project
+     in which the Goods hereunder are to be installed. Buyer hereby grants Seller the right to use such pictures and project 
+
+information in its external promotion activities
+      worldwide.<br/>
+      売主の要請により、買主は、本契約に基づき対象商品が据え置かれる場所や関連プロジェクト
+        の能力に関連する写真やその他の情報を収集し、これを売主に提供するものとする。買主は、
+      かかる写真やプロジェクトに関する情報を全世界での営業活動において用いる権利を売主に付
+        与する。
+      <div>&nbsp;</div> 
+     </li>
+      <li>Neither Party shall be liable for failure to perform its obligations under this Agreement if such failure results from 
+
+circumstances beyond such Party&rsquo;s reasonable
+       control. Therefore, there is no right to claim any indemnification for such a force majeure event which includes fire, 
+
+flood, typhoon, earthquake and other unforeseeable and 
+       unavoidable events.<br/>
+       For avoidance of doubt, the following events are deemed NOT to be &#39;Force Majeure&#39;:<br/>
+          いずれの当事者も、本契約に基づく義務の不履行について、当該不履行が当該当事者の合理
+          的支 配を超える事由により生じたものである場合は責任を負わない。従って、（火災、洪水
+          、台 風、地震その他の予想できず、かつ回避できない事由を含む）不可抗力事由を理由とし
+          て当事者は補償を求める権利を有しない。疑義を避けるため、下記の事由は不可抗力事由と
+          みなさない。
+       <div>&nbsp;</div> 
+       (i)strikes or other employee disturbances affecting any party;<br/>
+       (ii) economic hardship or change of government policies(including change in subsidy, duties and tariffs);<br/>
+       (iii) shortages of manpower;<br/>
+       (i)ストライキまたは当事者に影響を及ぼす従業員の騒乱<br/>
+       (ii)経済情勢悪化または補助金、租税、関税の変更といった政府の方針変更<br/>
+       (iii)人員不足
+       <p>The affected Party will notify the other Party as soon as reasonably practicable but not beyond &nbsp;10 working days 
+
+after the force majeure event occurring, and use reasonable 
+       endeavors to mitigate the effect of the event.<br/>
+       不可抗力事由の影響を受ける当事者は、合理的に速やかに（ただし、不可抗力事由の発生から10
+           業務日を超えない）相手方当事者に通知し、かつその悪影響を軽減する合理的努力を行う。
+       </p>
+       <p>In case, the Force Majeure occurrence continues for a prolonged period more than 10 weeks, then the Seller or the Buyer 
+
+shall have the right to terminate this Agreement.<br/>
+       不可抗力事由の発生が10週間以上の長期間継続する場合、売主または買主は、本契約を解除する
+           ことができる。
+       </p>
+       </li>
+       <li>This Agreement together with its appendix shall constitute the entire agreement of the Parties with respect to the 
+
+subject matter herein, and shall supersede all other prior agreements, 
+       understandings, and negotiations, both written and oral, between the Parties hereto.&nbsp;&nbsp;<br/>
+       本契約およびその別紙は、双方当事者の本契約の主題に関する完全なる合意を構成するものであり
+           、双方当事者間のいかなる事前の書面または口頭によるその他の合意、了承および協議にとっ
+           て代わるものとする。
+       <div>&nbsp;</div> 
+       </li>
+      
+       <li>The Buyer shall purchase all the Goods set forth above and pay the price accordingly, failing of which Buyer shall pay 
+
+14.6% of the total price of unpurchased quantity as liquidated 
+           damages without prejudice to Seller&rsquo;s other remedies under this Agreement.<br/>
+           買主は上述の対象商品のすべてを購入し、その代金を支払うものとし、当該支払いができない
+           場合、未購入分商品総額の14.6％の違約金を支払うものとするが、かかる違約金の支払いは本
+           契約に基づく売主のその他の救済を受ける権利に何ら影響を及ぼすものではない。
+           <div>&nbsp;</div> 
+       </li>
+       <li>This Agreement may be delivered to each Party by facsimile or by email (with the Agreement and signatures imaged in a 
+
+standard format such as PDF or TIF) and such delivery shall be effective 
+           and binding. The Parties acknowledge and agree that after execution and delivery by facsimile or email, additional 
+
+copies of this Agreement may be circulated for signature so that each Party will
+            ultimately retain a fully executed original. The circulation of the additional copies for original signatures shall in 
+
+no way diminish or affect the binding effect of the Agreement previously signed 
+            in counterparts and delivered by facsimile or email.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+
+&nbsp;&nbsp;&nbsp;<br/>
+            本契約は、ファクシミリまたは電子メールで各当事者に送付することができ（PDFまたはTIFの
+           標準フォーマットで契約書および調印の印影を添付）、かかる送付は有効であり、かつ拘束力
+           を有するものとする。双方当事者は、ファクシミリまたは電子メールによる送付を行った後、
+           追加で調印用の写しを回覧し、各当事者が最終的に全ての調印を終えた本契約書原本を保有で
+           きるようにすることを了解し、かつ同意する。かかる追加の調印のための写しの回覧は、いか
+           なる意味でも、それ以前に副本に調印し、かつファクシミリまたは電子メールで送付した本契
+           約の拘束力を弱め、又は影響を及ぼすものではない。
+            <div>&nbsp;</div> 
+       </li>
+       <li>This Agreement shall be executed both in English and Japanese (if any). In the event of any inconsistency or difference 
+
+between the two versions, the English language version shall prevail in all respects.<br/>
+       本契約は、英語および日本語（ある場合）で締結する。両言語の文面に不一致または相違がある場
+           合、英語版があらゆる面において優先する。
+       <div>&nbsp;</div> 
+       </li>
+       <li>
+            <apex:outputText rendered="{!Contract.Trade_term__c!='CIF'}">This Agreement takes effect from the Execution Date specified at the beginning hereof. For avoidance of doubt, this Agreement is not binding on Seller if it's signed solely by Buyer. Seller has right to reject any payment from Buyer that's mうade before this Agreement goes into effect. The Seller shall be entitled to reject this Agreement or postpone the delivery time of Goods if the Buyer doesn't sign and return it within two (2) business days after the Execution Date specified at the beginning hereof.<br/>
+                    本契約は冒頭に記載する締結日から効力を有する。疑義を避けるため、買主だけが調
+                    印したとしても、本契約は売主に対し拘束力を持たない。本契約の発効前においては
+                    、売主は買主からの如何なる支払いについても拒絶する権利を有する。買主が冒頭に
+                    記載する締結日から2営業日以内に本契約に調印し返送しなかった場合、売主は本契
+                    約を拒否し、または該当対象商品の納期を延期する権利を有する。
+                    </apex:outputText>
+            <apex:outputText rendered="{!Contract.Trade_term__c='CIF'}">This Agreement takes effect from the Execution Date specified at the beginning hereof. For avoidance of doubt, this Agreement is not binding on Seller if it's signed solely by Buyer. Seller has right to reject any payment from Buyer that's made before this Agreement goes into effect. The Seller shall be entitled to reject this Agreement or postpone the Expected Time of Shipment if the Buyer doesn't sign and return it within two (2) business days after the Execution Date specified at the beginning hereof．<br/>
+            本契約は冒頭に記載する締結日から効力を有する。疑義を避けるため、買主だけが調印したと
+            しても、本契約は売主に対し拘束力を持たない。本契約の発効前においては、売主は買主から
+            の如何なる支払いについても拒絶する権利を有する。買主が冒頭に記載する締結日から2営業
+            日以内に本契約に調印し返送しなかった場合、売主は本契約を拒否し、または該当対象商品の
+            船積予定日を延期する権利を有する。</apex:outputText>
+        <div>&nbsp;</div> 
+       </li>
+</ol>
+       <p>The recommended signature block is the below:<br/>
+        以下は調印頁である。</p>
+
+<table align="left" border="1" cellpadding="0" cellspacing="0" style="width:100%;">
+    <tbody>
+        <tr>
+            <td style="height:2px; width:168px">
+            <p>Company Name:</p>
+            <p>会社名称：</p>
+            </td>
+            <td style="height:20px; width:274px">
+            <p><apex:outputText rendered="{!Contract.Trade_term__c!='CIF'}">ジンコソーラージャパン株式会社</apex:outputText></p>
+            <p><apex:outputText rendered="{!Contract.Trade_term__c='CIF'}">Zhejiang Jinko Solar Co., Ltd. <br/>浙江晶科能源有限公
+
+司</apex:outputText></p>
+            </td>
+            <td style="height:20px; width:231px">
+            <p>&nbsp;[{!buyer.Name} ]</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:20px; width:168px">
+            <p>Address:</p>
+            <p>住所：</p>
+            </td>
+            <td style="height:20px; width:274px">
+                <p><apex:outputText rendered="{!Contract.Trade_term__c!='CIF'}">東京都中央区日本橋兜町13番2号<br/>
+                    兜町偕成ビル本館9階</apex:outputText></p>
+                <p><apex:outputText rendered="{!Contract.Trade_term__c='CIF'}">No.58 Yuanxi Road, Yuanhua Industrial Park, Yuanhua 
+
+Town, 
+                    Haining City, Zhejiang Province, China<br/>
+                    中国浙江省海宁市袁花鎮袁花工業功能区袁溪路58号</apex:outputText></p>
+            </td>
+            <td style="height:20px; width:231px">
+            <p>[{!Contract.BillingCity}
+            {!Contract.BillingCountry} {!Contract.BillingPostalCode}
+            {!Contract.BillingState}{!Contract.BillingStreet}]</p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="width:442px">
+            <p>Authorized by:　記名捺印：</p>
+            <p>代表取締役 　李仙德　　　　　　&nbsp; 印</p>
+            </td>
+            <td style="width:231px">
+            <p>代表取締役　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 印&nbsp;</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+    </body>
+    
+</apex:page>

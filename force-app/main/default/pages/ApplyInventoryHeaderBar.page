@@ -1,0 +1,6 @@
+<apex:page standardController="Apply_Inventory__c" showHeader="false" sidebar="false" extensions="ApplyInventoryHeaderBarCtrl">
+    <div style="height:30px;"></div>
+    <div style="padding-left:200px;COLOR:RED;">
+        <apex:outputText escape="false" value="Please select a Warehouse!" rendered="{!inv.Warehouse__c == null }" />
+    </div>
+</apex:page>

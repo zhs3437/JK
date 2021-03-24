@@ -1,0 +1,65 @@
+<apex:page standardController="Contract" extensions="ContractTimeCtrl"  showheader="false" sidebar="false">
+
+<div align="center">
+This Contract type is <STRONG>
+<apex:outputtext value="[{0}]." style="BACKGROUND-COLOR:#eeeeff">
+  <apex:param value="{!Contract.recordtype.name}"/>
+</apex:outputText>
+</STRONG><br/>
+
+Opportunity stage is <STRONG>
+<apex:outputtext value="[{0}]." style="BACKGROUND-COLOR:#eeeeff">
+  <apex:param value="{!Contract.Opportunity_Status__c}"/>
+</apex:outputText>
+</STRONG><br/>
+
+    <p   style="display:{!IF(pad=='1' && pid=='1' && region=='ROA' ,'run-in','none')};font-size:8px">你已经可以从系统中打印PAPI。 Print PAPI is ready, please click on button for download PAPI.
+    </p>
+    
+  <div style="display:{!IF( opp.Destination_Country__c!='VietNam','run-in','none')};">
+  <pre align="center" style="font-size:15px ;color:red ;display:{!IF(flag==true && (opp.RecordType.Name!='Japan' && opp.RecordType.Name!='USA') ,'run-in','none')};">您当前是快速流程  This is fast PAPI Procedure</pre>
+<pre align="center" style="font-size:15px ;color:red ;display:{!IF(flag==false && (opp.RecordType.Name!='Japan' && opp.RecordType.Name!='USA') ,'run-in','none')};">您当前非快速流程  This is Normal PAPI Procedure</pre>
+
+    <pre align="center" style="display:{!IF(opp.RecordType.Name=='Japan' || opp.RecordType.Name=='USA'||flag==true,'none','run-in')};color:red"> {!text}</pre>
+
+</div>
+<div style="display:{!IF( opp.Destination_Country__c=='VietNam','run-in','none')};">
+  <pre align="center" style="font-size:15px ;color:red ;display:{!IF((opp.vn_fast__c==true || flag==true) && opp.Total_MW__c<3 ,'run-in','none')};">您当前是快速流程  This is fast PAPI Procedure</pre>
+<pre align="center" style="font-size:15px ;color:red ;display:{!IF(opp.vn_fast__c==false && flag==false ,'run-in','none')};">您当前非快速流程  This is Normal PAPI Procedure</pre>
+
+
+</div>
+   
+<!--
+<span style="BACKGROUND-COLOR:write;color: Green;" >According to company process changing:"Contract Review" will assaign to related "Region head" after you click button [submit for Review] when popup a new Email window</span><br></br>
+<span style="BACKGROUND-COLOR:write;color: Green;" >Please spread this news to your colleage, also each Region head Reviewer can leave your point or comments in "Regional Head" and "Regional Head Comments"</span>
+   -->
+    <apex:form >
+        <apex:outputText style="COLOR:RED;font-size:12.0pt" value="{!UsedTime}" id="counter"/><br/>
+          <apex:actionPoller action="{!incrementCounter}" reRender="counter" />
+</apex:form>
+        <apex:form >
+        <apex:outputText style="COLOR:RED;font-size:18.0pt" value="{!UsedTime1}" id="counter"/><br/>
+<apex:actionPoller action="{!incrementCounter}" reRender="counter" interval="20"/>
+    </apex:form>
+   
+    
+    
+
+
+
+
+<apex:outputtext value="This Contract using [{!Contract.Using_Green_Channel__c}]" 
+    style="BACKGROUND-COLOR:#55ee55" 
+    rendered="{!Contract.Using_Green_Channel__c=='Green Channel'}"/>
+<BR/>
+<STRONG>
+<apex:outputText escape="false" style="COLOR:RED;" value="BankInfo not input!<br/>" rendered="{!Contract.BankInfo__c==null}" />
+<apex:outputText escape="false" style="COLOR:RED;" value="SELLER not select , please select a Seller ! <br/>" rendered="{!Contract.SELLER__c==null}" />
+<apex:outputText escape="false" style="COLOR:RED;" value="Please choose Warranty On Material and Workmanship" rendered="{!Contract.Warranty_On_Material_and_Workmanship__c==null}" />
+<apex:outputText escape="false" style="COLOR:RED;" value="Sinosure Confirmed can not be null" rendered="{!Contract.Sinosure_Confirmed__c==null}" />
+
+
+</STRONG>
+</div>
+</apex:page>

@@ -1,0 +1,238 @@
+<apex:page standardController="contract"  extensions="ContractSummaryforhandoverCtrl" showHeader="false" sideBar="false"  contentType="application/vnd.ms-excel#ContractSummary.xls">
+    <html>
+        <head>
+        </head><p align="center" >
+<b>Contract Summary for handover<br/>
+            </b>
+        </p>
+        <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto">
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Contract No</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Contract_NO__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top" ></TD>
+                    <TD  width="15%"  align="left" vAlign="top" ></TD>
+                    <TD  width="15%"  align="left" vAlign="top" ></TD>
+                    <TD  width="15%"  align="left" vAlign="top" ></TD>
+                </TR>
+                <TR>
+                    <TD  width="15%"  align="left" vAlign="top" bgcolor="#ABABAB">Execution date</TD>
+                    <TD  width="15%"  align="left" vAlign="top">{!con.Print_PA_Date__c} </TD>
+                    <TD  width="15%"  align="left" vAlign="top" ></TD>
+                    <TD  width="15%"  align="left" vAlign="top" ></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  ></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  ></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <br/>
+        <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Sales Manager (Sales 1)</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">%</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Sales 2</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">%</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Sales 3</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">%</TD>
+                </TR>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Sales_1__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Sales_1_percentage__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Sales_2__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Sales_2_percentage__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Sales_3__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Sales_3_percentage__c}</TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <br/>
+       <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Seller</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.SELLER__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                </TR>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Buyer</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.BuyerAccount__r.name}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                </TR>
+                <TR  >
+                    <TD  width="45%"  align="left" vAlign="top"  bgcolor="#ABABAB">Incoterms</TD>
+                    <TD  width="45%"  align="left" vAlign="top"  >{!con.Trade_term__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  >{!con.Destination__c}</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <br/>
+       <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="45%"  align="left" vAlign="top"  bgcolor="#ABABAB">Product details</TD>
+                    <TD  width="45%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Product Name</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Power</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">PCS</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">W</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Price</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">GDD</TD>
+                </TR>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">[product]</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">[Maximum Power at STC(Pmax)(Wp)] from product</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">[quantity]</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">[Total W]</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">[sales price]</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">[Guaranteed Delivery Date]</TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <br/>
+        <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Payment details</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                </TR>
+                <TR  >
+                    <TD  width="90%"  align="left" vAlign="top" >{!con.Payment_Term_Description__c}</TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <br/>
+        <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">History</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                </TR>
+                <TR  >
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <br/>
+        <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Special Demands</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                </TR>
+                <TR  >
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+        <br/>
+        <div style="text-align: center;">
+        <TABLE border="0" width="90%;" align="center"  style="border-collapse:collapse;border: solid black;table-layout:fixed;margin: auto"  >
+            <TBODY>
+                <TR  >
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Contact Persons</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Name</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">eMail</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">Phone</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB">other</TD>
+                    <TD  width="15%"  align="left" vAlign="top"  bgcolor="#ABABAB"></TD>
+                </TR>
+                <TR  >
+                    <TD  width="90%"  align="left" vAlign="top"  bgcolor="#ABABAB">Order execution</TD>
+                    <TD  width="90%"  align="left" vAlign="top" >[Authorized Representative]</TD>
+                    <TD  width="90%"  align="left" vAlign="top" >[Email]</TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+                <TR  >
+                    <TD  width="90%"  align="left" vAlign="top"  bgcolor="#ABABAB">Logistics</TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+                <TR  >
+                    <TD  width="90%"  align="left" vAlign="top"  bgcolor="#ABABAB">Payment </TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+                <TR  >
+                    <TD  width="90%"  align="left" vAlign="top"  bgcolor="#ABABAB">Technical</TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                    <TD  width="90%"  align="left" vAlign="top" ></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+            </div>
+    </html>
+</apex:page>

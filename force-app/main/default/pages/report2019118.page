@@ -1,0 +1,39 @@
+<apex:page showHeader="false" sidebar="false"  >
+                                        <body style="background:#CADEF1;">
+<apex:messages style="font-size:20px;"/>
+                                          <apex:image value="{!$Resource.logo}"></apex:image>
+<apex:form style="background:#CADEF1;">
+<p style="font-size:25px;">Please select system: </p>
+<div  align="center">
+<apex:commandButton style="margin-left:50px;font-size:25px;" value="ERP(SAP) System" oncomplete="gotoPage1()"/>
+<apex:commandButton value=" OA System" style="margin-left:50px;font-size:25px;" oncomplete="gotoPage2()"/>
+<apex:commandButton value="Concur System" style="margin-left:50px;font-size:25px;" oncomplete="gotoPage3()"/> 
+<apex:commandButton value="Cloud disk" style="margin-left:50px;font-size:25px;" oncomplete="gotoPage4()"/> 
+<apex:commandButton value="CRM System" style="margin-left:50px;font-size:25px;" oncomplete="gotoPage5()"/>
+</div>
+</apex:form>
+                                            <p align="right">
+<apex:image value="{!$Resource.salesforcelogo}"></apex:image>
+                                            </p>
+<script>
+function Close(){
+    window.top.close();
+}       
+function gotoPage1(){
+        window.location.href = '/apex/reportDetail?tp=SAP&num=1'; 
+    }
+    function gotoPage2(){
+        window.location.href = '/apex/reportDetail?tp=OA&num=1'; 
+    }
+    function gotoPage3(){
+        window.location.href = '/apex/reportDetail?tp=Concur&num=1'; 
+    }
+        function gotoPage4(){
+        window.location.href = '/apex/reportDetail?tp=Cloud&num=1'; 
+    }
+                                            function gotoPage5(){
+        window.location.href = '/apex/reportDetail?tp=CRM&num=1'; 
+    }
+</script>
+                                                                                 </body>
+</apex:page>

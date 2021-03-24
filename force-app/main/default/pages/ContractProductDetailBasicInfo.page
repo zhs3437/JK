@@ -1,0 +1,65 @@
+<apex:page standardController="contract" cache="true" extensions="ContractProductDetailBasicInfoCtrl" 
+    showHeader="false" sideBar="false"  id="ProdPage" docType="html-5.0">
+  <apex:form id="Prodform" >
+  <apex:inputHidden value="{!ProductEditID}" id="ProdId" />
+  <apex:pageBlock >
+  <apex:pageMessages />  
+    <apex:pageBlockTable id="ProdPage" var="prod" rules="rows"  value="{!prodList}" title="PROD" cellpadding="0" cellspacing="0" border="0" width="200%">
+        <apex:column headerValue="Action"  width="250px" >
+        <apex:commandButton action="{!editTheProduction}"  value="Modify"  reRender="ProdPage"  onclick="reload('{!prod.id}');">
+        </apex:commandButton> 
+        <apex:commandButton action="{!saveTheProduction}" value="Save"  reRender="Prodform"  oncomplete="returnPage();" >
+        <apex:outputText value=" | "/> 
+        </apex:commandButton>  
+        <apex:commandButton action="{!cancelTheProduction}" value="Cancel"  reRender="Prodform"  oncomplete="returnPage();" >
+        <apex:outputText value=" | "/>
+        </apex:commandButton> 
+        </apex:column>
+        <apex:column headerValue="Product Name" style="width: 30px">
+            <apex:OutputLink target="_parent" value="/{!prod.id}">{!prod.Product_Detail__r.name}</apex:OutputLink>
+        </apex:column>
+        <apex:column headerValue="Quantity" >
+                <apex:inputField value="{!prod.Quantity__c}" style="width: 30px" rendered="{!IF(ProductEditID == prod.id,true,false)}"/>
+                <apex:outputField value="{!prod.Quantity__c}" rendered="{!IF(ProductEditID == prod.id,false,true)}" >
+                </apex:outputField>
+        </apex:column>
+        <apex:column headerValue="Total MW">
+                <apex:outputField value="{!prod.Total_MW__c}" rendered="{!IF(ProductEditID == prod.id,false,true)}" >
+                </apex:outputField>  
+        </apex:column>
+       <apex:column headerValue="Requested Ex-work date">
+                <apex:inputField value="{!prod.Expected_ex_Work_Date__c}" style="width: 100px" rendered="{!IF(ProductEditID == prod.id,true,false)}"/>
+                <apex:outputField value="{!prod.Expected_ex_Work_Date__c}" rendered="{!IF(ProductEditID == prod.id,false,true)}" >
+                </apex:outputField>
+        </apex:column>
+		<apex:column headerValue="Expected ETD">
+                <apex:inputField value="{!prod.Expected_ETD__c}" style="width: 100px" rendered="{!IF(ProductEditID == prod.id,true,false)}"/>
+                <apex:outputField value="{!prod.Expected_ETD__c}" rendered="{!IF(ProductEditID == prod.id,false,true)}" >
+                </apex:outputField>
+        </apex:column>
+        <apex:column headerValue="Remarks">
+                <apex:inputField value="{!prod.Remarks__c}" style="width: 200px" rendered="{!IF(ProductEditID == prod.id,true,false)}"/>
+                <apex:outputField value="{!prod.Remarks__c}" rendered="{!IF(ProductEditID == prod.id,false,true)}" >
+                </apex:outputField>        
+        </apex:column>
+    </apex:pageBlockTable>
+     <apex:pageBlockButtons >
+        <apex:commandButton style="vertical-align:middle;" value="Back"  reRender="Prodform" onclick="returnPageToContract();">
+        </apex:commandButton>
+    	</apex:pageBlockButtons>         
+   </apex:pageBlock>
+</apex:form>      
+<script> 
+     function reload(id){
+        var ProdId = document.getElementById("ProdPage:Prodform:ProdId");
+        ProdId.value=id;
+        }
+        
+	function returnPage(){
+        window.location.href= "https://cs6.salesforce.com/apex/ContractProductDetailBasicInfo?id="+"{!contract.Id}";
+        }
+	function returnPageToContract(){
+        window.location.href= "https://cs6.salesforce.com/"+"{!contract.Id}";
+        }
+</script>   
+</apex:page>

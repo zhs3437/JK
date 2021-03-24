@@ -1,0 +1,26 @@
+<apex:page standardController="Amendment__c" showHeader="false" sidebar="false" 
+				extensions="AmendReview" >
+<apex:form >
+  <apex:pageBlock >
+		<apex:pageMessages />
+     <apex:pageBlockButtons >
+         <apex:commandButton value="Send Remind Mail" action="{!sendMail}"/>
+         <apex:commandButton value="Close" onclick="self.close();"/> 
+         <apex:commandButton rerender="thePageBlock" status="RefreshStatus" value="Select All" action="{!SelectAll}" />
+         <apex:commandButton rerender="thePageBlock" status="RefreshStatus" value="UnSelect All" action="{!UnselectAll}" />
+     </apex:pageBlockButtons>
+     
+     <apex:outputPanel id="thePageBlock" >
+	     <apex:pageBlockTable value="{!ReviewLst}" var="approver">
+	  			<apex:column >
+						<apex:inputCheckbox value="{!approver.IsChecked__c}"/>
+				</apex:column>
+	     		<apex:column headervalue="Name"  value="{!approver.uName__c}"/>
+	     		<apex:column headervalue="Email" value="{!approver.Email__c}"/>    
+	     		<apex:column headervalue="Department" value="{!approver.Role__c}"/>            
+	     </apex:pageBlockTable>
+	     <apex:actionStatus id="RefreshStatus" starttext="In Processing..." />
+     </apex:outputPanel>
+  </apex:pageBlock>
+</apex:form>
+</apex:page>

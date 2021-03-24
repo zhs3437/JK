@@ -1,0 +1,122 @@
+<apex:page standardcontroller="Quote" extensions="QuoteModelController" renderAs="PDF" sidebar="false" showheader="false" applyHtmlTag="false" 
+           standardstylesheets="false">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="Content-Style-Type" content="text/css" /> 
+        <style type="text/css">
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+            body {  widows:0; orphans:0; font-family: Arial Unicode MS; font-size:10pt }
+            p { margin:0pt }
+        </style>
+    </head>
+    <body width="100%"  style="border-collapse: collapse; font-size:10.0pt;">
+        <table border="0" width="100%"  style="border-collapse: collapse;margin:10pt auto;">
+            <thead>
+                <tr>
+                    <td  valign="top" width="50%">
+                        <apex:image width="179px" height="75px" value="https://c.ap4.visual.force.com/resource/1515662143000/logo"/>
+                    </td>
+                    <td style="text-align: right" width="50%">
+                        www.jinkosolar.eu
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr >
+                    <td style="width:70%;text-align:left;font-size:7pt">JinkoSolar GmbH | Freisinger Str. 9 | 85716 Unterschleißheim | Germany</td>
+                    <td style="width:30%;text-align:right;font-size:8pt">{!q.QuoteNumber}</td>
+                </tr>
+                <tr>
+                    <td style="width:70%;text-align:left;font-size:10pt">{!q.Account.Name}</td>
+                    <td style="width:30%;text-align:right;font-size:8pt">{!q.name}</td>
+                </tr>
+                <tr>
+                    <td style="width:70%;text-align:left;font-size:10pt">FAO {!q.EUContactName__r.FirstName}&nbsp;{!q.EUContactName__r.LastName}</td>
+                    <td style="width:30%;text-align:right;font-size:8pt">{!q.Opportunity.Name}</td>
+                </tr>
+                <tr>
+                    <td style="width:70%;text-align:left;font-size:10pt">{!Quote.Account.BillingStreet}<br/>
+                        {!Quote.Account.BillingPostalCode}&nbsp;{!Quote.Account.BillingCity}<br/>
+                        {!Quote.Account.BillingCountry }<br/></td>
+                    <td style="width:30%;text-align:right;font-size:10pt"> Date: {! CASE( MONTH(tod), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " & TEXT(DAY(tod)) & ", " &  TEXT(YEAR(tod)) }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size:10pt">
+            <apex:outputText rendered="{!o.Project__c != null}">Quote {!o.Project__r.name}
+            </apex:outputText>
+        </p><br/>
+        <p style="font-size:10pt">
+            Dear {!q.EUContactName__r.Salutation}&nbsp;{!q.EUContactName__r.LastName},
+        </p><br/>
+        <p style="font-size:10pt">
+            Thank you very much for your interest in photovoltaic modules from JinkoSolar. We are very happy to submit the following quotation in the name of  {!o.Seller__c}.     
+        </p>
+        <br/>
+        <!--业务机会产品 repeat -->
+        <table border="1" width="100%"  style="border-collapse: collapse;margin:10px auto;font-size:10pt">
+            <tr>
+                <td>Product</td>
+                <td>MW (total)</td>
+                <td>Delivery</td>
+                <td>Incoterm</td>
+                <td>Price/Wp</td>
+            </tr>
+            <apex:repeat value="{!QuoteItemLst}" var="line" >
+                <tr>
+                    <td>{!line.Product2.Name}</td>
+                    <td>{!line.Total_MW__c}</td>
+                    <td>{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) & " " & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "")  }</td>
+                    <td>{!line.Incoterms__c}</td>
+                    <td>{!line.UnitPrice} {!Quote.CurrencyIsoCode}</td>
+                </tr>
+            </apex:repeat>
+        </table><br/>
+        <table border="0" width="100%"  style="border-collapse: collapse;margin:10pt auto;">
+            <tr>
+                <td width="20%">Trade Term: </td><td>{!o.Trade_Term__c},&nbsp;{!o.delivey_point__c},&nbsp;{!Quote.incoterm_version__c}</td>
+            </tr>
+            <tr>
+                <td valign="top">Payment Terms:</td><td valign="top">{!o.Payment_Term_Description__c}</td>
+            </tr>
+            <tr>
+                <td>Technical Specification:</td><td>Please see attached data sheet</td>
+            </tr>
+            <tr>
+                <td>Quote validity: </td><td>{! TEXT(DAY(Quote.Validity_Of_The_Offer__c)) & "." &" "& CASE( MONTH(Quote.Validity_Of_The_Offer__c), 1, "January",2, "February",3, "March", 4, "April", 5, "May", 6, "June",7, "July",8, "August", 9, "September",10, "October",11, "November", 12, "December", "") & " " &   TEXT(YEAR(Quote.Validity_Of_The_Offer__c)) }</td>
+            </tr>
+            <tr>
+                <td valign="top"><apex:outputText rendered="{! q.Additional_Request__c != null }">Additional Request:</apex:outputText></td><td valign="top"> <apex:outputText rendered="{! q.Additional_Request__c != null }"> {!q.Additional_Request__c} </apex:outputText></td>
+            
+            </tr>
+        </table>
+        <br/>
+        <p>
+         This quotation should be confidential and can’t be revealed to any third party. All data are not binding. Our offers are without obligation and subject to a written contract stipulating all contractual terms signed by both parties. Any orders are only binding if confirmed by us in writing.        </p>
+        <br/>
+        <p>
+            We are looking forward to work with {!q.Account.Name} on this project!
+        </p>
+        <br/>
+        <p>
+            {!user.name} <br/> 
+            {!user.Title} | {!user.Email} | {!user.Phone}
+        </p>
+        <br/>
+        <p style='font-size:10px'>JinkoSolar GmbH</p>
+        <p style='font-size:10px'>Freisinger Str.9 &nbsp;  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;Managing Director: Xiande &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; WEEE Registration Numbers:</p>
+        <p style='font-size:10px'>85716 Unterschleißheim  &nbsp;  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;Principal Office: Unterschleißheim, Landkreis München&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;UK : WEE / MM2261AA</p>
+        <p style='font-size:10px'>Germany&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;Commercial Register :Amtsgericht München, HRB 184976&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;  DE : 26287070 (Stiftung EAR)</p>
+        <p style='font-size:10px'>Tel: + 49 89 1433246-0&nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;VAT-No:DE271823389&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;FR: FR 023708 | PT: PT101067</p>
+        <p style='font-size:10px'>Fax: + 49 89 1433246-29 &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;Tax-ID:143/152/21073&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; IE:2605W | IT:IT19080000011627</p>
+        <p style='font-size:10px'>eMail:germany@jinkosolar.com&nbsp;&nbsp; &nbsp; &nbsp;EORI:DE7765053&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;&nbsp;&nbsp; NL:www.nationaalweeeregister.nl</p>
+        <p style='font-size:10px'></p>
+    </body>
+</apex:page>

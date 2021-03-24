@@ -1,0 +1,636 @@
+<apex:page docType="html-5.0" showHeader="false" applyHtmlTag="false" standardStylesheets="false" applyBodyTag="false" sidebar="false"
+  controller="QW_FormDetailController" action="{!verify}">
+
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:v-model="http://www.w3.org/1999/vue"
+    xmlns:v-bind="http://www.w3.org/1999/vue" xmlns:v-on="http://www.w3.org/1999/vue">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>项目详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-orientation" content="portrait" />
+    <!-- Import the Design System style sheet -->
+    <apex:slds />
+
+    <van-number-keyboard safe-area-inset-bottom="true" />
+  </head>
+
+  <body>
+    <div id="container" class="container" v-cloak="true" style="position: absolute;overflow: hidden;">
+      <div class="weui-tab">
+        <div class="tab-header slds-scope slds-grid" ref="header">
+          <div class="slds-col slds-size_1-of-1 slds-card" style="border: none;">
+            <div class="slds-p-around_small">
+              <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                  <span class="slds-icon_container slds-icon-standard-account" title="account">
+                  </span>
+                </div>
+                <div class="slds-media__body slds-p-right_small">
+                  <div class="slds-card__header-title">
+                    <span v-if="action == 'new'">新建项目</span>
+                    <span v-if="action != 'new'">项目详情</span>
+                  </div>
+                </div>
+                <div class="slds-no-flex" v-show="form != null">
+                  <!-- <button class="slds-button slds-button_neutral" v-show="form && form.Id" v-on:click="deleteForm">删除</button> -->
+                  <button class="slds-button slds-button_neutral" v-on:click="update()" v-bind:disabled="button.disable">保存</button>
+                </div>
+              </header>
+            </div>
+          </div>
+        </div>
+        <div class="weui-tab__bd">
+          <!-- TODO : project field list -->
+          <div class="weui-tab__panel" v-if="search.status === false" v-bind:style="'height:' + (window.screen.height - 135) + 'px'">
+            <div v-show="errMsg != ''" style="padding:5px; font-size: small; color: red;">
+              {{ errMsg }}
+            </div>
+            <div class="weui-cells__title">大区客户</div>
+            <div class="weui-cells">
+              <div v-bind:class="['weui-search-bar', form.RegionAccount__r != null ? 'weui-search-bar_focusing' : '']" id="search-bar"
+                style="z-index: 0">
+                <form class="weui-search-bar__form">
+                  <div class="weui-search-bar__box" style="height: 30px;">
+                    <i class="weui-icon-search"></i>
+                    <input type="text" readonly="true" class="weui-search-bar__input" v-bind:value="form.RegionAccount__r != null ? form.RegionAccount__r.Name : null"
+                      v-on:click="search_click()" />
+                    <a href="javascript:void(0);" class="weui-icon-clear" v-on:click="form.RegionAccount__c = '';form.RegionAccount__r = null"
+                    />
+                  </div>
+                  <label class="weui-search-bar__label" v-on:click="search_click()" style="transform-origin: 0px 0px; opacity: 1; transform: scale(1, 1);">
+                    <i class="weui-icon-search"></i>
+                    <span>搜索</span>
+                  </label>
+                </form>
+              </div>
+            </div>
+            <div class="weui-cells__title">项目名称</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.Name" />
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">主要投资方</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.MajorInvestor__c" />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="weui-cells__title">项目代码</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.ProjectCode__c" />
+                </div>
+              </div>
+            </div> -->
+            <div class="weui-cells__title">项目类型</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.ProjcetType__c" />
+                  <!--<van-popup v-model="show.type" position="bottom">
+                    <van-picker title="项目类型" 
+                                show-toolbar="true"
+                                v-bind:columns="columns.type"
+                                v-on:confirm="confirm_type"
+                                v-on:cancel="show.type = false"/>
+                  </van-popup>-->
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">项目地点</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.ProjectPlace__c" />
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">项目业主</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.ProjectOwner__c" />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="weui-cells__title">可能性</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" readonly="true" v-model="form.Probability__c" v-on:click="show.probability = true" />
+                  <van-popup v-model="show.probability" position="bottom">
+                    <van-picker title="可能性" 
+                                show-toolbar="true"
+                                v-bind:columns="columns.probability"
+                                v-on:confirm="confirm_probability"
+                                v-on:cancel="show.probability = false"/>
+                  </van-popup>
+                </div>
+              </div>
+            </div> -->
+            <div class="weui-cells__title">项目容量（万千瓦）</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="number" v-model="form.ProjectCapacity__c" />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="weui-cells__title">计划（申报）投产时间</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" readonly="true" v-model="form.ProductionTime__c" v-on:click="show.product_date = true"/>
+                  <van-calendar v-model="show.product_date" 
+                                v-on:confirm="confirm_product_date" 
+                                v-bind:show-confirm="false"
+                                color="#0070d2" />
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="weui-cells__title">补贴竞价申报上网电价（元/千瓦时）</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="number" v-model="form.ElectricityPrice__c" />
+                </div>
+              </div>
+            </div> -->
+            <div class="weui-cells__title">EPC</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.EPC__c" />
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">重要级</div>
+            <!-- <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.ImportantLevel__c" />
+                </div>
+              </div>
+            </div> -->
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" readonly="true" v-model="form.ImportantLevel__c" v-on:click="show.ImportantLevel = true" />
+                  <van-popup v-model="show.ImportantLevel" position="bottom">
+                    <van-picker title="重要级" 
+                                show-toolbar="true"
+                                v-bind:columns="columns.ImportantLevel"
+                                v-on:confirm="confirm_ImportantLevel"
+                                v-on:cancel="show.ImportantLevel = false"
+                                get-container="body"/>
+                  </van-popup>
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">组件类型</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.ComponentType__c" />
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">组件供货厂家</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" v-model="form.ComponentSupplier__c" />
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">是否已建成</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" readonly="true" type="text" v-model="form.IsDone__c" v-on:click="show.isdone = true"/>
+                  <van-popup v-model="show.isdone" position="bottom">
+                    <van-picker title="是否已建成" 
+                                show-toolbar="true"
+                                v-bind:columns="columns.isdone"
+                                v-on:confirm="confirm_isdone"
+                                v-on:cancel="show.isdone = false"
+                                get-container="body"/>
+                  </van-popup>
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">预计建成时间</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" readonly="true" type="text" v-model="form.Planned_Project_Close_Date__c" v-on:click="show.complete_date = true"/>
+                  <van-calendar v-model="show.complete_date" 
+                                v-on:confirm="confirm_complete_date" 
+                                v-bind:show-confirm="false"
+                                color="#0070d2" 
+                                v-on:close="hideTabBar = false"
+                                get-container="body"/>
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">已安装量（MW）</div>
+            <div class="weui-cells">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="number" v-model="form.InstalledQuantity__c" />
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title">备注（项目进展/业务介入情况）</div>
+            <div class="weui-cells weui-cells_form">
+              <div class="weui-cell">
+                <div class="weui-cell__bd">
+                  <textarea class="weui-textarea" rows="3" v-model="form.Remarks__c" ></textarea>
+                </div>
+              </div>
+            </div>
+            <div style="height: 4rem">
+
+            </div>
+          </div>
+          <div class="weui-tab__panel search-records__list" v-else-if="search.status === true" v-bind:style="'padding-bottom: 4rem; height: ' + (window.screen.height - 60) + 'px'">
+            <div class="weui-search-bar weui-search-bar_focusing" id="search_project" style="top: 0">
+              <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                  <i class="weui-icon-search"></i>
+                  <input type="search" class="weui-search-bar__input" placeholder="搜索" v-on:input="search_input()" v-model="search.input_account"
+                    v-bind:value="search.input_account" />
+                  <a href="javascript:void(0);" v-on:click="search.input_account = ''" class="weui-icon-clear"></a>
+                </div>
+              </form>
+              <a href="javascript:void(0);" class="weui-search-bar__cancel-btn" v-on:click="search_cancel()">取消</a>
+            </div>
+            <div class="weui-cells" style="margin-top: 0">
+              <a v-for="account in accounts" class="weui-cell weui-cell_access" v-on:click="choose(account)" href="#">
+                <div class="weui-cell__bd">
+                  <p>{{ account.Name }}</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="tab-footer slds-scope" v-if="!hideTabBar">
+          <div class="weui-tabbar slds-p-vertical_small">
+            <a href="" v-on:click="redirectTab('#tab1')" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">省份</p>
+            </a>
+            <a href="" v-on:click="redirectTab('#tab2')" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">项目</p>
+            </a>
+            <!--<a href="#tab3" class="weui-tabbar__item">
+              <p style="font-size: initial;" class="weui-tabbar__label">报表</p>
+            </a>-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui-for-work.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/weui.min.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/jquery-weui.min.css')}" />
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/jquery-ui.min.css')}" /> -->
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/QW_GlobalStyle.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.QW, 'css/vant.css')}" />
+    <!-- <apex:includeScript value="{!URLFOR($Resource.QW, 'js/weui.min.js')}" /> -->
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/lodash.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery.min.js')}" />
+    <!-- <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery-ui.min.js')}" /> -->
+    <!-- <apex:includeScript value="{!URLFOR($Resource.QW, 'js/jquery-weui.min.js')}" /> -->
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/vue.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.QW, 'js/vant.min.js')}" />
+
+    <script>
+      var Toast = vant.Toast;
+      var Dialog = vant.Dialog;
+      var required_fields = [
+        "RegionAccount__c",
+        //"Probability__c",
+        "Planned_Project_Close_Date__c",
+        "ImportantLevel__c",
+        //"Priority__c",
+        "InstalledQuantity__c",
+        "ProjcetType__c",
+        "Name",
+        "IsDone__c",
+        "Remarks__c",
+        "ProjectPlace__c",
+        "ProjectOwner__c",
+        //"ProjectCode__c",
+        "ProjectCapacity__c",
+        //"ProductionTime__c",
+        "MajorInvestor__c",
+        "EPC__c",
+        //"ElectricityPrice__c",
+        "ComponentType__c",
+        "ComponentSupplier__c"];
+
+      var match = {
+        "IsDone__c":{"是": "Yes", "否": "No"},
+        //"Priority__c":{"高": "Hot", "中": "Warm", "低": "Cold"},
+        "ProjcetType__c":{}
+      }
+    
+      var vm = new Vue({
+        el: "#container",
+        data: function () {
+          return {
+            data: {},
+            accounts: [],
+            search: {
+              status: false,
+              input_account: ""
+            },
+            button: {
+              disable: false
+            },
+            form: {},
+            id: getUrlParam("id"),
+            userId: getUrlParam("userId"),
+            action: getUrlParam("action"),
+            errMsg: "",
+            hideTabBar: false,
+            show: {
+              product_date: false,
+              //probability: false,
+              ImportantLevel: false,
+              type: false,
+              complete_date: false,
+              isdone: false
+            },
+            columns: {
+              //priority: ["高", "中", "低"], // TODO
+              //probability: ["0%", "25%", "50%", "75%", "100%"],
+              //type: ["Rooftop","Lighting","Floating","Ground-mounted","Solar Water Pumps"],
+              isdone: ["是", "否"], // TODO
+              ImportantLevel :["A","B","C"]
+            },
+          }
+        },
+        created: function () {
+          var that = this;
+          var nowStamp = _.now();
+          Toast.loading({
+            forbidClick: true,
+            duration: 0
+          });
+
+          if (that.iOS()) {
+            document.body.addEventListener('focusin', function () {
+              //软键盘弹出的事件处理
+              that.hideTabBar = true
+            })
+            document.body.addEventListener('focusout', function () {
+              //软键盘收起的事件处理
+              that.hideTabBar = false
+            })
+          } else {
+            var originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            window.onresize = function () {
+              //键盘弹起与隐藏都会引起窗口的高度发生变化
+              var resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
+              if (resizeHeight - 0 < originalHeight - 0) {
+                that.hideTabBar = true
+              } else {
+                that.hideTabBar = false
+                if (that.$refs.header.scrollIntoViewIfNeeded) {
+                  that.$refs.header.scrollIntoViewIfNeeded()
+                } else if (that.$refs.header.scrollIntoView) {
+                  that.$refs.header.scrollIntoView()
+                }
+              }
+            }
+          }
+
+          if (that.action != "new") {
+            QW_FormDetailController.getForm(JSON.stringify({ userId: that.userId, id: that.id }), function (result, event) {
+              if (event.statusCode == 200) {
+                if (result.status === "success") {
+                  that.form = result.data;
+                  // that.form.ProductionTime__c = that.form.ProductionTime__c != null ? 
+                  //   new Date(that.form.ProductionTime__c).Format("yy-MM-dd") : "";
+                  that.form.Planned_Project_Close_Date__c = that.form.Planned_Project_Close_Date__c != null ?
+                    new Date(that.form.Planned_Project_Close_Date__c).Format("yy-MM-dd") : "";
+                } else {
+                  window.location.href = "/apex/QW_Error?msg=" + result.msg;
+                }
+              } else {
+                window.location.href = "/apex/QW_Error?msg=" + event.message;
+              }
+            });
+          } else {
+            that.$nextTick().then(function(){
+              //that.form.ProductionTime__c = new Date(nowStamp).Format("yy-MM-dd");
+              that.form.Planned_Project_Close_Date__c = new Date(nowStamp).Format("yy-MM-dd");
+            });
+          }
+
+          QW_FormDetailController.getAccounts(function (result, event) {
+            if (result != null) {
+              that.data.accounts = result;
+              that.accounts = result;
+            }
+          });
+        },
+        mounted: function () {
+          Toast.clear();
+        },
+        methods: {
+          iOS: function () {
+            var iDevices = [
+              'iPad Simulator',
+              'iPhone Simulator',
+              'iPod Simulator',
+              'iPad',
+              'iPhone',
+              'iPod'
+            ];
+
+            if (!!navigator.platform) {
+              while (iDevices.length) {
+                if (navigator.platform === iDevices.pop()) { return true; }
+              }
+            }
+
+            return false;
+          },
+          update: function () {
+            var that = this;
+            Toast.loading({
+              forbidClick: true,
+              duration: 0
+            });
+            // that.button.disable = true;
+            var flag = that.check();
+            if (!flag) {
+              Dialog.alert({
+                title: '提示',
+                message: '存在未填写项',
+              })
+              // that.errMsg = "存在未填写项";
+              // that.button.disable = false;
+              Toast.clear();
+              return;
+            }
+            QW_FormDetailController.setForm(JSON.stringify({ action: that.action, userId: that.userId, id: that.id, form: that.form }), function (result, event) {
+              if (event.statusCode == 200) {
+                if (result.status === "success") {
+                  // alert("保存成功");
+                  Toast.success({
+                    message: "保存成功",
+                    closeOnClick: true,
+                    forbidClick: true,
+                    duration: 0
+                  });
+                  window.location.href = "/apex/QW_FormDetail?userId=" + that.userId + "&id=" + result.id;
+                } else {
+                  window.location.href = "/apex/QW_Error?msg=" + result.msg;
+                }
+              } else {
+                that.errMsg = event.message;
+                that.button.disable = false;
+              }
+            });
+          },
+
+          check: function () {
+            var that = this;
+            for (var field of required_fields) {
+              if (_.isNil(that.form[field])) return false;
+            }
+            //that.form["ImportantLevel__c"] = match["ImportantLevel__c"][that.form["ImportantLevel__c"]];
+            that.form["IsDone__c"] = match["IsDone__c"][that.form["IsDone__c"]];
+            // that.form["ProjcetType__c"] = match["ProjcetType__c"][that.form["ProjcetType__c"]];
+            return true;
+          },
+
+          search_input: _.debounce(function () {
+            var that = this;
+            var temp = [];
+            that.data.accounts.forEach(account => {
+              if (account.Name.includes(that.search.input_account)) temp.push(account);
+            });
+            that.accounts = temp;
+          }, 500),
+
+          search_click: function () {
+            var that = this;
+            that.search.input_account = "";
+            that.accounts = that.data.accounts;
+            that.search.status = true;
+            that.button.disable = true;
+          },
+
+          search_cancel: function () {
+            var that = this;
+            that.search.status = false;
+            that.button.disable = false;
+          },
+
+          choose: function (account) {
+            var that = this;
+            that.form.RegionAccount__c = account.Id;
+            that.form.RegionAccount__r = {};
+            that.form.RegionAccount__r.Id = account.Id;
+            that.form.RegionAccount__r.Name = account.Name;
+            that.search.status = false;
+            that.button.disable = false;
+          },
+
+          // confirm_probability: function(value, index) {
+          //   this.form.Probability__c = value;
+          //   this.show.probability = false;
+          // },
+
+          confirm_ImportantLevel: function(value, index) {
+            this.form.ImportantLevel__c = value;
+            this.show.ImportantLevel = false;
+          },
+
+          confirm_complete_date: function(date) {
+            this.form.Planned_Project_Close_Date__c = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+            this.show.complete_date = false;
+          },
+
+          confirm_product_date: function(date) {
+            //this.form.ProductionTime__c = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+            this.show.product_date = false;
+          },
+
+          confirm_type: function(value, index) {
+            this.form.ProjcetType__c = value;
+            this.show.type = false;
+          },
+
+          confirm_isdone: function(value, index) {
+            this.form.IsDone__c = value;
+            this.show.isdone = false;
+          }
+        }
+      });
+
+      function search_click_account() {
+        document.getElementById("search_project").classList.add("weui-search-bar_focusing");
+      }
+
+      function search_cancel_account() {
+        document.getElementById("search_project").classList.remove("weui-search-bar_focusing");
+      }
+
+      function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+      }
+
+      function deleteForm() {
+        console.log("deleteForm");
+        QW_FormDetailController.deleteForm(JSON.stringify(vm.$data.form), function (result, event) {
+          if (event.statusCode == 200) {
+            alert("删除成功");
+            window.location.href = "/apex/QW_FormView?userId=" + vm.$data.userId + "&time=" + new Date().getTime();
+          }
+        });
+      }
+
+      function redirectTab(href) {
+        window.location.href = '/apex/QW_FormView?userId=' + vm.$data.userId + '&time=' + new Date().getTime() + href
+      }
+
+      Date.prototype.Format = function (fmt) {
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + ""));
+        for (var k in o) {
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+        return fmt;
+      };
+    </script>
+
+  </body>
+
+  </html>
+</apex:page>

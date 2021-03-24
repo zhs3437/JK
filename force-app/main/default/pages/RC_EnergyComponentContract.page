@@ -1,0 +1,185 @@
+<apex:page sidebar="false"
+           showHeader="false" 
+           applyBodyTag="false"
+           applyHtmlTag="false"
+           standardStylesheets="false" 
+           renderAs="PDF" 
+           standardController="leanx__lg_Contract__c"  
+           extensions="RC_PDFController"><!-- standardController="Contract"  extensions="PA_Japan_Ctrl"  -->
+    
+    <head>
+        <style type="text/css">
+            @page {
+                size: 'A4';
+                margin: 0.3in 0.5in;
+            }
+            
+            body {
+                font-size:12px; 
+                font-weight:unset;
+            }
+
+            h1, div, body, html {
+                padding: 0px;
+                margin: 0px;
+            }
+        </style>
+    </head>
+    <body style="font-family:Arial Unicode MS;font-size:10px;length:100%">
+        <h1 style = "text-align:center">
+            销售合同
+        </h1>
+        <table style="width:100%; border-collapse: collapse;"  border="1">
+            <tbody>
+                <tr>
+                    <td colspan="3" style="width:50px">合同编号:</td>
+                    <td colspan="17">{!leanx__lg_Contract__c.Contract_NO__c}</td>
+                    <td colspan="3">合同签订日期:</td>
+                    <td colspan="9">{!printDate}</td>
+                </tr>
+                <tr>
+                    <td colspan="32">兹根据《中华人民共和国合同法》等法律，本着平等自愿的原则，就合同标的物（以下简称“产品”）达成如下一致意见，并特签订本合同，以资双方共同信守。</td>                           
+                </tr>
+                <tr>
+                    <td colspan="32"><b>一、合同主体及其信息</b> </td>                           
+                </tr>
+                <tr>
+                    <td colspan="3">卖方：</td>
+                    <td colspan="17">{!leanx__lg_Contract__c.Seller__c}</td>
+                    <td colspan="3">买方：</td>
+                    <td colspan="9">{!buyer.Name}</td>               
+                </tr>
+                <tr>
+                    <td colspan="3">联系人：</td>
+                    <td colspan="17">{!leanx__lg_Contract__c.Actual_Sales_Name__c}</td>
+                    <td colspan="3">联系人：</td>
+                    <td colspan="9">{!leanx__lg_Contract__c.Account_Contact_Name__c}</td>               
+                </tr>
+                <tr>
+                    <td colspan="3">电话：</td>
+                    <td colspan="17">{!leanx__lg_Contract__c.Actual_Sales__r.MobilePhone}</td>
+                    <td colspan="3">电话：</td>
+                    <td colspan="9">{!leanx__lg_Contract__c.Account_Contact_Mobile__c}</td>               
+                </tr>
+                <tr>
+                    <td colspan="32" style=""><b>二、合同标的物（名称、规格/型号、数量、单价、总价等）</b></td>                           
+                </tr>
+                <tr>
+                    <td align="center" style="width:10px">序号</td>
+                    <td colspan="13" align="center">产品名称</td>
+                    <td colspan="3" align="center">规格/型号</td>
+                    <td colspan="3" align="center">
+                        <span>数量</span>
+                        <span>(单位:Pcs)</span>
+                    </td>
+                    <td colspan="3" align="center" style="max-width:30px">
+                        <span>含税单价</span>
+                        <span>(¥/Pcs)</span>
+                    </td>
+                    <td colspan="2" align="center" style="max-width:30px">
+                        <span>总价</span>
+                        <span>(人民币)</span>
+                    </td>
+                    <td colspan="7" align="center">交付日期</td>
+                </tr>
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!pds}" var="line" id="Order_Line_List">
+                <apex:variable var="index" value="{!index+1}" />
+                    <tr>
+                        <td align="center" style="width:10px">{!index}</td>
+                        <td colspan="13" align="center">{!line.Product_Name__c}</td>
+                        <td colspan="3" align="center">{!line.Name}</td>
+                        <td colspan="3" align="center">{!line.Quantity__c}</td>
+                        <td colspan="3" align="center" style="width:30px">
+                            <apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!line.Sales_Price__c * line.Power_W__c}"/></apex:outputText> 
+                        </td>
+                        <td colspan="2" align="center" style="width:30px">
+                            <apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText>
+                        </td>
+                        <td colspan="7" align="center">{!line.Delivery_Date_Description__c}</td>
+                    </tr>
+                </apex:repeat>
+                <tr>
+                    <td colspan="12">合同总价（小写）人民币：</td>
+                    <td colspan="6"><apex:outputText value="{0, number, ###,###.00}"><apex:param value="{!leanx__lg_Contract__c.Total_Price__c}"/></apex:outputText></td>
+                    <td colspan="2" style="text-align: center"><apex:outputText value="{0, number, ###,###}"><apex:param value="{!leanx__lg_Contract__c.Total_Quantity__c}"/></apex:outputText></td>
+                    <td colspan="12"></td>
+                </tr>
+                <tr>
+                    <td colspan="12" >合同总价（大写）人民币：</td>
+                    <td colspan="20">{!chineseTotalPrice} &nbsp;（备注：含13%增值税税金，合同总价含备品备件价格）</td>
+                </tr>
+                <tr>
+                    <td colspan="12">交付地点：</td>
+                    <td colspan="20">{!leanx__lg_Contract__c.Delivery_Point__c}</td>                
+                </tr>
+                <tr>
+                    <td colspan="32" style="border: 1px black solid;">
+                        三、合同条款：
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="32" style="">
+                    （一） 产品质量、规格和质保<br/>
+                    （1）产品性能符合卖方标准。<br/>
+                    （2）卖方对产品质量承担有限质保，并适用卖方的太阳能组件产品《有限质保书》的规定。<br/>
+                    （二） 交付日期 <br/>
+                    交付日期以本合同第二条中约定的日期为准。若买方要求卖方迟延交付产品的，买方应及时通知卖方，交货日期相应顺延。买方变更后的日期不能超过合同第二<br/> 
+                    条约定最后交货日期10日，超过第二条约定最后交货日期10日，则卖方有权终止本协议，并不返还买方支付的预付款。若买方要求卖方提早交付产品的，买方应<br/> 
+                    提前通知卖方并征得卖方同意。<br/>   
+                    （三）交付地点<br/>
+                    交付地点以本合同第二条中约定的地点为准。<br/>
+                    （四）付款方式<br/>
+                    （1）“合同签订日期”后【五】天内，买方以电汇或卖方接受的期限不超过六个月的银行承兑汇票的方式支付合同全额货款。<br/>
+                    （2）卖方收到全额货款前，有权拒绝发货。<br/>
+                    （五）包装方式<br/>
+                    （1）产品包装按照卖方惯常的包装方式执行。<br/>
+                    （2）如买方对产品的包装方式另有特殊要求，则该特殊包装方式需经卖方同意，因采用特殊包装方式而产生额外用的情形，该等额外费用由买方承担。<br/>
+                    （六）产品运输<br/>
+                    （1）如果双方约定的交付地点为产品所在地（即，卖方工厂仓库），则买方应负责产品运输，并承担产品的运费、保险等。<br/>
+                    （2）如果双方约定的交付地点为其他地点，则卖方应负责产品的运输，并承担产品的运费、运输保险费等。但货到买方指定交货地点后的卸货责任和义务由买方<br/>自行承担。<br/>
+                    （七）产品检验<br/>
+                    （1）买方可以向卖方工厂派驻相关工作人员进行监造或监督发运进行初步验收，买方在卖方工厂派驻的监造人员可抽取不超过总发货量的1%的产品进行检<br/>
+                        验，按照本合同约定的验收标准进行质量初步验收。<br/>
+                    （2）买方应当在接收产品时，对产品型号、规格、数量、外观、包装等进行检验，并及时书面通知卖方检验结果。买方未提出异议的，视为产品符合合同约定。<br/>
+                    （3）如产品检验不合格，或产品质量不符合合同约定，卖方应按照太阳能组件产品《有限质保书》的规定承担维修或换货义务。<br/>
+                    （八）违约责任<br/>
+                    （1）买方应按照合同约定的付款期限支付货款，如买方迟延支付货款，每迟延一天，需按应付款项的【0.05%】支付违约金，但违约金总额不应超过迟延支付货<br/>
+                        款的【5%】，买方迟延付款超过【十】天的，卖方有权通知买方解除本合同。<br/>
+                    （2）买方应按照合同约定的交付日期提货，如买方迟延提货，买方需承担因此产生的仓储费等，买方迟延提货超过【十】天的，卖方有权通知买方解除本合同。<br/>
+                    （3）卖方按照上述第（1）和（2）款的规定解除合同的，买方应支付合同总价的【20%】作为卖方的合同管理费。卖方有权从买方支付的预付款中扣除相应金额。<br/>
+                    （4）卖方应当按照合同约定的交付日期交货，如卖方因自身原因迟延交货，每迟延一天，需按迟延交付产品价格的【0.05%】承担违约金，但违约金总额不应<br/>
+                         超过迟延交付产品价格的【5%】。本合同项下买方损失赔偿上限为已付款的5%。<br/>
+                    （5）因非可归责于卖方的事由导致卖方迟延交货的，卖方应在合理期限内通知买方，交付日期相应顺延。<br/>                                                         
+                    （九）争议解决<br/>
+                     双方应友好协商解决合同争议，协商不成的，任何一方均可向卖方所在地人民法院提起诉讼。<br/>
+                    （十）特别约定<br/>
+                    （1）本合同光伏组件仅限于中华人民共和国境内销售和使用，不得转售境外（包含中国香港、中国澳门、中国台湾地区）。<br/>
+                    （2）买方承诺，不会向任何境外第三方转售或提供本合同设备的全部或部分，买方亦承诺任何境外第三方不会占有或使用本合同设备，应任何第三方将本合同设<br/>
+                    备转售境外的，无论是否是买方直接交易导致的行为，卖方均有权向买方直接索赔并要求买方承担违约金，因此造成买方与第三方之间的违约赔偿问题由买方自<br/>
+                    行处理。<br/>
+                    （3）买方承诺，如本合同设备所有权发生转移，买方应提前以书面的形式向受让方明确告知本合同项下的全部内容（包括但不限于本特别约定的内容）。买方未<br/>
+                        履行本特别约定相关义务的，卖方有权没收全部保证金并要求买方按照本合同总价的30%支付违约金（买方完全理解这里所指的违约金是确定的且经双方一致同<br/>
+                        意的，卖方有权基于本款得到此违约金而无须提供所遭受的实际损失的证明），若违约金无法弥补卖方损失时，买方认可卖方有权要求买方赔偿卖方全部损失。<br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="20">
+                        卖方：{!bankInfo.BENEFICIARY_s_Name__c}(盖章) <br/>
+                        授权代表人签字：<br/> 
+                        户名：{!bankInfo.BENEFICIARY_s_Name__c}<br/>  
+                        开户银行：{!bankInfo.Bank_Name__c}<br/>  
+                        账号：{!bankInfo.BENEFICIARY_s_A_C__c}<br/>
+                    </td>
+                    <td colspan="12" style="max-width: 50%">买方：{!buyerName} <br/>
+                        授权代表人签字：<br/>
+                        银行账号：{!sellerBankCode}<br/>
+                        开户行： {!sellerBankName}<br/>
+                        公司地址：{!buyerAddress}<br/>
+                        税务登记号：{!VAT}<br/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</apex:page>

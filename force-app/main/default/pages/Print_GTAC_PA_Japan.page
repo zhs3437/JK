@@ -1,0 +1,350 @@
+<apex:page standardController="Contract" extensions="PA_Japan_Ctrl" sidebar="false" showHeader="false" standardStylesheets="false" contentType="application/msword#PA-GTAC.doc" >
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+                <title>
+        </title>
+        <style type="text/css">
+            body { text-align:justify; widows:0; orphans:0; font-family:Century; font-size:10pt }
+            p { margin:0pt }
+            li, table { margin-top:0pt; margin-bottom:0pt }
+            .ListParagraph { margin-left:42pt; text-align:justify; widows:0; orphans:0; font-size:10pt }
+            .CommentSubject { text-align:left; widows:0; orphans:0; font-size:10pt; font-weight:bold }
+            .CommentText { text-align:left; widows:0; orphans:0; font-size:10pt }
+            .BalloonText { text-align:justify; widows:0; orphans:0; font-family:Arial; font-size:9pt }
+            .PlainText { text-align:left; widows:0; orphans:0; font-family:Calibri; font-size:10pt }
+            .Header { text-align:justify; widows:0; orphans:0; font-size:10pt }
+            .Footer { text-align:justify; widows:0; orphans:0; font-size:10pt }
+            span.Char3 { font-size:10pt; font-weight:bold }
+            span.CommentReference { font-size:10pt }
+            span.Char2 { font-size:10pt }
+            span.Char1 { font-family:Arial; font-size:9pt }
+            span.Char4 { font-family:Calibri; font-size:10pt }
+            span.Char { font-size:10pt }
+            span.Char0 { font-size:10pt }
+        </style>
+    </head>
+    <body>
+    <div>
+            <p class="Header" style="text-align:right"><em>JKS </em><em>Ver.201</em><em>507</em><em>15</em></p>
+            <p style="text-align:center">PURCHASE AGREEMENT</p>
+            <p style="text-align:center">売買契約書</p>
+            <p style="text-align:right">NO: <span style="color:#000000;">{!Contract.Contract_NO__c}</span></p>
+            <p style="text-align:right">番号: <span style="color:#000000;">{!Contract.Contract_NO__c}</span></p>
+            <p style="text-align:right"><span style="color:#000000">&#xa0;</span></p>
+            <p><span style="color:#000000">EXECUTION DATE: </span><span style="color:#000000;">{!tt.Month}-{!tt.Day}</span><span style="color:#000000">, 2016</span></p>
+            <p><span style="color:#000000">締結日：</span><span style="color:#000000">2016</span><span style="color:#000000">年</span><span style="color:#000000;">{!tt.Month}</span><span style="color:#000000">月</span><span style="color:#000000;">{!tt.Day}</span><span style="color:#000000">日</span></p>
+            <p><span style="color:#000000">&#xa0;</span></p>
+            <p><span style="color:#000000">SELLER:</span><span style="color:#000000"> </span><span style="color:#000000">ジンコソーラージャパン株式会社</span></p>
+            <p><span style="color:#000000">売主：</span><span style="color:#000000">ジンコソーラージャパン株式会社</span></p>
+            <p><span style="color:#000000">&#xa0;</span></p>
+            <p><span style="color:#000000">BUYER:</span><span style="font-family:Meiryo; font-size:9pt; color:#333333; background-color:#ffffff"> </span><span style="color:#000000;">{!buyer.Name}</span><span style="color:#000000">              </span></p>
+            <p><span style="color:#000000">買主：</span><span style="color:#000000;">{!buyer.Name}</span></p>
+            <p><span style="color:#000000">&#xa0;</span></p>
+            
+            <apex:outputPanel rendered="{!Contract.Trade_term__c == 'DDP'}">
+            <p><span style="color:#000000">TRADE T</span><span style="color:#000000">ERM</span><span style="color:#000000">：</span><span style="color:#000000">{!Contract.Trade_term__c}&nbsp;&nbsp;<apex:outputText rendered="{!Contract.Trade_term__c == 'EXW'}">{!Contract.Factory__c}</apex:outputText><apex:outputText rendered="{!Contract.Trade_term__c == 'DDP'}">{!Contract.Destination__c}</apex:outputText></span><span style="color:#000000"></span><span style="color:#000000">in Japan （ under Incoterms 2010</span><span style="color:#000000">）</span></p>
+            <p><span style="color:#000000">取引条件：</span><span style="color:#000000">{!Contract.Trade_term__c}&nbsp;&nbsp;<apex:outputText rendered="{!Contract.Trade_term__c == 'EXW'}">{!Contract.Factory__c}</apex:outputText><apex:outputText rendered="{!Contract.Trade_term__c == 'DDP'}">{!Contract.Destination__c}</apex:outputText></span><span style="color:#000000">　</span><span style="color:#000000">（インコタームズ</span><span style="color:#000000">2010</span><span style="color:#000000">による）</span></p>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!Contract.Trade_term__c == 'EXW'}">
+            <p><span style="color:#000000">TRADE T</span><span style="color:#000000">ERM</span><span style="color:#000000">：</span><span style="color:#000000">{!Contract.Trade_term__c}&nbsp;&nbsp;Seller’s warehouse at &nbsp;<apex:outputText rendered="{!Contract.Trade_term__c == 'EXW'}">{!Contract.Factory__c}</apex:outputText> in Japan under Incoterms 2010</span></p>
+            <p><span style="color:#000000">取引条件：</span><span style="color:#000000">{!Contract.Trade_term__c}&nbsp;&nbsp;日本<apex:outputText rendered="{!Contract.Trade_term__c == 'EXW'}">{!Contract.Factory__c}</apex:outputText>に所在する売主の倉庫（インコタームズ2010による）</span></p>
+            </apex:outputPanel>
+            
+            <p><span style="color:#000000">&#xa0;</span></p>
+            <p><span style="color:#000000">PURCHASE AGREEMENT DETAILS</span></p>
+            <p><span style="color:#000000">売買契約</span><span style="color:#000000">の詳細事項</span></p>
+            <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:-30pt; width:520pt; font-size:10pt">
+                <tr style="height:14.25pt">
+                    <td rowspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.2pt">
+                        <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-size:10pt; color:#000000">&#xa0;</span></strong></p>
+                        <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-size:10pt; color:#000000">Item</span></strong></p>
+                        <p style="text-align:center; widows:0; orphans:0"><span style="font-size:10pt">項目</span></p>
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:10pt; color:#000000">&#xa0;</span></strong></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.1pt">
+                        <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-size:10pt; ">Goods</span></strong></p>
+                        <p style="text-align:center; widows:0; orphans:0"><span style="font-size:10pt">商品分類</span></p>
+                    </td>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:10pt; ">Quantity</span></strong></p>
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-size:10pt">数量</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:63.8pt">
+                        <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-size:10pt; ">Unit Price</span></strong></p>
+                        <p style="text-align:center; widows:0; orphans:0"><span style="font-size:10pt">単価</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:77.95pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:10pt; ">Amoun</span></strong><strong><span style="font-size:10pt; ">t</span></strong></p>
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-size:10pt">金額</span></p>
+                    </td>
+                    <td rowspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:113.4pt">
+                        <apex:outputPanel rendered="{!Contract.Trade_term__c == 'DDP'}">
+                            <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-family:Arial; font-size:10pt; ">Expected Time of</span></strong><strong><span style="font-family:Arial; font-size:10pt; "> </span></strong><strong><span style="font-family:Arial; font-size:10pt; ">Delivery</span></strong></p>
+                            <center><p style="text-indent:10pt; text-align:justify; widows:2; orphans:2"><span style="font-size:10pt">引渡</span><span style="font-size:10pt">予定日</span></p></center>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!Contract.Trade_term__c == 'EXW'}">
+                            <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-family:Arial; font-size:10pt; ">Expected Time to</span></strong><strong><span style="font-family:Arial; font-size:10pt; "> Pick up Goods from Seller’s Warehouse</span></strong></p>
+                            <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-size:10pt; ">売主の倉庫から</span></strong><strong><span style="font-size:10pt; ">の</span></strong><strong><span style="font-size:10pt; ">商品</span></strong><strong><span style="font-size:10pt; ">引取り</span></strong><strong><span style="font-size:10pt; ">予定日</span></strong></p>
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+                <tr style="height:29.25pt">
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.1pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:10pt; ">Description</span></strong><span style="font-size:10pt">詳細</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:42.55pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:10pt; ">PCS</span></strong></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:49.6pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:10pt; ">MW</span></strong></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:63.8pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:11pt; ">(</span></strong><strong><span style="font-size:11pt; ">{!Contract.CurrencyIsoCode}</span></strong><strong><span style="font-size:11pt; ">/W)</span></strong></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:77.95pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-size:11pt; ">(</span></strong><strong><span style="font-size:11pt; ">{!Contract.CurrencyIsoCode}</span></strong><strong><span style="font-size:11pt; ">)</span></strong></p>
+                    </td>
+                </tr>
+                
+                <apex:variable var="index" value="{!0}" />
+                <apex:repeat value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">
+                <apex:variable var="index" value="{!index+1}" />
+                <TR style=" " height="23">
+                <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+                <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!line.Quantity__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Total_MW__c}</TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></TD>
+                <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;">{!line.Time_Region__c}</TD></TR>
+                </apex:repeat>
+                
+                <tr style="height:34.75pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.2pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">Transit Fees</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:10pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:42.5pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt"></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:56.7pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt"></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:63.8pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Transit_Fees__c}"/></apex:outputText></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:106.3pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                </tr>
+                <tr style="height:34.75pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.2pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">Subtotal</span><span style="font-size:11pt; color:#000000">小計</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:10pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:42.5pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:56.7pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">{!Contract.Total_MW__c}</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:63.8pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Transit__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Price_Transit__c}"/></apex:outputText></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:106.3pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.3pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.2pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">T</span><span style="font-family:Arial; font-size:11pt">ax</span><span style="font-size:11pt">税</span><span style="font-size:11pt">金</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">8</span><span style="font-family:Arial; font-size:11pt">%</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:42.5pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:56.7pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:63.8pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt;"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Tax_Transit__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Tax_Transit__c}"/></apex:outputText></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:106.3pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.2pt">
+                        <p style="text-align:center; widows:0; orphans:0"><strong><span style="font-family:Arial; font-size:12pt; color:#000000">TOTAL</span></strong><span style="font-size:10pt">合計額</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><strong><span style="font-family:Arial; font-size:12pt; ">&#xa0;</span></strong></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:42.5pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Quantity__c}"/></apex:outputText></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:56.7pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">{!Contract.Total_MW__c}</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:63.8pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:92.15pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt;"><apex:outputText rendered="{!Contract.CurrencyIsoCode != 'JPY'}" value="{0, number, #,##0.00}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText><apex:outputText rendered="{!Contract.CurrencyIsoCode == 'JPY'}" value="{0, number, #,##0}"><apex:param value="{!Contract.Total_Price_Transit_Tax__c}"/></apex:outputText></span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:106.3pt">
+                        <p style="text-align:center; widows:2; orphans:2"><span style="font-family:Arial; font-size:11pt">&#xa0;</span></p>
+                    </td>
+                </tr><!--[if !supportMisalignedColumns]><tr style="height:0pt">
+                    <td style="width:92.2pt; border:none">
+                    </td>
+                    <td style="width:92.1pt; border:none">
+                    </td>
+                    <td style="width:42.55pt; border:none">
+                    </td>
+                    <td style="width:49.6pt; border:none">
+                    </td>
+                    <td style="width:63.8pt; border:none">
+                    </td>
+                    <td style="width:77.95pt; border:none">
+                    </td>
+                    <td style="width:113.4pt; border:none">
+                    </td>
+                </tr><![endif]--></table>
+            <p style="text-align:center"><strong><span style="font-size:6.5pt; ">&#xa0;</span></strong></p>
+            <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin-left:8pt; width:446.55pt; font-size:10pt">
+                <tr style="height:17.25pt">
+                    <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:446.55pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">Buyer requests to use following checked truck type for transportation to destination. Should no specific type of truck is checked by Buyer, Seller may use any type of truck at its sole discretion. </span><span style="font-size:10pt">/</span><span style="font-size:10pt">買主はマークで選択した下記のトラックで</span><span style="font-size:10pt">対象</span><span style="font-size:10pt">商品を目的地まで運送することを要求する。ただし、買主がトラックの種類を選択してない場合、売主は運送用のトラックの種類を決める権利を有する。</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:240.95pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">Common Truck Type/</span><span style="font-size:10pt">汎用</span><span style="font-size:10pt">車種</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:205.6pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">Special Truck Type/</span><span style="font-size:10pt">特殊</span><span style="font-size:10pt">車種</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:240.95pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">4t flatbed truck                     □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:205.6pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">4t unic truck        □</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:240.95pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">4t wing truck                       □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:205.6pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">10t unic truck       □</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:240.95pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">10t flatbed truck                    □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:205.6pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">　</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:240.95pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">10t wing truck                      □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:205.6pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">　</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:240.95pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">20t trailer</span><span style="font-size:10pt">             </span><span style="font-size:10pt">    </span><span style="font-size:10pt">         □</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:205.6pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">　</span></p>
+                    </td>
+                </tr>
+                <tr style="height:17.25pt">
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-left-color:#000000; border-left-style:solid; border-left-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:240.95pt">
+                        <p style="margin-left:10pt; text-align:justify; line-height:12pt; widows:0; orphans:0"><span style="font-size:10pt">consolidation truck</span><span style="font-size:10pt">（</span><span style="font-size:10pt">only available when the Total Quantity is below 2 pallets </span><span style="font-size:10pt">/</span><span style="font-size:10pt"> </span><span style="font-size:10pt">出荷数が</span><span style="font-size:10pt">2</span><span style="font-size:10pt">パレ</span><span style="font-size:10pt">未満</span><span style="font-size:10pt">の場合に適用）             </span><span style="font-size:10pt"> </span><span style="font-size:10pt">□</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1pt; border-right-color:#000000; border-right-style:solid; border-right-width:1pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:top; width:205.6pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">　</span></p>
+                    </td>
+                </tr>    
+            </table>
+            <p><span style="font-size:10pt; color:#000000">&#xa0;</span></p>
+            <p style="text-align:left; widows:2; orphans:2"><span>{!Contract.Payment_Term_Description__c}</span></p>
+            <p><span>{!Contract.Payment_Term_Description__c}</span></p>
+            <p><span style="font-size:10pt">&#xa0;</span></p>
+            
+            
+            <!-- 段落 -->
+            <div>
+            <pre><span style="font-family:Century; font-size:10pt;text-align:left; widows:2; orphans:2">{!Contract.PO_Remarks_1__c}</span></pre>
+            </div>
+            
+            <br/>
+            
+            <p><span style="font-size:10pt">The recommended signature block is the below:</span></p>
+            <p><span style="font-size:10pt">以下は調印頁である。</span></p>
+            <p><span style="font-size:10pt">&#xa0;</span></p>
+            <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; float:left; margin-left:-20pt; width:500pt; font-size:10pt">
+                <tr style="height:63.65pt">
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:64.3pt">
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt; color:#000000">Company Name:</span></p>
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt">会社名称：</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:205.2pt">
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt">ジンコソーラージャパン株式会社</span></p>
+                    </td>
+                    <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:235.5pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-family:宋体; font-size:10pt; background-color:#ffff00"> </span><span style="font-size:10pt;">{!buyer.Name}</span></p>
+                    </td>
+                </tr>
+                <tr style="height:42.1pt">
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:64.3pt">
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt; color:#000000">Address:</span></p>
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt; color:#000000">住所：</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:205.2pt">
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt">東京都中央区</span><span style="font-size:10pt">日本橋兜町</span><span style="font-size:10pt">13</span><span style="font-size:10pt">番</span><span style="font-size:10pt">2</span><span style="font-size:10pt">号 </span></p>
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt">兜町偕成ビル本館</span><span style="font-size:10pt">9</span><span style="font-size:10pt">階</span></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:235.5pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt;">{!Contract.BillingCountry}&nbsp;{!Contract.BillingCity}&nbsp;{!Contract.BillingState}&nbsp;{!Contract.BillingStreet}</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:269.5pt">
+                        <p style="text-align:left; widows:2; orphans:2"><span style="font-size:10pt">Authorized by:</span><span style="font-size:10pt">　記名捺印：</span></p>
+                        <p style="text-align:left; widows:2; orphans:2"><a name="OLE_LINK1"></a><a name="OLE_LINK2"><span style="font-size:10pt">代表</span><span style="font-size:10pt">取締</span><span style="font-size:10pt">役</span><span style="font-size:10pt"> </span><span style="font-size:10pt">　</span><span style="font-size:10pt">李仙德</span><span style="font-size:10pt">  </span><span style="font-size:10pt">印</span></a></p>
+                    </td>
+                    <td style="background-color:#ffffff; border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.5pt; padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:235.5pt">
+                        <p style="text-align:justify; widows:0; orphans:0"><span style="font-size:10pt">&#xa0;</span></p>
+                        <span style="font-size:10pt;text-align:left; widows:2; orphans:2">代表取締役　　              &nbsp;</span><span style="font-size:10pt">印</span>
+                    </td>
+                </tr>
+        </table>
+        </div>
+        </body>
+</apex:page>

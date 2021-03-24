@@ -1,0 +1,6 @@
+<apex:page standardController="Component_Task_Book__c" action="{!goto}"
+           extensions="ConModuleDesignProduct7Controller" sidebar="false"
+           showHeader="false" standardStylesheets="true" id="thePage" recordSetVar="Objs">
+    
+    
+</apex:page>

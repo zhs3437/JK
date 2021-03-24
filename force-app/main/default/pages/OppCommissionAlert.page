@@ -1,0 +1,21 @@
+<apex:page standardController="Opportunity" showHeader="false" sidebar="false" >
+   <html xmlns="http://www.w3.org/1999/xhtml">
+       <head>
+<title>无标题文档</title>
+ 
+</head>
+       <body>
+ 
+<pre align="center" style="font-size:15px ;color:red;"><Strong>1. Commissions, rebates, discounts, currency types must be the same as the opportunity currency</Strong></pre>
+ <pre align="center" style="font-size:15px ;color:red;"><Strong>2. If there is a stepped ratio, please fill in the maximum value of the ratio and explain it in remark(Discount /Rebate).</Strong></pre>
+ <pre align="center" style="font-size:15px ;color:red;"><Strong>3. If the selected type is percentage, such as (Discount 5%), please do not fill in 0.05 or 5%.
+The correct method is: please select (%) in the Discount type, fill in (5) in the Discount </Strong></pre>
+ <pre align="center" style="font-size:15px ;color:red;"><Strong>4. Commission input needs to go through the commission approval process. Click the (Submit for Price Approval) button to submit for approval. </Strong></pre>
+
+
+
+
+
+       </body>
+    </html>
+</apex:page>

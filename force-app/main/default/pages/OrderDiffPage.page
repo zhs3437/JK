@@ -1,0 +1,1331 @@
+<apex:page standardController="Amendment__c" extensions="OrderDiffCtrl"   showHeader="false" sidebar="false" id="thePage"  >
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css" /> 
+    <style type="text/css">
+        @page{
+        size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+        margin-top: 1cm;
+        margin-left: 1cm;
+        margin-right: 1cm;
+        margin-bottom: 1cm;
+        }
+        body {  widows:0; orphans:0; font-family: Arial Unicode MS; font-size:7.9pt }
+        p { margin:0pt }
+        diffbg {background-color:Yellow}
+    </style>
+    <script>
+    
+    function colorPageBlock(pageblock, color) {
+        if (pageblock != null) pageblock.firstChild.style.cssText = "background-color:" + color + ";";
+    }
+    </script>
+</head>
+
+<div style="overflow-x: auto; overflow-y: auto; height: 400px; width:100%;">
+    <apex:form > 
+        <apex:pageMessages />   
+        <apex:pageBlock >
+            <style>
+                body .bPageBlock .pbBody .lightskyblue .pbSubheader{
+                background-color:#37B2E3;
+                }
+            </style>
+            <apex:repeat value="{!HistoryList}" var="hl"  > 
+                <apex:outputPanel styleClass="lightskyblue" layout="block">
+                    
+                    <apex:pageBlockSection columns="1"  collapsible="false"  >
+                        
+                        <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+                            <tr bgcolor="#4DFFFF">
+                                <td style="font-size:13px;">
+                                    Order difference 
+                                </td>
+                            </tr>
+                        </table>
+                        <table  border="0" width="100%"  style="border-collapse: collapse;margin:10px auto;" >
+                            <tr style="font-size:13px;">
+                                <td colspan="1"  width="10%"><strong>Field name</strong></td>
+                                <td colspan="1" width="15%"><strong>Before modify</strong></td>
+                                <td colspan="1" width="15%"><strong>After modify</strong></td>
+                                <td colspan="1" width="15%"><strong>Difference</strong></td>
+                            </tr>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Destination_Country_New__c == hl.orderdiff.Destination_Country_Old__c ,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Destination Country</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Destination_Country_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Destination_Country_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Contract_PO_PI_Owner_New__r.name == hl.orderdiff.Contract_PO_PI_Owner_Old__r.name ,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Contract/PO/PI Owner</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Contract_PO_PI_Owner_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Contract_PO_PI_Owner_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Contract_PO_PI_Owner_New__r.name == hl.orderdiff.Contract_PO_PI_Owner_Old__r.name ,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Contract/PO/PI Owner</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Contract_PO_PI_Owner_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Contract_PO_PI_Owner_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Actual_Sales_Name_New__c == hl.orderdiff.Actual_Sales_Name_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Actual Sales Name</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Actual_Sales_Name_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Actual_Sales_Name_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Actual_Sales_Name_New__c == hl.orderdiff.Actual_Sales_Name_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Actual Sales Name</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Actual_Sales_Name_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Actual_Sales_Name_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Opportunity_New__r.name == hl.orderdiff.Opportunity_Old__r.name,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Opportunity</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Opportunity_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Opportunity_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Opportunity_New__r.name == hl.orderdiff.Opportunity_Old__r.name,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Opportunity</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Opportunity_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Opportunity_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            
+                            
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Account_Name_New__r.name == hl.orderdiff.Account_Name_Old__r.name,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Account</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Account_Name_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Account_Name_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Account_Name_New__r.name == hl.orderdiff.Account_Name_Old__r.name,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Account</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Account_Name_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Account_Name_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            
+                            
+                            
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Destination_Country_New__c == hl.orderdiff.Destination_Country_Old__c ,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Destination Country</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Destination_Country_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Destination_Country_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.SELLER_New__c == hl.orderdiff.SELLER_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Seller</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.SELLER_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.SELLER_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.SELLER_New__c == hl.orderdiff.SELLER_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Seller</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.SELLER_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.SELLER_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.SAP_User_ID_New__c == hl.orderdiff.SAP_User_ID_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">SAP User ID</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.SAP_User_ID_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.SAP_User_ID_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.SAP_User_ID_New__c == hl.orderdiff.SAP_User_ID_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">SAP User ID</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.SAP_User_ID_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.SAP_User_ID_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>                                
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Contract_PO_PI_No_New__c == hl.orderdiff.Contract_PO_PI_No_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Contract/PO/PI No</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Contract_PO_PI_No_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Contract_PO_PI_No_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Contract_PO_PI_No_New__c == hl.orderdiff.Contract_PO_PI_No_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Contract/PO/PI No</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Contract_PO_PI_No_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Contract_PO_PI_No_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Supply_By_New__c == hl.orderdiff.Supply_By_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Supply By</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Supply_By_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Supply_By_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Supply_By_New__c == hl.orderdiff.Supply_By_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Supply By</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Supply_By_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Supply_By_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Status_New__c == hl.orderdiff.Status_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Status</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Status_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Status_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Status_New__c == hl.orderdiff.Status_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Status</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Status_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Status_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                             <apex:outputPanel rendered="{!IF(hl.orderdiff.Buyer_New__r.name == hl.orderdiff.Buyer_Old__r.name,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Buyer</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Buyer_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Buyer_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Buyer_New__r.name == hl.orderdiff.Buyer_Old__r.name,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Buyer</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Buyer_Old__r.name}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Buyer_New__r.name}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Order_Start_Date_New__c == hl.orderdiff.Order_Start_Date_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Order Start Date</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Order_Start_Date_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Order_Start_Date_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Order_Start_Date_New__c == hl.orderdiff.Order_Start_Date_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Order Start Date</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Order_Start_Date_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Order_Start_Date_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Destination_New__c == hl.orderdiff.Destination_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Destination</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Destination_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Destination_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Destination_New__c == hl.orderdiff.Destination_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Destination</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Destination_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Destination_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Factory_WH_New__c == hl.orderdiff.Factory_WH_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Factory/WH</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Factory_WH_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Factory_WH_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Factory_WH_New__c == hl.orderdiff.Factory_WH_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Factory/WH</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Factory_WH_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Factory_WH_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Shipping_type_New__c == hl.orderdiff.Shipping_type_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Shipping type</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Shipping_type_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Shipping_type_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Shipping_type_New__c == hl.orderdiff.Shipping_type_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Shipping type</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Shipping_type_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Shipping_type_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Warranty_Insurance_New__c == hl.orderdiff.Warranty_Insurance_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Warranty Insurance</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Warranty_Insurance_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Warranty_Insurance_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Warranty_Insurance_New__c == hl.orderdiff.Warranty_Insurance_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Warranty Insurance</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Warranty_Insurance_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Warranty_Insurance_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Region_New__c == hl.orderdiff.Region_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Region</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Region_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Region_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Region_New__c == hl.orderdiff.Region_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Region</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Region_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Region_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Warranty_On_Material_and_Workmanship_New__c == hl.orderdiff.Warranty_On_Material_and_Workmanship_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Warranty On Material and Workmanship</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Warranty_On_Material_and_Workmanship_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Warranty_On_Material_and_Workmanship_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Warranty_On_Material_and_Workmanship_New__c == hl.orderdiff.Warranty_On_Material_and_Workmanship_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Warranty On Material and Workmanship</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Warranty_On_Material_and_Workmanship_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Warranty_On_Material_and_Workmanship_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Customer_Order_Reference_PO_New__c == hl.orderdiff.Customer_Order_Reference_PO_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Customer Order Reference / PO</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Customer_Order_Reference_PO_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Customer_Order_Reference_PO_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Customer_Order_Reference_PO_New__c == hl.orderdiff.Customer_Order_Reference_PO_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Customer Order Reference / PO</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Customer_Order_Reference_PO_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Customer_Order_Reference_PO_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Commission_Type_New__c == hl.orderdiff.Commission_Type_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Commission Type</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Commission_Type_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Commission_Type_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Commission_Type_New__c == hl.orderdiff.Commission_Type_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Commission Type</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Commission_Type_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Commission_Type_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.VAT_NO_New__c == hl.orderdiff.VAT_NO_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">VAT NO</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.VAT_NO_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.VAT_NO_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.VAT_NO_New__c == hl.orderdiff.VAT_NO_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">VAT NO</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.VAT_NO_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.VAT_NO_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.GST_Classification_Region_New__c == hl.orderdiff.GST_Classification_Region_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">GST Classification Region</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.GST_Classification_Region_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.GST_Classification_Region_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.GST_Classification_Region_New__c == hl.orderdiff.GST_Classification_Region_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">GST Classification Region</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.GST_Classification_Region_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.GST_Classification_Region_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BMO_SH_New__c == hl.orderdiff.BMO_SH_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">BMO SH</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BMO_SH_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BMO_SH_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BMO_SH_New__c == hl.orderdiff.BMO_SH_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">BMO SH</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BMO_SH_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BMO_SH_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BMO_SR_New__c == hl.orderdiff.BMO_SR_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">BMO SR</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BMO_SR_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BMO_SR_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BMO_SR_New__c == hl.orderdiff.BMO_SR_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">BMO SR</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BMO_SR_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BMO_SR_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Special_New__c == hl.orderdiff.Special_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Special/特批下单</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Special_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Special_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Special_New__c == hl.orderdiff.Special_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Special/特批下单</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Special_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Special_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Normal_New__c == hl.orderdiff.Normal_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Normal/正常下单</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Normal_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Normal_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Normal_New__c == hl.orderdiff.Normal_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Normal/正常下单</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Normal_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Normal_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Special_Requirements_New__c == hl.orderdiff.Special_Requirements_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Special Requirements/相关特殊要求</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Special_Requirements_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Special_Requirements_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Special_Requirements_New__c == hl.orderdiff.Special_Requirements_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Special Requirements/相关特殊要求</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Special_Requirements_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Special_Requirements_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Special_Approvals_New__c == hl.orderdiff.Special_Approvals_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Special Approvals/特批</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Special_Approvals_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Special_Approvals_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Special_Approvals_New__c == hl.orderdiff.Special_Approvals_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Special Approvals/特批</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Special_Approvals_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Special_Approvals_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Intercompany_Seller_POs_New__c == hl.orderdiff.Intercompany_Seller_POs_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Intercompany Seller POs/内部交易信息</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Intercompany_Seller_POs_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Intercompany_Seller_POs_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Intercompany_Seller_POs_New__c == hl.orderdiff.Intercompany_Seller_POs_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Intercompany Seller POs/内部交易信息</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Intercompany_Seller_POs_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Intercompany_Seller_POs_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Requested_supplier_New__c == hl.orderdiff.Requested_supplier_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Requested supplier/要求供货方</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Requested_supplier_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Requested_supplier_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Requested_supplier_New__c == hl.orderdiff.Requested_supplier_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Requested supplier/要求供货方</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Requested_supplier_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Requested_supplier_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Other_New__c == hl.orderdiff.Other_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Other/其它</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Other_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Other_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Other_New__c == hl.orderdiff.Other_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Other/其它</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Other_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Other_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.PMC_confirm_New__c == hl.orderdiff.PMC_confirm_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">PMC confirm/生产确认</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.PMC_confirm_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.PMC_confirm_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.PMC_confirm_New__c == hl.orderdiff.PMC_confirm_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">PMC confirm/生产确认</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.PMC_confirm_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.PMC_confirm_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Tax_Rate_New__c == hl.orderdiff.Tax_Rate_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Tax Rate</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Tax_Rate_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Tax_Rate_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Tax_Rate_New__c == hl.orderdiff.Tax_Rate_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Tax Rate</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Tax_Rate_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Tax_Rate_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Transit_Fees_New__c == hl.orderdiff.Transit_Fees_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Transit Fees</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Transit_Fees_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Transit_Fees_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Transit_Fees_New__c == hl.orderdiff.Transit_Fees_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Transit Fees</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Transit_Fees_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Transit_Fees_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.SELLER_New__c == hl.orderdiff.SELLER_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Seller</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.SELLER_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.SELLER_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Contact_Name_New__c == hl.orderdiff.Contact_Name_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Contact Name</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Contact_Name_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Contact_Name_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Contact_Name_New__c == hl.orderdiff.Contact_Name_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Contact Name</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Contact_Name_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Contact_Name_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Customer_country_New__c == hl.orderdiff.Customer_country_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Customer country</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Customer_country_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Customer_country_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Customer_country_New__c == hl.orderdiff.Customer_country_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Customer country</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Customer_country_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Customer_country_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Fax_New__c == hl.orderdiff.Fax_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Fax</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Fax_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Fax_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Fax_New__c == hl.orderdiff.Fax_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Fax</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Fax_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Fax_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Phone_New__c == hl.orderdiff.Phone_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Phone</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Phone_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Phone_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Phone_New__c == hl.orderdiff.Phone_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Phone</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Phone_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Phone_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.SELLER_New__c == hl.orderdiff.SELLER_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Seller</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.SELLER_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.SELLER_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Customer_Business_Scale_New__c == hl.orderdiff.Customer_Business_Scale_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Customer Business Scale</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Customer_Business_Scale_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Customer_Business_Scale_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Customer_Business_Scale_New__c == hl.orderdiff.Customer_Business_Scale_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Customer Business Scale</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Customer_Business_Scale_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Customer_Business_Scale_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Email_New__c == hl.orderdiff.Email_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Email</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Email_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Email_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Email_New__c == hl.orderdiff.Email_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Email</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Email_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Email_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Title_New__c == hl.orderdiff.Title_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Title</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Title_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Title_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Title_New__c == hl.orderdiff.Title_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Title</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Title_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Title_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Authorized_Representative_New__c == hl.orderdiff.Authorized_Representative_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Authorized Representative</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Authorized_Representative_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Authorized_Representative_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Authorized_Representative_New__c == hl.orderdiff.Authorized_Representative_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Authorized Representative</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Authorized_Representative_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Authorized_Representative_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingCountry_New__c == hl.orderdiff.BillingCountry_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Billing Country</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingCountry_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingCountry_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingCountry_New__c == hl.orderdiff.BillingCountry_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Billing Country</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingCountry_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingCountry_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingState_New__c == hl.orderdiff.BillingState_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Billing State/Province</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingState_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingState_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingState_New__c == hl.orderdiff.BillingState_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Billing State/Province</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingState_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingState_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingCity_New__c == hl.orderdiff.BillingCity_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Billing City</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingCity_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingCity_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingCity_New__c == hl.orderdiff.BillingCity_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Billing City</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingCity_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingCity_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <!--
+
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Bank_Street_New__c == hl.orderdiff.Bank_Street_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Billing Street</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Bank_Street_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Bank_Street_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Bank_Street_New__c == hl.orderdiff.Bank_Street_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Billing Street</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Bank_Street_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Bank_Street_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            -->
+
+                                                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingPostalCode_New__c == hl.orderdiff.BillingPostalCode_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Billing Zip/Postal Code</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingPostalCode_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingPostalCode_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.BillingPostalCode_New__c == hl.orderdiff.BillingPostalCode_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Billing Zip/Postal Code</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.BillingPostalCode_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.BillingPostalCode_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            
+                               <apex:outputPanel rendered="{!IF(bankold - banknew <= 5,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Bank Information</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Bank_Information_Content_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Bank_Information_Content_New__c }</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(bankold - banknew > 5,true,false)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Bank Information</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Bank_Information_Content_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Bank_Information_Content_New__c }</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+ 
+
+                            
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Trade_term_New__c  == hl.orderdiff.Trade_term_Old__c ,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Trade term</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Trade_term_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Trade_term_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Trade_term_New__c  == hl.orderdiff.Trade_term_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Trade term</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Trade_term_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Trade_term_New__c}</td>
+                                    <td colspan="1" width="15%"></td>                                        
+                                </tr>
+                            </apex:outputPanel>
+                          
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Commission_New__c== hl.orderdiff.Commission_Old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Commissioin</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Commission_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Commission_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Commission_New__c== hl.orderdiff.Commission_Old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Commissioin</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Commission_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Commission_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                               <apex:outputPanel rendered="{!IF(hl.orderdiff.Discount_new__c== hl.orderdiff.Discount_old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Discount</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Discount_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Discount_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Discount_new__c== hl.orderdiff.Discount_old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Discount</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Discount_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Discount_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                               <apex:outputPanel rendered="{!IF(hl.orderdiff.Rebate_new__c== hl.orderdiff.Rebate_old__c,true,false)}">
+                                <tr >
+                                    <td colspan="1"  width="10%">Rebate</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Rebate_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Rebate_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.orderdiff.Rebate_new__c== hl.orderdiff.Rebate_old__c,false,true)}">
+                                <tr bgcolor="Yellow">
+                                    <td colspan="1"  width="10%">Rebate</td>
+                                    <td colspan="1"  width="15%"> {!hl.orderdiff.Rebate_Old__c}</td>
+                                    <td colspan="1" width="15%">{!hl.orderdiff.Rebate_New__c}</td>
+                                    <td colspan="1" width="15%"></td>
+                                </tr>
+                            </apex:outputPanel>
+                            
+                            
+                            <apex:outputPanel rendered="{!IF(hl.DiffMW = 0 || hl.DiffMW= 0.0,true,false)}">
+                                <tr>
+                                    <td>Total MW</td>
+                                    <td>{!hl.orderdiff.Total_MW_Old__c}</td>
+                                    <td>{!hl.orderdiff.Total_MW_New__c}</td>
+                                    <td>{!hl.DiffMW}</td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.DiffMW = 0 || hl.DiffMW = 0.0,false,true)}"> 
+                                <tr bgcolor="Yellow">
+                                    <td>Total MW</td>
+                                    <td>{!hl.orderdiff.Total_MW_Old__c}</td>
+                                    <td>{!hl.orderdiff.Total_MW_New__c}</td>
+                                    <td>{!hl.DiffMW}</td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.DiffPrice = 0 || hl.DiffPrice= 0.0,true,false)}">
+                                <tr>
+                                    <td>Total Price</td>
+                                    <td>{!hl.orderdiff.Total_Price_Old__c}</td>
+                                   <td>{!hl.orderdiff.Total_Price_New__c}</td>
+
+                                    <td>{!hl.DiffPrice}</td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.DiffPrice = 0 || hl.DiffPrice  = 0.0,false,true)}"> 
+                                <tr bgcolor="Yellow">
+                                    <td>Total Price</td>
+                                    <td>{!hl.orderdiff.Total_Price_Old__c}</td>
+                                    <td>{!hl.orderdiff.Total_Price_New__c}</td>
+                                    <td>{!hl.DiffPrice}</td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.DiffQuantity = 0 || hl.DiffQuantity = 0.0,true,false)}">
+                                <tr>
+                                    <td>Total Quantity</td>
+                                    <td>{!hl.orderdiff.Total_Quantity_Old__c}</td>
+                                    <td>{!hl.orderdiff.Total_Quantity_New__c}</td>
+                                    <td>{!hl.DiffQuantity}</td>
+                                </tr>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(hl.DiffQuantity = 0 || hl.DiffQuantity = 0.0,false,true)}"> 
+                                <tr bgcolor="Yellow">
+                                    <td>Total Quantity</td>
+                                    <td>{!hl.orderdiff.Total_Quantity_Old__c}</td>
+                                    <td>{!hl.orderdiff.Total_Quantity_New__c}</td>
+                                    <td>{!hl.DiffQuantity}</td>
+                                </tr>
+                            </apex:outputPanel>
+                            
+                        </table>
+                        <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+                            <tr bgcolor="#4DFFFF">
+                                <td style="font-size:13px;">
+                                    Order Product difference 
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        
+        <table border="0" width="100%" style="border-collapse:collapse;margin:10px">                
+<apex:repeat value="{!hl.orderLinDiffLst}" var="review" >
+                                          
+<tr>
+<td width="8.3%">ProductName (Before)</td>
+
+ <td style="display:{!IF(review.Product_Name_Old__c!= review.Product_Name__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Product_Name_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Product_Name_Old__c == review.Product_Name__c,'run-in','none')}" width="8.3%">
+ {!review.Product_Name_Old__c}
+ </td>
+
+<td>{!$ObjectType.OrderItem_Difference__c.fields.Quantity_Old__c.label}</td>
+
+ <td style="display:{!IF(review.Quantity_New__c != review.Quantity_Old__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Quantity_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Quantity_New__c == review.Quantity_Old__c,'run-in','none')}" width="8.3%">
+ {!review.Quantity_Old__c}
+ </td>   
+
+<td>{!$ObjectType.OrderItem_Difference__c.fields.Total_MW_Old__c.label}</td>
+
+ <td style="display:{!IF(review.Total_MW_Old__c !=  review.Total_MW_New__c ,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Total_MW_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Total_MW_Old__c ==  review.Total_MW_New__c ,'run-in','none')}" width="8.3%">
+  {!review.Total_MW_Old__c}
+ </td>   
+ 
+ <td>{!$ObjectType.OrderItem_Difference__c.fields.total_Price_Old__c.label}</td>
+
+ <td style="display:{!IF(review.total_Price_Old__c !=  review.total_Price_New__c ,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.total_Price_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(review.total_Price_Old__c ==  review.total_Price_New__c ,'run-in','none')}" width="8.3%">
+  {!review.total_Price_Old__c}
+ </td>   
+ 
+ <td>{!$ObjectType.OrderItem_Difference__c.fields.UnitPrice_Old__c.label}</td>
+
+ <td style="display:{!IF(review.UnitPrice_Old__c !=  review.UnitPrice_New__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+      {!review.UnitPrice_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(review.UnitPrice_Old__c ==  review.UnitPrice_New__c,'run-in','none')}" width="8.3%">
+  {!review.UnitPrice_Old__c}
+ </td>   
+ 
+ <td>{!$ObjectType.OrderItem_Difference__c.fields.Guaranteed_Delivery_Date_Old__c.label}</td>
+
+ <td style="display:{!IF(review.Guaranteed_Delivery_Date_Old__c!=  review.Guaranteed_Delivery_Date_New__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Guaranteed_Delivery_Date_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Guaranteed_Delivery_Date_Old__c ==  review.Guaranteed_Delivery_Date_New__c,'run-in','none')}" width="8.3%">
+  {!review.Guaranteed_Delivery_Date_Old__c}
+ </td>  
+ 
+
+</tr>
+
+
+
+<tr>
+<td width="8.3%">ProductName (After)</td>
+
+ <td style="display:{!IF(review.Product_Name_Old__c!= review.Product_Name__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Product_Name__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Product_Name_Old__c == review.Product_Name__c,'run-in','none')}" width="8.3%">
+ {!review.Product_Name__c}
+ </td>
+
+<td>{!$ObjectType.OrderItem_Difference__c.fields.Quantity_New__c.label}</td>
+
+ <td style="display:{!IF(review.Quantity_New__c != review.Quantity_Old__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Quantity_New__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Quantity_New__c == review.Quantity_Old__c,'run-in','none')}" width="8.3%">
+ {!review.Quantity_New__c}
+ </td>   
+
+<td>{!$ObjectType.OrderItem_Difference__c.fields.Total_MW_New__c.label}</td>
+
+ <td style="display:{!IF(review.Total_MW_Old__c !=  review.Total_MW_New__c ,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Total_MW_New__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Total_MW_Old__c ==  review.Total_MW_New__c ,'run-in','none')}" width="8.3%">
+  {!review.Total_MW_New__c}
+ </td>   
+ 
+ <td>{!$ObjectType.OrderItem_Difference__c.fields.total_Price_New__c.label}</td>
+
+ <td style="display:{!IF(review.total_Price_Old__c !=  review.total_Price_New__c ,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.total_Price_New__c}
+ </td>
+
+
+  <td style="display:{!IF(review.total_Price_Old__c ==  review.total_Price_New__c ,'run-in','none')}" width="8.3%">
+  {!review.total_Price_New__c}
+ </td>   
+ 
+ <td>{!$ObjectType.OrderItem_Difference__c.fields.UnitPrice_New__c.label}</td>
+
+ <td style="display:{!IF(review.UnitPrice_Old__c !=  review.UnitPrice_New__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+      {!review.UnitPrice_New__c}
+ </td>
+
+
+  <td style="display:{!IF(review.UnitPrice_Old__c ==  review.UnitPrice_New__c,'run-in','none')}" width="8.3%">
+  {!review.UnitPrice_New__c}
+ </td>   
+ 
+ <td>{!$ObjectType.OrderItem_Difference__c.fields.Guaranteed_Delivery_Date_New__c.label}</td>
+
+ <td style="display:{!IF(review.Guaranteed_Delivery_Date_Old__c!=  review.Guaranteed_Delivery_Date_New__c,'run-in','none')};background-color:Yellow;" width="8.3%">
+ {!review.Guaranteed_Delivery_Date_New__c}
+ </td>
+
+
+  <td style="display:{!IF(review.Guaranteed_Delivery_Date_Old__c ==  review.Guaranteed_Delivery_Date_New__c,'run-in','none')}" width="8.3%">
+  {!review.Guaranteed_Delivery_Date_New__c}
+ </td>  
+ 
+
+</tr>
+
+
+<tr>
+
+
+</tr>
+<tr>
+
+
+</tr>
+<tr>
+
+
+</tr>
+</apex:repeat>
+</table>
+
+
+
+
+                        <table border="0" width="100%"  style="border-collapse: collapse;margin:8px auto;" >
+                            <tr bgcolor="#4DFFFF">
+                                <td style="font-size:13px;">
+                                    Order Payment difference 
+                                </td>
+                            </tr>
+                        </table>
+                        
+                              <table border="0" width="100%" style="border-collapse:collapse;margin:10px">                
+<apex:repeat value="{!hl.payDiffLst}" var="reviewPay" >
+                            <tr>
+<td width="7%">{!$ObjectType.PaymentDifference__c.fields.Amount_Old__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.DiffAmount__c != 0 || reviewPay.DiffAmount__c != 0.00,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Amount_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.DiffAmount__c == 0 || reviewPay.DiffAmount__c == 0.00,'run-in','none')}" width="7%">
+ {!reviewPay.Amount_Old__c}
+ </td>
+
+<td width="7%">{!$ObjectType.PaymentDifference__c.fields.Percentage_Old__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.DiffPercentage__c != 0 || reviewPay.DiffPercentage__c != 0.00,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Percentage_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.DiffPercentage__c == 0 || reviewPay.DiffPercentage__c == 0.00,'run-in','none')}" width="7%">
+{!reviewPay.Percentage_Old__c}
+ </td>   
+
+<td width="7%">{!$ObjectType.PaymentDifference__c.fields.Payment_Method_Old__c.label}    </td>
+
+ <td style="display:{!IF(reviewPay.Payment_Method_Old__c != reviewPay.Payment_Method_New__c ,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Payment_Method_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.Payment_Method_Old__c == reviewPay.Payment_Method_New__c,'run-in','none')}" width="7%">
+  {!reviewPay.Payment_Method_Old__c}
+ </td>   
+ 
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.Down_Balance_Payment_Old__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.Down_Balance_Payment_Old__c != reviewPay.Down_Balance_Payment_New__c,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Down_Balance_Payment_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.Down_Balance_Payment_Old__c == reviewPay.Down_Balance_Payment_New__c,'run-in','none')}" width="7%">
+  {!reviewPay.Down_Balance_Payment_Old__c}
+ </td>   
+ 
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.Days_Old__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.DiffDays__c != 0 || reviewPay.DiffDays__c != 0.00,'run-in','none')};background-color:Yellow;" width="7%">
+     {!reviewPay.Days_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.DiffDays__c == 0 || reviewPay.DiffDays__c == 0.00,'run-in','none')}" width="7%">
+ {!reviewPay.Days_Old__c}
+ </td>   
+ 
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.Payment_Term_Old__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.Payment_Term_Old__c != reviewPay.Payment_Term_New__c,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Payment_Term_Old__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.Payment_Term_Old__c == reviewPay.Payment_Term_New__c,'run-in','none')}" width="7%">
+  {!reviewPay.Payment_Term_Old__c}
+ </td>  
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.PaymentDescription_old__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.PaymentDescription_old__c!= reviewPay.PaymentDescription_new__c,'run-in','none')};background-color:Yellow;" width="9%">
+{!reviewPay.PaymentDescription_old__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.PaymentDescription_old__c == reviewPay.PaymentDescription_new__c,'run-in','none')}" width="9%">
+  {!reviewPay.PaymentDescription_old__c}
+ </td>  
+ 
+
+</tr>
+          
+          
+          
+          <tr>
+<td width="7%">{!$ObjectType.PaymentDifference__c.fields.Amount_New__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.DiffAmount__c != 0 || reviewPay.DiffAmount__c != 0.00,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Amount_New__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.DiffAmount__c == 0 || reviewPay.DiffAmount__c == 0.00,'run-in','none')}" width="7%">
+ {!reviewPay.Amount_New__c}
+ </td>
+
+<td width="7%">{!$ObjectType.PaymentDifference__c.fields.Percentage_New__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.DiffPercentage__c != 0 || reviewPay.DiffPercentage__c != 0.00,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Percentage_New__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.DiffPercentage__c == 0 || reviewPay.DiffPercentage__c == 0.00,'run-in','none')}" width="7%">
+{!reviewPay.Percentage_New__c}
+ </td>   
+
+<td width="7%">{!$ObjectType.PaymentDifference__c.fields.Payment_Method_New__c.label}    </td>
+
+ <td style="display:{!IF(reviewPay.Payment_Method_Old__c != reviewPay.Payment_Method_New__c ,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Payment_Method_New__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.Payment_Method_Old__c == reviewPay.Payment_Method_New__c,'run-in','none')}" width="7%">
+  {!reviewPay.Payment_Method_New__c}
+ </td>   
+ 
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.Down_Balance_Payment_New__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.Down_Balance_Payment_Old__c != reviewPay.Down_Balance_Payment_New__c,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Down_Balance_Payment_New__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.Down_Balance_Payment_Old__c == reviewPay.Down_Balance_Payment_New__c,'run-in','none')}" width="7%">
+  {!reviewPay.Down_Balance_Payment_New__c}
+ </td>   
+ 
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.Days_New__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.DiffDays__c != 0 || reviewPay.DiffDays__c != 0.00,'run-in','none')};background-color:Yellow;" width="7%">
+     {!reviewPay.Days_New__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.DiffDays__c == 0 || reviewPay.DiffDays__c == 0.00,'run-in','none')}" width="7%">
+ {!reviewPay.Days_New__c}
+ </td>   
+ 
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.Payment_Term_New__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.Payment_Term_Old__c != reviewPay.Payment_Term_New__c,'run-in','none')};background-color:Yellow;" width="7%">
+ {!reviewPay.Payment_Term_New__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.Payment_Term_Old__c == reviewPay.Payment_Term_New__c,'run-in','none')}" width="7%">
+  {!reviewPay.Payment_Term_New__c}
+ </td>  
+ <td width="7%">{!$ObjectType.PaymentDifference__c.fields.PaymentDescription_new__c.label}</td>
+
+ <td style="display:{!IF(reviewPay.PaymentDescription_old__c!= reviewPay.PaymentDescription_new__c,'run-in','none')};background-color:Yellow;" width="9%">
+{!reviewPay.PaymentDescription_new__c}
+ </td>
+
+
+  <td style="display:{!IF(reviewPay.PaymentDescription_old__c== reviewPay.PaymentDescription_new__c,'run-in','none')}" width="9%">
+  {!reviewPay.PaymentDescription_new__c}
+ </td>  
+ 
+
+</tr>
+                        
+                        </apex:repeat>
+</table>
+                        
+                    </apex:pageBlockSection>
+                </apex:outputPanel>
+            </apex:repeat>
+        </apex:pageBlock>
+    </apex:form>
+</div>
+</apex:page>

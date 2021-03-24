@@ -1,0 +1,354 @@
+<apex:page language="ja" sidebar="false" showHeader="false" standardStylesheets="false" renderAs="PDF" standardController="leanx__lg_Contract__c"
+    extensions="RC_PDFController">
+    <!-- standardController="Contract"  extensions="PA_Japan_Ctrl"  -->
+
+    <head>
+
+        <style type="text/css">
+            @page {
+                size: 'A4';
+                margin: 0.3in 0.5in;
+            }
+
+            body {
+                font-size: 12px;
+                font-weight: unset;
+            }
+
+            h1,
+            div,
+            body,
+            html {
+                padding: 0px;
+                margin: 0px;
+            }
+
+            table { 
+                width: 200px; 
+                min-height: 25px; 
+                line-height: 25px; 
+                text-align: center; 
+                border-collapse: collapse; 
+                padding: 0px;
+            }
+
+            table tr th, 
+            table tr td { 
+                border: 1px solid;
+                padding: 0px;
+                margin: 0px;
+                border-left: 0;
+                border-top: 0;
+            }
+        </style>
+    </head>
+
+    <body style="font-family:Arial Unicode MS;font-size:12px;">
+        <table width="100%" border="1" cellSpacing="0" cellPadding="0">
+            <tr>
+                <td>
+                    <apex:image id="theImage" value="{!$Resource.logo}" style="height:2cm; width:200px" />
+                </td>
+                <td>
+                    <h1 style="text-align:center">
+                        “AS IS” PURCHASE AGREEMENT
+                    </h1>
+                </td>
+            </tr>
+        </table>
+
+        <p colspan="8" style="text-align:right">
+            <u>www.jinkosolar.com</u>
+        </p>
+
+        <table width="100%" style="font-size:12px;border-collapse: collapse;">
+            <tr>
+                <td colspan="8">PURCHASE AGREEMENT NO: {!leanx__lg_Contract__c.Contract_NO__c}</td>
+            </tr>
+            <tr>
+                <!-- <td colspan="8">EXECUTION DATE: {!DATEVALUE(leanx__lg_Contract__c.CreatedDate)}</td> -->
+                <td>
+                    <apex:outputText value="EXECUTION DATE: {0,date,yyyy.MM.dd}">
+                    <apex:param value="{!leanx__lg_Contract__c.CreatedDate}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">SELLER: {!leanx__lg_Contract__c.Seller__c}</td>
+            </tr>
+            <tr>
+                <td colspan="8">BUYER: {!buyer.Name}</td>
+            </tr>
+            <tr>
+                <td colspan="8">PAYMENT TERM: 100% of Contract Price within 5 days after contract.<br/>execution by T/T or Bank acceptance within 6 months accepted by Seller</td>
+            </tr>
+            <tr>
+                <td colspan="8">TRADE TERM: {!leanx__lg_Contract__c.Trade_Term__c}&nbsp;{!leanx__lg_Contract__c.Departure_Factory__c}</td>
+            </tr>
+        </table>
+        <br/>
+
+        <p>
+            1. PURCHASE AGREEMENT DETAILS
+        </p>
+        <table width="100%" style="font-size:12px;border-collapse: collapse;" border="1">
+            <tr>
+                <td width="6%" align="center" valign="middle">Item</td>
+                <td width="20%" align="center" valign="middle">Module Type</td>
+                <td width="14%" align="center" valign="middle">Quantity(PCS)</td>
+                <td width="14%" align="center" valign="middle">Quantity(MW)</td>
+                <td width="16%" align="center" valign="middle">Unit Price(USD/PCS)</td>
+                <td width="16%" align="center" valign="middle">Contract Price(USD)</td>
+                <td width="16%" align="center" valign="middle">Guaranteed Delivery Date</td>
+            </tr>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!pds}" var="line" id="Order_Line_List">
+                <apex:variable var="index" value="{!index+1}" />
+                <tr>
+                    <td align="center" valign="middle">{!index}</td>
+                    <td align="center" valign="middle">{!line.Name}</td>
+                    <!--<td align="center" valign="middle">{!line.Product_Series__c}</td>-->
+                    <td align="center" valign="middle">
+                        <apex:outputText value="{0, number, ###,###}">
+                            <apex:param value="{!line.Quantity__c}" />
+                        </apex:outputText>
+                    </td>
+                    <td align="center" valign="middle">{!line.Total_Power_W__c / 1000000}</td>
+                    <td align="center" valign="middle">
+                        <apex:outputText value="{0, number, ###,###.00}">
+                            <apex:param value="{!line.Sales_Price__c}" />
+                        </apex:outputText>
+                    </td>
+                    <td align="center" valign="middle">
+                        <apex:outputText value="{0, number, ###,###.00}">
+                            <apex:param value="{!line.Total_Price__c}" />
+                        </apex:outputText>
+                    </td>
+                    <td rowspan="{!if(index == 1, pds.size, 1)}" style="display: {!if(index != 1, 'none', 'table-cell')};" align="center" valign="middle">{!line.Delivery_Date_Description__c}</td>
+                </tr>
+            </apex:repeat>
+            <tr>
+                <td style="text-align: center" colspan="2">TOTAL</td>
+                <td align="center" valign="middle">
+                    <apex:outputText value="{0, number, ###,###}">
+                        <apex:param value="{!leanx__lg_Contract__c.Total_Quantity__c}" />
+                    </apex:outputText>
+                </td>
+                <td align="center" valign="middle">{!leanx__lg_Contract__c.Total_Power_MW__c}</td>
+                <td></td>
+                <td align="center">
+                    <apex:outputText value="{0, number, ###,###.00}">
+                        <apex:param value="{!leanx__lg_Contract__c.Total_Price__c}" />
+                    </apex:outputText>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+
+
+        <div>
+            <br/>
+            <br/>2. The Modules are Seller’s “downgrade modules” (B-Grade). Given the nature of the Modules, Buyer hereby acknowledges
+            and agrees that (a) SELLER HAS NOT MADE ANY REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS, IMPLIED OR OTHERWISE,
+            WITH RESPECT TO THE MODULES, INCLUDING, WITHOUT LIMITATION, ANY REPRESENTATION OR WARRANTY WITH RESPECT TO THEIR
+            PERFORMANCE, CONDITION, VALUE, MERCHANTABILITY, SUITABILITY, STATE OF REPAIR OR DISREPAIR, WORKING OR NON-WORKING
+            ORDER, OR FITNESS FOR A PARTICULAR PURPOSE; (b) Buyer accepts the Modules on an "AS-IS", "WHERE-IS", "WITH ALL
+            FAULTS AND DEFECTS" basis; and (c) Seller shall have no liability whatsoever, whether in tort or contract, arising
+            from or relating to the Modules, including but not limited to liability for any fault, defect, or operation failure
+            of the Modules. Buyer shall indemnify, defend and hold harmless Seller, its affiliates, and their officers, employees,
+            agents, financing parties and subcontractors (each an “Indemnified Party”) against any and all suits, actions,
+            losses, damages, claims or liability (including reasonable attorneys’ fees and expenses) either based on contract,
+            tort (including negligence), strict liability or any other cause of action brought by any third party against
+            an Indemnified Party arising from or relating to the sale or use of the Modules. The Parties shall cooperate
+            in good faith with each other in the defense of any claim. The Indemnified Party shall use commercially reasonable
+            efforts to mitigate the damages. The Indemnified Party shall have the right to participate, at its expense, in
+            the defense of any claim but may not settle any claim without Buyer’s prior written consent.
+            <br/>
+            <br/>3. Seller shall be solely responsible for making the Modules available for pick-up by Buyer at the Factory on
+            or before the Guaranteed Delivery Date; provided, however, the Guaranteed Delivery Date shall automatically be
+            extended on a day-for-day basis for (a) each day of delay incurred by Seller as a result of the occurrence of
+            unforeseen circumstances beyond the reasonable control of Seller and not caused by Seller or parties under its
+            control; (b) each day of delay caused by Buyer for failure to pay the Contract Price in accordance with Paragraph
+            5 hereof, and (c) each day of delay caused by Buyer or any of its separate subcontractors or consultants. Upon
+            such date when the of Modules are made available for pick-up at the Factory, Seller shall provide notice to Buyer
+            that the Modules are ready for pick-up and removal from the Factory ("Ready for Pick-Up Notice"). Following delivery
+            of a Ready for Pick-Up Notice to Buyer, all Modules subject to such notice shall be loaded in the containers
+            and removed from the Factory by Buyer not later than the later of: (i) the Guaranteed Delivery Date; or (ii)
+            that date which is ten (10) business days following Buyer’s receipt of the related Ready for Pick-Up Notice.
+            Buyer shall provide Seller with two (2) business days’ advance written notice of the anticipated date and time
+            of any expected pick-up of Modules from the Factory and the carrier performing such services. All Module pick-ups
+            shall be performed on a business day and shall commence not earlier than 8:00 AM and be completed by not later
+            than 5:00 PM (local time). Buyer shall be solely responsible for onloading the Modules at the Factory and any
+            subsequent transportation, loading and storage costs. Buyer shall indemnify, defend and hold Seller harmless
+            for any reasonable costs incurred by Seller, including but not limited to storage costs at a rate of $0.05/per
+            Module/per day of delay and actual transportation costs incurred by Seller due to a breach by Buyer of this Paragraph
+            3, including delays by Buyer in receiving the Modules.
+            <br/>
+            <br/>4. If Seller fails to deliver Modules to the Factory by the Guaranteed Delivery Date, then Seller shall pay to
+            Buyer as its sole and exclusive remedy arising from or relating to such late delivery the amount of $40.00 per
+            MW DC of undelivered Modules on a pro rata per MW-basis, per day for each day of such delay beginning with that
+            date which is fifteen (15) business days following the applicable Guaranteed Delivery Date (“Delay Liquidated
+            Damages”). The Parties agree that it would be impracticable or extremely difficult to determine the actual damages
+            resulting from any delay in delivering Modules by the Guaranteed Delivery Date but that the Delay Liquidated
+            Damages represent a reasonable effort by the Parties to estimate a fair compensation for the foreseeable losses
+            resulting from late delivery of Modules and are in the nature of liquidated damages and not a penalty. Delay
+            Liquidated Damages shall be payable to Buyer no later than thirty (30) days following written notice from Buyer
+            that such Delay Liquidated Damages have been incurred.
+            <br/>
+            <br/>5. Buyer shall pay Seller the Contract Price in full no later than five (5) Business Days following the Execution
+            Date. Buyer shall be solely responsible for all sales, use and value added taxes applicable to the purchase and
+            sale of the Modules, which amounts shall be in addition to the Contract Price. Seller shall submit a written
+            invoice to Buyer for all amounts as and when due hereunder. Payment shall be made without any deductions or offset
+            for any reason and will not be considered made until the Seller has a credit entry on its bank account. Late
+            payments shall bear interest at 0.04% per day or the maximum legal rate of interest, whichever is lower. Upon
+            written notice of any payment due and outstanding from Buyer to Seller, Seller shall be entitled to suspend performance
+            of its obligation under this Agreement. Seller shall be entitled to terminate this Agreement upon written notice
+            of any payment due and outstanding from Buyer to Seller which exceeds ten (10) days. Notwithstanding anything
+            to the contrary herein, Buyer shall not be entitled to remove any Modules from the Factory unless and until Seller
+            has received the full Contract Price therefor. All payments by Buyer to Seller under this Agreement shall be
+            made by wire transfer to the following account or other account directed by Seller from time to time pursuant
+            to advance written notice:
+            <br/>
+            <table width="100%" style=" font-size:12px;BORDER-COLLAPSE: collapse; " border="0" cellSpacing="0" cellPadding="0">
+                <tr>
+                    <td colspan="8">Beneficiary Name:{!bankInfo.BENEFICIARY_s_Address__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="8">Account:{!bankInfo.BENEFICIARY_s_A_C__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="8">Swift Code:{!bankInfo.SWIFT__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="8">Bank Name:{!bankInfo.Bank_Name__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="8">Bank Address:{!bankInfo.Address__c}</td>
+                </tr>
+            </table>
+            <br/>The provisions of this Paragraph 5 shall survive termination of this Agreement to the extent required for their
+            full performance.
+            <br/>
+            <br/>6. Title to Modules shall transfer to Buyer on the earlier to occur of (i) Seller’s receipt of the full payment
+            of the Contract Price, and (ii) the date Buyer picks up the Modules at the Factory. Seller shall have sole responsibility
+            for risk of loss for all Modules until they are made available for pick-up by Buyer at the Factory. Risk of loss
+            passes to Buyer upon removal at the Factory, including any damage caused during Buyer’s loading of the Modules.
+            Buyer may resell the Modules only within the normal course of its business and only as long as it is not in default
+            of its payment obligations under this Agreement. Buyer shall not be entitled to dispose of the Modules in any
+            other way.
+            <br/>
+            <br/>7. Buyer hereby releases, waives, acquits and discharges Seller from any and all claims, actions, causes of action,
+            suits, proceedings, demands, rights, damages, liabilities, costs, or expenses, whether known or unknown, direct
+            or indirect, foreseeable or unforeseeable, absolute or contingent (collectively, “Claims”), that Buyer now has,
+            may have, or which may arise in the future based on or arising out of the performance, condition, state of repair
+            or disrepair, inadequacy, operation, use or maintenance of the Modules or any part thereof or based on or arising
+            out of any defect in or fault with the Modules.
+            <br/>
+            <br/>8.  Notwithstanding any other provision of this Agreement, Seller’s total aggregate liability arising from or relating to this Agreement,
+            from any and all causes (including all Delay Liquidated Damages), whether based on contract, tort (including negligence), strict
+            liability or any other cause of action shall not exceed five percents(5%) of the purchase price paid by Buyer. Notwithstanding the foregoing, the limitation of liability set forth in this Paragraph 8 shall not apply
+            to any claim arising out of Seller’s gross negligence, willful misconduct or fraud. Notwithstanding any other
+            provision of this Agreement, including but not limited to the foregoing limit of liability set forth in this
+            Paragraph 8, Seller’s liability for Delay Liquidated Damages shall not exceed five percent (5%) of the
+            delayed portion of the goods hereunder as of the effective date. Neither Party shall be responsible to the other Party for special, indirect, incidental, punitive, exemplary
+            or consequential damages of any nature whatsoever, including losses or damages caused by reason of loss of use,
+            loss of profits or revenue, interest charges (except as expressly provided herein), loss of bonding capacity,
+            cost of capital or claims of customers damages other than Delay Liquidated Damages, whether liability arises
+            as a result of breach of contract, tort liability (including negligence), strict liability, by operation of law
+            or in any other manner; provided, however, that the following damages shall not be considered special, indirect,
+            incidental, punitive, exemplary or consequential under the terms of this Paragraph 8: (i) damages arising from
+            gross negligence, fraud or willful misconduct and (ii) Delay Liquidated Damages.
+            <br/>
+            <br/>9. Buyer shall ensure that the Modules are shipped into, and are not installed in the United States of America,
+            whether by Buyer or by a Third Party. In the event that Buyer becomes aware that a Third Party has, or intending
+            to, ship the Modules into the United States, Buyer shall immediately notify Seller in writing of such situation.
+            Buyer shall indemnify, defend and hold Seller harmless for any reasonable costs incurred by Seller as a result
+            of Buyer’s breach of this Paragraph 9. Seller shall be entitled to terminate this Agreement upon written notice
+            of Buyer’s breach of this Paragraph 9.
+            <br/>
+            <br/>10. This Agreement shall be governed by and construed in accordance with the laws of China. Any dispute, controversy,
+            difference or claim arising out of or relating to this Agreement, including the existence, validity, interpretation,
+            performance, breach or termination thereof or any dispute regarding non-contractual obligations arising out of
+            or relating to it shall be referred to and finally resolved by arbitration administered by the Hong Kong International
+            Arbitration Centre (HKIAC) under the UNCITRAL Arbitration Rules in force when the Notice of Arbitration is submitted,
+            as modified by the HKIAC Procedures for the Administration of International Arbitration. The place of arbitration
+            shall be Hong Kong. The arbitration proceedings shall be conducted in English.
+            <br/>
+            <br/>Notwithstanding the foregoing, either Party shall have the right to seek temporary or permanent injunctive or
+            other similar relief in any court or other competent jurisdiction, which shall not be interpreted as a waiver
+            of the right to arbitrate.
+            <br/>
+            <br/>11. Neither Party shall assign, or in any other manner transfer, any of its rights or obligations under this
+            Agreement without the prior written consent of the other Party, such consent not to be unreasonably withheld
+            or delayed. No such purported assignment or transfer without such consent, whether voluntary or involuntary,
+            by operation of applicable law, under legal process or proceedings, by receivership, in bankruptcy or otherwise,
+            shall be valid or effective. Notwithstanding the foregoing, nothing in this Agreement shall prohibit Seller from
+            subcontracting all or any portion of its obligations hereunder in accordance with the provisions of this Agreement
+            (provided that no such subcontracting shall relieve Seller of any obligation hereunder). All notices required
+            hereunder shall be in writing and effective upon receipt by the receiving Party when delivered by certified mail,
+            overnight delivery or hand delivery at the address set forth below; provided, however, Seller shall also be entitled
+            to make notices pursuant to Paragraph 3 hereto via e-mail to the Buyer’s Representative.
+            <br/>
+            <br/>12. Neither Party shall disclose the terms or conditions of this Agreement to a third party, other than (i) such
+            Party’s affiliates, subcontractors, vendors, suppliers, employees, potential or actual lenders, potential or
+            actual investors, counsel, accountants or advisors who have a need to know such information and have agreed in
+            writing to keep such terms confidential, (ii) public announcements approved in advance in writing by the counterparty,
+            or (iii) in order to comply with any applicable law. In connection with compliance with applicable law, each
+            Party shall use reasonable efforts to notify the other Party prior to disclosing the confidential information
+            and to prevent or limit such disclosure to the extent allowed under applicable law.
+            <br/>
+            <br/>13. This Agreement embodies the entire agreement and understanding of the Parties with respect to the subject
+            matter hereof and supersedes all prior or contemporaneous agreements and understandings of the Parties, verbal
+            or written, relating to the subject matter hereof. No change, amendment or modification of this Agreement shall
+            be valid or binding upon the Parties unless such change, amendment or modification shall be in writing and duly
+            executed by both Parties. Notices hereunder must be in writing and shall be deemed received when delivered to
+            the recipient at the applicable address identified in the signature block below. If any provision of this Agreement
+            is determined to be illegal or unenforceable: (i) such provision shall be deemed restated in accordance with
+            applicable law to reflect, as nearly as possible, the original attention of the Parties; and (ii) such determination
+            shall not affect any other provision of this Agreement and all other provisions shall remain in full force and
+            effect. The provisions of Paragraphs 5, 6, 7 9, 10, 11, 12 and 13 shall survive termination of this Agreement
+            to the extent required for their full performance. This Agreement may be executed in any number of separate counterparts
+            and delivered by electronic means, each of which when so executed shall be deemed an original, and all of said
+            counterparts taken together shall be deemed to constitute one and the same instrument. The Parties warrant that
+            the individuals executing this Agreement are duly authorized to bind their respective entities to all obligations
+            set forth herein.
+            <br/>
+            <br/>14.
+            <br/>(a) In the event Buyer intends to transfer or resell the Modules to any third party (a “Third Party”), Buyer
+            shall (i) expressly inform the Third Party that the Modules are downgraded (B-Grade or C-Grade) solar photovoltaic
+            modules which are transferred by Seller to Buyer as set forth in Paragraph 2 hereof; and (2) ensure that all
+            subsequent transferees perform the same duty of disclosure (the “Duty of Disclosure”). Not later than two (2)
+            Business Days following written request from Seller to Buyer, Buyer shall provide Seller with written evidence
+            that Buyer performed the Duty of Disclosure. Buyer acknowledges and agrees that under no circumstances shall
+            Buyer (and Buyer shall cause any subsequent transferees to abstain to) paint over, cover, or remove the downgrade
+            solar modules mark "B" or "C" on the Modules.
+            <br/>(b) In the event Buyer breaches its obligations under Paragraph 15(a), Buyer shall be liable to Seller for liquidated
+            damages in an amount equal to the greater of (i) ten (10) times the total Contract Price, or (ii) Seller’s actual
+            losses (including but not limited to direct monetary losses) (“Non-Disclosure Liquidated Damages”). The Parties
+            agree that it would be impracticable or extremely difficult to determine the actual damages resulting from any
+            breach of Paragraph 15(a) but that the Non Disclosure Liquidated Damages represent a reasonable effort by the
+            Parties to estimate a fair compensation for the foreseeable losses resulting from a breach by Buyer of Paragraph
+            15(a) and are in the nature of liquidated damages and not a penalty. Non-Disclosure Liquidated Damages shall
+            be payable to Seller no later than thirty (30) days following written notice from Seller that such Non Disclosure
+            Liquidated Damages have been incurred.
+            <table width="100%" style=" font-size:12px;BORDER-COLLAPSE: collapse; " border="1" cellSpacing="0" cellPadding="0">
+                <tr>
+                    <td width="30%" align="center" valign="middle">Company Name:</td>
+                    <td width="35%" align="center" valign="middle">{!bankInfo.BENEFICIARY_s_Name__c}</td>
+                    <td width="35%" align="center" valign="middle">{!buyerName}</td>
+                </tr>
+                <tr>
+                    <td width="30%" align="center" valign="middle">Address:</td>
+                    <td width="35%" align="center" valign="middle">{!Address}</td>
+                    <td width="35%" align="center" valign="middle">{!buyerAddress}</td>
+                </tr>
+                <tr>
+                    <td width="30%" align="center" valign="middle">Authorized by:</td>
+                    <td width="35%" align="center" valign="middle"></td>
+                    <td width="35%" align="center" valign="middle"></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+
+</apex:page>

@@ -1,0 +1,12 @@
+<apex:component >
+    <apex:includeScript value="{!$Resource.jquery_1_12_4}" />
+    
+    
+    <apex:styleSheet value="{!URLFOR($Resource.JqueryJoel, 'JqueryJoel/jquery-ui.min.css')}" />
+    
+    <apex:includeScript value="{!URLFOR($Resource.JqueryJoel, 'JqueryJoel/jquery-ui.min.js')}" />
+    
+	<!--<apex:includeScript value="{!URLFOR($Resource.jquery_ui_1_8_16, 'js/jquery-ui-1.8.16.custom.min.js')}" />-->
+	<!--<apex:includeScript value="{!URLFOR($Resource.jquery_ui_1_8_16, 'js/jquery-ui-1.8.16.custom.min.js')}" />-->
+	<!--<apex:includeScript value="{!URLFOR($Resource.jQuery_blockUI_2_39)}" />-->
+</apex:component>

@@ -1,0 +1,12 @@
+<apex:page standardController="leanx__lg_Contract__c" Id="ContractPaymentId"
+    showHeader="false" sidebar="true" wizard="true">
+
+    <style>
+body {
+    width: 1600px;
+}
+</style>
+
+    <c:RC_Contractspayments id="ContractId" />
+
+</apex:page>

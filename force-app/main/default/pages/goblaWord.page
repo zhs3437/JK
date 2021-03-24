@@ -1,0 +1,324 @@
+<apex:page standardcontroller="Amendment__c" extensions="OrdPreviewCtrl"  sidebar="false"    applyHtmlTag="false"  action="{!initialize}"
+           showHeader="false" standardStylesheets="false" contentType="application/vnd.ms-word#Adment.doc">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="Content-Style-Type" content="text/css" /> 
+        <style type="text/css">
+             
+            
+            @page{
+            size:  29.7cm 21.0cm landscape; <!-- landscape; 横向-->
+            margin-top: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+            }
+            body {  widows:0; orphans:0; font-family: Calibri(正文); font-size:14.7; padding-left: 5cm;
+            padding-right: 5cm;}
+            p { margin:0pt;font-family: Calibri(正文); }
+        </style>
+    </head>
+    <body>
+        
+
+    <p align="center" style="display:{!IF(Anum==1,'run-in','none')};">  <font style="font-size:30px">FIRST AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==2,'run-in','none')};">  <font style="font-size:30px">SECOND AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==3,'run-in','none')};">  <font style="font-size:30px">THIRD AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==4,'run-in','none')};">  <font style="font-size:30px">FOURTH AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==5,'run-in','none')};">  <font style="font-size:30px">FIFTH AMENDMENT TO PURCHASE ORDER</font></p>
+            <p align="center" style="display:{!IF(Anum==6,'run-in','none')};">  <font style="font-size:30px">SIXTH AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==7,'run-in','none')};">  <font style="font-size:30px">SEVENTH AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==8,'run-in','none')};">  <font style="font-size:30px">EIGHTH AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==9,'run-in','none')};">  <font style="font-size:30px">NINTH AMENDMENT TO PURCHASE ORDER</font></p>
+    <p align="center" style="display:{!IF(Anum==10,'run-in','none')};">  <font style="font-size:30px">TENTH AMENDMENT TO PURCHASE ORDER</font></p>
+    
+    
+    <br/>
+<span >This Amendment to Purchase Oder (NO.: {!Amendment__c.Contract_No__c}) (the “Amendment”) is entered into on {!TEXT(YEAR(ad.Printing_time__c)) &" ." & CASE( MONTH(ad.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ad.Printing_time__c))} (“Effective  Date”) at Jing’an District,
+    Shanghai China, by {!Amendment__c.BuyerName__c} (the “Buyer”) with its address at {!Amendment__c.BillingCountry__c} {!Amendment__c.BillingState__c} {!Amendment__c.BillingCity__c} {!Amendment__c.BillingStreet__c} {!Amendment__c.BillingPostalCode__c} and {!ad.SELLER__c}(the “Seller”) with its address at {!Address}. 
+    The Seller and the Buyer are hereinafter referred to individually as a “Party” and collectively as the “Parties”.
+    </span><br/><br/> <span>
+    WHEREAS,the Seller and the Buyer are Parties to that 
+certain Purchase Order  (NO.: {!Amendment__c.Contract_No__c}) dated {!TEXT(YEAR(ActiveDate)) &" ." & CASE( MONTH(ActiveDate), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ActiveDate))}
+</span>
+<span style="display:{!IF(Anum==2,'run-in','none')};" > ,as amended by the First Amendment to Purchase Order dated {!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))} </span>
+<span style="display:{!IF(Anum==3,'run-in','none')};">  ,as amended by the First Amendment to Purchase Order dated{!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))} and the Second Amendment to Purchase Order dated {!TEXT(YEAR(add1.Printing_time__c)) &" ." & CASE( MONTH(add1.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add1.Printing_time__c))}</span>
+<span style="display:{!IF(Anum==4,'run-in','none')};"> ,as amended by the First Amendment to Purchase Order dated {!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))}, the Second Amendment to Purchase Order dated {!TEXT(YEAR(add1.Printing_time__c)) &" ." & CASE( MONTH(add1.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add1.Printing_time__c))} and the Third Amendment to Purchase Order dated {!TEXT(YEAR(add2.Printing_time__c)) &" ." & CASE( MONTH(add2.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add2.Printing_time__c))} </span>
+<span style="display:{!IF(Anum==5,'run-in','none')};"> ,as amended by the First Amendment to Purchase Order dated {!TEXT(YEAR(ALst[0].Printing_time__c)) &" ." & CASE( MONTH(ALst[0].Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(ALst[0].Printing_time__c))}, the Second Amendment to Purchase Order dated {!TEXT(YEAR(add1.Printing_time__c)) &" ." & CASE( MONTH(add1.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add1.Printing_time__c))}, the Third Amendment to Purchase Order dated {!TEXT(YEAR(add2.Printing_time__c)) &" ." & CASE( MONTH(add2.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add2.Printing_time__c))}  and the Fourth Amendment to Purchase Order dated {!TEXT(YEAR(add3.Printing_time__c)) &" ." & CASE( MONTH(add3.Printing_time__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(add3.Printing_time__c))} </span>
+<span> (the “Purchase Order”).</span>
+<br/><br/>
+<span>WHEREAS, both Parties agree to change the certain terms under the Purchase Order.
+</span>
+<br></br>
+<!--
+<span>WHEREAS, as of the Effective Date, the Seller has received {!Amendment__c.Amount_received__c} from the Buyer and duly delivered {!Amendment__c.Number_of_pieces_shipped__c} pieces of {!Amendment__c.Component_Model__c} modules under the Purchase Order. 
+</span>
+-->
+<sapn>
+    {!NewDescription}
+</sapn><br/>
+<span>
+NOW THEREFORE, this Amendment is agreed by Parties as below:
+</span>
+<br/><br/>
+<STRONG><FONT size="3"><FONT color="#000000"><p>1.Defined Terms</p></FONT></FONT></STRONG>
+<p>Unless otherwise defined in this Amendment, all capitalised terms used in this Amendment shall have the meanings given to them in the Purchase Order.</p>
+<br/>
+<STRONG><FONT size="3"><FONT color="#000000"><p>2. Amendment</p></FONT></FONT></STRONG>
+<div style="display:{!IF(AmendTable==true|| Amendment__c.display2_1__c=true,'none','run-in')};">
+<p>2.1  The table under Section I. DEFINITIONS of the Purchase Order is deleted in its entirety and replaced by the following</p>
+<apex:form >
+ <table border="1" width="95%" style="border-collapse:collapse;margin:10px">
+        <tr>
+            <td align="center" width="2%">#</td>
+            <td width="35%">TERM</td>
+            <td width="60%">DEFINITION</td>
+        </tr>
+        <tr>
+            <td align="center">a</td>
+            <td >Seller</td>
+            <td >{!ad.SELLER__c}</td>
+        </tr>
+        <tr>
+            <td align="center">b</td>
+            <td >Seller’s Address</td>
+            <td >{!Address}</td>
+        </tr>
+        
+        <tr>
+            <td align="center">c</td>
+            <td >Seller’s Contact Information</td>
+            <td ><p>Contact Person:{!sellers.name}</p>
+                <p>Tel:{!sellers.Phone}</p>
+                <p>E-mail:{!sellers.Email}</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td align="center">d</td>
+            <td >Buyer</td>
+            <td >{!Amendment__c.Buyer__r.name}</td>
+        </tr>
+        
+        <tr style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+            <td align="center">e</td>
+            <td>Buyer’s VAT No. if the Modules are to be <br/>
+                imported into Europe countries</td>
+            <td>{!buyerVATNO}</td>
+        </tr>
+        
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+            <td >f</td>
+            
+            <td >Buyer’s Address</td>
+            <td >{!Amendment__c.BillingCountry__c} {!Amendment__c.BillingState__c} {!Amendment__c.BillingCity__c} {!Amendment__c.BillingStreet__c} {!Amendment__c.BillingPostalCode__c}</td>
+        </tr>
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eun)','none','run-in')};">
+            <td >e</td>
+            <td >Buyer’s Address</td>
+            <td >{!Amendment__c.BillingCountry__c} {!Amendment__c.BillingState__c} {!Amendment__c.BillingCity__c} {!Amendment__c.BillingStreet__c} {!Amendment__c.BillingPostalCode__c}</td>
+        </tr>
+        
+        
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+            <td >g</td>
+            <td >Buyer’s Contact Information</td>
+            <td >
+                <p>Contact Person:{!Amendment__c.Contact_Name__c}</p>
+                <p>Tel:{!Amendment__c.Phone__c}</p>
+                <p>E-mail:{!Amendment__c.Email__c}</p>
+            </td>
+        </tr>
+                <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eun)','none','run-in')};">
+            <td >f</td>
+            <td >Buyer’s Contact Information</td>
+            <td >
+                <p>Contact Person:{!Amendment__c.Contact_Name__c}</p>
+                <p>Tel:{!Amendment__c.Phone__c}</p>
+                <p>E-mail:{!Amendment__c.Email__c}</p>
+            </td>
+        </tr>
+
+        
+        
+        
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+            <td >h</td>
+            <td>Payment Term</td>    
+            <td >{!Amendment__c.Payment_Term_Description__c} </td>
+     
+        </tr>
+                <tr  align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eun)','none','run-in')};">
+            <td>g</td>
+            <td>Payment Term</td>    
+            <td>{!Amendment__c.Payment_Term_Description__c}</td>
+     
+        </tr>
+        
+        
+        
+        
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+            <td >i</td>
+      
+            
+            <td>Trade Term (per Incoterms® 2010 edition)</td>
+            <td  style="display:{!IF(Amendment__c.Long_Payment_Term__c=='','run-in','none')};"> <apex:inputTextarea value="{!TradeTerm}" style="width: 99%;" /> </td>
+            
+            
+        </tr>
+         <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eun)','none','run-in')};">
+
+            <td>h</td>
+            
+            
+            <td>Trade Term (per Incoterms® 2010 edition)</td>
+            <td  style="display:{!IF(Amendment__c.Long_Payment_Term__c=='','run-in','none')};"> <apex:inputTextarea value="{!TradeTerm}" style="width: 99%;" /> </td>
+            
+            
+        </tr>
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eun)','run-in','none')};">
+             <td >j</td>
+            <td >General Terms and Conditions</td>
+            <td >Attached as Exhibit A</td>
+        </tr>
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eun)','none','run-in')};">
+             <td >i</td>
+            <td >General Terms and Conditions</td>
+            <td >Attached as Exhibit A</td>
+        </tr>
+        <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eu)','run-in','none')};">
+            <td>k</td>
+           <td >Warranty</td>
+            <td >{!Warranty}</td>
+        </tr>
+         <tr align="center" style="display:{!IF(Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eu)','none','run-in')};">
+            <td>j</td>
+           <td >Warranty</td>
+            <td >{!Warranty}</td>
+        </tr>
+        <tr align="center" style="display:{!IF((Amendment__c.Order__r.Contract.Region__c=='EU(Union)'||Amendment__c.Order__r.Contract.Region__c=='EU(Non-Eun)') && BuyerLetter==true,'run-in','none')};">
+           <td >l</td>
+            <td >Buyer Guaranty</td>
+            <td > Attached as Exhibit B</td>
+        </tr>
+                <tr align="center" style="display:{!IF((Amendment__c.Order__r.Contract.Region__c!='EU(Union)'&& Amendment__c.Order__r.Contract.Region__c!='EU(Non-Eun)') && BuyerLetter==true,'run-in','none')};">
+           <td >k</td>
+            <td >Buyer Guaranty</td>
+            <td > Attached as Exhibit B</td>
+        </tr>
+        
+      
+</table>  
+
+    </apex:form>
+    </div>
+<div style="display:{!IF(AmendProDifferent==true,'run-in','none')};" >
+    <span style="display:{!IF(AmendTable==true|| Amendment__c.display2_1__c=true,'none','run-in')};" >
+2.2 The table under Section II. MODULES of the Purchase Order is deleted in its entirety and replaced by the following:</span>
+     <span style="display:{!IF(AmendTable==true|| Amendment__c.display2_1__c=true,'run-in','none')};" >
+         2.1  The table under Section II. MODULES of the Purchase Order is deleted in its entirety and replaced by the following:</span>
+<br/>
+
+<table border="1" width="90%" style="border-collapse:collapse;margin:10px"  >
+    <tr>
+        <td align="center" rowspan="2"><STRONG><FONT size="3">ITEM</FONT></STRONG></td>
+        <td align="center" rowspan="2"><STRONG><FONT size="3">MODULE DESCRIPTION</FONT></STRONG></td>
+        <td align="center" rowspan="1" colspan="2"><STRONG><FONT size="3">Quantity</FONT></STRONG></td>
+        <td align="center" rowspan="2"><STRONG><FONT size="3">UNIT PRICE ({!Amendment__c.CurrencyIsoCode}/W)</FONT></STRONG></td>
+        <td align="center" rowspan="2"><STRONG><FONT size="3"> PURCHASE PRICE({!Amendment__c.CurrencyIsoCode})</FONT></STRONG></td>
+        <td align="center" rowspan="2"><STRONG><FONT size="3">DELIVERY DATE</FONT></STRONG> </td>
+    </tr>
+    <tr>
+        <td align="center" rowspan="1" colspan="1"><STRONG><FONT size="3">PIECES</FONT></STRONG></td>
+            <td align="center" rowspan="1" colspan="1"><STRONG><FONT size="3">W</FONT></STRONG></td>
+    </tr>
+    <apex:variable var="index" value="{!0}" />
+    <apex:repeat value="{!AopLst}" var="line" id="Order_Line_List">
+        <apex:variable var="index" value="{!index+1}" />
+        <TR style=" " height="23" >
+            <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!index}</TD>
+            <TD  height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Product_name__c}</TD>
+            <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">{!line.Quantity__c}</TD>
+            <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!line.Total_MW_Auto__c*1000000}"/></apex:outputText></TD>
+            <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.UnitPrice__c}"/></apex:outputText></TD>
+            <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.total_Price__c}"/></apex:outputText></TD>
+            <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid;"><apex:outputText value="{!TEXT(YEAR(line.Guaranteed_Delivery_Date__c)) &" ." & CASE( MONTH(line.Guaranteed_Delivery_Date__c), 1, "1",2, "2",3, "3", 4, "4", 5, "5", 6, "6",7, "7",8, "8", 9, "9",10, "10",11, "11", 12, "12", "") & " ." & TEXT(DAY(line.Guaranteed_Delivery_Date__c))}"/></TD></TR>
+        
+    </apex:repeat>
+    
+      <TR  height="23"  style="display:{!IF(Amendment__c.Tax_Rate__c==null,'none','run-in')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000">TAX</FONT></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000">{!Amendment__c.Tax_Rate__c}%</FONT></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!Amendment__c.Tax2__c}"/></apex:outputText></FONT></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+                <TR  height="23"  style="display:{!IF(Amendment__c.Transit_Fees__c==null,'none','run-in')};">
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000">Freight</FONT></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><FONT color="#000000"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!Amendment__c.Transit_Fees__c}"/></apex:outputText></FONT></TD>
+                <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+            </TR>
+    
+    <TR  height="23">
+        <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">TOTAL</FONT></FONT></STRONG></TD>
+        <TD height="23" align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext 0.5pt solid; BORDER-RIGHT: windowtext 0.5pt solid"><STRONG><FONT size="3"><FONT color="#000000">&nbsp;</FONT></FONT></STRONG></TD>
+        <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0}"><apex:param value="{!Amendment__c.Total_Quantity__c}"/></apex:outputText></TD>
+        <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.00}"><apex:param value="{!Amendment__c.Total_MW2__c*1000000}"/></apex:outputText></TD>
+        <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+        <TD vAlign="middle" align="center"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext; BACKGROUND-COLOR: transparent; BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!Amendment__c.Total_Price_Tax__c}"/></apex:outputText></TD>
+        <TD align="center" valign="middle"  style="BORDER-BOTTOM: windowtext 0.5pt solid; BORDER-LEFT: windowtext 0.5pt solid; BACKGROUND-COLOR: transparent;  BORDER-TOP: windowtext; BORDER-RIGHT: windowtext 0.5pt solid">&nbsp;</TD>
+    </TR>
+</table>
+</div>
+<br/>
+<STRONG><FONT size="3"><FONT color="#000000"><p>3.  Miscellaneous</p></FONT></FONT></STRONG><br></br><br></br>
+<p>3.1 Except as specifically amended herein,
+    the terms and conditions of the Purchase Order shall remain in full force and effect without modification or amendment and are incorporated by reference herein. 
+    the conclusion of this Amendment shall not be construed as a waiver of a post or current right or any claim of either Party which may arise from or in connection witd the performance of the Purchase Order.</p>
+<br/><p>3.2 This Amendment may be executed in duplicate, each of which shall be deemed to be an original and all of which together shall be deemed to be one and the same instrument.
+   </p><br/><p> IN WITNESS WHEREOF, the Parties hereto have caused this Amendment to be executed by the duly authorized representatives as of the Effective Date first above written
+</p>
+
+
+<table border="1" width="90%" style="border-collapse:collapse;margin:10px" class="table">
+    
+    <tr align="left">
+        <td><STRONG><FONT size="3"><FONT color="#000000"> SELLER</FONT></FONT></STRONG></td>
+        <td> <STRONG><FONT size="3"><FONT color="#000000">BUYER</FONT></FONT></STRONG></td>
+    </tr>    
+    
+    
+    <tr align="left">
+        <td>{!Amendment__c.SELLER__c}</td>
+        <td>{!Amendment__c.BuyerName__c}</td>
+    </tr> 
+        <tr align="left">
+        <td>____________________________________</td>
+        <td>____________________________________</td>
+    </tr> 
+
+
+        <tr align="left">
+        <td>By: Wang Zhihua </td>
+        <td>By: </td>
+    </tr> 
+
+
+        <tr align="left">
+        <td>Title: Finance VP</td>
+        <td>Title: </td>
+    </tr> 
+    
+    
+    
+</table>
+    </body>
+
+</apex:page>

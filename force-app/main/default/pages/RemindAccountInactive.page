@@ -1,0 +1,3 @@
+<apex:page standardController="Opportunity"  extensions="RemindAccountInactiveCtrl" sidebar="false">
+ <p align="center" style="display:{!IF(flag==true,'run-in','none')};">  <font style="font-size:30px ;color:red">Customer Status is Indirect or Inactive are you sure to create an opportunity?</font></p>
+</apex:page>

@@ -1,0 +1,2 @@
+<apex:page showHeader="false" controller="QW_RedirectController" action="{!redirect}">
+</apex:page>

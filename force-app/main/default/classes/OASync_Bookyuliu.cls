@@ -1,0 +1,1876 @@
+global class OASync_Bookyuliu {
+
+    webservice static String sendOppinfo(String OpportunityId){
+        //1.获取主表信息
+        //try{
+        Opportunity CRMOpportunity = Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Opportunity) + ' ' +
+                                          'where id=:OpportunityId');
+        system.debug(''+CRMOpportunity.RecordTypeid);
+      
+        system.debug(''+CRMOpportunity.RecordTypeid);
+         ID XuniRecordTypeid    = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Virtual Opportunity').getRecordTypeId();
+        OABookOrderinout.YucedingdanMainInfo OYM = new OABookOrderinout.YucedingdanMainInfo();
+        //在区域预留情况下
+        if(CRMOpportunity.RecordTypeid==XuniRecordTypeid){
+             OYM.buyer=CRMOpportunity.Buyer_Code__c;
+            OYM.mfms =CRMOpportunity.Buyer_name2__c;
+               OYM.xry1=CRMOpportunity.OwnerName__c;
+             OYM.ZZSALE1=CRMOpportunity.OwnerSAPID__c;
+                if(CRMOpportunity.Buyername__c==''){
+                OYM.mddqy='0';
+            }
+            else if(CRMOpportunity.Buyername__c.contains('North Asia')){
+                  OYM.mddqy='1';
+            }
+            else if(CRMOpportunity.Buyername__c.contains('South Asia')){
+                  OYM.mddqy='2';
+            }
+            else if(CRMOpportunity.Buyername__c.contains('Central Asia')){
+                  OYM.mddqy='3';
+            }
+            else if(CRMOpportunity.Buyername__c=='ROA(Australia)'){
+                  OYM.mddqy='4';
+            }
+            else if(CRMOpportunity.Buyername__c=='ROA'){
+                  OYM.mddqy='5';
+            }
+            else if(CRMOpportunity.Buyername__c=='EU'){
+                  OYM.mddqy='6';
+            }
+             else if(CRMOpportunity.Buyername__c=='North America'){
+                  OYM.mddqy='7';
+            }
+             else if(CRMOpportunity.Buyername__c.contains('Latin America&Italy')){
+                  OYM.mddqy='8';
+            }
+             else if(CRMOpportunity.Buyername__c=='Middle East&Africa'){
+                  OYM.mddqy='9';
+            }else{ OYM.mddqy='10';}
+            if(CRMOpportunity.Buyername__c=='North America')
+                {
+                     OYM.mytk1='CIF';
+                     OYM.gjmytk2 = 'US MAIN PORT';
+                }
+        }
+        
+        else{
+            //特批情况下单
+            OYM.mytk1=CRMOpportunity.Trade_Term__c;
+            OYM.buyer=CRMOpportunity.Account_SapID__c;
+            OYM.mfms =CRMOpportunity.Account_name__c; 
+            OYM.xry1=CRMOpportunity.OwnerName__c;
+             OYM.ZZSALE1=CRMOpportunity.OwnerSAPID__c;
+             if(CRMOpportunity.Destination_Port__c!=null && CRMOpportunity.Destination_Port__c!='' ){
+            OYM.gjmytk2=sapMap.getportCode(CRMOpportunity.Destination_Port__c);
+                }else{ 
+                OYM.gjmytk2 = sapMap.getCountryCode(CRMOpportunity.Destination_Country__c);//国际贸易条款2 - reqire - order - Destination  
+                  }
+            
+        if(OYM.gjmytk2!=null){
+            if(OYM.gjmytk2.length()>27){
+                OYM.gjmytk2=OYM.gjmytk2.subString(0,27);
+            }
+        }
+            if(CRMOpportunity.Region__c==''){
+                OYM.mddqy='0';
+            }
+            else if(CRMOpportunity.Region__c=='North Asia'){
+                  OYM.mddqy='1';
+            }
+            else if(CRMOpportunity.Region__c=='South Asia'){
+                  OYM.mddqy='2';
+            }
+            else if(CRMOpportunity.Region__c=='Central Asia'){
+                  OYM.mddqy='3';
+            }
+            else if(CRMOpportunity.Destination_Country__c=='Australia'){
+                  OYM.mddqy='4';
+            }
+            else if(CRMOpportunity.Region__c=='ROA'){
+                  OYM.mddqy='5';
+            }
+            else if(CRMOpportunity.Region__c=='EU(Union)' || CRMOpportunity.Region__c=='EU(Non-Eu)'){
+                  OYM.mddqy='6';
+            }
+             else if(CRMOpportunity.Region__c=='North America'){
+                  OYM.mddqy='7';
+            }
+             else if(CRMOpportunity.Region__c=='Latin America&Italy'){
+                  OYM.mddqy='8';
+            }
+             else if(CRMOpportunity.Region__c=='Middle East&Africa'){
+                  OYM.mddqy='9';
+            }else{ OYM.mddqy='10';}
+            
+            OYM.mddgjxz=sapMap.getCountryCode(CRMOpportunity.Destination_Country__c);
+            if(CRMOpportunity.Shipping_type__c=='By sea'){
+                OYM.ysfs='0';
+            }
+            else if(CRMOpportunity.Shipping_type__c=='By Truck'){
+                  OYM.ysfs='1';
+            }
+            else if(CRMOpportunity.Shipping_type__c=='By Express or Air'){
+                  OYM.ysfs='2';
+            }
+            else if(CRMOpportunity.Shipping_type__c=='By Trailway'){
+                  OYM.ysfs='3';
+            }
+        else{
+            OYM.ysfs='0';
+        }
+
+          
+OYM.yhlx='0';            
+            if(CRMOpportunity.Warranty_Insurance__c=='No Insurance Required'){
+                OYM.bx='0';
+            }
+            else if(CRMOpportunity.Warranty_Insurance__c=='PG'|| CRMOpportunity.Warranty_Insurance__c=='Powerguard'){
+                OYM.bx='1';
+            }
+            else if(CRMOpportunity.Warranty_Insurance__c=='AR'){
+                OYM.bx='3';
+            }
+            else{
+                  OYM.bx='0';
+            }
+            
+            }
+            OYM.sclxm='1';
+        if(CRMOpportunity.Cross_Region__c==true){
+                if(CRMOpportunity.ownerid=='005900000012G4M' || CRMOpportunity.ownerid=='0056F000009rGL9'){
+                    OYM.xdr='qing.tian';
+                }else if(CRMOpportunity.Sales_Region__c=='Key Account' ||CRMOpportunity.Sales_Region__c=='Central Asia' ){
+                    OYM.xdr='qing.tian';
+                }else{
+                    OYM.xdr='xueli.sun';
+                }
+               
+            }
+        else{
+            OYM.xdr=CRMOpportunity.SOCOAUsername__c;
+        }
+            OYM.ZZOPID=CRMOpportunity.id;
+        
+         OYM.sfxf='1';
+         OYM.sfxpmczjsh='1';
+         OYM.yhjg='1';
+         OYM.xxbgs='0';
+         OYM.splx='0';
+            
+            
+        List<OpportunityLineItem> oi =[select Id,UnitPrice,Quantity,PricebookEntry.product2Id,tolerance__c,PricebookEntry.product2.Name,Product__c,Product2Id,Product2.Name,
+                                               Solar_Cell__c,Back_Sheet__c,EVA__c,Temperd_Glass__c,Ribbon__c,Junction_Box__c,Frame__c,Discount,Product_Name__c,MP__c,OpportunityId,
+                                               Serial_No__c,Package__c,Label__c,Support_mixed_delivery__c,Description,Battery_Line__c,Battery_Type__c,Junction_Box_Type__c,Guaranteed_Delivery_Date__c,Cheetah__c,Stock_age__c,
+                                               Wire_Length__c,Junction_Box_Brand__c,ConnectorLine__c,Expected_Delivery_Date__c,Power_W__c,Estimated_Time_of_Departure_ETD__c,Goods_Description__c
+                                               from OpportunityLineItem Where OpportunityId =:OpportunityId];
+           
+             List<OABookOrderinout.YucedingdanDetailInfo> OYDLst=new List<OABookOrderinout.YucedingdanDetailInfo>();
+            for(OpportunityLineItem ip:oi){
+                OABookOrderinout.YucedingdanDetailInfo OYD=new OABookOrderinout.YucedingdanDetailInfo();
+                OYD.type_x=''+ip.product2.Name;
+                if(ip.Battery_Type__c=='Poly 157'){
+                    OYD.dclxxx='0';
+                }
+                else if(ip.Battery_Type__c=='156.75 5BB Perc'){
+                    OYD.dclxxx='1';
+                }
+                 else if(ip.Battery_Type__c=='158.75 5BB Perc'){
+                    OYD.dclxxx='2';
+                }
+                 else if(ip.Battery_Type__c=='158.75 9BB Perc'){
+                    OYD.dclxxx='3';
+                }
+                  else if(ip.Battery_Type__c=='163.75 9BB Perc'){
+                    OYD.dclxxx='4';
+                }
+                  else if(ip.Battery_Type__c=='158.75 9BB N-type'){
+                    OYD.dclxxx='5';
+                }
+                  else if(ip.Battery_Type__c=='163.75 9BB N-type'){
+                    OYD.dclxxx='6';
+                }
+                  else {
+                    OYD.dclxxx='7';
+                }
+                
+                OYD.PCS=''+ip.Quantity;
+                OYD.EDATU=''+ip.Guaranteed_Delivery_Date__c.year()+'-'+SAPBATCHCON.timechange(ip.Guaranteed_Delivery_Date__c.month()+'')+'-'+SAPBATCHCON.timechange(ip.Guaranteed_Delivery_Date__c.day()+'');
+                OYD.sclx='1';
+                OYDLst.add(OYD);
+            }
+            OABookOrderinout.ArrayOfYucedingdanDetailInfo OAAD= new OABookOrderinout.ArrayOfYucedingdanDetailInfo();
+            OAAD.YucedingdanDetailInfo=OYDLst;
+        OABookOrder.YucedingdanServiceHttpPort HttpSap =new OABookOrder.YucedingdanServiceHttpPort();
+        OABookOrder.createYuceWorkflowResponse_element result =new OABookOrder.createYuceWorkflowResponse_element();
+        //system.debug('ixix:'+jd.T_OPPROD[0].ZPRODQTY);
+        result.out=HttpSap.createYuceWorkflow(OYM,OAAD);
+        System.debug('result======='+result.out);
+        CRMOpportunity.OA_Forecast_ID__c=result.out;
+        Update CRMOpportunity;
+            decimal i=1;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+             i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+              i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+             i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+              i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+             i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+              i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+             i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+  i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+             i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+  i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+             i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+              i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+             i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+
+i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+           return result.out;
+       //return result.E_MSGTXT;
+     //   }catch(Exception e){system.debug('ERR:'+E);  return 'E';}
+    }
+ 
+}

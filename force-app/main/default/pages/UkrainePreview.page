@@ -1,0 +1,1028 @@
+<apex:page standardController="Contract"   showHeader="false" sidebar="false"  extensions="UkrainePreviewctrl"  >
+    <style type="text/css">
+       
+    </style>
+    
+    <apex:messages />
+    <apex:form >
+        <apex:commandButton action="{!AddSave}" value="Generate Pdf"/>
+        <apex:commandButton action="{!SendEmail}" value="Send Email"/>
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="50px">
+                <td width="50%" ><p>
+                    <strong>Purchase Agreement No:{!Contract.Contract_NO__c} </strong>
+                    </p>
+                    
+                    <p>
+                        <strong>Purchase Agreement Date:{!printtime} </strong>
+                    </p>
+                    
+                </td>
+                <td width="50%"><p>
+                    <strong>№ Договору купівлі-продажу:{!Contract.Contract_NO__c} </strong>
+                    </p>
+                    <p>
+                        <strong>Дата Договору купівлі-продажу:{!printtimeUK}</strong>  
+                    </p> </td> 
+            </tr>
+        </table>
+        
+        
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" align="center">
+                <td text-align="center" width="50%"><strong>Purchase Agreement</strong></td>
+                <td text-align="center" width="50%"><strong>Договір купівлі-продажу</strong></td>
+            </tr>
+        </table>
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px; table-layout: fixed">
+            <tr height="30px" >
+                <td width="10%">The Buyer:</td>
+                <td width="40%" >{!Contract.BuyerAccount__r.Name}</td>
+                <td width="10%">Покупець:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Account_Name_Ukrainian__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Add:</td>
+                <td width="40%" style="word-wrap:break-word;">{!Contract.BuyerAccount__r.BillingStreet+Contract.BuyerAccount__r.BillingCity}</td>
+                <td width="10%">Адреса:</td>
+                <td width="40%" style="word-wrap:break-word;">{!Contract.BuyerAccount__r.Account_Address_Ukrainian__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">VAT number:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.VAT_NO__c}</td>
+                <td width="10%">№ ПДВ:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.VAT_NO__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Tel.:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Phone}</td>
+                <td width="10%">Тел.:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Phone}</td>
+            </tr>  
+            <tr height="30px" >
+                <td width="10%">Fax:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Fax}</td>
+                <td width="10%">Факс</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Fax}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Email:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Company_Email__c}</td>
+                <td width="10%">Електронна пошта:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Company_Email__c}</td>
+            </tr>
+        </table>
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" >
+                <td width="10%">The Seller:</td>
+                <td width="40%">{!ios.Seller__c} </td>
+                <td width="10%">Продавець:</td>
+                <td width="40%">{!ios.Seller__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Add:</td>
+                <td width="40%">{!ios.Address__c}</td>
+                <td width="10%">Адреса:</td>
+                <td width="40%">{!ios.Address__c}</td>
+            </tr> 
+            <tr height="30px" >
+                <td width="10%">VAT number:</td>
+                <td width="40%">{!ios.Seller_VAT_NO__c}</td>
+                <td width="10%">№ ПДВ:</td>
+                <td width="40%">{!ios.Seller_VAT_NO__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Tel.:</td>
+                <td width="40%">{!CONTRACT.Owner.MobilePhone}</td>
+                <td width="10%">Тел.:</td>
+                <td width="40%">{!CONTRACT.Owner.MobilePhone}</td>
+            </tr>  
+            <tr height="30px" >
+                <td width="10%">Fax:</td>
+                <td width="40%">{!CONTRACT.Owner.Fax}</td>
+                <td width="10%">Факс</td>
+                <td width="40%">{!contract.Owner.Fax}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Email:</td>
+                <td width="40%">{!contract.Owner.email}</td>
+                <td width="10%">Електронна пошта:</td>
+                <td width="40%">{!contract.Owner.email}</td>
+            </tr>
+        </table>
+        
+        
+        
+        
+        
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="100px">
+                <td align="LEFT"><apex:inputfield value="{!X01.Actual_Values__c}" style="border-color:red;width: 99%;height:100%;word-wrap: break-word;word-break: normal;">
+                    
+
+                    </apex:inputfield></td>
+                <td align="left"><apex:inputfield value="{!X02.Actual_Values__c}" style="border-color:red;width: 99%;height:100%;word-wrap: break-word;word-break: normal;">
+                    
+
+                    </apex:inputfield></td>
+                
+           </tr>
+            <tr height="100px">
+                <td><p>
+                    <Strong>1. Subject of the Contract </Strong>
+                    </p>
+                    <p>
+                        
+                        1.1. Seller shall deliver to Buyer photovoltaic modules (hereinafter "Goods") according to the Attachments and Specification to the Contract. The Attachments and Specification are the integral part of this Contract.
+                        
+                    </p></td>
+                <td><p>
+                    <Strong>1. Предмет Контракту </Strong>
+                    </p>
+                    <p>
+                        
+                        1.1. Продавець поставляє Покупцю фотоелектричні модулі (далі - «Товар») згідно з Додатками та Специфікацією до Контракту. Додатки та Специфікація є невід'ємною частиною цього Контракту.
+                    </p></td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    2. The quantity and quality of the Goods 
+                    </p></Strong>
+                    2.1. The quantity of Goods is specified according to the number of Goods in the Attachment #2 Specification.<br/> 
+                    2.2. Seller guarantees Buyer that the quality of the Goods delivered at Destination complies with standards, technical specifications and technical documentation, which are specified in Attachment #1 to the Contract. Warranty terms are specified in Attachment #3 to the Contract.
+                </td>
+                <td><Strong><p>
+                    2. Кількість та якість Товару 
+                    </p></Strong>
+                    2.1. Кількість Товару визначається відповідно до кількості, зазначеної в Додатку №2 - Специфікація.<br/> 
+                    2.2. Продавець гарантує Покупцю, що якість Товару, що поставляється у місце Поставки, відповідає стандартам, технічним умовам і технічній документації, яка вказана в Додатку №1 до Контракту. Умови гарантії зазначені в Додатку №3 до Контракту.
+                </td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    3. Supply conditions
+                    </p> </Strong>
+                    3.1. The Seller will deliver the Goods to the Buyer in term determined in the Attachment #2 Specification to this Contract after payment is received by Seller in the amount determined in the Attachment #2 Specification to this Contract for Goods in accordance with the payment terms, determined in Section 5 of this Contract. 
+                </td>
+                <td><Strong><p>
+                    3. Умови поставки 
+                    </p></Strong>
+                    3.1. Продавець поставляє Товар Покупцю в термін, визначений у Додатку №2 - Специфікація до цього Контракту, після надходження на банківський рахунок Продавця грошових коштів в розмірі, зазначеному в Додатку №2 - Специфікація до цього Контракту за Товар відповідно до умов оплати, визначених у Розділі 5 цього Контракту.   
+                </td>
+            </tr>
+            <tr height="100px">
+                <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">3.2. International Commercial Terms Incoterms 2020 is used in this Contract for the interpretation of the supply conditions.</td>
+                <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">3.2. У цьому Контракті для тлумачення умов поставки використовуються Міжнародні правила тлумачення торгових термінів ІНКОТЕРМС в редакції 2020 року.</td>
+            
+                <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">3.2. International Commercial Terms Incoterms 2010 is used in this Contract for the interpretation of the supply conditions.</td>
+                <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">3.2. У цьому Контракті для тлумачення умов поставки використовуються Міжнародні правила тлумачення торгових термінів ІНКОТЕРМС в редакції 2010 року.</td>
+            </tr>
+            <tr height="100px">
+                <td align="left"><apex:inputfield value="{!basic1.Actual_Values__c}" style="border-color:red;width: 99%;height:100%;word-wrap: break-word;word-break: normal;">
+                    
+
+                    </apex:inputfield></td>
+                
+                     <td align="left"><apex:inputfield value="{!basic2.Actual_Values__c}" style="border-color:red;width: 99%;height:100%;word-wrap: break-word;word-break: normal;">
+                    
+
+                    </apex:inputfield></td>
+                
+            </tr>
+            <tr height="100px">
+                <td>3.4. The Seller, having signed the Contract and received the Down Payment of the Goods in accordance with Section 5 and Attachment #2, is obliged to prepare the Goods for shipment.</td>
+                <td>3.4. Продавець, підписавши Контракт та отримавши передоплату за Товар відповідно до Розділу 5 та Додатку № 2, зобов’язаний підготувати Товар до відвантаження.</td>
+            </tr>
+            <tr height="100px">
+                <td>3.5. The Seller will inform the Buyer that Goods are ready for being shipped from {!Contract.Departure_Port__c} 3 weeks before Expected Time of Shipment according to p.4 of Attachment #2 Specification, on the condition that Seller has received the Down Payment of the Goods in accordance with p.3 of Attachment #2 Specification.</td>
+                <td style="display:{!IF(Contract.Departure_Port__c=='China Main Port','run-in','none')}">3.5. Продавець проінформує Покупця про те, що Товар готовий до відвантаження з головного порту Китаю за три тижня до Очікуваного часу Поставки згідно з пунктом №4 Додатку №2 – Специфікація, за умови, що Продавець отримає передоплату за Товар згідно пункту №3 Додатку №2 – Специфікація.</td>
+             <td style="display:{!IF(Contract.Departure_Port__c=='Vietnam Main Port','run-in','none')}">3.5. Продавець проінформує Покупця про те, що Товар готовий до відвантаження з головний порт В'єтнаму за три тижня до Очікуваного часу Поставки згідно з пунктом №4 Додатку №2 – Специфікація, за умови, що Продавець отримає передоплату за Товар згідно пункту №3 Додатку №2 – Специфікація.</td>
+            </tr>
+            <tr height="100px" style="display:{!IF(Contract.Trade_term__c=='FOB'|| Contract.Trade_term__c=='FCA','run-in','none')};">
+                <td>3.5A. Buyer shall be responsible for contracting the carrier for the transportation of the Goods from one of the above mentioned ports of shipment, and shall give the Seller sufficient notice at least ten working days before the Expected Time of Shipment regarding the vessel name and loading point, failing of which, the Seller shall not be held responsible for any delay for the shipment.</td>
+                <td>3.5А. Покупець відповідає за укладення контракту з перевізником на перевезення Товару з одного із вищезазначених портів відвантаження і повинен надати Продавцю попереднє повідомлення принаймні за десять робочих днів до Очікуваного часу Відвантаження стосовно назви судна та вантажного пункту, а у випадку ненадання такого повідомлення Продавець не несе відповідальності за будь-яку затримку відправлення.</td>
+            </tr>
+            <tr height="100px">
+                <td>3.6. In case of delay of delivery due to causes solely attributable to Seller, the Seller pays the fine in the volume of 0.04% from the delayed Goods price for every day of delivery delay which shall cover all reasonable and direct losses suffered by the Buyer in connection with the violation of delivery terms by the Seller. In case Seller delays shipment of Goods due to Seller’s own reason without notifying the Buyer in 15 days from the Expected Time of Shipment from {!Contract.Departure_Port__c} the Buyer is entitled to terminate this Contract without prejudice to Buyer's other remedies under this Contract and upon such termination, the Seller shall return received payment for the Goods to the bank account of the Buyer, specified in this Contract.</td>
+                <td style="display:{!IF(Contract.Departure_Port__c=='China Main Port','run-in','none')}">3.6. У разі затримки поставки з причин, залежних виключно від Продавця, Продавець сплачує неустойку в розмірі 0,04% від вартості затриманого Товару за кожен день затримки відвантаження, яка має покрити всі підтверджені прямі збитки, понесені Покупцем внаслідок порушення умов поставки Продавцем. У випадку, якщо Продавець затримує відвантаження Товару з залежних від нього причин, не повідомивши Покупця протягом 15 днів від очікуваної дати відвантаження Товару з головного порту Китаю, Покупець має право припинити дію цього Контракту без шкоди для інших прав Покупця за цим Контрактом, а після припинення дії Контракту Продавець зобов’язується повернути отримані кошти за Товар на банківський рахунок Покупця, вказаний у цьому Контракті. </td>
+            <td style="display:{!IF(Contract.Departure_Port__c=='Vietnam Main Port','run-in','none')}">3.6. У разі затримки поставки з причин, залежних виключно від Продавця, Продавець сплачує неустойку в розмірі 0,04% від вартості затриманого Товару за кожен день затримки відвантаження, яка має покрити всі підтверджені прямі збитки, понесені Покупцем внаслідок порушення умов поставки Продавцем. У випадку, якщо Продавець затримує відвантаження Товару з залежних від нього причин, не повідомивши Покупця протягом 15 днів від очікуваної дати відвантаження Товару з головний порт В'єтнаму, Покупець має право припинити дію цього Контракту без шкоди для інших прав Покупця за цим Контрактом, а після припинення дії Контракту Продавець зобов’язується повернути отримані кошти за Товар на банківський рахунок Покупця, вказаний у цьому Контракті. </td>
+            </tr>
+            <tr height="100px">
+                <td>3.7. A Party in breach of this Contract shall be liable to the other Party for all damages and losses arising from that breach. However, neither Party shall be liable for any special, incidental, indirect or consequential damages or for any loss of profit, feed-in tariff, subsidies, business, revenue, anticipated savings or data and in no event shall the total liability of either party exceed the consideration payable under this Contract, except in cases where the loss and damage is caused by gross negligence, willful misconduct or fraud.</td>
+                <td>3.7. Сторона, яка порушила умови цього Контракту, несе відповідальність перед іншою Стороною за всі витрати та збитки, понесені внаслідок цього порушення. Однак, жодна зі Сторін не несе відповідальності за будь-які особливі, випадкові, непрямі або наступні витрати, або за втрату прибутку, пільгових тарифів, субсидій, бізнесу, надходжень, очікуваної економії або даних, і в будь-якому випадку загальний розмір відповідальності кожної зі сторін не повинна перевищувати заборгованість, що підлягає сплаті за цим Договором, за винятком випадків, коли витрати і збитки виникли в результаті грубої недбалості, умисних неправомірних дій або шахрайства.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong>4. Price and total value of the Contract </Strong></td>
+                <td><Strong>4. Ціна та загальна вартість Контракту</Strong></td>
+            </tr>
+            <tr height="100px">
+                <td>4.1. The prices for Goods are determined in the Attachment #2 Specification to this Contract, which is the integral part of this Contract.</td>
+                <td>4.1. Ціни на Товар вказуються в Додатку №2 – Специфікація до цього Контракту, яка є його невід'ємною частиною.</td>
+            </tr>
+            <tr height="100px">
+                <td>4.2. The prices for Goods can be changed by the mutual written agreement of the Seller and Buyer.</td>
+                <td>4.2. Ціни на Товар можуть бути змінені за взаємною письмовою згодою Продавця і Покупця.</td>
+            </tr>
+            <tr height="100px">
+                <td>4.3. The total Contract amount is determined by the total amount of the Goods supplied by the Seller to the Buyer, in accordance with the Attachment #2 Specification to this Contract. </td>
+                <td>4.3. Загальна вартість Контракту визначається загальною вартістю Товару, поставленого Продавцем Покупцю згідно з Додатком №2 – Специфікація до цього Контракту. </td>
+            </tr>
+            <tr height="100px">
+                <td>4.4. Attachment #2  Specification is the integral part of this Contract.</td>
+                <td>4.4. Додаток №2 – Специфікація є невід'ємною частиною цього Контракту.</td>
+            </tr>
+            <tr height="100px">
+                <td>4.5. Range of Goods and the price are indicated in the Attachment #2 Specification to this Contract and invoice that comes with the Goods.</td>
+                <td>4.5. Асортимент Товару і його ціна вказані в Додатку №2 – Специфікація до цього Контракту і рахунку-фактурі, який надходить разом з Товаром.</td>
+            </tr>
+            <tr height="100px">
+                <td>4.6. All taxes arising from the Seller in connection with the execution of this Agreement in the territory of China shall be paid by the Seller. All taxes arising from the Buyer in connection with the implementation of this Agreement on the territory of Ukraine shall be paid by the Buyer.</td>
+                <td>4.6. Всі податки, що виникають у Продавця у зв’язку з виконанням цього Договору на території Китаю, сплачує Продавець. Всі податки, що виникають у Покупця у зв’язку з виконанням цього Договору на території України, сплачує Покупець.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong>5. Payment conditions </Strong></td>
+                <td><Strong>5. Умови оплати</Strong></td>
+            </tr>
+            <tr height="100px">
+                <td>5.1. Payment conditions and payment procedure for every supply of Goods are determined in the Attachment #2 /Specification to this Contract. Early payment of Down payment and/or Balance payment is allowed.</td>
+                <td>5.1. Умови оплати та порядок розрахунків за кожну партію Товару вказуються в Додатку №2/Специфікації до цього Контракту. Дострокова оплата Передоплати та/або Решти Вартості дозволяється.</td>
+            </tr>
+            <tr height="100px">
+                <td>5.2. The payment is effected in {!Contract.CurrencyIsoCode} on the Contract in accordance to the Attachment #2 Specification to this Contract to the following banking details: </td>
+                <td>5.2. Оплата за Контрактом здійснюється в {!Contract.CurrencyIsoCode} згідно з Додатком №2 – Специфікація до цього Контракту за наступними реквізитами: </td>
+            </tr>
+            
+            <tr height="100px">
+                <td><p>
+                    <Strong>Banking details of the Seller: </Strong>
+                    </p>
+                      <p>
+                        BankInfo Name :{!con.BankInfo__r.Bank_Name__c} 
+                    </p>
+                    <p>
+                        BankInfo Addr.: {!con.BankInfo__r.Address__c}
+                    </p>
+                    <p>
+                        BENEFICIARY‘s Name : {!Con.BankInfo__r.BENEFICIARY_s_Name__c}
+                    </p>
+                    
+                    <p>
+                        BENEFICIARY‘s A/C : {!Con.BankInfo__r.BENEFICIARY_s_A_C__c}
+                    </p>
+                    <p>
+                        BENEFICIARY‘s Address : {!Con.BankInfo__r.BENEFICIARY_s_Address__c}
+                    </p>
+                    <p>
+                        SWIFT : {!Con.BankInfo__r.SWIFT__c}
+                    </p>
+                    </td>
+                <td><strong><p>
+                    Банківські реквізити Продавця: 
+                    </p></strong>
+                      <p>
+                        Найменування банку:{!Con.BankInfo__r.Bank_Name__c} 
+                    </p>
+                    <p>
+                        Адреса банку:{!con.BankInfo__r.Address__c}
+                    </p>
+                    <p>
+                        Найменування одержувача: {!Con.BankInfo__r.BENEFICIARY_s_Name__c}
+                    </p> 
+                    <p>
+                        Номер рахунку: {!Con.BankInfo__r.BENEFICIARY_s_A_C__c}
+                    </p>
+                    <p>
+                        Адреса одержувача:{!Con.BankInfo__r.BENEFICIARY_s_Address__c}
+                    </p>
+                    <p>
+                        Код SWIFT:{!Con.BankInfo__r.SWIFT__c}
+                    </p>
+                   
+                </td>
+            </tr>
+            <tr height="100px">
+                <td><P>
+                    <Strong>Banking details of the Buyer: </Strong>
+                    </P>
+                    <p>
+                        BankInfo Name :{!Contract.Opportunity__r.BankInfo_Name_Buyer__c} 
+                    </p>
+                    <p>
+                        BankInfo Addr.: {!Contract.Opportunity__r.BankInfo_Addr_Buyer__c}
+                    </p>
+                    <p>
+                        BENEFICIARY‘s Name : {!Contract.Opportunity__r.BENEFICIARY_s_Name_Buyer__c}
+                    </p>
+                    
+                    <p>
+                        BENEFICIARY‘s A/C : {!Contract.Opportunity__r.BENEFICIARY_s_A_C_Buyer__c}
+                    </p>
+                    <p>
+                        BENEFICIARY‘s Address : {!Contract.Opportunity__r.BENEFICIARY_s_Address_Buyer__c}
+                    </p>
+                    <p>
+                        SWIFT : {!Contract.Opportunity__r.SWIFT_Buyer__c}
+                    </p>
+                     <p style="display:{!IF(Contract.Opportunity__r.IBAN__c!=null,'run-in','none')};">
+                        IBAN : {!Contract.Opportunity__r.IBAN__c}
+                    </p>
+                </td>
+                <td><P>
+                        <strong>Банківські реквізити покупця:</strong>
+                    </P>
+                     <p>
+                        Найменування банку:{!Contract.Opportunity__r.BankInfo_Name_Buyer__c} 
+                    </p>
+                    <p>
+                        Адреса банку:{!Contract.Opportunity__r.BankInfo_Addr_Buyer__c}
+                    </p>
+                    <p>
+                        Найменування одержувача: {!Contract.BuyerAccount__r.Account_Name_Ukrainian__c}
+                    </p> 
+                    <p>
+                        Номер рахунку: {!Contract.Opportunity__r.BENEFICIARY_s_A_C_Buyer__c}
+                    </p>
+                    <p>
+                        Адреса одержувача:{!Contract.Opportunity__r.BENEFICIARY_s_Address_Buyer__c}
+                    </p>
+                    <p>
+                        Код SWIFT:{!Contract.Opportunity__r.SWIFT_Buyer__c}
+                    </p>
+                        <p style="display:{!IF(Contract.Opportunity__r.IBAN__c!=null,'run-in','none')};">
+                        IBAN : {!Contract.Opportunity__r.IBAN__c}
+                    </p>
+                </td>
+            </tr>
+            <tr height="100px">
+                <td>5.3 The Seller is entitled to correspondently postpone the delivery of Goods in case of any delay in payment under this Contract and/or any delay in payment under other purchase order(s)/agreement(s)/contract(s) between Buyer/Buyer’s affiliate and Seller/Seller’s affiliate. In case Buyer is in default of timely payment, Buyer shall be obliged to pay liquidated damages on the outstanding payment amount at a rate of 0.04% per day of delay. In the event that Buyer fails to pick up the Goods in time, Seller shall have the right to charge the Buyer with the actual and documented detention fees, demurrage fees, storage costs and any other costs and expenses incurred by Seller for the respective Goods. In the event that delay of payment and/or delay of pick-up exceeds ten days, the Seller is entitled to terminate this Contract without prejudice to Seller's other remedies under this Contract and upon such termination, the Seller shall return received payment for the Goods with deduction of documented costs and expenses incurred by Seller due to such delay of payment and/or picking up of the Goods by the Buyer to the bank account of the Buyer, specified in this Contract.</td>
+                <td>5.3. Продавець має право відповідно відкласти поставку Товару у разі будь-якої затримки в оплаті за цим Контрактом та/або будь-якої затримку в оплаті за іншим(ми) замовленням(ми)/договором(ми)/ контрактом(ми) між Покупцем/філією Покупця і Продавцем/філією Продавця. У разі, якщо Покупець порушує терміни оплати, Покупець зобов'язується сплатити неустойку в розмірі 0,04% від несплаченої суми за кожен день прострочення. Якщо Покупець також не забирає Товар своєчасно, Продавець має право стягнути з Покупця фактичні і документально підтверджені збори за арешт і простій, витрати за зберігання та інші понесені Продавцем витрати по Товару. У разі, якщо прострочення платежу та/або затримка в отриманні Товару перевищує десять днів, Продавець має право розірвати цей Контракт без шкоди для інших прав Продавця за цим Контрактом, при цьому повернути на вказаний в цьому Контракті рахунок Покупця отриману плату  за Товар за вирахуванням підтверджених витрат, що виникли в Продавця у зв'язку з такою затримкою оплати та/або не отриманням товару Покупцем.</td>
+            </tr>
+            <tr height="100px">
+                <td>5.4 The commission for the transfer of funds should be paid by the Buyer.</td>
+                <td>5.4. Комісію за переказ коштів сплачує Покупець.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    6. Packing condition:
+                    </p></Strong> 
+                    Standard export packing. </td>
+                <td><Strong><p>
+                    6. Умови упаковки:
+                    </p></Strong>
+                    Стандартна експортна упаковка. </td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    7. Warranty:
+                    </p></Strong> 
+                    The terms and conditions for the warranty for the delivered Goods are specified in Attachment #3 to the Contract.</td>
+                <td><Strong><p>
+                    7. Гарантія: 
+                    </p></Strong>
+                    Терміни та умови гарантії на поставлений Товар вказані в Додатку №3 до Контракту.</td>
+            </tr>
+            
+            <tr height="100px">
+                <td><Strong><p>
+                    8. Force Majeure:
+                    </p></Strong> 
+                    If the delay or failure of performance of the Contract is due to certain force majeure events (such as: fire, flood, earthquake, storm, explosion, wars (declared or undeclared), strike, civil war, military conflicts, act of terrorism) which are unforeseeable when entering into this Contract and beyond the reasonable control of the affected party, the affected party shall not be liable for the delay or non-execution of the Contract. Any party affected by a force majeure event shall try its best to inform other party the occurrence of the Force Majeure Events at the earliest time. </td>
+                <td><Strong><p>
+                    8. Форс-мажорні обставини:
+                    </p></Strong>
+                    Якщо затримка або невиконання договору пов'язані з певними форс-мажорними обставинами (такими як: пожежа, повінь, землетрус, ураган, вибухи, воєнні дії (оголошені або неоголошені), страйки, громадянська війна, військові конфлікти, терористичний акт), які неможливо передбачити при укладенні цього Контракту, і які знаходяться за межами розумного контролю постраждалої сторони, постраждала сторона не несе відповідальності за затримку або невиконання умов цього Контракту. Будь-яка сторона, яка постраждала від форс-мажорних обставин, зобов'язана докласти всіх зусиль, щоб повідомити іншій стороні про виникнення форс-мажорних обставин якомога раніше. </td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    9. Dispute Settlement &amp; Governing Law
+                    </p></Strong> 
+                    All disputes in connection with this Contract or the execution thereof shall be settled through friendly negotiations. If the agreement cannot be reached after friendly discussion, the disputes shall be submitted to arbitral proceedings at German Institution of Arbitration under UNCITRAL Arbitration Rules Administered by the German Institution of Arbitration. The place of arbitration shall be in Hamburg, Germany and the language of arbitration proceedings shall be English. The number of arbitrator shall be one. All the arbitration fees including the lawyer fees shall be borne by the losing party. 
+                    The Governing Law of the substance of the dispute shall be German Law regardless of its Choice of Law Rules.
+                    The terms and conditions of this Contract shall govern all of the parties' Contractperation with respect to the subject matter herein.</td>
+                <td><Strong><p>
+                    9. Врегулювання суперечок і чинне законодавство
+                    </p></Strong> 
+                    Всі суперечки в зв’язку з цим Контрактом або його виконанням врегульовуються шляхом дружніх переговорів. Якщо після проведення дружніх переговорів не буде досягнуто згоди, суперечки передаються на арбітражний розгляд в Німецький Інститут Арбітражу (DIS) за Арбітражним Регламентом UNCITRAL. Місце арбітражу – м. Гамбург, Німеччина, мова арбітражу – англійська. Кількість арбітрів – один. 
+                    Всі арбітражні збори, включаючи комісії адвокату, відносяться на рахунок сторони, що програла.
+                    Чинним законодавством по суті спору є законодавство Німеччини, незалежно від правил вибору застосовного права.
+                    Умови та положення цього Контракту регулюють всі аспекти співпраці сторін по відношенню до предмету цього Контракту.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    10. Limited Liability
+                    </p></Strong>
+                    Notwithstanding any other provision of this Agreement, Seller’s total aggregate liability arising from or relating to this Agreement, from any and all causes, whether based on contract, tort (including negligence), strict liability or any other cause of action shall not exceed the Total Purchase Price. Notwithstanding the foregoing, the limitation of liability set forth in this Section 10 shall not apply to any claim arising out of Seller’s gross negligence, willful misconduct or fraud.</td>
+                <td><Strong><p>
+                    10. Обмежена відповідальність
+                    </p></Strong>
+                    Незважаючи на будь-яке інше положення цього Контракту, сукупна відповідальність Продавця, що випливає з цього Контракту або пов'язана з нею з будь-яких причин, залежно від Контракту, правопорушення (включаючи халатність), сувора відповідальність чи будь-які інші причини позову, не повинні перевищувати загальну суму покупної ціни. Незважаючи на викладене вище, обмеження відповідальності, викладене у Розділі 10, не застосовується до будь-якої претензії, яка виникає внаслідок грубої недбалості продавця, навмисного порушення чи шахрайства.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    11. OFAC Statement
+                    </p></Strong>
+                    <p>                       
+                        (a)Neither the Buyer nor any of its directors, officers, employees, affiliates, agents or representatives is an individual or entity that is, or is owned or controlled by another individual or entity that is:
+                    </p>
+                    <p>                        
+                        (i)the subject of any sanctions or measures (A) administered, enacted or enforced by the U.S. Department of Treasury's Office of Foreign Assets Control (“OFAC”), the U.S. Department of State, the U.S. Department of Commerce, the United Nations Security Council, the European Union, Her Majesty's Treasury (“HMT”), or other relevant sanctions authority (collectively, the “Sanctions Authorities”); or (B) imposed pursuant the U.S. Trading With the Enemy Act, the U.S. International Emergency Economic Powers Act, the U.S. United Nations Participation Act, the Iran Sanctions Act, the Comprehensive Iran Sanctions, Accountability and Divestment Act of 2010, Section 1245 of the National Defense Authorization Act for Fiscal Year 2012, the U.S. Syria Accountability and Lebanese Sovereignty Restoration Act, the Iran Threat Reduction and Syria Human Rights Act of 2012, all as amended, including any Executive Orders issued in relation to the imposition of sanctions (collectively, the “Sanctions”); 
+                    </p>
+                    
+                    <p>        
+                        (ii)domiciled, organized or resident in a country or territory that is the subject of Sanctions (including, without limitation, Cuba, Iran, North Korea, Sudan and Syria); or
+                    </p>
+                    <p>        
+                        (iii)listed on the “Specially Designated Nationals and Blocked Persons” list maintained by OFAC, the Consolidated List of Financial Sanctions Targets maintained by HMT, or any similar list maintained by, or public announcement of Sanctions designation made by, any of the Sanctions Authorities.
+                    </p>
+                    <p>
+                        
+                        (b)Neither the Buyer nor any of its directors, officers, employees, affiliates, agents or representatives has received notice of or is aware of any claim, action, suit, proceeding or investigation against it with respect to any Sanctions.
+                    </p>
+                    <p> 
+                        Neither the Buyer nor any of its affiliates has engaged in any dealings or transactions with any Person, or in any country or territory, that at the time of the dealing or transaction is or was the subject of any Sanctions.</p></td>
+                
+                <td><Strong><p>
+                    11. Положення ОФАК
+                    </p></Strong><br/>
+                    <p>                        
+                        (a)Ні Покупець, ні будь-який з його директорів, посадових осіб, співробітників, філій, агентів чи представників не є фізичною чи юридичною особою, що створена, знаходиться у власності чи під контролем іншої фізичної чи юридичної особи, яка:
+                    </p>
+                    <p>    
+                        (i)є об’єктом будь-яких санкцій або заходів (A) адміністративних, прийнятих або приведених у виконання Управлінням з контролю за іноземними активами Міністерства фінансів США («ОФАК»), Державним департаментом США, Міністерством торгівлі США, Радою Безпеки Організації Об'єднаних Націй, Європейським Союзом, Казначейством Її Величності («ХМТ»), або іншими відповідними санкційними органами (колективно, «Санкційні Органи»); або (B) підпадають під дію Закону США Про торгівлю з ворожими країнами, Закону США Про міжнародні надзвичайні економічні повноваження, Закону США Про участь в Організації Об'єднаних Націй, Закону Про санкції проти Ірану, Закону Про комплексні санкції проти Ірану, відповідальність та відмову від співпраці від 2010 р., стаття 1245 Закону про асигнування на національну оборону на 2012 фінансовий рік, Закону США про відповідальність Сирії та відновленні Лівану, Закону Про зменшення загрози Ірану та права людини в Сирії від 2012 р., з усіма поправками, включаючи будь-які Урядові постанови, видані в зв'язку з введенням санкцій (колективно, «Санкції»); 
+                    </p> 
+                    <P>                        
+                        (ii)має постійне місце проживання, створена чи є резидентом країни чи території, що підпадає під дію Санкцій (включаючи, без обмежень, Кубу, Іран, Північну Корею, Судан та Сирію); або
+                    </P>
+                    <p>                        
+                        (iii)зазначена в переліку «Громадян особливих категорій і заборонених осіб», що складений ОФАК, Зведеному переліку фінансових цільових санкцій, що складений ХТМ, або будь-якому іншому схожому переліку, складеному або публічно оприлюдненому та визначеному таким, що підпадає під Санкції, будь-якими Санкційними Органами.
+                    </p>
+                    <p>                        
+                        (b)Ні Покупець, ні будь-який з його директорів, посадових осіб, співробітників, філій, агентів чи представників не отримував повідомлення або не знає про будь-яку претензію, дію, позов, розгляд або розслідування проти нього щодо будь-яких Санкцій.
+                    </p>
+                    <p>                        
+                        Ні Покупець, ні будь-яка з його філій не залучена до будь-яких домовленостей та укладання угод з Особою, або будь-якою країною чи територією, що під час укладання домовленостей та угод є чи була суб’єктом будь-яких Санкцій.</p></td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    12. Effectiveness of the Contract:
+                    </p></Strong>
+                    This Contract shall come into force when it is duly signed by both parties. The Contract signed by both parties is effective even transmitted by email or fax. Any amendment must be mutually agreed by both parties in writing. The Seller reserves the rights to terminate the Contract if the Buyer can not comply with the payment terms in Section 5.</td>
+                <td><Strong><p>
+                    12. Юридична сила Контракту:
+                    </p></Strong>
+                    Цей Договір набирає чинності після його підписання належним чином обома сторонами. Контракт, підписаний обома сторонами, має юридичну силу навіть при його передачі по електронній пошті або по факсу. Будь-які зміни повинні бути взаємно узгоджені обома сторонами в письмовій формі. Продавець залишає за собою право розірвати Контракт, якщо Покупець не дотримується умов оплати, зазначених в Розділі 5.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><P>
+                    13. Confidentiality:
+                    </P></Strong>
+                    The Parties shall keep the confidentiality of all records or information received from the other party with the same degree of care used to protect its own information. The Parties agree that they shall not disclose any records or information to any other third party without the prior written permission of the disclosing Party.</td>
+                <td><Strong><p>
+                    13. Конфіденційність:
+                    </p></Strong>
+                    Сторони зберігають конфіденційність всіх записів або інформації, отриманої від іншої сторони з тією ж ретельністю, яку застосовують для захисту власної інформації. Сторони погоджуються, що не повинні розголошувати будь-які записи або інформацію будь-якій третій стороні без попередньої письмової згоди розголошуючої Сторони.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    14. General condition:
+                    </p></Strong>
+                    <p>                        
+                        
+                        14.1 In the event any one or more of the provisions of this Contract is held to be void or unenforceable or illegal under the applicable law, such void or unenforceability or illegality shall not affect any other provision of this Contract.</p></td>
+                
+                <td><Strong><p>
+                    14. Загальні умови:
+                    </p></Strong>
+                    14.1 У разі, якщо будь-яке одне або кілька положень цього Контракту буде визнано нечинним, невиконуємим або незаконним відповідно до чинного законодавства, така нечинність, непридатність або незаконність не впливає на будь-які інші положення цього Контракту.</td>
+            </tr>
+            <tr height="100px">
+                <td>14.2 No delay on the part of either Party in exercising any of its right hereunder or failure to exercise the same, nor the acquiescence or knowledge thereto shall operate as a release or waiver except in the specific instance for which is expressly given. None of the terms, conditions or provisions of this Contract shall be held to have been changed, waived, varied, modified or altered by any act or knowledge of either party, their respective agents, servants or employees, except in written agreement by Seller and Buyer.</td>
+                <td>14.2 Ніяка затримка з боку будь-якої зі Сторін при здійсненні будь-яких її прав згідно з цим Контрактом або їх нездійсненні, а також жодне припущення або обізнаність про це, не можуть бути використані як звільнення або відмова від прав, за винятком окремих випадків, в яких така відмова надана явним чином. Жодна з умов або положень цього Контракту не визнаються зміненими, скасованими, виправленими, скоригованими або заміненими будь-якою дією або обізнаністю однієї зі сторін, їх відповідних агентів, службовців або співробітників, за винятком письмових угод між Продавцем і Покупцем.</td>
+            </tr>
+            <tr height="100px">
+                <td>14.3 If there is any discrepancy arising during execution, the provisions of this Contract and the following documents shall prevail in the following priority: (1) This Contract (2) The Annexes of this Contract.</td>
+                <td>14.3 У разі виникнення будь-яких розбіжностей при виконанні положень цього Контракту, такі документи мають переважну силу в такій черговості: (1) Цей Контракт (2) Додатки до цього Контракту.</td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    15. Additional clauses:
+                    </p></Strong>
+                    15.1 Applicable language: English and Ukraine. If there is dispute arising during execution and performance of this Contract including the Attachments and Specification, English version of Contract shall prevail.</td>
+                <td><Strong><p>
+                    15. Додаткові положення:
+                    </p></Strong>
+                    15.1 Застосовувана мова: англійська та українська. Якщо виникає суперечка при виконанні цього Контракту, включаючи Додатки і Специфікацію, англійська версія Контракту матиме переважну силу.</td>
+            </tr>
+            <tr height="100px">
+                <td>15.2 Annexed documents including the Attachment #1, Attachment #2 Specification and Attachment #3 are an integral part of the Contract.</td>
+                <td>15.2 Документи, що додаються, включаючи Додаток №1, Додаток №2 Специфікація та Додаток №3, є невід'ємною частиною Контракту.</td>
+            </tr>
+            <tr height="100px">
+                <td>15.3 Neither party may, unless agreed upon in writing beforehand by both parties (Seller and Buyer) transfer the liabilities and obligations to any third party.</td>
+                <td>15.3 Жодна зі сторін не може, якщо інше не погоджено в письмовій формі обома сторонами (Продавцем і Покупцем), передавати відповідальність та зобов'язання будь-яким третім особам.</td>
+            </tr>
+            <tr height="100px">
+                <td>15.4 The Contract comes into force after have been signed by the Parties and it is valid for one year. For avoidance of doubt, this Agreement is not binding on Seller if it's signed solely by Buyer. Seller has right to reject any payment from Buyer that's made before this Agreement goes into effect. If the Agreement is executed by Seller first, the Seller shall be entitled to reject this Agreement or postpone the Expected Time of Shipment if the Buyer doesn't sign and return it before      {!printtimeADD4}                       .</td>
+                <td>15.4 Контракт набуває чинності з моменту підписання Сторонами і діє протягом одного року. Для уникнення сумнівів, цей Контракт не має юридичної сили для Продавця, якщо він підписаний виключно Покупцем. Продавець має право відхилити будь-яку оплату Покупця, якщо вона зроблена до вступу в силу цього Контракту. Якщо цей Контракт підписаний спочатку Продавцем, то Продавець має право відхилити цей Контракт або відтермінувати Очікуваний час Відвантаження в тому випадку, якщо Покупець не поверне підписаний Контракт до  {!printtimeUK} . </td>
+            </tr>
+            <tr height="100px">
+                <td><Strong><p>
+                    Approved and accepted,
+                    </p></Strong>
+                    <Strong><p>
+                        The Seller:{!Contract.Seller__c}
+                        </p> </Strong>
+                    <p>
+                        Representative: Mr. Wang Zhihua
+                    </p> 
+                    <br/>
+                    <p>
+                        Signature: ______________________
+                    </p>
+                    <br/>
+                    <br/>
+                    <br/><Strong><p>
+                    The Buyer:{!Contract.BuyerAccount__r.Name}
+                    </p> </Strong>
+                    <p>
+                        Representative:{!contract.Buyer_s_representative_English__c}
+                    </p>
+                    <br/>
+                    <p>
+                        Signature: ______________________
+                    </p></td>
+                <td><p>
+                    <Strong>Погоджено і затверджено,</Strong>
+                    </p>
+                    <Strong><p>
+                        Продавець:{!Contract.Seller__c}
+                        </p> </Strong>
+                    <p>
+                        Представник: Пан Цао Хайюнь
+                    </p>
+                    <br/>
+                    <p>
+                        Підпис:______________________
+                    </p>
+                    <br/>
+                    <br/>
+                    <p>
+                        <Strong>Покупець: {!Contract.BuyerAccount__r.Account_Name_Ukrainian__c}</Strong>
+                    </p>
+                    <p>
+                        Представник:{!contract.Buyer_s_representative_Ukraine__c}
+                    </p>
+                    <br/>
+                    <p>
+                        Підпис:______________________
+                    </p></td>
+            </tr>
+            
+        </table>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        
+        <apex:commandButton action="{!AddSave}" value="Generate Pdf"/>
+        <apex:commandButton action="{!SendEmail}" value="Send Email"/>
+        <table  border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr style="height:33pt;">
+                <td style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%">
+                    <p>
+                        <strong>Purchase Agreement No:{!Contract.Contract_NO__c} </strong>
+                    </p>
+                    <p>
+                        <strong>Purchase Agreement Date:{!printtime}</strong>
+                    </p>
+                </td>
+                <td style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%">
+                    <p>
+                        <strong>№ Договору купівлі-продажу:{!Contract.Contract_NO__c} </strong>
+                    </p>
+                    <p>
+                        <strong>Дата Договору купівлі-продажу:{!printtimeUK}</strong>                        
+                    </p> </td>
+            </tr>
+        </table>
+        
+        
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" align="center">
+                <td text-align="center" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%"><strong>Attachment #2 /Specification</strong></td>
+                <td text-align="center" style="padding-left:5.4pt; padding-right:5.4pt; vertical-align:middle; width:424pt; " width="50%"><strong>Додаток №2 / Специфікація </strong></td>
+            </tr>
+        </table>
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" >
+                <td width="10%">The Buyer:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Name}</td>
+                <td width="10%">Покупець:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Account_Name_Ukrainian__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Add:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.BillingStreet+Contract.BuyerAccount__r.BillingCity}</td>
+                <td width="10%">Адреса:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Account_Address_Ukrainian__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">VAT number:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.VAT_NO__c}</td>
+                <td width="10%">№ ПДВ:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.VAT_NO__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Tel.:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Phone}</td>
+                <td width="10%">Тел.:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Phone}</td>
+            </tr>  
+            <tr height="30px" >
+                <td width="10%">Fax:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Fax}</td>
+                <td width="10%">Факс</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Fax}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Email:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Company_Email__c}</td>
+                <td width="10%">Електронна пошта:</td>
+                <td width="40%">{!Contract.BuyerAccount__r.Company_Email__c}</td>
+            </tr>
+        </table>
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="30px" >
+                <td width="10%">The Seller:</td>
+                <td width="40%">{!ios.Seller__c}</td>
+                <td width="10%">Продавець:</td>
+                <td width="40%">{!ios.Seller__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Add:</td>
+                <td width="40%">{!ios.Address__c}</td>
+                <td width="10%">Адреса:</td>
+                <td width="40%">{!ios.Address__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">VAT number:</td>
+                <td width="40%">{!ios.Seller_VAT_NO__c}</td>
+                <td width="10%">№ ПДВ:</td>
+                <td width="40%">{!ios.Seller_VAT_NO__c}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Tel.:</td>
+                <td width="40%">{!CONTRACT.Owner.MobilePhone}</td>
+                <td width="10%">Тел.:</td>
+                <td width="40%">{!CONTRACT.Owner.MobilePhone}</td>
+            </tr>  
+            <tr height="30px" >
+                <td width="10%">Fax:</td>
+                <td width="40%">{!CONTRACT.Owner.FAx}</td>
+                <td width="10%">Факс</td>
+                <td width="40%">{!CONTRACT.Owner.FAX}</td>
+            </tr>
+            <tr height="30px" >
+                <td width="10%">Email:</td>
+                <td width="40%">{!CONTRACT.Owner.email}</td>
+                <td width="10%">Електронна пошта:</td>
+                <td width="40%">{!CONTRACT.Owner.email}</td>
+            </tr>
+        </table>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Strong>1. Description, Price, Amount and shipment date:</Strong>
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="20px" >
+                <td width="10%" rowspan="2"><Strong>Product type</Strong></td>
+                <td width="10%" rowspan="2"><Strong>Peak Power(Wps/PC)</Strong></td>
+                <td colspan="2" width="30%" style=" text-align:center;"><Strong>Quantity</Strong></td>
+                
+                <td width="10%" rowspan="2"><Strong>Unit price {!Contract.Trade_term__c} {!Contract.Destination__c} </Strong></td>
+                <td width="15%" rowspan="2"><Strong>Purchase Price (USD)</Strong></td>
+                <td width="25%" rowspan="2"><Strong>Expected Time of Shipment from {!Contract.Departure_Port__c}</Strong></td>
+            </tr>
+            <tr height="20px" >
+                <td width="15%"><Strong>PCS</Strong></td>
+                <td width="15%"><Strong>Wps</Strong></td>  
+            </tr>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!pds}" var="line" id="Order_Line_List">   
+                <!--<apex:dataList value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">-->
+                <apex:variable var="index" value="{!index+1}" />
+                <tr height="30px" >
+                    <td width="10%">{!line.Product_Name__c}</td>
+                    <td width="10%">{!line.Unit_WM__c}</td>
+                    <td width="15%">{!line.Quantity__c}</td>
+                    <td width="15%">{!line.Total_W__c}</td>
+                    <td width="10%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></td>
+                    <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></td>
+                    <td width="20%">Before {!line.GuaranteedDeliveryDateAuto2__c} on condition that Seller receives the Down Payment in accordance with Section 3</td>
+                </tr>
+            </apex:repeat>
+            <tr height="30px" >
+                <td width="10%"><Strong>Total</Strong></td>
+                <td width="10%"></td>
+                <td width="15%">{!T_PCS}</td>
+                <td width="15%">{!T_WPS}</td>
+                <td width="10%"></td>
+                <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!T_PurchasePrice}"/></apex:outputText></td>
+                <td width="20%"></td>
+            </tr>
+            
+            
+            
+        </table>
+        
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>
+        
+        <Strong>1. Опис, ціна и сума: </Strong></p>
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="20px" >
+                <td width="10%" rowspan="2"><Strong>Тип продукту</Strong></td>
+                <td width="10%" rowspan="2"><Strong>Макс. потужність (Вт/шт.)</Strong></td>
+                <td colspan="2" width="30%" text-align="center"><Strong>Кількість</Strong></td>
+                
+                <td width="10%" rowspan="2"><Strong>Ціна за одиницю {!Contract.Trade_term__c}  </Strong></td>
+                <td width="15%" rowspan="2"><Strong>Сума, дол.США</Strong></td>
+                <td width="25%" rowspan="2" style="display:{!IF(Contract.Departure_Port__c=='China Main Port','run-in','none')}"><Strong>Очікувана дата відвантаження з головного порту Китаю</Strong></td>
+                 <td width="25%" rowspan="2" style="display:{!IF(Contract.Departure_Port__c=='Vietnam Main Port','run-in','none')}"><Strong>Очікувана дата відвантаження з головний порт В'єтнаму</Strong></td>
+            </tr>
+            <tr height="20px" >
+                <td width="15%" ><Strong>Шт.</Strong></td>
+                <td width="15%"><Strong>Вт</Strong></td>  
+            </tr>
+            <apex:variable var="index" value="{!0}" />
+            <apex:repeat value="{!pds}" var="line" id="Order_Line_List2">   
+                <!--<apex:dataList value="{!Contract.Product_Detail__r}" var="line" id="Order_Line_List">-->
+                <apex:variable var="index" value="{!index+1}" />
+                <tr height="30px" >
+                    <td width="10%">{!line.Product_Name__c}</td>
+                    <td width="10%">{!line.Unit_WM__c}</td>
+                    <td width="15%">{!line.Quantity__c}</td>
+                    <td width="15%">{!line.Total_W__c}</td>
+                    <td width="10%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Unit_Price__c}"/></apex:outputText></td>
+                    <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!line.Total_Price__c}"/></apex:outputText></td>
+                    <td width="20%">До {!line.GuaranteedDeliveryDateAuto2__c} р. за умови, що Продавець отримав Передплату згідно з п.3</td>
+                </tr>
+            </apex:repeat>
+            <tr height="30px" >
+                <td width="10%"><Strong>Всього</Strong></td>
+                <td width="10%"></td>
+                <td width="15%">{!T_PCS}</td>
+                <td width="15%">{!T_WPS}</td>
+                <td width="10%"></td>
+                <td width="15%"><apex:outputText value="{0, number, #,##0.0000}"><apex:param value="{!T_PurchasePrice}"/></apex:outputText></td>
+                <td width="20%"></td>
+            </tr>
+        </table>
+        <table border="1"  width="95%"  >
+            <tr>
+                <td width="50%">
+                    2. Specification:
+                    </td>
+                     <td width="50%">
+                    2. Специфікація:
+                    </td>
+                    </tr>
+                    </table>
+                    <apex:repeat value="{!pds}" var="pd" > 
+                     <table border="0"  width="95%"  >
+                     <tr>
+                     <td>
+                    <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+                        <tr height="40px">
+                            <td width="40%" >Product Type </td>    
+                            <td width="60%">{!pd.Product_Name__c}</td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Peak power (Pmax) </td>    
+                            <td width="60%">{!pd.Unit_WM__c} </td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Cell type </td>    
+                            <td width="60%">{!pd.Battery_Type__c} </td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Number of Cells </td>    
+                            <td width="60%">{!pd.Number_of_Cells__c} </td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Weight </td>    
+                            <td width="60%">{!pd.Weight__c} </td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Dimensions </td>    
+                            <td width="60%">{!pd.Dimensions__c} </td>        
+                        </tr>
+                   </table>
+                    Remark: The "Weight" and "Dimensions" is only for reference
+                </td>
+                
+                <td width="50%">
+                    <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+                        <tr height="40px">
+                            <td width="40%" >Тип продукту </td>    
+                            <td width="60%"> {!pd.Product_Name__c}</td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Максимальная потужність (Р макс) </td>    
+                            <td width="60%">{!pd.Unit_WM__c} </td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Тип елементу </td>    
+                            <td width="60%"> {!pd.Battery_Type__c}</td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Кількість елементів</td>    
+                            <td width="60%">{!pd.Number_of_Cells__c} </td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Вага</td>    
+                            <td width="60%">{!pd.Weight__c} </td>        
+                        </tr>
+                        <tr height="40px">
+                            <td width="40%" >Розміри </td>    
+                            <td width="60%">{!pd.Dimensions__c} </td>        
+                        </tr>
+                    </table>
+                    Примітка: «Вага» та «Розміри» використовуються лише для довідки.
+                </td>
+            </tr>
+        </table>
+        </apex:repeat> 
+        
+        <table border="1"  width="95%"  style="border-collapse:collapse;margin:10px">
+            <tr height="100px">
+                <td><Strong>3. Payment terms: </Strong></td>
+                <td></td>
+            </tr>
+            
+            <tr height="100px">
+                <td>1.
+                    <apex:inputfield value="{!Dpay1.Actual_Values__c}" style="border-color:red;width: 99%;height:120px;" /> </td>
+                <td>1. <apex:inputfield value="{!Dpay2.Actual_Values__c}" style="border-color:red;width: 99%;height:120px;" /></td>
+            </tr>            
+            
+            <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c!= null,'run-in','none')}">
+                <td>2.<apex:inputTextarea value="{!Bpay1.Actual_Values__c}" style="border-color:red;width: 99%;height:120px;" /> </td>
+                <td>2.<apex:inputTextarea value="{!Bpay2.Actual_Values__c}" style="border-color:red;width: 99%;height:120px;" /></td>
+            </tr>                 
+            
+         <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c!= null,'run-in','none')}">
+                <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">3. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2020.</td>
+               <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">3. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2010.</td>
+                  
+                      <td style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">3. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2020.</td>
+          
+                <td style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">3. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2010.</td>
+            </tr>     
+            
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c!= null,'run-in','none')}">
+                <td>4. Payment shall be made without any deductions or offset for any reason and will not be considered made until the Seller has a credit entry on its bank account. The Buyer will be responsible for any loss and damages incurred by the Seller arising from its failure to pick up the Goods timely.</td>
+                <td><p>
+                    
+                    4. Оплата здійснюється без будь-яких відрахувань або зарахувань з будь-яких причин і не буде вважатися виконаною, поки Продавець не отримає кошти на банківський рахунок. Покупець нестиме відповідальність за будь-які збитки і шкоду, понесені Продавцем в зв'язку з неспроможністю Покупця забрати товар своєчасно.</p></td>
+                
+            </tr>                 
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c!= null,'run-in','none')}">
+                <td>5. Seller shall be entitled to hold the Bill of Lading and postpone the release of the Goods hereunder before receipt of 100% prepay of the total Purchase Price of the Goods hereunder; and Buyer shall indemnify Seller against all the incurred losses and damages arising from Buyer's default in performing its payment obligations under this Agreement, including but not limit to the detention and demurrages fees and the transportation fees.</td>
+                <td>5. Продавець має право утримувати коносамент та відкласти випуск Товару за цим Договором до отримання   100%  передоплати  загальної продажної вартості Товару, а Покупець повинен компенсувати Продавцю всі понесені збитки, що виникли внаслідок невиконання Покупцем своїх платіжних зобов'язань за цим Договором, в тому числі, але не обмежуючись витратами на зберігання, демередж, а також транспортні збори.</td>
+            </tr>                  
+            
+            
+            
+             <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c== null,'run-in','none')}">
+                <td  style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">2. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2020.</td>
+                 <td  style="display:{!IF(Contract.incoterm_version__c=='incoterm 2020','run-in','none')};">2. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2020.</td>
+               <td  style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">2. The price terms mentioned in this Specification shall be construed, explained and governed by INCOTERMS 2010.</td>
+                <td  style="display:{!IF(Contract.incoterm_version__c!='incoterm 2020','run-in','none')};">2. Цінові умови, зазначені в цій Специфікації, тлумачиться і регулюються згідно до правил Інкотермс 2010.</td>
+           
+            </tr>     
+            
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c== null,'run-in','none')}">
+                <td>3. Payment shall be made without any deductions or offset for any reason and will not be considered made until the Seller has a credit entry on its bank account. The Buyer will be responsible for any loss and damages incurred by the Seller arising from its failure to pick up the Goods timely.</td>
+                <td><p>
+                    
+                    3. Оплата здійснюється без будь-яких відрахувань або зарахувань з будь-яких причин і не буде вважатися виконаною, поки Продавець не отримає кошти на банківський рахунок. Покупець нестиме відповідальність за будь-які збитки і шкоду, понесені Продавцем в зв'язку з неспроможністю Покупця забрати товар своєчасно.</p></td>
+                
+            </tr>                 
+            
+           <tr height="100px" style="display:{!IF(Bpay1.Actual_Values__c== null,'run-in','none')}">
+                <td>4. Seller shall be entitled to hold the Bill of Lading and postpone the release of the Goods hereunder before receipt of 100% prepay of the total Purchase Price of the Goods hereunder; and Buyer shall indemnify Seller against all the incurred losses and damages arising from Buyer's default in performing its payment obligations under this Agreement, including but not limit to the detention and demurrages fees and the transportation fees.</td>
+                <td>4. Продавець має право утримувати коносамент та відкласти випуск Товару за цим Договором до отримання   100%  передоплати  загальної продажної вартості Товару, а Покупець повинен компенсувати Продавцю всі понесені збитки, що виникли внаслідок невиконання Покупцем своїх платіжних зобов'язань за цим Договором, в тому числі, але не обмежуючись витратами на зберігання, демередж, а також транспортні збори.</td>
+            </tr>                  
+            
+            
+            <tr height="100px">
+                <td><p>
+                    <Strong>Approved and accepted,</Strong> 
+                    </p>
+                    <p>
+                        <Strong>The Seller:{!Contract.SELLER__c}</Strong> 
+                    </p> 
+                    <p>Representative: Mr.Wang Zhihua</p> 
+                    <br/> 
+                    <p>
+                        Signature: ______________________
+                    </p> 
+                </td>
+                
+                <td><p>
+                    <Strong>Погоджено і затверджено,</Strong> 
+                    </p> 
+                    
+                    <p><Strong>Продавець:{!Contract.SELLER__c}</Strong> </p>
+                    <p>
+                        Представник: Пан Цао Хайюнь  
+                    </p>
+                    <br/>
+                    <p>
+                        Підпис:______________________
+                    </p>
+                    
+                </td>
+            </tr>
+            
+            
+            <tr height="100px">
+                <td><p>
+                    <Strong>The Buyer: {!Contract.BuyerAccount__r.Name}</Strong>
+                    </p>
+                    <p>
+                        Representative:{!Contract.Buyer_s_representative_English__c}
+                    </p> 
+                    <p>
+                        Title: 
+                    </p>
+                    <p>
+                        Signature: ______________________
+                    </p></td>
+                <td><p>
+                    <Strong>Покупець: {!Contract.BuyerAccount__r.Account_Name_Ukrainian__c}</Strong>
+                    </p>
+                    <p>
+                        Представник:{!Contract.Buyer_s_representative_Ukraine__c}
+                    </p>
+                    <p>
+                        Посада:
+                    </p>
+                    <p>
+                        Підпис:______________________
+                    </p></td> 
+            </tr>
+            
+        </table>
+        
+    </apex:form>
+    
+    <apex:outputPanel id="msg">
+        <apex:messages />
+    </apex:outputPanel> 
+    
+</apex:page>
