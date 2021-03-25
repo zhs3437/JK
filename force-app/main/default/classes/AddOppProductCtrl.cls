@@ -6,10 +6,10 @@ public with sharing class AddOppProductCtrl {
     public Double SmallC;
     public Double BigC;
     public String CountryAustralia {
-        get; 
-        set{
-            CountryAustralia = JK_PicklistConstant.AUSTRALIA;
+        get{
+            return JK_PicklistConstant.AUSTRALIA;
         }
+        set;
     }
     
     /*
@@ -17,9 +17,10 @@ public with sharing class AddOppProductCtrl {
     *    Constructors
     * -------------------------------------------------------------------------------------
     */
+
     // Constructor for standardController
+    public AddOppProductCtrl() {}
     
-    public AddOppProductCtrl() { }
     // Constructor for Extension to an Opportunity standardController
     
     public AddOppProductCtrl(ApexPages.standardController std) {
@@ -75,7 +76,7 @@ public with sharing class AddOppProductCtrl {
                                                 'pricebook2id',
                                                 'amount'
                                                 };
-                Map<String,Schema.SObjectField> m = Schema.SObjectType.Opportunity.fields.getMap();
+        Map<String,Schema.SObjectField> m = Schema.SObjectType.Opportunity.fields.getMap();
         for (String fieldToCheck : accessFields) {
             if (!m.get(fieldToCheck).getDescribe().isAccessible()) {
                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL,
@@ -185,6 +186,81 @@ public with sharing class AddOppProductCtrl {
                          system.debug('======>>:' + catalog.size());
                          
                      }
+            }else if(opp.RecordType.Name == 'Energy Storage System'){
+                 for (Pricebookentry p : 
+                     [ Select id, 
+                      Name, 
+                      pricebook2id, 
+                      product2id, 
+                      unitprice,
+                      productcode,
+                      Product2.Name, 
+                      CurrencyIsoCode,
+                      IsActive,
+                      product2.Description,
+                      product2.Non_Modul__c,
+                      product2.Family, 
+                      product2.Cable_Length__c,
+                      product2.Maximum_Power_at_STC_Pmax__c,
+                      Product2.Maximum_Power_at_Current_Imp_A__c ,
+                      Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
+                      product2.IsActive,
+                      Product2.CreatedDate,
+                      Product2.SAP_Materiel_No__c,
+                      product2.Applicable_Area__c,
+                      Product2.Cell_Type__c,
+                      Product2.Energy_Storage__c
+                      from pricebookentry
+                      where isactive = true and isdeleted = false
+                      and pricebook2id = :opp.pricebook2id                 
+                      and CurrencyIsoCode = : opp.CurrencyIsoCode
+                      and Product2.Energy_Storage__c =true
+                      and product2.ApplicationProductOppId__c = :''
+                     ] ) {
+                         
+                         
+                         catalog.add(new pricebookentryTableItem(p));
+                         system.debug('======>>:' + catalog.size());
+                         for(pricebookentryTableItem c : catalog){
+                             system.debug(c);
+                         }
+                     }
+                for (Pricebookentry p : 
+                     [ Select id, 
+                      Name, 
+                      pricebook2id, 
+                      product2id, 
+                      unitprice,
+                      productcode,
+                      Product2.Name, 
+                      CurrencyIsoCode,
+                      IsActive,
+                      product2.Description,
+                      product2.Non_Modul__c,
+                      product2.Family, 
+                      product2.Cable_Length__c,
+                      product2.Maximum_Power_at_STC_Pmax__c,
+                      Product2.Maximum_Power_at_Current_Imp_A__c ,
+                      Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
+                      product2.IsActive,
+                      Product2.CreatedDate,
+                      Product2.SAP_Materiel_No__c,
+                      product2.Applicable_Area__c,
+                      Product2.Cell_Type__c,
+                      Product2.Energy_Storage__c
+                      from pricebookentry
+                      where isactive = true and isdeleted = false
+                      and pricebook2id = :opp.pricebook2id                 
+                      and CurrencyIsoCode = : opp.CurrencyIsoCode
+                      and Product2.Energy_Storage__c =true
+                      and product2.ApplicationProductOppId__c like: testid
+                     ] ) {
+                         
+                         
+                         catalog.add(new pricebookentryTableItem(p));
+                         system.debug('======>>:' + catalog.size());
+                         
+                     }
             }else
             {
                 for (Pricebookentry p : 
@@ -211,7 +287,8 @@ public with sharing class AddOppProductCtrl {
                       Product2.Cell_Type__c
                       from pricebookentry
                       where isactive = true and isdeleted = false
-                      and pricebook2id = :opp.pricebook2id                 
+                      and pricebook2id = :opp.pricebook2id
+                      and Product2.Energy_Storage__c =false
                       and CurrencyIsoCode = : opp.CurrencyIsoCode
                       and product2.ApplicationProductOppId__c = :''
                      ] ) {
@@ -219,7 +296,9 @@ public with sharing class AddOppProductCtrl {
                          
                          catalog.add(new pricebookentryTableItem(p));
                          system.debug('======>>:' + catalog.size());
-                         
+                         for(pricebookentryTableItem c : catalog){
+                             system.debug(c);
+                         }
                      }
                 for (Pricebookentry p : 
                      [ Select id, 
@@ -245,6 +324,7 @@ public with sharing class AddOppProductCtrl {
                       Product2.Cell_Type__c
                       from pricebookentry
                       where isactive = true and isdeleted = false
+                      and Product2.Energy_Storage__c =false
                       and pricebook2id = :opp.pricebook2id                 
                       and CurrencyIsoCode = : opp.CurrencyIsoCode
                       and product2.ApplicationProductOppId__c like: testid
@@ -344,11 +424,9 @@ public with sharing class AddOppProductCtrl {
                                             //and pricebook2id = : opp.pricebook2id
                                             //Order by PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c desc
                                             ]) {
-            nextTempid++; 
+            nextTempid++;
             currentProducts.add(new currentProductsItem(oli,oli.TotalPrice__c,nextTempid));
-            system.debug('nextTempid***' + nextTempid);    
         }
-        system.debug('currentProductsLOAD**' + currentProducts);  
     }
     
     
@@ -2784,7 +2862,7 @@ newOLI.MP__c ='Perc Mono';
                 else {
                 this.ListPrice = SalesPrice;
                 }
-            */
+            */  
         }
         
         /*
@@ -2818,8 +2896,8 @@ newOLI.MP__c ='Perc Mono';
         public void clearErrors() {
             this.RecordErrorMsg    = '';
             this.UnitPriceErrorMsg = '';
-            this.QuantityErrorMsg  = '';
-        }       
+            this.QuantityErrorMsg  = '';      
+        }  
     }
     /*-------------------------------------------------------------------------------------
     * Inner Class
@@ -2829,7 +2907,6 @@ newOLI.MP__c ='Perc Mono';
     *
     * -------------------------------------------------------------------------------------
     */
-    
     public class pricebookentryTableItem {
         public Boolean isSelected { get; set; }
         public Pricebookentry data { get; set; }
@@ -2839,7 +2916,6 @@ newOLI.MP__c ='Perc Mono';
             this.isSelected = false;
         }
     }
-    
     /*
     * -------------------------------------------------------------------------------------
     *    end of class

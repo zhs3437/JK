@@ -12,11 +12,11 @@
         var containervalue;
         var PriceBookName = "{!opp.pricebook2.Name}";
     </script>
-  <script LANGUAGE="JavaScript">
-    function openwin() {
-        //window.open ("AddProductApp?id="+{!opp.id}, "newwindow", "height=100, width=400, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no") //写成一行
-        window.open('/apex/AddProductType?id={!opp.Id}', '_blank' , 'height=600,width=1600,scrollbars=no,location=no');
-    }
+    <script LANGUAGE="JavaScript">
+        function openwin() {
+            //window.open ("AddProductApp?id="+{!opp.id}, "newwindow", "height=100, width=400, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no") //写成一行
+            window.open('/apex/AddProductType?id={!opp.Id}', '_blank' , 'height=600,width=1600,scrollbars=no,location=no');
+        }
     </script>
     
     <apex:sectionHeader title="{!$ObjectType.Opportunity.Label} {!Opportunity.Name}" />
@@ -43,15 +43,11 @@
                 <input type="hidden" name="LineItemToChange" id="LineItemToChange" value="" />
                 <span class="lookupInput"> 
                     <label for="ChangeProductChoice">{!$Label.Choose_Product}</label>
-                    <input type="text" name="ChangeProductChoice"
-                        id="ChangeProductChoice"
-                        class="text ui-widget-content ui-corner-all" size="20"
-                        maxlength="255" /> 
+                    <input type="text" name="ChangeProductChoice" id="ChangeProductChoice" class="text ui-widget-content ui-corner-all" size="20" maxlength="255" /> 
                     <script>
                         $("#ChangeProductChoice").change(
                             function() {
-                            setupLookup("changeProduct_form",
-                                        "ChangeProductChoice");
+                                setupLookup("changeProduct_form", "ChangeProductChoice");
                             }
                         );
                         
@@ -64,13 +60,15 @@
                             }
                         );
                     </script> 
-                    <a id="ChangeProductChoice_lkwgt" name="ChangeProductChoice_lkwgt" onclick="setLastMousePosition(event)" title="Product Lookup (New Window)">
-                        <img src="/s.gif"
-                            class="lookupIcon" onblur="this.className = 'lookupIcon';"
-                            onfocus="this.className = 'lookupIconOn';"
-                            onmouseout="this.className = 'lookupIcon';"
-                            onmouseover="this.className = 'lookupIconOn';"
-                            title="Product Lookup (New Window)" />
+                    <a id="ChangeProductChoice_lkwgt" name="ChangeProductChoice_lkwgt"
+                        onclick="setLastMousePosition(event)"  
+                        title="Product Lookup (New Window)">
+                            <img src="/s.gif"
+                                class="lookupIcon" onblur="this.className = 'lookupIcon';"
+                                onfocus="this.className = 'lookupIconOn';"
+                                onmouseout="this.className = 'lookupIcon';"
+                                onmouseover="this.className = 'lookupIconOn';"
+                                title="Product Lookup (New Window)" />
                     </a>
                 </span>
             </fieldset>
@@ -337,7 +335,7 @@
                                 </td> 
                                 
                             </tr>
-                            <tr>
+                            <tr style="display:{!IF(opp.RecordType.Name != 'Energy Storage System','run-in','none')}">
                                 <td style="text-align: left">Discount</td>
                                 <td style="text-align: left">
                                     <div class="requiredInput">
@@ -351,60 +349,29 @@
                                             <strong>{!prod.QuantityErrorMsg}</strong>
                                         </div> -->
                                     </div>
-                                </td> 
-                                
+                                </td>
                             </tr>
-                            <!--
-                            <tr>
-                            <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Battery_Type__c.Label}</td>
-                                  <td style="text-align: left">
-                                    <div class="requiredInput">
-                                        <div class="requiredBlock"></div>
-                                        <span style="white-space: nowrap"> 
-                                           
-                                        </span>
-                                        
-                                       <apex:inputField value="{!prod.data.Battery_Type__c}" required="true" style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"
-                                        onchange="this.style.background='#FFC'" />
-  
-                                    </div>
-                                </td>     
-                                </tr>
-                                -->
-                            
-                            <tr>
+                            <tr style="display:{!IF( opp.RecordType.Name != 'Energy Storage System','run-in','none')};">
                                 <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Frame_B_side_Height__c.Label}</td>
                                 <td style="text-align: left" >
-                                    <apex:inputField value="{!prod.data.Frame_B_side_Height__c}"  required="{!IF(prod.data.PricebookEntry.Name!='MC4','true','fasle')}"  style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"/>
+                                    <apex:inputField value="{!prod.data.Frame_B_side_Height__c}"  required="{!IF(prod.data.PricebookEntry.Name!='MC4'&& opp.RecordType.Name != 'Energy Storage System','true','fasle')}"  style="display:{!IF(prod.data.PricebookEntry.Name!='MC4' && opp.RecordType.Name != 'Energy Storage System','run-in','none')};"/>
                                 </td>
-                            </tr>   
-                             <tr>
+                            </tr>
+                            <tr style="display:{!IF(opp.RecordType.Name != 'Energy Storage System','run-in','none')};">
                                 <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.MP__c.Label}</td>
-                                <td style="text-align: left" > 
-                                    <apex:inputField value="{!prod.data.MP__c}"  required="true"  style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"/>
+                                <td style="text-align: left" >
+
+
+                                        
+                                        <apex:inputField value="{!prod.data.MP__c}"  required="{!IF(opp.RecordType.Name != 'Energy Storage System','true','fasle')}"  style="display:{!IF(prod.data.PricebookEntry.Name!='MC4','run-in','none')};"/>
+                                       
+
                                 </td>
  
                             </tr>
                          
-                            <!--
-                              <tr>
-                                <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Cheetah__c.Label}</td>
-                                <td style="text-align: left">
-                                    <div class="requiredInput">
-                                        <span style="white-space: nowrap"> 
-                                           
-                                        </span>
-                                        
-                                        <apex:inputField value="{!prod.data.Cheetah__c}"
-                                                onchange="this.style.background='#FFC'" />
-                                        <div class="errorMsg">
-                                            <strong>{!prod.QuantityErrorMsg}</strong>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            -->
-                             <tr style="display:{!IF(prod.data.Product_Type__c=='' ,'run-in','none')};">
+                           
+                             <tr style="display:{!IF(prod.data.Product_Type__c==''&& opp.RecordType.Name != 'Energy Storage System' ,'run-in','none')};">
                                 <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Product_Type__c.Label}</td>
                                 <td style="text-align: left">
                                     <div class="requiredInput">
@@ -412,7 +379,7 @@
                                            
                                         </span>
                                         
-                                        <apex:inputField value="{!prod.data.Product_Type__c}" required="true"
+                                        <apex:inputField value="{!prod.data.Product_Type__c}" required="{!IF(opp.RecordType.Name != 'Energy Storage System','true','fasle')}"
                                                 onchange="this.style.background='#FFC'" />
                                         <div class="errorMsg">
                                             <strong>{!prod.QuantityErrorMsg}</strong>
@@ -420,7 +387,7 @@
                                     </div>
                                 </td>
                             </tr>
-                             <tr style="display:{!IF(prod.data.Product_Type__c!='' ,'run-in','none')};">
+                            <tr style="display:{!IF(prod.data.Product_Type__c!='' && opp.RecordType.Name != 'Energy Storage System','run-in','none')};">
                                 <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Product_Type__c.Label}</td>
                                 <td style="text-align: left">
                                     <div class="requiredInput">
@@ -437,7 +404,7 @@
                                 </td>
                             </tr>
                             
-                             <tr style="display:{!IF(opp.Sales_Region__c=='Middle East&Africa'||opp.Sales_Region__c == 'SSA'||opp.Sales_Region__c == 'MENA' ,'run-in','none')};">
+                             <tr style="display:{!IF((opp.Sales_Region__c=='Middle East&Africa'||opp.Sales_Region__c == 'SSA'||opp.Sales_Region__c == 'MENA') && opp.RecordType.Name != 'Energy Storage System' ,'run-in','none')};">
                                 <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Inventorytype__c.Label}</td>
                                 <td style="text-align: left">
                                     <div class="requiredInput">
@@ -445,14 +412,14 @@
                                            
                                         </span>
                                         
-                                        <apex:inputField value="{!prod.data.Inventorytype__c}" required="{!IF(opp.Sales_Region__c=='Middle East&Africa'||opp.Sales_Region__c == 'SSA'||opp.Sales_Region__c == 'MENA' ,'true','false')}"  onchange="this.style.background='#FFC'" />
+                                        <apex:inputField value="{!prod.data.Inventorytype__c}" required="{!IF((opp.Sales_Region__c=='Middle East&Africa'||opp.Sales_Region__c == 'SSA'||opp.Sales_Region__c == 'MENA') && opp.RecordType.Name != 'Energy Storage System' ,'true','false')}"  onchange="this.style.background='#FFC'" />
                                         <div class="errorMsg">
                                             <strong>{!prod.QuantityErrorMsg}</strong>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                             <tr style="display:{!IF($UserRole.Name=='BMO Specialist' ||  $Profile.Name=='System Administrator' ,'run-in','none')};">
+                             <tr style="display:{!IF(($UserRole.Name=='BMO Specialist' ||  $Profile.Name=='System Administrator') && opp.RecordType.Name != 'Energy Storage System' ,'run-in','none')};">
                                 <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Stock_age__c.Label}</td>
                                 <td style="text-align: left">
                                     <div class="requiredInput">
@@ -868,7 +835,7 @@
                             
                             
                             
-                            <tr>
+                            <tr >
                                 <td style="text-align: left">{!$ObjectType.OpportunityLineItem.fields.Guaranteed_Delivery_Date__c.Label}</td>
                                 <td style="text-align: left">
                                     <div class="requiredInput">
@@ -881,16 +848,17 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr style="display:{!IF(opp.RecordType.Name != 'Energy Storage System','run-in','none')}">
                                 <td style="text-align: left"> {!$ObjectType.OpportunityLineItem.fields.Guaranteed_Delivery_Date_japan__c.Label}
                                     <span class="helpButton" id="RequestedArrival-_help">   
-                                    <img src="/s.gif" alt="" class="helpOrb" title="" /> 
-                                    <script type="text/javascript">
-                                        sfdcPage
-                                        .setHelp(
-                                            'RequestedArrival',
-                                            'This is the Customer Requested Arrival Date (CRD).');
-                                    </script>
+                                        <img src="/s.gif" alt="" class="helpOrb" title="" /> 
+                                        <script type="text/javascript">
+                                            sfdcPage
+                                            .setHelp(
+                                                'RequestedArrival',
+                                                'This is the Customer Requested Arrival Date (CRD).'
+                                            );
+                                        </script>
                                     </span>
                                 </td>
                                 <td style="text-align: left">
