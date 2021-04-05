@@ -85,7 +85,8 @@ public class MOUApproveEmailServiceTest {
 				GM_approval_Status__c = 'pending',
 				Technical_Dept_Status__c = 'pending',
 				Legal_Dept__c = 'pending',
-				OwnerId = SalesAustralia.Id
+				OwnerId = SalesAustralia.Id,
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 
 		);
 		insert opp;

@@ -67,7 +67,8 @@ private class MOUApprovalControllerTeat {
 				StageName = 'Price Quote',
 				Lock__c = true,
 				CloseDate = Date.today(),
-            	ownerId = SalesAustralia.id
+            	ownerId = SalesAustralia.id,
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 

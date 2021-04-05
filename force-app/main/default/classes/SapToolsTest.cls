@@ -11,7 +11,7 @@ private class SapToolsTest {
     	
     	Contract con = TestHelper.createContract(acc.Id);
     	
-		Order aOrder= new Order();   
+		Order aOrder = TestHelper.createOrder(false);   
 	    aOrder.Buyer__c = acc.Id;
 	    aOrder.BillingCountry = 'aaa';
 	    aOrder.BillingPostalCode = 'bbb';

@@ -80,7 +80,8 @@ public without sharing class OpportunityLineItemGrossMarginTest {
             Warehouse_or_Factory__c = 'Warehouse',
             Local_Warehouse__c = 'Mexico Warehouse',
             // required in contract
-            delivey_point__c = 'test point'
+            delivey_point__c = 'test point',
+            Jinko_Parent_Company_Guarantee_needed__c = 'NO'
         );
 
         insert opportunity;
@@ -116,7 +117,7 @@ public without sharing class OpportunityLineItemGrossMarginTest {
             contractItem.OppProductID__c = contractItem.Id;
             insert contractItem;
        
-             Order aOrder= new Order();   
+        Order aOrder = TestHelper.createOrder(false);
         ID AccountId = [SELECT Id FROM Account LIMIT 1][0].Id;
         aOrder.Buyer__c = AccountId;
         aOrder.BillingCountry = 'aaa';

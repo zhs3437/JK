@@ -4,7 +4,7 @@ private class SapSync_DeliveryTest {
     static testMethod void myUnitTest() {
 		SapSync_Delivery ssd = new SapSync_Delivery();
 		Account acc = TestHelper.createAccount();
-		Order aOrder= new Order();   
+		Order aOrder= TestHelper.createOrder(false);   
 	    aOrder.Buyer__c = acc.Id;
 	    aOrder.BillingCountry = 'aaa';
 	    aOrder.BillingPostalCode = 'bbb';

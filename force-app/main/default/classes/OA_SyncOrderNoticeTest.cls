@@ -10,7 +10,7 @@ static testMethod void myUnitTest() {
         con.Opportunity__c=opp.id;
         con.Inspection__c='Need';
         update con;
-        Order aOrder= new Order();   
+        Order aOrder= TestHelper.createOrder(false);  
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
         aOrder.Destination__c ='aaaaaa';

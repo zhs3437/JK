@@ -56,7 +56,8 @@ private class MOUFrameworkAgreementApprovalCtrlTest {
 				StageName = 'Price Quote',
 				Lock__c = true,
 				CloseDate = Date.today(),
-            OwnerId = SalesAustralia.Id
+            	OwnerId = SalesAustralia.Id,
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 		Supplementary_Framework_Agreement__c SFA = new Supplementary_Framework_Agreement__c(

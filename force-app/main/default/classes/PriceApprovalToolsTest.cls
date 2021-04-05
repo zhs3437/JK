@@ -33,7 +33,8 @@ public class PriceApprovalToolsTest {
 				StageName = 'Price Quote',
 				CloseDate = Date.today(),
 				CurrencyIsoCode = 'USD',
-            	Total_MW_Framework_Text__c = 1
+            	Total_MW_Framework_Text__c = 1,
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 

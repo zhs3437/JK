@@ -25,7 +25,7 @@ public class SapSync_CompleteStatusTest {
         Inventory__c inven = new Inventory__c();
         inven.Product_Type__c = prod.id;
         insert inven;        
-        Order aOrder= new Order();   
+        Order aOrder = TestHelper.createOrder(false);   
 	    aOrder.Buyer__c = acc.Id;
 	    aOrder.BillingCountry = 'aaa';
 	    aOrder.BillingPostalCode = 'bbb';

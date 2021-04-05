@@ -5,7 +5,7 @@ private class ShowDeliveryCtrlTest {
     	
     	Account acc = TestHelper.createAccount();
     	
-    	Order aOrder= new Order();   
+    	Order aOrder = TestHelper.createOrder(false);   
 	    aOrder.Buyer__c = acc.Id;
 	    aOrder.Contract_No__c = 'MCXXXX13QXtest';
 	    aOrder.AccountId = acc.Id;

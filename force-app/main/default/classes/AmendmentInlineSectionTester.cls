@@ -6,7 +6,7 @@
 private class AmendmentInlineSectionTester {
     static testMethod void myUnitTest() {
     	Account acc = TestHelper.createAccount();
-    	Order ord = new Order();
+    	Order ord = TestHelper.createOrder(false);
     	//ord.Contact_Name__c = 'zhangsan';
     	ord.AccountId = acc.Id;
     	ord.EffectiveDate = Date.today(); 

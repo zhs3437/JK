@@ -130,6 +130,7 @@ public without sharing class QW_TestDataFactory {
         opportunity.Actual_Sales_Name__c = 'arda';
         opportunity.delivey_point__c = 'sa';
         opportunity.Probability = 8;
+        opportunity.Jinko_Parent_Company_Guarantee_needed__c = 'NO';
         return opportunity;
     }
     

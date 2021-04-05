@@ -88,7 +88,9 @@ public class TestHelper {
             Region__c          ='ROA',
             Actual_Sales_Name__c ='arda',
             delivey_point__c   ='sa',
-            Probability        = 80
+            Probability        = 80,
+            Jinko_Parent_Company_Guarantee_needed__c = 'Yes',
+            Jinko_Parent_Company_Guarantee__c = 'Jinko Solar Co., Ltd.'
         );
         if ( isSave ) {
             insert opp; 
@@ -266,6 +268,7 @@ public class TestHelper {
     }
     public static Order createOrder(boolean isSave){
         Account acc = createAccount();
+        Contract objContract = createContract(acc.Id);
         Order aOrder= new Order();   
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
@@ -278,6 +281,9 @@ public class TestHelper {
         aOrder.AccountId = acc.Id;
         aOrder.EffectiveDate = Date.today();
         aOrder.Status = 'Draft';
+        aOrder.SAP_External_Id__c = 'Test SAP ExId';
+        aOrder.Lock__c = true;
+        aOrder.Contract_Owner__c = UserInfo.getUserId();
         if(isSave) insert aOrder;    
         return aOrder;
     }

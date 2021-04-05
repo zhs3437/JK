@@ -23,7 +23,8 @@ private class MOUEditProductControllerTest {
 				Name = '4MW-TEST-20200525',
 				StageName = 'Price Quote',
 				CloseDate = Date.today(),
-				Pricebook2Id = entry.Pricebook2Id
+				Pricebook2Id = entry.Pricebook2Id,
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 

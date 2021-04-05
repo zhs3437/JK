@@ -20,7 +20,7 @@ public without sharing class SapSync_OrderTest {
             con.Opportunity__c=opp.id;
             update con;
 
-            aOrder = new Order();   
+            aOrder = TestHelper.createOrder(false);   
             aOrder.Buyer__c = acc.Id;
             aOrder.BillingCountry = 'aaa';
             aOrder.Destination__c ='aaaaaa';

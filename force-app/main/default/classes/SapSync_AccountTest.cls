@@ -4,7 +4,7 @@ private class SapSync_AccountTest {
     static testMethod void myUnitTest() {
 		SapSync_Account ssa = new SapSync_Account();
 		Account acc = TestHelper.createAccount();
-		Order aOrder= new Order();   
+		Order aOrder = TestHelper.createOrder(false);   
 	    aOrder.Buyer__c = acc.Id;
 	    aOrder.BillingCountry = 'aaa';
 	    aOrder.BillingPostalCode = 'bbb';

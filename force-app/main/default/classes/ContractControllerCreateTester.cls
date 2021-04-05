@@ -12,6 +12,7 @@ public class ContractControllerCreateTester {
         o2.StageName					= 'Close Won';
         o2.Probability					= 100;
         o2.delivey_point__c				= '231';
+        o2.Jinko_Parent_Company_Guarantee_needed__c = 'NO';
         insert o2;
         Opportunity opp = TestHelper.createOpportunity(acc.Id,false);
         opp.Trade_Term__c 					= 'CIF';

@@ -32,9 +32,10 @@ public class OpportunitysPricePageCtrlTest {
         opp.StageName          = 'PO Imminent';
         opp.Probability        = 80;
         opp.delivey_point__c   ='sad';
+        opp.Jinko_Parent_Company_Guarantee_needed__c = 'NO';
         insert opp;	
         
-         subopp.Name               = '2MW-JKM180-20120101';
+        subopp.Name               = '2MW-JKM180-20120101';
         // opp.AccountID          = accountID;
         subopp.CloseDate          = Date.today();
         subopp.faOpportunity__c   = opp.Id;
@@ -42,7 +43,8 @@ public class OpportunitysPricePageCtrlTest {
         subopp.amount             = 1200.00;
         subopp.StageName          = 'PO Imminent';
         subopp.Probability        = 80;
-         subopp.delivey_point__c   ='sad';
+        subopp.delivey_point__c   ='sad';
+        subopp.Jinko_Parent_Company_Guarantee_needed__c = 'NO';
         insert subopp;	
     }
     

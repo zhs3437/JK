@@ -21,6 +21,8 @@ public class SaveAsPDFTest {
 		pay = TestHelper.createPayment(opp.Id,false);
         pay.Contract__c = con.id;
         insert pay;
+        Test.startTest();
+        
         Amendment__c am = TestHelper.createAmendment();
         SaveAsPDF.doCreatePA1MW(con.id);
         SaveAsPDF.doCreatePA1MWJapan(con.id);
@@ -29,6 +31,6 @@ public class SaveAsPDFTest {
         SaveAsPDF.doCreateSAEn(am.Id);
         SaveAsPDF.doCreateSAGlobal(am.Id);
 
-        
+        Test.stopTest();
     }
 }

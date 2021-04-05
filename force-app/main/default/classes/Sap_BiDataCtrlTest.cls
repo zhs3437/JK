@@ -1,23 +1,23 @@
 @isTest
 public class Sap_BiDataCtrlTest {
 static testMethod void myUnitTest() {
-          String name = 'test' + Math.random() + '@example.org';
+        String name = 'test' + Math.random() + '@example.org';
         Profile p = [select id from profile where name='系统管理员' or name='System Administrator'];
-     User u1 = TestHelper.createUser(UserInfo.getProfileId(), 'u1@trixpro.com', true);
+        User u1 = TestHelper.createUser(UserInfo.getProfileId(), 'u1@trixpro.com', true);
         User u = new User();
-            u.alias = 'testuser';
-            u.email=name;
-            u.emailencodingkey='UTF-8';
-            u.lastname='Testing';
-            u.languagelocalekey='en_US';
-            u.localesidkey='en_US';
-            u.profileid = p.id;
-            u.timezonesidkey='America/Los_Angeles';
-            u.username=name;
-            u.communityNickname = 'test' + Math.random();
-            u.BMO_specialist__c = u1.Id;
+        u.alias = 'testuser';
+        u.email=name;
+        u.emailencodingkey='UTF-8';
+        u.lastname='Testing';
+        u.languagelocalekey='en_US';
+        u.localesidkey='en_US';
+        u.profileid = p.id;
+        u.timezonesidkey='America/Los_Angeles';
+        u.username=name;
+        u.communityNickname = 'test' + Math.random();
+        u.BMO_specialist__c = u1.Id;
         insert u;
-     Product2 prod = TestHelper.createProduct2();
+        Product2 prod = TestHelper.createProduct2();
         PricebookEntry entry = TestHelper.createPriceBookEntry(prod.Id);
         
         Account acc = TestHelper.createAccount();
@@ -31,7 +31,7 @@ static testMethod void myUnitTest() {
     	con.OwnerId = u.id;
         con.Opportunity__c=opp.id;
         update con;
-        Order aOrder= new Order();   
+        Order aOrder = TestHelper.createOrder(false);   
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
         aOrder.Destination__c ='aaaaaa';
@@ -77,7 +77,7 @@ static testMethod void myUnitTest() {
         Order ord = TestHelper.createOrder(false);
         ord.Contract_Owner__c = u.Id;
         insert ord;
-
+        Test.startTest();
         //Account acc = TestHelper.createAccount();
         //Contract con = TestHelper.createContract(acc.Id,false);
         //con.Contract_NO__c = '2016101000';
@@ -86,33 +86,34 @@ static testMethod void myUnitTest() {
         insert ctb;
          
     
-    Sap_BiDataCtrl abb = new Sap_BiDataCtrl();
-   Sap_BiDataCtrl.BiData(con.id);
-    abb.test();
-    Sap_GetBiData.T_INPUT_element a = new Sap_GetBiData.T_INPUT_element();
-    Sap_BiData_Batch sbb = new Sap_BiData_Batch();
-    Sap_BiData_execute sbe = new Sap_BiData_execute();
-    sbb.test();
-    sbe.test();
+        Sap_BiDataCtrl abb = new Sap_BiDataCtrl();
+        Sap_BiDataCtrl.BiData(con.id);
+        abb.test();
+        Sap_GetBiData.T_INPUT_element a = new Sap_GetBiData.T_INPUT_element();
+        Sap_BiData_Batch sbb = new Sap_BiData_Batch();
+        Sap_BiData_execute sbe = new Sap_BiData_execute();
+        sbb.test();
+        sbe.test();
+        Test.stopTest();
   }
     static testMethod void myUnitTest2() {
-          String name = 'test' + Math.random() + '@example.org';
+        String name = 'test' + Math.random() + '@example.org';
         Profile p = [select id from profile where name='系统管理员' or name='System Administrator'];
-     User u1 = TestHelper.createUser(UserInfo.getProfileId(), 'u1@trixpro.com', true);
+        User u1 = TestHelper.createUser(UserInfo.getProfileId(), 'u1@trixpro.com', true);
         User u = new User();
-            u.alias = 'testuser';
-            u.email=name;
-            u.emailencodingkey='UTF-8';
-            u.lastname='Testing';
-            u.languagelocalekey='en_US';
-            u.localesidkey='en_US';
-            u.profileid = p.id;
-            u.timezonesidkey='America/Los_Angeles';
-            u.username=name;
-            u.communityNickname = 'test' + Math.random();
-            u.BMO_specialist__c = u1.Id;
+        u.alias = 'testuser';
+        u.email=name;
+        u.emailencodingkey='UTF-8';
+        u.lastname='Testing';
+        u.languagelocalekey='en_US';
+        u.localesidkey='en_US';
+        u.profileid = p.id;
+        u.timezonesidkey='America/Los_Angeles';
+        u.username=name;
+        u.communityNickname = 'test' + Math.random();
+        u.BMO_specialist__c = u1.Id;
         insert u;
-     Product2 prod = TestHelper.createProduct2();
+        Product2 prod = TestHelper.createProduct2();
         PricebookEntry entry = TestHelper.createPriceBookEntry(prod.Id);
         
         Account acc = TestHelper.createAccount();

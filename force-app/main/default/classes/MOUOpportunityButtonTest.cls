@@ -11,7 +11,8 @@ private class MOUOpportunityButtonTest {
 				Name = '4MW-TEST-20200525',
 				StageName = 'Price Quote',
 				Lock__c = true,
-				CloseDate = Date.today()
+				CloseDate = Date.today(),
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 		opp.SOC_Dept__c = 'Approved';

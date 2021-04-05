@@ -4,7 +4,7 @@ private class DeliveryBatchTester {
     static testMethod void myUnitTest() {
         
         Account acc = TestHelper.createAccount();
-		Order aOrder= new Order();   
+		Order aOrder= TestHelper.createOrder(false);   
 	    aOrder.Buyer__c = acc.Id;
 	    aOrder.BillingCountry = 'aaa';
 	    aOrder.BillingPostalCode = 'bbb';

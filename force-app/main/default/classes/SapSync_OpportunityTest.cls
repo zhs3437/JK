@@ -22,7 +22,7 @@ public class SapSync_OpportunityTest {
         //Contract con = TestHelper.createContract(acc.Id);
        // con.Opportunity__c=opp.id;
         //update con;
-        Order aOrder= new Order();   
+        Order aOrder = TestHelper.createOrder(false);   
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
         aOrder.Destination__c ='aaaaaa';
@@ -100,7 +100,7 @@ public class SapSync_OpportunityTest {
         //Contract con = TestHelper.createContract(acc.Id);
        // con.Opportunity__c=opp.id;
         //update con;
-        Order aOrder= new Order();   
+        Order aOrder = TestHelper.createOrder(false);   
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
         aOrder.Destination__c ='aaaaaa';

@@ -41,6 +41,7 @@ private class Opportunity_Modify_HistoryTester {
         o1.Confirmed_ETD2__c = Date.valueOf('2010-01-02');
     	o1.Customer_Delivery_Date__c = Date.valueOf('2010-01-02');
         o1.CloseDate=Date.valueOf('2010-01-02');
+        o1.Jinko_Parent_Company_Guarantee_needed__c = 'NO';
     	insert o1;
 
         Contract co=new Contract();

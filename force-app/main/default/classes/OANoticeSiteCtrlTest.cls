@@ -17,7 +17,7 @@ public class OANoticeSiteCtrlTest {
         conn.Opportunity__c=opp.id;
         conn.Inspection__c='Need';
         update conn;
-        Order aOrder= new Order();   
+        Order aOrder= TestHelper.createOrder(false);   
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
         aOrder.Destination__c ='aaaaaa';
@@ -77,7 +77,7 @@ aorder.Special__c=true;
         conn.Opportunity__c=opp.id;
         conn.Inspection__c='Need';
         update conn;
-        Order aOrder= new Order();   
+        Order aOrder= TestHelper.createOrder(false);   
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
         aOrder.Destination__c ='aaaaaa';

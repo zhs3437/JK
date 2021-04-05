@@ -17,6 +17,7 @@ public without sharing class RC_RedirectControllerTest {
         insert projectItem;
         leanx__lg_Contract__c contract = QW_TestDataFactory.createIContract();
         contract.Project__c = project.Id;
+        contract.Actual_Sales__c = admin.Id;
         insert contract;
         Contract_Component__c contractItem = QW_TestDataFactory.createIContractItemById(contract.Id);
         contractItem.Product__c = [SELECT Id FROM leanx__hr_Resource__c][0].Id;
@@ -40,6 +41,7 @@ public without sharing class RC_RedirectControllerTest {
         update agreementItem;
         Amendment_Agreement__c amendment = QW_TestDataFactory.createAmendmentAgreement();
         amendment.Agreement__c = agreement.Id;
+        amendment.Actual_Sales__c = admin.Id;
         amendment.Stage__c = 'Approved';
         insert amendment;
         Amendment_Agreement_Product__c amendmentItem = QW_TestDataFactory.createAmendmentAgreementItemById(amendment.Id);
@@ -75,6 +77,7 @@ public without sharing class RC_RedirectControllerTest {
 
     @isTest 
     static void test_quickOrder() {
+        Test.startTest();
         RC_RedirectController ctrl = new RC_RedirectController();
         Test.setCurrentPageReference(
             new PageReference('/Redirect?action=quickOrder&id=' + [SELECT Id FROM Opportunity][0].Id)

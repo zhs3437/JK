@@ -1,17 +1,26 @@
 @isTest
 public class oppjobtest {
-    static testMethod void deliveryBatch(){
-        SchedulableContext sc = null;
+    static testMethod void testBatch(){
         OPPschedulejob dsj = new OPPschedulejob();        
-        dsj.execute(sc);
+        dsj.execute(null);
+    }
+    static testMethod void testBatch2(){
         conschedulejob dsj2 = new conschedulejob();        
-        dsj2.execute(sc);
+        dsj2.execute(null);
+    }
+    static testMethod void testBatch3(){
         MDAschedulejob dsj3 = new MDAschedulejob();        
-        dsj3.execute(sc);
-         orderschedulejob dsj4 = new orderschedulejob();        
-        dsj4.execute(sc);
-         BookstockAutoemail dsj5 = new BookstockAutoemail();        
-        dsj5.execute(sc);
+        dsj3.execute(null);
+    }
+    static testMethod void testBatch4(){
+        orderschedulejob dsj4 = new orderschedulejob();        
+        dsj4.execute(null);
+    }
+    static testMethod void testBatch5(){
+        BookstockAutoemail dsj5 = new BookstockAutoemail();        
+        dsj5.execute(null);
+    }
+    static testMethod void deliveryBatch(){
         
         Sapbatchorder.timechange('29');
         Product2 prod = TestHelper.createProduct2();
@@ -22,7 +31,7 @@ public class oppjobtest {
         Contract con = TestHelper.createContract(acc.Id);
         con.Opportunity__c=opp.id;
         update con;
-        Order aOrder= new Order();   
+        Order aOrder= TestHelper.createOrder(false);   
         aOrder.Buyer__c = acc.Id;
         aOrder.BillingCountry = 'aaa';
         aOrder.Destination__c ='aaaaaa';

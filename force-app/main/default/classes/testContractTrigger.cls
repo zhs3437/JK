@@ -12,7 +12,7 @@ private class testContractTrigger {
         insert acc;
         
         Opportunity opp = new Opportunity(name='2MW-JKM180-20120101',AccountId=acc.id,
-            CloseDate = Date.today(), StageName='Close Won',Probability=100,delivey_point__c='sad');
+            CloseDate = Date.today(), StageName='Close Won',Probability=100,delivey_point__c='sad', Jinko_Parent_Company_Guarantee_needed__c = 'NO');
         insert opp;
         
         //new a controller for standard page

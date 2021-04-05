@@ -63,7 +63,8 @@ public class MOUApproveAgainEmailServiceTest {
 				Name = '4MW-TEST-20200525',
 				StageName = 'Price Quote',
 				CloseDate = Date.today(),
-				OwnerId = SalesAustralia.Id
+				OwnerId = SalesAustralia.Id,
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 		Supplementary_Framework_Agreement__c sfa = new Supplementary_Framework_Agreement__c();

@@ -713,8 +713,10 @@ private class QuoteSyncTestSuite {
             Quote quote = createQuote(opp);
             List<QuoteLineItem> quoteLines = createQuoteLines(quote, 2);
             
+            Test.startTest();
             quoteLines = updateQuoteLines(quote.Id);
-           
+            Test.stopTest();
+
             //startSync(opp.Id, quote.Id);
             
             assertQuoteSync(opp.Id, quote.Id);
@@ -838,8 +840,9 @@ private class QuoteSyncTestSuite {
                     
             Quote quote = createQuote(opp);
             List<QuoteLineItem> quoteLines = createQuoteLines(quote, 2);
+            Test.startTest();
             quoteLines = updateQuoteLines(quote.Id);
-                  
+            Test.stopTest();
             //startSync(opp.Id, quote.Id);
             
             assertQuoteSync(opp.Id, quote.Id);
@@ -1139,9 +1142,9 @@ private class QuoteSyncTestSuite {
                      
             Quote quote = createQuote(opp);
             List<QuoteLineItem> quoteLines = createQuoteLines(quote, numLine, true, false);
-                   
+            Test.startTest();
             quoteLines = updateQuoteLinesCustomSyncFields(quote.Id);
-                  
+            Test.stopTest();
             //startSync(opp.Id, quote.Id);
             
             assertQuoteSync(opp.Id, quote.Id);
@@ -1167,9 +1170,9 @@ private class QuoteSyncTestSuite {
                      
             Quote quote = createQuote(opp);
             List<QuoteLineItem> quoteLines = createQuoteLines(quote, numLine);
-                   
+            Test.startTest();
             quoteLines = updateQuoteLinesStdSyncFields(quote.Id);
-                  
+            Test.stopTest();
             //startSync(opp.Id, quote.Id);
             
             assertQuoteSync(opp.Id, quote.Id);
@@ -1194,9 +1197,9 @@ private class QuoteSyncTestSuite {
                      
             Quote quote = createQuote(opp);
             List<QuoteLineItem> quoteLines = createQuoteLines(quote, numLine);
-                   
+            Test.startTest();
             quoteLines = updateQuoteLines(quote.Id);
-                  
+            Test.stopTest();
             //startSync(opp.Id, quote.Id);
             
             assertQuoteSync(opp.Id, quote.Id);
@@ -1858,8 +1861,11 @@ private class QuoteSyncTestSuite {
            List<QuoteLineItem> quoteLines = createQuoteLines(quote, 2);       
                         
            Quote updatedQuote = updateQuote(quote.Id);
+
+           Test.startTest();
            List<QuoteLineItem> updatedQuoteLines = updateQuoteLines(quote.Id);
-           
+           Test.stopTest();
+
            assertQuoteNotSync(opp.Id, quote.Id);
            assertQuoteLineNotSync(opp.Id, quote.Id);  
            

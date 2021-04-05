@@ -31,7 +31,8 @@ private class MOUOpportunityCreationTest {
 				Name = '4MW-JKM305P-72-20170101',
 				StageName = 'Price Quote',
 				CloseDate = Date.today(),
-				CurrencyIsoCode = 'USD'
+				CurrencyIsoCode = 'USD',
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 
@@ -153,7 +154,8 @@ private class MOUOpportunityCreationTest {
 				Name = '4MW-TEST-20200525',
 				StageName = 'Price Quote',
 				CloseDate = Date.today(),
-				CurrencyIsoCode = 'USD'
+				CurrencyIsoCode = 'USD',
+				Jinko_Parent_Company_Guarantee_needed__c = 'NO'
 		);
 		insert opp;
 
