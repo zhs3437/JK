@@ -2,19 +2,19 @@ public class OppPriceApprovalCtrl {
     public String requestId{get;set;} 
     Public Opportunity opp{get;set;}
     Public List<Commission_Application__c> CALst{get;set;}
-        Public List<Commission_Application__c> CALst1{get;set;}
-        Public List<Commission_Application__c> CALst2{get;set;}
-        Public List<Commission_Application__c> CALst3{get;set;}
+    Public List<Commission_Application__c> CALst1{get;set;}
+    Public List<Commission_Application__c> CALst2{get;set;}
+    Public List<Commission_Application__c> CALst3{get;set;}
     Public integer CALstnum{get;set;}
     Public integer CALstnum1{get;set;}
     Public integer CALstnum2{get;set;}
     Public integer CALstnum3{get;set;}
-        Public Commission_Application__c CA1{get;set;}
-        Public Commission_Application__c CA2{get;set;}
-        Public Commission_Application__c CA3{get;set;}
+    Public Commission_Application__c CA1{get;set;}
+    Public Commission_Application__c CA2{get;set;}
+    Public Commission_Application__c CA3{get;set;}
     public OppPriceApprovalCtrl(ApexPages.StandardController ctrl){
         requestId=ctrl.getid();
-           ID mainid    = Schema.SObjectType.Commission_Application__c.getRecordTypeInfosByName().get('Main').getRecordTypeId();
+        ID mainid    = Schema.SObjectType.Commission_Application__c.getRecordTypeInfosByName().get('Main').getRecordTypeId();
         ID secondid          = Schema.SObjectType.Commission_Application__c.getRecordTypeInfosByName().get('Second').getRecordTypeId();
         ID thirdid     = Schema.SObjectType.Commission_Application__c.getRecordTypeInfosByName().get('Third').getRecordTypeId();
         opp =Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Opportunity) + ' ' +
@@ -24,28 +24,28 @@ public class OppPriceApprovalCtrl {
                                           'Where opportunity__c =: requestId');
         CALstnum=CALst.size();
         system.debug(opp.Commision__c+';'+CALstnum);
-          CALst1 = new List<Commission_Application__c>();
-          CALst2 = new List<Commission_Application__c>();
-          CALst3 = new List<Commission_Application__c>();
-          CALst1 = Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Commission_Application__c) + ' ' +
+        CALst1 = new List<Commission_Application__c>();
+        CALst2 = new List<Commission_Application__c>();
+        CALst3 = new List<Commission_Application__c>();
+        CALst1 = Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Commission_Application__c) + ' ' +
                               'Where opportunity__c =: requestId and RecordTypeid =:mainid order by CreatedDate DESC');
         CALstnum1=CALst1.size();
         CA1=new Commission_Application__c();
         if(CALstnum1>0){
             CA1=CALst1[0];
         }
-          CALst2 = Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Commission_Application__c) + ' ' +
+        CALst2 = Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Commission_Application__c) + ' ' +
                               'Where opportunity__c =: requestId and RecordTypeid =:secondid order by CreatedDate DESC');
         CALstnum2=CALst2.size();
-           CA2=new Commission_Application__c();
-          if(CALstnum2>0){
+        CA2=new Commission_Application__c();
+        if(CALstnum2>0){
             CA2=CALst2[0];
         }
-          CALst3 = Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Commission_Application__c) + ' ' +
+        CALst3 = Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Commission_Application__c) + ' ' +
                               'Where opportunity__c =: requestId and RecordTypeid =:thirdid order by CreatedDate DESC');
         CALstnum3=CALst3.size();
-           CA3=new Commission_Application__c();
-          if(CALstnum3>0){
+        CA3=new Commission_Application__c();
+        if(CALstnum3>0){
             CA3=CALst3[0];
         }
         
@@ -61,7 +61,7 @@ public class OppPriceApprovalCtrl {
         update opp;
         ApexPages.addMessage( new ApexPages.Message(ApexPages.severity.INFO , str));
     }
-        public void Action3(){ 
+    public void Action3(){ 
         String str= PriceApprove.submit2NothAisa(requestId); 
         ApexPages.addMessage( new ApexPages.Message(ApexPages.severity.INFO , str));
     }

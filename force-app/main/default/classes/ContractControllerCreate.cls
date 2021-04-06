@@ -23,9 +23,9 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
         system.debug('con'+con.recordTypeId);
         System.debug('con信息OPP:'+con.Opportunity__c);
         Opportunity usopp=[select id,Sales_Region__c,Region__c,Branch__c,Destination_Country__c,Ownerid,Today__c,Cross_Region__c from Opportunity where id =:con.Opportunity__c];
-        // if(usopp.Region__c == 'North Asia' && conRecordTypeId == InventoryRecordTypeId){
-        //     con.InventoryArea__c = 'Own inventory';
-        // }
+        if(usopp.Region__c == 'North Asia' && conRecordTypeId == InventoryRecordTypeId){
+            con.InventoryArea__c = 'Own inventory';
+        }
         /*if(usopp.Cross_Region__c == true && conRecordTypeId == InventoryRecordTypeId){
             con.InventoryArea__c = 'Other regions';
         }else if(usopp.Cross_Region__c == false && conRecordTypeId == InventoryRecordTypeId){
@@ -439,54 +439,52 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             }
                //当为跨区业务机会时并且不满足快速流程，必须要两个GM和财务都审批同意后才能创建合同
             system.debug('跨区域开始');
-            if(op.Cross_Region__c == true && ((op.Price_Approval_Status__c!='Approved' && op.Total_MW__c>1) || op.Sales_manager_approval__c !='Approved'||op.Cross_region_GM_approval__c !='Approved')){
-            String RegionHeadName ='';
-            String RegionHeadEmail ='';
-            if(op.Region__c =='EU(Union)'|| op.Region__c=='EU(Non-Eu)'){
-                RegionHeadEmail=Label.Area_EU;
-            }else if(op.Region__c =='ROA'){
-                RegionHeadEmail=Label.Area_ROA;
-            }else if(op.Region__c =='North Asia'){
-                RegionHeadEmail=Label.Area_North_Asia;
-            }else if(op.Region__c =='South Asia'){
-               RegionHeadEmail=Label.Area_South_Asia;
-            }else if(op.Region__c =='North America'){
-               RegionHeadEmail=Label.Area_North_America;
-            }else if(op.Region__c =='Middle East&Africa'){
-               RegionHeadEmail=Label.Area_Middle_east_africa;
-            }else if(op.Region__c =='Latin America&Italy'){
-               RegionHeadEmail=Label.Area_Latin_America_Italy;
-            }else if(op.Region__c =='MENA'){
-               RegionHeadEmail=Label.Middle_East_North_Africa;
-            }else if(op.Region__c =='SSA'){
-               RegionHeadEmail=Label.Sub_Saharan_Africa;
-            }
-                
-
-                else if(op.Region__c =='Central Asia'){
-               RegionHeadEmail=Label.Area_Central_Asia;
-            }
-            if(RegionHeadEmail !=null){
-           system.debug('123');
-                system.debug('RegionHeadEmail'+RegionHeadEmail);
-            List<User> uss =[Select id,Name,Email from User where Email =:RegionHeadEmail];
-          system.debug('456');
-            if(uss.size() > 0){
-                RegionHeadName = uss[0].Name;
-            }}
-            String approveName ='';
+           //储能不走此流程？？？
+            if(op.Cross_Region__c == true && op.RecordType.name != 'Energy Storage System' && ((op.Price_Approval_Status__c!='Approved' && op.Total_MW__c>1) || op.Sales_manager_approval__c !='Approved'||op.Cross_region_GM_approval__c !='Approved')){
+                String RegionHeadName ='';
+                String RegionHeadEmail ='';
+                if(op.Region__c =='EU(Union)'|| op.Region__c=='EU(Non-Eu)'){
+                    RegionHeadEmail=Label.Area_EU;
+                }else if(op.Region__c =='ROA'){
+                    RegionHeadEmail=Label.Area_ROA;
+                }else if(op.Region__c =='North Asia'){
+                    RegionHeadEmail=Label.Area_North_Asia;
+                }else if(op.Region__c =='South Asia'){
+                    RegionHeadEmail=Label.Area_South_Asia;
+                }else if(op.Region__c =='North America'){
+                    RegionHeadEmail=Label.Area_North_America;
+                }else if(op.Region__c =='Middle East&Africa'){
+                    RegionHeadEmail=Label.Area_Middle_east_africa;
+                }else if(op.Region__c =='Latin America&Italy'){
+                    RegionHeadEmail=Label.Area_Latin_America_Italy;
+                }else if(op.Region__c =='MENA'){
+                    RegionHeadEmail=Label.Middle_East_North_Africa;
+                }else if(op.Region__c =='SSA'){
+                    RegionHeadEmail=Label.Sub_Saharan_Africa;
+                }else if(op.Region__c =='Central Asia'){
+                    RegionHeadEmail=Label.Area_Central_Asia;
+                }
+                if(RegionHeadEmail !=null){
+                    system.debug('123');
+                    system.debug('RegionHeadEmail'+RegionHeadEmail);
+                    User us =[Select id,Name,Email from User where Email =:RegionHeadEmail];
+                    system.debug('456');
+                    if(us !=null){
+                        RegionHeadName =us.Name;
+                    }
+                }
+                String approveName ='';
                 if(op.Price_Approval_Status__c!='Approved'  && op.Total_MW__c>1){
                     approveName =approveName+'Alex,';
                 }
-                 if(op.Sales_manager_approval__c !='Approved'){
-                     Opportunity opp =[Select id,Owner.Contract_Approver__r.Name from Opportunity where id =:op.Id];
-                     if(opp !=null){
-                     approveName =approveName+opp.Owner.Contract_Approver__r.Name+','; 
-                     }
-                 }
+                if(op.Sales_manager_approval__c !='Approved'){
+                    Opportunity opp =[Select id,Owner.Contract_Approver__r.Name from Opportunity where id =:op.Id];
+                    if(opp !=null){
+                    approveName =approveName+opp.Owner.Contract_Approver__r.Name+','; 
+                    }
+                }
                 if(op.Cross_region_GM_approval__c !='Approved'){
-                
-                  approveName =approveName+RegionHeadName;
+                    approveName =approveName+RegionHeadName;
                 }
                 system.debug('快速流程结束');
            
@@ -518,8 +516,6 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             if(op.Destination_Country__c != null)con.Destination_Country__c = op.Destination_Country__c;
             if(op.delivey_point__c != null)con.Destination__c = op.delivey_point__c;
             if(op.Region__c != null)con.Region__c = op.Region__c;
-            if(op.Jinko_Parent_Company_Guarantee__c != null)con.Jinko_Parent_Company_Guarantee__c = op.Jinko_Parent_Company_Guarantee__c;
-            if(op.Jinko_Parent_Company_Guarantee_needed__c != null)con.Jinko_Parent_Company_Guarantee_needed__c = op.Jinko_Parent_Company_Guarantee_needed__c;
             system.debug('测试'+con.Region__c);
             // create by :jason 20160421
             

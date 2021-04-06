@@ -19,9 +19,16 @@ public class ContractSubmitReview {
     
     
     /**
-* for Contract Submit for Review button
-*/
+    * for Contract Submit for Review button
+    */
     public ContractSubmitReview(ApexPages.StandardController sd){
+        Set<String> setEmailAddress = new Set<String>();
+        setEmailAddress.add(Label.JK_Contract_Legal_Public_Reviewer_Email);
+        setEmailAddress.add(Label.JK_Contract_Energy_Reviewer);
+        Map<String, User> mapUserEmail = new Map<String, User>();
+        for(User objUser : [SELECT Id, Email, Name, UserRole.Name FROM User WHERE Email IN:setEmailAddress]){
+            mapUserEmail.put(objUser.Email, objUser);
+        }
         try{
             //List<RecordType> japanRecord = [Select r.Name, r.Id From RecordType r WHERE r.Name = 'Japan Standard Contract'];
             ID AustraliaRecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('1MW Australia Contract').getRecordTypeId();
@@ -36,9 +43,6 @@ public class ContractSubmitReview {
             /* get User from Review User Group */
             set<Id> UserIds = new set<Id>();
             UserIds = SubmitReviewHelper.getContractReviewList(con.id);
-            for(String id :UserIds){
-                system.debug('id--------------->'+id);
-            }
             /* reviewers */
             
             /* if(japanRecord.size() > 0 && con.RecordTypeId == japanRecord[0].Id){//日本 record type
@@ -115,10 +119,10 @@ UserIds.add(currUser.ManagerId);
             
             
             /* Add End by David, 20140320 */
-                    RecordType rtp = [select r.Name, r.Id From RecordType r Where r.Name ='Intercompany Contract'];
+            RecordType rtp = [select r.Name, r.Id From RecordType r Where r.Name ='Intercompany Contract'];
             RecordType rtpInv = [select r.Name, r.Id From RecordType r Where r.Name ='Inventory Contract'];
 
-            approverList =new List<Approver>();
+            approverList = new List<Approver>();
             if(con.RecordTypeId != rtp.Id){
                 for(User u : [SELECT Id, Name, Email,UserRole.Name FROM USER WHERE Id in:UserIds]){
                     /*
@@ -135,22 +139,22 @@ UserIds.add(currUser.ManagerId);
                          
                      } */
                     if(u.UserRole.Name !='Technical Dept.' ){
-                    approverList.add(new Approver(u.Email,u.Name,u.UserRole.Name));
-                     }else{
-                          if(con.RecordTypeId ==rtpInv.Id && con.Region__c=='North Asia' ){
+                        approverList.add(new Approver(u.Email,u.Name,u.UserRole.Name));
+                    }else{
+                        if(con.RecordTypeId ==rtpInv.Id && con.Region__c=='North Asia' ){
                              
-                         }else{
+                        }else{
                           approverList.add(new Approver(u.Email,u.Name,u.UserRole.Name));   
-                         }  
-                     }
+                        }  
+                    }
                 }
             }
             else if(con.RecordTypeId == rtp.Id){
                 
                 User usr = [SELECT Id, Name, Email,UserRole.Name FROM USER WHERE Name = 'austin gao'];
-                 if(usr.UserRole.Name !='Finance Assistance'){
-                approverList.add(new Approver(usr.Email,usr.Name,usr.UserRole.Name));
-                 }
+                if(usr.UserRole.Name !='Finance Assistance'){
+                    approverList.add(new Approver(usr.Email,usr.Name,usr.UserRole.Name));
+                }
             }
             
             if((con.recordType.Name=='1MW Global Standard Contract'  ||  con.recordType.Name=='Inventory Contract') && con.Region__c.contains('EU') ){
@@ -161,10 +165,21 @@ UserIds.add(currUser.ManagerId);
                 
             }
             if(con.Trade_term__c!=null){
-            if(con.Trade_term__c.startswith('C') || con.Trade_term__c.startswith('D')){
-             approverList.add(new Approver('logistic','logistic','logistic'));
-            }
+                if(con.Trade_term__c.startswith('C') || con.Trade_term__c.startswith('D')){
+                approverList.add(new Approver('logistic','logistic','logistic'));
                 }
+            }
+            //储能
+            if(con.RecordTypeId == JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_ENERGY){
+                User objLegalPublic = mapUserEmail.get(Label.JK_Contract_Legal_Public_Reviewer_Email);
+                User objEnergyManager = mapUserEmail.get(Label.JK_Contract_Energy_Reviewer);
+                if(objLegalPublic != null){
+                    approverList.add(new Approver(objLegalPublic.Email, objLegalPublic.Name, objLegalPublic.UserRole.Name));
+                }
+                if(objEnergyManager != Null && !UserIds.contains(objEnergyManager.Id)){
+                    approverList.add(new Approver(objEnergyManager.Email, objEnergyManager.Name, objEnergyManager.UserRole.Name));
+                }
+            }
             //2020/9/28
             if(con.Region__c=='Latin America&Italy' && con.Trade_term__c=='DDP' && con.Destination_Country__c=='Italy'){
                 approverList.add(new Approver('elena.marchitelli@jinkosolar.com','elena.marchitelli','Sales support(Italy)'));
@@ -217,7 +232,7 @@ UserIds.add(currUser.ManagerId);
                     email.add(u.uEmail);
                     }else{logisticemail='1';}
                     
-                    String s = u.roleName;
+                    String s = u.roleName != null ? u.roleName : '';
                     if(s.indexOf('Finance')!=-1){
                         con.Finance_Dept__c = '';
                         con.SendToFinanceTime__c = datetime.now();

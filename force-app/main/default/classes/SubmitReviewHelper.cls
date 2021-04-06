@@ -120,9 +120,9 @@ public class SubmitReviewHelper {
                                     where gm.GroupId IN (Select g.Id From Group g WHERE g.Name='Review Users')]){
                 UserIds.add(gm.UserOrGroupId);
                 if(con.Sales_Region__c=='EU(Union)' || con.Sales_Region__c=='EU(Non-Eu)'|| con.Sales_Region__c=='ROA'|| con.Sales_Region__c=='North America'|| con.Sales_Region__c=='North Asia'|| con.Sales_Region__c=='Central Asia'|| con.Sales_Region__c=='Key Account'){
-                    UserIds.add('005900000012GJQ');
+                    UserIds.add(Label.JK_Contract_Technic_Reviewer_US_EU_ROA_NA);
                 }else if (con.Sales_Region__c=='Middle East&Africa'||con.Sales_Region__c=='MENA'||con.Sales_Region__c=='SSA'|| con.Sales_Region__c=='Latin America&Italy'|| con.Sales_Region__c=='South Asia'){
-                    UserIds.add('0052t000000QaVV');
+                    UserIds.add(Label.JK_Contract_Technic_Reviewer_MEA_LATAM_SA_CA);
                 }
             }
             if(con.Owner.Name == 'Susie Pan' || con.Owner.Name == 'Nancy Wang' || con.Owner.Name == 'jaffer Wang' || currUser.UserRole.Name.contains('BMO')){
@@ -269,10 +269,12 @@ public class SubmitReviewHelper {
             UserIds.remove('00590000002sK0x');
         }
         User usFinace = [Select id, Name,UserRole.Name from user where Name =:'Alex jiang'];
-        if(usFinace !=null){
+        if(usFinace !=null && con.RecordTypeId != JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_ENERGY){
             UserIds.remove(usFinace.Id);
         }
-
+        if(con.RecordTypeId == JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_ENERGY){
+            UserIds.remove(Label.JK_Contract_Reviewer_Credit);
+        }
         if( (con.Region__c =='Middle East&Africa'||con.Region__c =='MENA'||con.Region__c =='SSA') || con.Region__c=='Latin America&Italy' || con.Region__c=='North America'){
             if(currUser.Contract_Approver__c != null ){
                 UserIds.remove(currUser.Contract_Approver__c);                
