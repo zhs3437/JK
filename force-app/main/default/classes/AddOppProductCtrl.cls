@@ -17,12 +17,9 @@ public with sharing class AddOppProductCtrl {
     *    Constructors
     * -------------------------------------------------------------------------------------
     */
-
-    // Constructor for standardController
     public AddOppProductCtrl() {}
     
     // Constructor for Extension to an Opportunity standardController
-    
     public AddOppProductCtrl(ApexPages.standardController std) {
         opp = (Opportunity)std.getRecord();
         loadOpportunity(opp.id);
@@ -87,7 +84,7 @@ public with sharing class AddOppProductCtrl {
         opp = [ Select Id, Name, pricebook2id, pricebook2.Name,Trade_Term__c,Destination_Port__c,Number_of_Containers__c,
                amount,Region__c,RecordType.Name,RecordTypeId,Sales_Region__c,Destination_Country__c,Test_code_Australia__c ,Ocean_Freight__c,
                Number_of_Small_Containers__c,
-               Owner.Region__c
+               Owner.Region__c, CurrencyIsoCode
                From Opportunity
                Where id = :OpportunityID
               ];
@@ -103,7 +100,7 @@ public with sharing class AddOppProductCtrl {
                 'product2id',
                 'unitprice'
                 };
-                    Map<String,Schema.SObjectField> m = Schema.SObjectType.pricebookentry.fields.getMap();
+            Map<String,Schema.SObjectField> m = Schema.SObjectType.pricebookentry.fields.getMap();
             for (String fieldToCheck : accessFields) {
                 if (!m.get(fieldToCheck).getDescribe().isAccessible()) {
                     ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL,
@@ -132,24 +129,28 @@ public with sharing class AddOppProductCtrl {
                       Product2.Maximum_Power_at_Current_Imp_A__c ,
                       Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
                       product2.IsActive,
+                      product2.Product_Module_PM__c,
+                      product2.Frame_Color_Cost_Black__c,
+                      product2.Frame_Color_Cost_Silver__c,
+                      product2.Back_Sheet_Color_Cost_Black_B__c,
+                      product2.Back_sheet_Color_Cost_Black_W__c,
                       Product2.CreatedDate,
                       Product2.SAP_Materiel_No__c,
                       product2.Applicable_Area__c,
                       Product2.Cell_Type__c
                       from pricebookentry
                       where isactive = true and isdeleted = false
+                      and product2.IsActive = true
                       and pricebook2id = :opp.pricebook2id                 
                       and CurrencyIsoCode = : opp.CurrencyIsoCode
                       and product2.Applicable_Area__c =: 'USA' 
                       and product2.ApplicationProductOppId__c = :''
                       //and Product2.RecordType.Name = 'Watt-based'
                       //order by product2.Maximum_Power_at_STC_Pmax__c desc
-                     ] ) {
-                         
-                         catalog.add(new pricebookentryTableItem(p));
-                         system.debug('======>>:' + catalog.size());
-                         
+                     ] ) {                  
+                         catalog.add(new pricebookentryTableItem(p));    
                      }
+                     system.debug('======>>:' + catalog.size());
                 for (Pricebookentry p : 
                      [ Select id, 
                       Name, 
@@ -168,12 +169,18 @@ public with sharing class AddOppProductCtrl {
                       Product2.Maximum_Power_at_Current_Imp_A__c ,
                       Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
                       product2.IsActive,
+                      product2.Product_Module_PM__c,
+                      product2.Frame_Color_Cost_Black__c,
+                      product2.Frame_Color_Cost_Silver__c,
+                      product2.Back_Sheet_Color_Cost_Black_B__c,
+                      product2.Back_sheet_Color_Cost_Black_W__c,
                       Product2.CreatedDate,
                       Product2.SAP_Materiel_No__c,
                       product2.Applicable_Area__c,
                       Product2.Cell_Type__c
                       from pricebookentry
                       where isactive = true and isdeleted = false
+                      and product2.IsActive = true
                       and pricebook2id = :opp.pricebook2id                 
                       and CurrencyIsoCode = : opp.CurrencyIsoCode
                       and product2.Applicable_Area__c =: 'USA' 
@@ -181,50 +188,89 @@ public with sharing class AddOppProductCtrl {
                       //and Product2.RecordType.Name = 'Watt-based'
                       //order by product2.Maximum_Power_at_STC_Pmax__c desc
                      ] ) {
-                         
-                         catalog.add(new pricebookentryTableItem(p));
-                         system.debug('======>>:' + catalog.size());
-                         
-                     }
+                        catalog.add(new pricebookentryTableItem(p));
+                    }
+                     
+                    system.debug('======>>:' + catalog.size());
             }else if(opp.RecordType.Name == 'Energy Storage System'){
-                 for (Pricebookentry p : 
-                     [ Select id, 
-                      Name, 
-                      pricebook2id, 
-                      product2id, 
-                      unitprice,
-                      productcode,
-                      Product2.Name, 
-                      CurrencyIsoCode,
-                      IsActive,
-                      product2.Description,
-                      product2.Non_Modul__c,
-                      product2.Family, 
-                      product2.Cable_Length__c,
-                      product2.Maximum_Power_at_STC_Pmax__c,
-                      Product2.Maximum_Power_at_Current_Imp_A__c ,
-                      Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
-                      product2.IsActive,
-                      Product2.CreatedDate,
-                      Product2.SAP_Materiel_No__c,
-                      product2.Applicable_Area__c,
-                      Product2.Cell_Type__c,
-                      Product2.Energy_Storage__c
-                      from pricebookentry
-                      where isactive = true and isdeleted = false
-                      and pricebook2id = :opp.pricebook2id                 
-                      and CurrencyIsoCode = : opp.CurrencyIsoCode
-                      and Product2.Energy_Storage__c =true
-                      and product2.ApplicationProductOppId__c = :''
+                for (Pricebookentry p : [ Select id, 
+                                                Name, 
+                                                pricebook2id, 
+                                                product2id, 
+                                                unitprice,
+                                                productcode,
+                                                Product2.Name, 
+                                                CurrencyIsoCode,
+                                                IsActive,
+                                                product2.Description,
+                                                product2.Non_Modul__c,
+                                                product2.Family, 
+                                                product2.Cable_Length__c,
+                                                product2.Maximum_Power_at_STC_Pmax__c,
+                                                Product2.Maximum_Power_at_Current_Imp_A__c ,
+                                                Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
+                                                product2.IsActive,
+                                                product2.Product_Module_PM__c,
+                                                product2.Frame_Color_Cost_Black__c,
+                                                product2.Frame_Color_Cost_Silver__c,
+                                                product2.Back_Sheet_Color_Cost_Black_B__c,
+                                                product2.Back_sheet_Color_Cost_Black_W__c,
+                                                Product2.CreatedDate,
+                                                Product2.SAP_Materiel_No__c,
+                                                product2.Applicable_Area__c,
+                                                Product2.Cell_Type__c,
+                                                Product2.Energy_Storage__c
+                                            from pricebookentry
+                                            where isactive = true and isdeleted = false
+                                            and product2.IsActive = true
+                                            and pricebook2id = :opp.pricebook2id                 
+                                            and CurrencyIsoCode = : opp.CurrencyIsoCode
+                                            and Product2.Energy_Storage__c =true
+                                            and product2.ApplicationProductOppId__c = :''
                      ] ) {
                          
                          
-                         catalog.add(new pricebookentryTableItem(p));
-                         system.debug('======>>:' + catalog.size());
-                         for(pricebookentryTableItem c : catalog){
-                             system.debug(c);
-                         }
-                     }
+                    catalog.add(new pricebookentryTableItem(p));
+                }
+                for (Pricebookentry p : [ Select id, 
+                                                Name, 
+                                                pricebook2id, 
+                                                product2id, 
+                                                unitprice,
+                                                productcode,
+                                                Product2.Name, 
+                                                CurrencyIsoCode,
+                                                IsActive,
+                                                product2.Description,
+                                                product2.Non_Modul__c,
+                                                product2.Family, 
+                                                product2.Cable_Length__c,
+                                                product2.Maximum_Power_at_STC_Pmax__c,
+                                                Product2.Maximum_Power_at_Current_Imp_A__c ,
+                                                Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
+                                                product2.IsActive,
+                                                product2.Product_Module_PM__c,
+                                                product2.Frame_Color_Cost_Black__c,
+                                                product2.Frame_Color_Cost_Silver__c,
+                                                product2.Back_Sheet_Color_Cost_Black_B__c,
+                                                product2.Back_sheet_Color_Cost_Black_W__c,
+                                                Product2.CreatedDate,
+                                                Product2.SAP_Materiel_No__c,
+                                                product2.Applicable_Area__c,
+                                                Product2.Cell_Type__c,
+                                                Product2.Energy_Storage__c
+                                                from pricebookentry
+                                                where isactive = true and isdeleted = false
+                                                and product2.IsActive = true
+                                                and pricebook2id = :opp.pricebook2id                 
+                                                and CurrencyIsoCode = : opp.CurrencyIsoCode
+                                                and Product2.Energy_Storage__c =true
+                                                and product2.ApplicationProductOppId__c like: testid
+                                                ] ) {
+                    catalog.add(new pricebookentryTableItem(p));
+                }
+                system.debug('======>>:' + catalog.size());       
+            }else{
                 for (Pricebookentry p : 
                      [ Select id, 
                       Name, 
@@ -243,50 +289,18 @@ public with sharing class AddOppProductCtrl {
                       Product2.Maximum_Power_at_Current_Imp_A__c ,
                       Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
                       product2.IsActive,
-                      Product2.CreatedDate,
-                      Product2.SAP_Materiel_No__c,
-                      product2.Applicable_Area__c,
-                      Product2.Cell_Type__c,
-                      Product2.Energy_Storage__c
-                      from pricebookentry
-                      where isactive = true and isdeleted = false
-                      and pricebook2id = :opp.pricebook2id                 
-                      and CurrencyIsoCode = : opp.CurrencyIsoCode
-                      and Product2.Energy_Storage__c =true
-                      and product2.ApplicationProductOppId__c like: testid
-                     ] ) {
-                         
-                         
-                         catalog.add(new pricebookentryTableItem(p));
-                         system.debug('======>>:' + catalog.size());
-                         
-                     }
-            }else
-            {
-                for (Pricebookentry p : 
-                     [ Select id, 
-                      Name, 
-                      pricebook2id, 
-                      product2id, 
-                      unitprice,
-                      productcode,
-                      Product2.Name, 
-                      CurrencyIsoCode,
-                      IsActive,
-                      product2.Description,
-                      product2.Non_Modul__c,
-                      product2.Family, 
-                      product2.Cable_Length__c,
-                      product2.Maximum_Power_at_STC_Pmax__c,
-                      Product2.Maximum_Power_at_Current_Imp_A__c ,
-                      Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
-                      product2.IsActive,
+                      product2.Product_Module_PM__c,
+                      product2.Frame_Color_Cost_Black__c,
+                      product2.Frame_Color_Cost_Silver__c,
+                      product2.Back_Sheet_Color_Cost_Black_B__c,
+                      product2.Back_sheet_Color_Cost_Black_W__c,
                       Product2.CreatedDate,
                       Product2.SAP_Materiel_No__c,
                       product2.Applicable_Area__c,
                       Product2.Cell_Type__c
                       from pricebookentry
                       where isactive = true and isdeleted = false
+                      and product2.IsActive = true
                       and pricebook2id = :opp.pricebook2id
                       and Product2.Energy_Storage__c =false
                       and CurrencyIsoCode = : opp.CurrencyIsoCode
@@ -294,12 +308,12 @@ public with sharing class AddOppProductCtrl {
                      ] ) {
                          
                          
-                         catalog.add(new pricebookentryTableItem(p));
-                         system.debug('======>>:' + catalog.size());
-                         for(pricebookentryTableItem c : catalog){
-                             system.debug(c);
-                         }
-                     }
+                        catalog.add(new pricebookentryTableItem(p));
+                        for(pricebookentryTableItem c : catalog){
+                            system.debug(c);
+                        }
+                    }
+                    system.debug('======>>:' + catalog.size());
                 for (Pricebookentry p : 
                      [ Select id, 
                       Name, 
@@ -318,23 +332,26 @@ public with sharing class AddOppProductCtrl {
                       Product2.Maximum_Power_at_Current_Imp_A__c ,
                       Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
                       product2.IsActive,
+                      product2.Product_Module_PM__c,
+                      product2.Frame_Color_Cost_Black__c,
+                      product2.Frame_Color_Cost_Silver__c,
+                      product2.Back_Sheet_Color_Cost_Black_B__c,
+                      product2.Back_sheet_Color_Cost_Black_W__c,
                       Product2.CreatedDate,
                       Product2.SAP_Materiel_No__c,
                       product2.Applicable_Area__c,
                       Product2.Cell_Type__c
                       from pricebookentry
                       where isactive = true and isdeleted = false
+                      and product2.IsActive = true
                       and Product2.Energy_Storage__c =false
                       and pricebook2id = :opp.pricebook2id                 
                       and CurrencyIsoCode = : opp.CurrencyIsoCode
                       and product2.ApplicationProductOppId__c like: testid
                      ] ) {
-                         
-                         
-                         catalog.add(new pricebookentryTableItem(p));
-                         system.debug('======>>:' + catalog.size());
-                         
-                     }
+                    catalog.add(new pricebookentryTableItem(p));
+                }
+                system.debug('======>>:' + catalog.size());
             }
             
         }
@@ -351,13 +368,13 @@ public with sharing class AddOppProductCtrl {
         
         
         String [] accessFields = new String [] {'Id',
-            'ServiceDate',
-            'UnitPrice',
-            'ListPrice',
-            'TotalPrice',
-            'Quantity'
-            };
-                Map<String,Schema.SObjectField> m = Schema.SObjectType.OpportunityLineItem.fields.getMap();
+                                                'ServiceDate',
+                                                'UnitPrice',
+                                                'ListPrice',
+                                                'TotalPrice',
+                                                'Quantity'
+                                                };
+        Map<String,Schema.SObjectField> m = Schema.SObjectType.OpportunityLineItem.fields.getMap();
         for (String fieldToCheck : accessFields) {
             if (!m.get(fieldToCheck).getDescribe().isAccessible()) {
                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL,
@@ -367,66 +384,78 @@ public with sharing class AddOppProductCtrl {
         }
         
         currentProducts = new List<currentProductsItem>();  
-        for (OpportunityLineItem oli : [Select Id, 
-                                                Product_Type__c,
-                                                PricebookEntry.Name, 
-                                                PricebookEntry.Product2.Cable_Length__c, 
-                                                PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c, 
-                                                PricebookEntry.Product2.Maximum_Power_at_Current_Imp_A__c,
-                                                PricebookEntry.Product2.IsActive,
-                                                PricebookEntry.ProductCode,  
-                                                ServiceDate, 
-                                                UnitPrice, 
-                                                ListPrice, 
-                                                TotalPrice__c,  
-                                                TotalPrice,
-                                                Quantity,
-                                                MP__c,
-                                                Battery_Type__c,         
-                                                Wire_Length__c,
-                                                Connector__c, 
-                                                Type_of_module__c, 
-                                                Color_of_Module__c, 
-                                                Special_required__c, 
-                                                Number_of_Cells__c,
-                                                Weight__c,
-                                                Cable_length_UK__c,
-                                                Dimensions__c,
-                                                Bus_bars_of_cell__c,
-                                                Guaranteed_Delivery_Date__c , 
-                                                Guaranteed_Delivery_Date_japan__c,
-                                                Expected_Delivery_Date__c,
-                                                Expected_Delivery_Date_ETA__c,
-                                                Estimated_Time_of_Departure_ETD__c,
-                                                Estimated_Time_of_Departure_ETD_7__c,
-                                                Special_Lable__c,
-                                                Certification__c, 
-                                                Estimated_Time_of_Departure__c, 
-                                                EVA__c, 
-                                                FOB_Sales_Price__c,
-                                                Power_W__c, 
-                                                Total_MW__c, 
-                                                Cell_Appearance__c,
-                                                Grade__c,               
-                                                Junction_Box__c, 
-                                                Discount,
-                                                Frame_B_side_Height__c,
-                                                Tolerance__c,
-                                                Inventorytype__c,
-                                                Stock_age__c,
-                                                Module_size__c,
-                                                Cheetah__c,
-                                                Test_code__c ,
-                                                Opp_Description__c,
-                                                Goods_Description__c
-                                            From OpportunityLineItem
-                                            Where Opportunityid = :opp.id
-                                            //and pricebook2id = : opp.pricebook2id
-                                            //Order by PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c desc
-                                            ]) {
-            nextTempid++;
-            currentProducts.add(new currentProductsItem(oli,oli.TotalPrice__c,nextTempid));
-        }
+        for ( OpportunityLineItem oli : 
+             [ Select id, 
+              Product_Type__c,
+              PricebookEntry.Name, 
+              PricebookEntry.Product2.Cable_Length__c, 
+              PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c, 
+              PricebookEntry.Product2.Maximum_Power_at_Current_Imp_A__c,
+              PricebookEntry.Product2.IsActive,
+              PricebookEntry.ProductCode,  
+              PricebookEntry.Product2.Frame_Color_Cost_Black__c,
+              PricebookEntry.Product2.Frame_Color_Cost_Silver__c,
+              PricebookEntry.Product2.Back_Sheet_Color_Cost_Black_B__c,
+              PricebookEntry.Product2.Back_sheet_Color_Cost_Black_W__c,
+              ServiceDate, 
+              UnitPrice, 
+              ListPrice, 
+              TotalPrice__c,  
+              TotalPrice,
+              Quantity,
+              MP__c,
+              Battery_Type__c,         
+              Wire_Length__c,
+              Connector__c, 
+              Type_of_module__c, 
+              Color_of_Module__c, 
+              Special_required__c, 
+              Number_of_Cells__c,
+              Weight__c,
+              Cable_length_UK__c,
+              Dimensions__c,
+              Bus_bars_of_cell__c,
+              Guaranteed_Delivery_Date__c , 
+              Guaranteed_Delivery_Date_japan__c,
+              Expected_Delivery_Date__c,
+              Expected_Delivery_Date_ETA__c,
+              Estimated_Time_of_Departure_ETD__c,
+              Estimated_Time_of_Departure_ETD_7__c,
+              Special_Lable__c,
+              Certification__c, 
+              Estimated_Time_of_Departure__c, 
+              EVA__c, 
+              FOB_Sales_Price__c,
+              Power_W__c, 
+              Total_MW__c, 
+              Cell_Appearance__c,
+              Grade__c,               
+              Junction_Box__c, 
+              Discount,
+              Frame_B_side_Height__c,
+              Tolerance__c,
+              Inventorytype__c,
+              Stock_age__c,
+              Module_size__c,
+              Cheetah__c,
+              Test_code__c ,
+              Opp_Description__c,
+              Goods_Description__c,
+              Back_Sheet_Color__c,
+              Frame_Color__c,
+              Product2.Product_Module_PM__c
+              From OpportunityLineItem
+              Where Opportunityid = :opp.id
+              //and pricebook2id = : opp.pricebook2id
+              //Order by PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c desc
+             ]) {
+                nextTempid++; 
+                currentProducts.add(new currentProductsItem(oli,oli.TotalPrice__c,nextTempid));
+                system.debug('nextTempid***' + nextTempid);
+                 
+             }
+        
+        system.debug('currentProductsLOAD**' + currentProducts);  
     }
     
     
@@ -434,61 +463,30 @@ public with sharing class AddOppProductCtrl {
         List<OpportunityLineItem> out = new List<OpportunityLineItem>();
         List<currentProductsItem> newEntries = new List<currentProductsItem>();
         
-        for ( currentProductsItem x : currentProducts) {
-            
-            if (x.isOneLineContainer  && x.RequestedContainers > 1) {          
-                /* decimal palletsPerContainer = x.data.PricebookEntry.Product2.Pallets_per_40ft_Container__c;
-decimal panelsPerPallet  = x.data.PricebookEntry.Product2.Modules_per_Pallet__c;
-decimal quantityPerPanel = x.data.PricebookEntry.Product2.Watts_per_panel__c;
-if (( quantityPerPanel == null || quantityPerPanel == 0  ) || ( panelsPerPallet  == null || panelsPerPallet  == 0  ) ||
-( palletsPerContainer == null || palletsPerContainer == 0 )) {
-out.add(x.data); 
-} */
-                
-                /*else {  
-for (integer i=0; i<  x.RequestedContainers.round(system.roundingMode.CEILING); i++) {
-OpportunityLineItem newOLI = x.data.clone(false,true,false,false);
-newOLI.OpportunityID = opp.id;
-newOLI.TotalPrice = null; // can only specify unitPrice OR totalPrice not both
-Decimal container;
-if((i+1) < x.RequestedContainers.round(system.roundingMode.CEILING)) {
-container = 1;
-} else if((i+1) ==  x.RequestedContainers.round(system.roundingMode.CEILING)) {                        
-container  = x.RequestedContainers - i;  
-} 
-
-Decimal newPallets    = container  * palletsPerContainer ;
-Decimal newPanels     = newPallets * panelsPerPallet  ;
-newOLI.Quantity   = newPanels * quantityPerPanel ;    
-newOLI.watts__c = newOLI.Quantity;
-system.debug('newOLI**' + newOLI);
-nextTempid++;
-currentProductsItem currentProd = new currentProductsItem(newOLI, newOLI.UnitPrice, nextTempid);
-currentProd.QuantityInteger =  Integer.valueOf(newOLI.quantity);
-currentProd.RequestedPanels = ( newOLI.PricebookEntry.Product2.Watts_per_panel__c > 0) ? newOLI.quantity / newOLI.PricebookEntry.Product2.Watts_per_panel__c : null; 
-currentProd.RequestedPallets = ( newOLI.PricebookEntry.Product2.Modules_per_Pallet__c >0) ? currentProd.RequestedPanels / newOLI.PricebookEntry.Product2.Modules_per_Pallet__c : null; 
-currentProd.RequestedContainers =  ( newOLI.PricebookEntry.Product2.Pallets_per_40ft_Container__c > 0) ? currentProd.RequestedPallets / newOLI.PricebookEntry.Product2.Pallets_per_40ft_Container__c : null; 
-newEntries.add(currentProd);
-out.add(newOLI); 
-}*/
-                out.add(x.data); 
-                
-                if ( x.data.id != null ) {
-                    pendingDeletes.add(new OpportunityLineItem(ID = x.data.id ));                   
-                }
-                //}   
+        for (currentProductsItem x : currentProducts) {
+            OpportunityLineItem objOpportunityItem = x.data;
+            // 2021/3/25 Samba Start
+            Boolean hasABWithPM = false;
+            if(objOpportunityItem.Product2.Product_Module_PM__c != null && objOpportunityItem.Product2.Product_Module_PM__c.contains('AB')) {
+                hasABWithPM = true;
+            }
+            x.hasABWithPM = hasABWithPM;
+            if(objOpportunityItem == null) continue;
+            if(x.isOneLineContainer  && x.RequestedContainers > 1) {          
+                out.add(objOpportunityItem);
+                if (objOpportunityItem.id != null ) {
+                    pendingDeletes.add(new OpportunityLineItem(ID = objOpportunityItem.id ));                   
+                }  
             } else { 
                 system.debug('x***x*' + x);
                 newEntries.add(x);
-                out.add(x.data);
+                out.add(objOpportunityItem);
             }    
         }
         system.debug('currentProducts**' + currentProducts);  
         currentProducts.clear();
-        currentProducts.addAll(newEntries);        
-        system.debug('currentProducts**' + currentProducts);  
-        system.debug('newEntries**' + newEntries);
-       Double BigContain = 0;
+        currentProducts.addAll(newEntries);
+        Double BigContain = 0;
         Double SmallContain = 0;
         Double Quan = 0;
         Double bic = 0;
@@ -503,114 +501,111 @@ out.add(newOLI);
                                                          if (port.Type__c == 'port') getPortNameMap.put(port.Name, port);}
         if(opp.Destination_Port__c!=null){
             Port_freight_maintenance__c port = getPortNameMap.get(opp.Destination_Port__c);
-        SYSTEM.debug('PORT'+port);
-        List<Product_Container__c> oc = [Select id,X20_foot_flat_cabinet__c,X40_foot_flat_cabinet__c,Short_Name__c,Germany_Short_Name__c from Product_Container__c];
-        Map<String,Product_Container__c> pcList = new Map<String,Product_Container__c>();
+            SYSTEM.debug('PORT'+port);
+            List<Product_Container__c> oc = [Select id,X20_foot_flat_cabinet__c,X40_foot_flat_cabinet__c,Short_Name__c,Germany_Short_Name__c from Product_Container__c];
+            Map<String,Product_Container__c> pcList = new Map<String,Product_Container__c>();
             system.debug('oc'+oc);
-        for(Product_Container__c o :oc){
-            pcList.put(o.Short_Name__c,o);
-            if(o.Germany_Short_Name__c !=null){
-                pcList.put(o.Germany_Short_Name__c,o);
+            for(Product_Container__c o :oc){
+                pcList.put(o.Short_Name__c,o);
+                if(o.Germany_Short_Name__c !=null){
+                    pcList.put(o.Germany_Short_Name__c,o);
+                }
+                
             }
-            
-        }
-        Set<String> pcKey = pcList.keySet();
+            Set<String> pcKey = pcList.keySet();
             if(out.size()>0&&out!=null){
                 system.debug('opp'+opp.Trade_Term__c);
-        if(opp.Trade_Term__c!=null && (opp.Trade_Term__c.startswith('C')||opp.Trade_Term__c.startswith('D'))){
-            system.debug('111'+out.size());
-            
-                
-        for(OpportunityLineItem o:out){
-            system.debug('out'+o);
-             Boolean flags = true;
-               for(String p:pcKey){ 
-                    
-            system.debug('out'+o);
-             if((o.PricebookEntry.name.Startswith('JKM')&&o.PricebookEntry.name.endswith(p)) || (o.PricebookEntry.name.Startswith('MM')&&o.PricebookEntry.name.endswith(p))){
-                 system.debug(p);
-                 flags = false;
-                Quan += o.Quantity;
-                Product_Container__c pcs =  pcList.get(p);
-                system.debug('pcs'+pcs);
-                BigContain += pcs.X40_foot_flat_cabinet__c;
-                SmallContain += pcs.X20_foot_flat_cabinet__c;
-                totalW +=(o.Quantity*o.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c);
-                
-            }
-           }
-                if(flags == true){
-                    BigContain = -1;
-                SmallContain = -1;
-                    xiaogui = 0;
-                    dagui = 0;
-                    SmallC = 0;
-                    BigC = 0;
-                    unitW = 0;
-                //totalW =0;
-                system.debug('1');
-                break;
-                }
-          }
-        }else{
-             BigContain = -1;
-                SmallContain = -1;
-                    xiaogui = 0;
-                    dagui = 0;
-                    SmallC = 0;
-                    BigC = 0;
-                    unitW = 0;
-        }
-            system.debug('BigContain'+BigContain);
-            system.debug('SmallContain'+SmallContain);
-            if(out.size()!=0&&(BigContain!=-1&&BigContain!=0&&SmallContain!=0)){
-                if(opp.Region__c =='North America'||(port!=null&&port.Warehouse_Premium_Small__c==null)){
-                    BigC = BigContain/out.size();//大柜平均数
-                    Double BigCons = Quan/BigC;//大柜柜数
-                    dagui = Math.ceil(BigCons);
-                    xiaogui = 0;
+                if(opp.Trade_Term__c!=null && (opp.Trade_Term__c.startswith('C')||opp.Trade_Term__c.startswith('D'))){
+                    system.debug('111'+out.size());
+                    for(OpportunityLineItem o:out){
+                        system.debug('out'+o);
+                        Boolean flags = true;
+                        for(String p:pcKey){ 
+                            system.debug('out'+o);
+                            if((o.PricebookEntry.name.Startswith('JKM')&&o.PricebookEntry.name.endswith(p)) || (o.PricebookEntry.name.Startswith('MM')&&o.PricebookEntry.name.endswith(p))){
+                                system.debug(p);
+                                flags = false;
+                                Quan += o.Quantity;
+                                Product_Container__c pcs =  pcList.get(p);
+                                system.debug('pcs'+pcs);
+                                BigContain += pcs.X40_foot_flat_cabinet__c;
+                                SmallContain += pcs.X20_foot_flat_cabinet__c;
+                                totalW +=(o.Quantity*o.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c);
+                                
+                            }
+                        }
+                        if(flags == true){
+                            BigContain = -1;
+                            SmallContain = -1;
+                            xiaogui = 0;
+                            dagui = 0;
+                            SmallC = 0;
+                            BigC = 0;
+                            unitW = 0;
+                            //totalW =0;
+                            system.debug('1');
+                            break;
+                        }
+                    }
                 }else{
-                    system.debug('1');
-                SmallC = SmallContain/out.size();//小柜平均数
-                BigC = BigContain/out.size();//大柜平均数
-                Double BigCons = Quan/BigC;//大柜柜数
-                dagui = Math.floor(BigCons); //大柜柜数整数
-                system.debug('SmallC'+SmallC);
-                system.debug('BigC'+BigC);
-                system.debug('BigCons'+BigCons);
-                system.debug('dagui'+dagui);
-                //小柜柜数
-                if(BigCons>=1){
-                    system.debug('Quan'+Quan);
-                    system.debug('dagui'+(dagui*BigC));
-                    system.debug('SmallC'+SmallC);
-                    System.debug('(Quan-(dagui*BigC))/SmallC'+((Quan-(dagui*BigC))/SmallC));
-                    xiaogui = Math.ceil((Quan-(dagui*BigC))/SmallC);
+                    BigContain = -1;
+                    SmallContain = -1;
+                    xiaogui = 0;
+                    dagui = 0;
+                    SmallC = 0;
+                    BigC = 0;
+                    unitW = 0;
                 }
-                if(BigCons<1){
-                   Double SmallCons = Quan/SmallC;//柜数
-                   xiaogui = Math.ceil(SmallCons);
-               }
-            }
-            }
-            system.debug('xiaogui'+xiaogui);
-            Double daguichengben = 0;
-            if(port!=null&&port.Warehouse_Premium__c!=null){
-            daguichengben = port.Warehouse_Premium__c*dagui;//总成本
-            }
-            //system.debug('daguichengben'+daguichengben);
-            //system.debug('port.Warehouse_Premium_Small__c'+port.Warehouse_Premium_Small__c);
-            system.debug(xiaogui);
-            Double xiaoguichengben = 0;
-            if(port!=null&&port.Warehouse_Premium_Small__c!=null){
-            xiaoguichengben = port.Warehouse_Premium_Small__c*xiaogui;//小柜成本
+                system.debug('BigContain'+BigContain);
+                system.debug('SmallContain'+SmallContain);
+                if(out.size()!=0&&(BigContain!=-1&&BigContain!=0&&SmallContain!=0)){
+                    if(opp.Region__c =='North America'||(port!=null&&port.Warehouse_Premium_Small__c==null)){
+                        BigC = BigContain/out.size();//大柜平均数
+                        Double BigCons = Quan/BigC;//大柜柜数
+                        dagui = Math.ceil(BigCons);
+                        xiaogui = 0;
+                    }else{
+                        system.debug('1');
+                        SmallC = SmallContain/out.size();//小柜平均数
+                        BigC = BigContain/out.size();//大柜平均数
+                        Double BigCons = Quan/BigC;//大柜柜数
+                        dagui = Math.floor(BigCons); //大柜柜数整数
+                        system.debug('SmallC'+SmallC);
+                        system.debug('BigC'+BigC);
+                        system.debug('BigCons'+BigCons);
+                        system.debug('dagui'+dagui);
+                        //小柜柜数
+                        if(BigCons>=1){
+                            system.debug('Quan'+Quan);
+                            system.debug('dagui'+(dagui*BigC));
+                            system.debug('SmallC'+SmallC);
+                            System.debug('(Quan-(dagui*BigC))/SmallC'+((Quan-(dagui*BigC))/SmallC));
+                            xiaogui = Math.ceil((Quan-(dagui*BigC))/SmallC);
+                        }
+                        if(BigCons<1){
+                            Double SmallCons = Quan/SmallC;//柜数
+                            xiaogui = Math.ceil(SmallCons);
+                        }
+                    }
                 }
-            system.debug('xiaoguichengben'+xiaoguichengben);
+                system.debug('xiaogui'+xiaogui);
+                Double daguichengben = 0;
+                if(port!=null&&port.Warehouse_Premium__c!=null){
+                    daguichengben = port.Warehouse_Premium__c*dagui;//总成本
+                }
+                //system.debug('daguichengben'+daguichengben);
+                //system.debug('port.Warehouse_Premium_Small__c'+port.Warehouse_Premium_Small__c);
+                system.debug(xiaogui);
+                Double xiaoguichengben = 0;
+                if(port!=null&&port.Warehouse_Premium_Small__c!=null){
+                    xiaoguichengben = port.Warehouse_Premium_Small__c*xiaogui;//小柜成本
+                }
+                system.debug('xiaoguichengben'+xiaoguichengben);
                 if(totalW!=0&&totalW!=null){
-            unitW = (daguichengben+xiaoguichengben)/totalW;
+                    unitW = (daguichengben+xiaoguichengben)/totalW;
                 }
-            system.debug('unitW'+unitW);
-        }
+                system.debug('unitW'+unitW);
+            }
         }
         
         return out;
@@ -767,20 +762,41 @@ out.add(newOLI);
                        
         
          
-              List<OpportunityLineItem> newupsert=    pullProducts();
-              opp.Number_of_Containers__c = dagui;
+            List<OpportunityLineItem> newupsert=    pullProducts();
+            // 2021/3/25 Samba Start
+            OpportunityLineItemGrossMarginHandler handler = new OpportunityLineItemGrossMarginHandler();
+            Double rate = handler.getCodeRateMap().containsKey(opp.CurrencyIsoCode) ? handler.getCodeRateMap().get(opp.CurrencyIsoCode) : 1;
+
+            for(OpportunityLineItem oppItem : newupsert) {
+                if(oppItem.Back_Sheet_Color__c == 'Black & Black') {
+                      oppItem.Back_Sheet_Color_Additional_Cost_Per_W__c = (oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != null && oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != 0 && oppItem.PricebookEntry.Product2.Back_Sheet_Color_Cost_Black_B__c != null) ? oppItem.PricebookEntry.Product2.Back_Sheet_Color_Cost_Black_B__c / oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c : oppItem.PricebookEntry.Product2.Back_Sheet_Color_Cost_Black_B__c;
+                  } else if(oppItem.Back_Sheet_Color__c == 'Black & White') {
+                      oppItem.Back_Sheet_Color_Additional_Cost_Per_W__c = (oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != null && oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != 0 && oppItem.PricebookEntry.Product2.Back_sheet_Color_Cost_Black_W__c != null) ? oppItem.PricebookEntry.Product2.Back_sheet_Color_Cost_Black_W__c / oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c : oppItem.PricebookEntry.Product2.Back_sheet_Color_Cost_Black_W__c;
+                  }
+                  oppItem.Back_Sheet_Color_Additional_Cost_Per_W__c = oppItem.Back_Sheet_Color_Additional_Cost_Per_W__c == null ? 0 : oppItem.Back_Sheet_Color_Additional_Cost_Per_W__c * rate;
+                  
+                  if(oppItem.Frame_Color__c == 'Black') {
+                    oppItem.Frame_Color_Additional_Cost_Per_W__c = (oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != null && oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != 0 && oppItem.PricebookEntry.Product2.Frame_Color_Cost_Black__c != null) ? oppItem.PricebookEntry.Product2.Frame_Color_Cost_Black__c / oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c : oppItem.PricebookEntry.Product2.Frame_Color_Cost_Black__c;
+                  } else if(oppItem.Frame_Color__c == 'Silver') {
+                    oppItem.Frame_Color_Additional_Cost_Per_W__c = (oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != null && oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c != 0 && oppItem.PricebookEntry.Product2.Frame_Color_Cost_Silver__c != null) ? oppItem.PricebookEntry.Product2.Frame_Color_Cost_Silver__c / oppItem.PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c : oppItem.PricebookEntry.Product2.Frame_Color_Cost_Silver__c;
+                  }
+                  oppItem.Frame_Color_Additional_Cost_Per_W__c = oppItem.Frame_Color_Additional_Cost_Per_W__c == null ? 0 : oppItem.Frame_Color_Additional_Cost_Per_W__c * rate;
+            }
+            // End
+            opp.Number_of_Containers__c = dagui;
             opp.Number_of_Small_Containers__c = xiaogui;
             system.debug('20201218:'+opp.Ocean_Freight__c);
-             system.debug('20201218:'+OpportunityLineItemGrossMarginHandler.oceanNeedChangeIds);
+            system.debug('20201218:'+OpportunityLineItemGrossMarginHandler.oceanNeedChangeIds);
             if(opp.Ocean_Freight__c==0 || opp.Ocean_Freight__c ==null || OpportunityLineItemGrossMarginHandler.oceanNeedChangeIds.contains(opp.Id)){
                 if(opp.Region__c != 'Middle East&Africa' && opp.Region__c != 'MENA' && opp.Region__c != 'SSA'){
-                opp.Ocean_Freight__c = unitW;}
+                    opp.Ocean_Freight__c = unitW;
+                }
             }
             opp.Average_capacity_of_Containers__c = String.valueOf(SmallC)+';'+String.valueOf(BigC);
-           OpportunityLineItemGrossMarginHandler.AverageY=opp.Average_capacity_of_Containers__c;
-                 OpportunityLineItemGrossMarginHandler.xiaoguiY= opp.Number_of_Small_Containers__c;
-                 OpportunityLineItemGrossMarginHandler.daguiY=opp.Number_of_Containers__c;
-             OpportunityLineItemGrossMarginHandler.outY=newupsert;
+            OpportunityLineItemGrossMarginHandler.AverageY=opp.Average_capacity_of_Containers__c;
+            OpportunityLineItemGrossMarginHandler.xiaoguiY= opp.Number_of_Small_Containers__c;
+            OpportunityLineItemGrossMarginHandler.daguiY=opp.Number_of_Containers__c;
+            OpportunityLineItemGrossMarginHandler.outY=newupsert;
             upsert newupsert;
             update opp;
            
@@ -1418,6 +1434,18 @@ return false;
                 }else{
                        newOLI.Battery_Type__c = 'Others';
                 }
+                // 2021/3/25 Samba Start
+                Boolean hasABWithPM = false;
+                if(entry.data.product2.Product_Module_PM__c != null && entry.data.product2.Product_Module_PM__c.contains('AB')) {
+                    hasABWithPM = true;
+                    newOLI.Frame_Color__c = 'Black';
+                } else {
+                    newOLI.Back_Sheet_Color__c = 'Black & White';
+                }
+                newOLI.Back_Sheet_Color_Additional_Cost_Per_W__c = 0;
+                newOLI.Frame_Color_Additional_Cost_Per_W__c = 0;
+                // End
+
                 //else{
                   //  newOLI.Product_Type__C ='';
                // }
@@ -1514,7 +1542,9 @@ newOLI.MP__c ='Perc Mono';
 
 }*/
                 nextTempid++;
-                currentProducts.add(new currentProductsItem(newOLI, newOLI.UnitPrice, nextTempid));
+                currentProductsItem proxyCurrentProductsItem = new currentProductsItem(newOLI, newOLI.UnitPrice, nextTempid);
+                proxyCurrentProductsItem.hasABWithPM = hasABWithPM;
+                currentProducts.add(proxyCurrentProductsItem);
                 
                 // Clear checkbox
                 entry.isSelected = false;
@@ -2178,8 +2208,21 @@ newOLI.MP__c ='Perc Mono';
 }
 
 }*/
+                // 2021/3/26 Samba Start
+                Boolean hasABWithPM = false;
+                if(entry.data.product2.Product_Module_PM__c != null && entry.data.product2.Product_Module_PM__c.contains('AB')) {
+                    hasABWithPM = true;
+                    newOLI.Frame_Color__c = 'Black';
+                } else {
+                    newOLI.Back_Sheet_Color__c = 'Black & White';
+                }
+                newOLI.Back_Sheet_Color_Additional_Cost_Per_W__c = 0;
+                newOLI.Frame_Color_Additional_Cost_Per_W__c = 0;
+                // End
                 nextTempid++;
-                currentProducts.add(new currentProductsItem(newOLI, newOLI.UnitPrice, nextTempid));
+                currentProductsItem proxyCurrentProductsItem = new currentProductsItem(newOLI, newOLI.UnitPrice, nextTempid);
+                proxyCurrentProductsItem.hasABWithPM = hasABWithPM;
+                currentProducts.add(proxyCurrentProductsItem);
                 break;
             }
         }
@@ -2803,6 +2846,7 @@ newOLI.MP__c ='Perc Mono';
     public class currentProductsItem {
         public Boolean isSelected          { get; set; }
         public OpportunityLineItem data    { get; set; }
+        public Boolean hasABWithPM         { get; set; }
         public Integer tempid              { get; set; }
         public Integer QuantityInteger     { get; set; }
         public Decimal RequestedPanels     { get; set; }
@@ -2817,13 +2861,12 @@ newOLI.MP__c ='Perc Mono';
         
         /*
         * Inner class constructor
-        */ 
+        */
         public currentProductsItem(OpportunityLineItem d, Decimal SalesPrice, Integer tid) {
             this.data              = d;
             this.isSelected        = false;
             this.tempid            = tid;
             this.isOneLineContainer = false;
-            
             this.RecordErrorMsg    = '';
             this.UnitPriceErrorMsg = '';
             this.QuantityErrorMsg  = '';
@@ -2833,7 +2876,8 @@ newOLI.MP__c ='Perc Mono';
             }
             if ( this.data.Quantity != null ) {
                 this.QuantityInteger = Integer.valueOf(this.data.quantity);
-            }else {
+            }
+            else {
                 this.QuantityInteger = null;
             }
             /*
@@ -2896,8 +2940,8 @@ newOLI.MP__c ='Perc Mono';
         public void clearErrors() {
             this.RecordErrorMsg    = '';
             this.UnitPriceErrorMsg = '';
-            this.QuantityErrorMsg  = '';      
-        }  
+            this.QuantityErrorMsg  = '';
+        }
     }
     /*-------------------------------------------------------------------------------------
     * Inner Class

@@ -15,7 +15,7 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
     public Map<Id, List<Payment__c>> opportunityIdPaymentsMap;
     public Map<Id, List<Payment__c>> orderIdPaymentsMap;
     public Set<String> productModules = new Set<String>();
-     public static decimal daguiY ;
+    public static decimal daguiY ;
     public static decimal xiaoguiY ;
     public static decimal unitWY ;
     public static String AverageY ;
@@ -47,7 +47,7 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
         if (this.items.size() == 0) return;
         update this.items;
     }
-  public OpportunityLineItemGrossMarginHandler (Map<Id, Order> orderIdMap  ) {
+    public OpportunityLineItemGrossMarginHandler (Map<Id, Order> orderIdMap  ) {
         // OpportunityLineItemGrossMarginHandler.skipTrigger = true;
         Set<Id> orderId = new Set<Id>();
         for (order o : orderIdMap.values()){  orderId.add(o.Id); }
@@ -64,7 +64,6 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
             FROM Product_Detail__c
             WHERE Contract_PO_PI__c IN :contractIdMap.keySet()];
         if (this.contractItems.size() == 0) return; update this.contractItems;
-       
     }
 
     public OpportunityLineItemGrossMarginHandler (List<OpportunityLineItem> items) {
@@ -86,6 +85,9 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
                    Guaranteed_Delivery_Date__c,
                    Product_Type__c,
                    Product_Module__c,
+                   MX_Cost_Per_W__c,
+                   Back_Sheet_Color_Additional_Cost_Per_W__c,
+                   Frame_Color_Additional_Cost_Per_W__c,
                    Power_W__c
             FROM OpportunityLineItem 
             WHERE OpportunityId IN :headerIds
@@ -128,6 +130,8 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
                    Third_Party_Test_Cost__c,
                    Transfer_Stock_Rate__c,
                    Special_Material_Cost_Per_W__c,
+                   Additional_Cost_Per_W__c,
+                   MX_Cost_Per_W__c,
                    Total_W__c
             FROM Product_Detail__c 
             WHERE Contract_PO_PI__c IN :headerIds
@@ -162,6 +166,7 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
                    Guaranteed_Delivery_Date__c,
                    Product_Type__c,
                    Product_Module__c,
+                   MX_Cost_Per_W__c,
                    Power_W__c
             FROM OrderItem 
             WHERE orderId IN :headerIds
@@ -350,7 +355,6 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
         System.debug('-------- SOQL Count------- :' + Limits.getQueries());
         return paymentCost;
     }
-        //Snake
         
     public Decimal getPaymentCostByOrder (Order order, OrderItem item) {
         Decimal paymentCost = 0;
@@ -371,14 +375,14 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
     // 0.001
     public Decimal getInsurenceCostByItem (Opportunity opportunity, OpportunityLineItem item) {
         Decimal insurenceCost = 0;
-       insurenceCost = item.UnitPrice * 0.01;
+        insurenceCost = item.UnitPrice * 0.01;
         return insurenceCost;
     }
         //Snake
         
     public Decimal getInsurenceCostByOrderItem (Order order, OrderItem item) {
         Decimal insurenceCost = 0;
-      insurenceCost = item.UnitPrice * 0.01;
+        insurenceCost = item.UnitPrice * 0.01;
         return insurenceCost;
     }
 
@@ -426,6 +430,7 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
             this.getFreightCostByOpportunity(o, true, true);
         }
     }
+
     public Decimal getFreightCostByOpportunity (Opportunity opportunity, Boolean itemFlag, Boolean isInsert) {
         System.debug('----getFreightCostByOpportunity----');
          Decimal freightCost = 0;
@@ -448,11 +453,11 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
         Decimal containerPrice = port != null && port.Warehouse_Premium__c != null ? port.Warehouse_Premium__c : 0;
         Decimal oceanChina = opportunity.Ocean_Freight__c != null ? opportunity.Ocean_Freight__c : 0;
         Decimal dagui = opportunity.Number_of_Containers__c != null ? opportunity.Number_of_Containers__c : 0;
-        iF(daguiY!=null){dagui=daguiY;}
-         system.debug('20201216'+dagui);
+        if(daguiY!=null){dagui=daguiY;}
+        system.debug('20201216'+dagui);
         Decimal xiaogui = opportunity.Number_of_Small_Containers__c != null ? opportunity.Number_of_Small_Containers__c : 0;
         System.debug('xiaogui--->'+xiaogui);
-         iF(xiaoguiY!=null){xiaogui=xiaoguiY;}
+        if(xiaoguiY!=null){xiaogui=xiaoguiY;}
         system.debug('20201216-->'+xiaogui);
         Decimal oceanOversea = opportunity.Ocean_Freight_Oversea__c != null ? opportunity.Ocean_Freight_Oversea__c : 0;
         List<OpportunityLineItem> out = [Select id,quantity,PricebookEntry.name,PricebookEntry.Product2.Maximum_Power_at_STC_Pmax__c from OpportunityLineItem where OpportunityId =:opportunity.id];
@@ -946,6 +951,8 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
                                               CurrencyIsoCode,
                                               Special_Material_Cost_Per_W__c,
                                               Special_Material_Type__c,
+                                              Additional_Cost_Per_W__c,
+                                              MX_Cost_Per_W__c,
                                               Special_Material__c
                                        FROM Product_Detail__c 
                                        WHERE Contract_PO_PI__c = :contractId]){
@@ -984,6 +991,7 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
                    CurrencyIsoCode,
                    Special_Material_Cost_Per_W__c,
                    Special_Material_Type__c,
+                   MX_Cost_Per_W__c,
                    Special_Material__c
             FROM OpportunityLineItem
             WHERE Id IN :itemIdContractItemMap.keySet()];
@@ -1135,9 +1143,9 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
                 
             }
         }
-         if (item.Product_name__c!=null && item.Product_name__c.contains('-B') && !item.Product_name__c.contains('-BD')){
+         /*if (item.Product_name__c!=null && item.Product_name__c.contains('-B') && !item.Product_name__c.contains('-BD')){
              cost +=0.025;
-             }
+             }*/
 
         System.debug('-------- SOQL Count------- :' + Limits.getQueries());
         return cost * rate;
@@ -1184,10 +1192,10 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
                 
            
             }
-        }
+        }/*
          if (item.Product_Name__c!=null && item.Product_Name__c.contains('-B') && !item.Product_Name__c.contains('-BD')){
              cost +=0.025;
-             }
+             }*/
 
         System.debug('-------- SOQL Count------- :' + Limits.getQueries());
         return cost * rate;
@@ -1318,9 +1326,10 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
             // 1. payment term
             Decimal paymentCost = getPaymentCostByOpportunity(opportunity, item);
             item.Payment_Cost_Per_W__c = paymentCost;
-            // 2. insurence (if need)
-            Decimal insurenceCost = getInsurenceCostByItem(opportunity, item);
-            item.Insurence_Cost_Per_W__c = insurenceCost;
+            // 2. insurence (if need) 
+            //modify by Miller on 2021-04-09, remove Insurence_Cost_Per_W__c when calculate Estimated_Gross_Margin__c
+            // Decimal insurenceCost = getInsurenceCostByItem(opportunity, item);
+            // item.Insurence_Cost_Per_W__c = insurenceCost;
             // 3. freight
       
             system.debug('202012/16freightCost'+freightCost);
@@ -1339,11 +1348,14 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
             item.Estimated_Gross_Margin__c =
                 item.UnitPrice - 
                 paymentCost -
-                insurenceCost -
+                // insurenceCost - modify by Miller on 2021-04-09, remove Insurence_Cost_Per_W__c when calculate Estimated_Gross_Margin__c 
                 freightCost -
                 // technologyCost -
                 item.Product_Cost__c -
-                commisionRebateCost;
+                commisionRebateCost -
+                (item.MX_Cost_Per_W__c != null?item.MX_Cost_Per_W__c:0) -
+                (item.Back_Sheet_Color_Additional_Cost_Per_W__c != null?item.Back_Sheet_Color_Additional_Cost_Per_W__c:0) -
+                (item.Frame_Color_Additional_Cost_Per_W__c != null?item.Frame_Color_Additional_Cost_Per_W__c:0);
             item.Total_Gross_Margin__c = item.Estimated_Gross_Margin__c * item.Quantity * item.Power_W__c;
         }
 
@@ -1363,8 +1375,9 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
             Decimal paymentCost = getPaymentCostByorder(order, item);
             item.Payment_Cost_Per_W__c = paymentCost;
             // 2. insurence (if need)
-            Decimal insurenceCost = getInsurenceCostByorderItem(order, item);
-            item.Insurence_Cost_Per_W__c = insurenceCost;
+            // modify by Miller on 2021-04-09, remove Insurence_Cost_Per_W__c when calculate Estimated_Gross_Margin__c
+            // Decimal insurenceCost = getInsurenceCostByorderItem(order, item);
+            // item.Insurence_Cost_Per_W__c = insurenceCost;
             // 3. freight
             Decimal freightCost = getFreightCostByOrder(order, true);
             item.Freight_Cost_Per_W__c = freightCost*getCodeRateMap().get(order.CurrencyIsoCode);
@@ -1381,11 +1394,12 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
             item.Estimated_Gross_Margin__c =
                 item.UnitPrice - 
                 paymentCost -
-                insurenceCost -
+                // insurenceCost - modify by Miller on 2021-04-09, remove Insurence_Cost_Per_W__c when calculate Estimated_Gross_Margin__c
                 freightCost -
                 // technologyCost -
                 item.Product_Cost__c -
-                commisionRebateCost;
+                commisionRebateCost -
+                (item.MX_Cost_Per_W__c != null?item.MX_Cost_Per_W__c:0);
             item.Total_Gross_Margin__c = item.Estimated_Gross_Margin__c * item.Quantity * item.Power_W__c;
         }
 
@@ -1403,7 +1417,7 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
             // 1. payment term
             Decimal paymentCost = item.Payment_Cost_Per_W__c != null ? item.Payment_Cost_Per_W__c : 0; // getPaymentCostByOpportunity(opportunity, item);
             // 2. insurence (if need)
-            Decimal insurenceCost = item.Insurence_Cost_Per_W__c != null ? item.Insurence_Cost_Per_W__c : 0; // getInsurenceCostByItem(opportunity, item);
+            // Decimal insurenceCost = item.Insurence_Cost_Per_W__c != null ? item.Insurence_Cost_Per_W__c : 0; // getInsurenceCostByItem(opportunity, item);
             // 3. freight
             Decimal freightCost = getFreightCostByContract(contract);
             freightCost = freightCost * getCodeRateMap().get(contract.CurrencyIsoCode);
@@ -1418,17 +1432,18 @@ public without sharing class OpportunityLineItemGrossMarginHandler {
 
             System.debug('item: ' + item);
             System.debug('-------- SOQL Count------- :' + Limits.getQueries());
-            item.Estimated_Gross_Margin__c =
-                item.Unit_Price__c - 
-                paymentCost -
-                insurenceCost -
-                freightCost -
-                // technologyCost -
-                productCost -
-                commisionRebateCost;
-            item.Confirmed_Gross_Margin__c = 
-                (item.Estimated_Gross_Margin__c != null ? item.Estimated_Gross_Margin__c : 0) - 
-                technologyCost;
+            item.Estimated_Gross_Margin__c = 
+                                                item.Unit_Price__c - 
+                                                paymentCost -
+                                                // insurenceCost -
+                                                freightCost -
+                                                // technologyCost -
+                                                productCost -
+                                                commisionRebateCost -
+                                                (item.MX_Cost_Per_W__c != null?item.MX_Cost_Per_W__c:0);
+            item.Confirmed_Gross_Margin__c = (item.Estimated_Gross_Margin__c != null ? item.Estimated_Gross_Margin__c : 0) 
+                                                - technologyCost 
+                                                - (item.Additional_Cost_Per_W__c != null?item.Additional_Cost_Per_W__c:0);
             item.Total_Gross_Margin__c = item.Confirmed_Gross_Margin__c * item.Total_W__c;
         }
 
