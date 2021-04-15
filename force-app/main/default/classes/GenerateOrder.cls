@@ -77,8 +77,6 @@ public class GenerateOrder {
             ord.Sales_2_percentage__c              = con.Sales_2_percentage__c;
             ord.Sales_3__c                         =  con.Sales_3__c;
             ord.Sales_3_percentage__c              = con.Sales_3_percentage__c;
-            ord.Jinko_Parent_Company_Guarantee_needed__c = con.Jinko_Parent_Company_Guarantee_needed__c;
-            ord.Jinko_Parent_Company_Guarantee__c = con.Jinko_Parent_Company_Guarantee__c;
             if(con.Buyer_Country__c == 'Japan'){
             ord.Transit_Fees__c                    = con.Transit_Fees__c;
             }

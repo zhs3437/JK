@@ -38,7 +38,7 @@ public class ContractSubmitReview {
             
             con = (Contract)sd.getRecord();
             
-            con = [SELECT ID,OWNERID,RecordTypeId,RecordType.Name,Finance_Dept__c,BMO_Dept__c,Send_Remind_Mail_First_Time__c,Region__c,Destination_Country__c,Trade_term__c  FROM Contract WHERE ID=:con.Id]; 
+            con = [SELECT ID,OWNERID,RecordTypeId,RecordType.Name,Finance_Dept__c,BMO_Dept__c,Send_Remind_Mail_First_Time__c,Region__c,Destination_Region__c,Destination_Country__c,Trade_term__c  FROM Contract WHERE ID=:con.Id]; 
             
             /* get User from Review User Group */
             set<Id> UserIds = new set<Id>();
@@ -198,6 +198,22 @@ UserIds.add(currUser.ManagerId);
                     approverList.add(new Approver(usr.Email, usr.Name, usr.UserRole.Name));
                 }
             }
+
+            //Date:2021-04-13
+            //Author:Xinbing.ma
+            //Description:记录Owner为Gao Pengfei时，原来基础上根据目的区域添加指定审批人
+            if(String.IsNotEmpty(con.Destination_Region__c)){
+                List<Specific_User_Approver_Setting__c> approverSettingList = [Select Approver__r.Email,Approver__r.Name,Approver__r.UserRole.Name 
+                                                                               From Specific_User_Approver_Setting__c
+                                                                               Where Specific_User__c=:con.OwnerId And Destination_Region__c=:con.Destination_Region__c 
+                                                                               And Approver__c != null And IsActive__c =true];
+                
+                if(approverSettingList.size() > 0){
+                    for(Specific_User_Approver_Setting__c setting:approverSettingList){
+                        approverList.add(new Approver(setting.Approver__r.Email, setting.Approver__r.Name, setting.Approver__r.UserRole.Name));
+                    }
+                }
+            }              
         }
         catch(DmlException e){
             for (Integer i = 0; i < e.getNumDml(); i++) {

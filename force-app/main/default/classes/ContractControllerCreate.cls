@@ -22,10 +22,10 @@ public class ContractControllerCreate {
 system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
         system.debug('con'+con.recordTypeId);
         System.debug('con信息OPP:'+con.Opportunity__c);
-        Opportunity usopp=[select id,Sales_Region__c,Region__c,Branch__c,Destination_Country__c,Ownerid,Today__c,Cross_Region__c from Opportunity where id =:con.Opportunity__c];
-        if(usopp.Region__c == 'North Asia' && conRecordTypeId == InventoryRecordTypeId){
-            con.InventoryArea__c = 'Own inventory';
-        }
+        Opportunity usopp=[select id,RecordTypeId,Sales_Region__c,Region__c,Branch__c,Destination_Country__c,Ownerid,Today__c,Cross_Region__c from Opportunity where id =:con.Opportunity__c];
+        // if(usopp.Region__c == 'North Asia' && conRecordTypeId == InventoryRecordTypeId){
+        //     con.InventoryArea__c = 'Own inventory';
+        // }
         /*if(usopp.Cross_Region__c == true && conRecordTypeId == InventoryRecordTypeId){
             con.InventoryArea__c = 'Other regions';
         }else if(usopp.Cross_Region__c == false && conRecordTypeId == InventoryRecordTypeId){
@@ -247,6 +247,14 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             op.Land_Freight_Oversea_Old__c = op.Land_Freight_Oversea__c;
            op.Warehouse_Premium_Old__c = op.Warehouse_Premium__c;
            // update op;
+           
+        if (op.RecordTypeId == Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Service').getRecordTypeId()) {
+            op.Price_Approval_Status__c = 'Approved';
+            op.Sales_manager_approval__c = 'Approved';
+            op.Cross_region_GM_approval__c = 'Approved';
+            OpportunityLineItemGrossMarginHandler.skipTrigger = true;
+            update op; 
+        }
             opls = CvtOpps2Contract.initOpls(con.Opportunity__c);
             //  return null as break , if no green channel no price approval
             // or if no credit approval no green channel
@@ -364,7 +372,7 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
                  ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'Please fill in Buyer Billing address in Buyer detail page. Thanks.'));
                 return null;
             }
-            if(op.Payment_Term_Description__c ==null)
+            if(op.Payment_Term_Description__c == null && op.RecordTypeId != Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Service').getRecordTypeId())
             {
                 //ApexPages.addMessages(new ApexPages.Message(ApexPages.Severity.ERROR,'Payment term description missing — please update before converting the opportunity into a contract'));
                  ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'Payment term description missing — please update before converting the opportunity into a contract.'));
@@ -423,13 +431,6 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
              system.debug('op.Cross_Region__c ------------------>'+op.Cross_Region__c );
              system.debug('op.Total_MW__c ------------------>'+op.Total_MW__c );
             if(op.RecordType.Name == 'Japan' && op.Total_MW__c< 1 && (op.Sales_manager_approval__c !='Approved' || op.Sales_manager_approval__c == null) && op.Cross_Region__c ==false){
-                  System.debug('11111');
-                  
-                  ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'You can not create Contract, because you didn\'t get price approve.'));
-                     
-                return null;
-                
-            }  if(op.RecordType.Name == 'Japan' && op.Total_MW__c> 1 && (op.Sales_manager_approval__c !='Approved' || op.Price_Approval_Status__c !='Approved') && op.Cross_Region__c ==false ){
                   System.debug('11111');
                   
                   ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'You can not create Contract, because you didn\'t get price approve.'));

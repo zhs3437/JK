@@ -1440,7 +1440,7 @@ return false;
                     hasABWithPM = true;
                     newOLI.Frame_Color__c = 'Black';
                 } else {
-                    newOLI.Back_Sheet_Color__c = 'Black & White';
+                    newOLI.Back_Sheet_Color__c = 'White';
                 }
                 newOLI.Back_Sheet_Color_Additional_Cost_Per_W__c = 0;
                 newOLI.Frame_Color_Additional_Cost_Per_W__c = 0;
@@ -2214,7 +2214,7 @@ newOLI.MP__c ='Perc Mono';
                     hasABWithPM = true;
                     newOLI.Frame_Color__c = 'Black';
                 } else {
-                    newOLI.Back_Sheet_Color__c = 'Black & White';
+                    newOLI.Back_Sheet_Color__c = 'White';
                 }
                 newOLI.Back_Sheet_Color_Additional_Cost_Per_W__c = 0;
                 newOLI.Frame_Color_Additional_Cost_Per_W__c = 0;
