@@ -105,6 +105,9 @@ global class ReviewProcessEmailService implements Messaging.InboundEmailHandler 
                         con.Ops_Approval__c = lstReviewResult[intReviewRes];
                         con.Ops_Approval_Comments__c = reviewComments;
                         
+                    }else if(String.isNotBlank(Label.JK_Contract_Energy_Reviewer) && userEmail == Label.JK_Contract_Energy_Reviewer){
+                            con.Energy_storage_manager_Approval__c = lstReviewResult[intReviewRes];
+                            con.Energy_storage_manager_Comment__c = reviewComments;
                     }
                     
                     /*else if(usr.ProfileId=='00e90000000sjacAAA'){
@@ -115,9 +118,40 @@ global class ReviewProcessEmailService implements Messaging.InboundEmailHandler 
                     
                     //PMC
                     else if( usr.ProfileId=='00e90000000O2b5' ){    //PMC
-                        con.PMC_Dept__c = lstReviewResult[intReviewRes];
-                        con.PMC_Dept_Comments__c = reviewComments;
+                        //add by miller on 2021-04-14 if contract item product is non-mainstream product
+                        List<String> lstPMCAndOPMReviewExculeRecordTypeId = new List<String>{JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_ENERGY,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_1MW_AUSTRALIA_CONTRACT,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_1MW_GLOBAL_STANDARD_CONTRACT,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_1MW_JAPAN_CONTRACT,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_SAMPLE_ORDER,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_Service};
+                        if(con.Total_Non_Mainstream_Products__c > 0 && String.isNotBlank(Label.JK_Contract_Reviewer_PMC) && !lstPMCAndOPMReviewExculeRecordTypeId.contains(con.RecordTypeId)){
+                            if(Label.JK_Contract_Reviewer_PMC.split(',').contains(userEmail)){
+                                con.PMC_Dept__c = lstReviewResult[intReviewRes];
+                                con.PMC_Dept_Comments__c = reviewComments;
+                            }
+                        }else{
+                            con.PMC_Dept__c = lstReviewResult[intReviewRes];
+                            con.PMC_Dept_Comments__c = reviewComments;
+                        }
                         system.debug('~~~~>con.PMC_Dept__c:'+con.PMC_Dept__c);
+                    }
+                    else if( usr.ProfileId=='00e2t000000Dexl' ){    //TMC  add by miller on 2021-04-14 if contract item product is non-mainstream product
+                        List<String> lstPMCAndOPMReviewExculeRecordTypeId = new List<String>{JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_ENERGY,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_1MW_AUSTRALIA_CONTRACT,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_1MW_GLOBAL_STANDARD_CONTRACT,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_1MW_JAPAN_CONTRACT,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_SAMPLE_ORDER,
+                                                                                            JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_Service};
+                        if(con.Total_Non_Mainstream_Products__c > 0 && String.isNotBlank(Label.JK_Contract_Reviewer_TMC) && !lstPMCAndOPMReviewExculeRecordTypeId.contains(con.RecordTypeId)){
+                            if(Label.JK_Contract_Reviewer_TMC.split(',').contains(userEmail)){
+                                con.PMC_Dept__c = lstReviewResult[intReviewRes];
+                                con.PMC_Dept_Comments__c = reviewComments;
+                            }
+                        }else{
+                            con.OPM_Dept__c = lstReviewResult[intReviewRes];
+                            con.OPM_Dept_Comments__c = reviewComments;
+                        }
                     }
                     //Tech
                     else if( usr.ProfileId=='00e90000000NxtY' ){        //Technical

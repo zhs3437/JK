@@ -111,87 +111,86 @@ public with sharing class AddOppProductCtrl {
             String testid='%'+opp.Id+'%';
             
             if (opp.RecordType.Name == 'USA') {
-                for (Pricebookentry p : 
-                     [ Select id, 
-                      Name, 
-                      pricebook2id, 
-                      product2id,
-                      Product2.Name, 
-                      unitprice,
-                      productcode, 
-                      CurrencyIsoCode,
-                      IsActive,
-                      product2.Description,
-                      product2.Non_Modul__c,
-                      product2.Family, 
-                      product2.Cable_Length__c,
-                      product2.Maximum_Power_at_STC_Pmax__c,
-                      Product2.Maximum_Power_at_Current_Imp_A__c ,
-                      Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
-                      product2.IsActive,
-                      product2.Product_Module_PM__c,
-                      product2.Frame_Color_Cost_Black__c,
-                      product2.Frame_Color_Cost_Silver__c,
-                      product2.Back_Sheet_Color_Cost_Black_B__c,
-                      product2.Back_sheet_Color_Cost_Black_W__c,
-                      Product2.CreatedDate,
-                      Product2.SAP_Materiel_No__c,
-                      product2.Applicable_Area__c,
-                      Product2.Cell_Type__c
-                      from pricebookentry
-                      where isactive = true and isdeleted = false
-                      and product2.IsActive = true
-                      and pricebook2id = :opp.pricebook2id                 
-                      and CurrencyIsoCode = : opp.CurrencyIsoCode
-                      and product2.Applicable_Area__c =: 'USA' 
-                      and product2.ApplicationProductOppId__c = :''
-                      //and Product2.RecordType.Name = 'Watt-based'
-                      //order by product2.Maximum_Power_at_STC_Pmax__c desc
-                     ] ) {                  
-                         catalog.add(new pricebookentryTableItem(p));    
-                     }
-                     system.debug('======>>:' + catalog.size());
-                for (Pricebookentry p : 
-                     [ Select id, 
-                      Name, 
-                      pricebook2id, 
-                      product2id,
-                      Product2.Name, 
-                      unitprice,
-                      productcode, 
-                      CurrencyIsoCode,
-                      IsActive,
-                      product2.Description,
-                      product2.Non_Modul__c,
-                      product2.Family, 
-                      product2.Cable_Length__c,
-                      product2.Maximum_Power_at_STC_Pmax__c,
-                      Product2.Maximum_Power_at_Current_Imp_A__c ,
-                      Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
-                      product2.IsActive,
-                      product2.Product_Module_PM__c,
-                      product2.Frame_Color_Cost_Black__c,
-                      product2.Frame_Color_Cost_Silver__c,
-                      product2.Back_Sheet_Color_Cost_Black_B__c,
-                      product2.Back_sheet_Color_Cost_Black_W__c,
-                      Product2.CreatedDate,
-                      Product2.SAP_Materiel_No__c,
-                      product2.Applicable_Area__c,
-                      Product2.Cell_Type__c
-                      from pricebookentry
-                      where isactive = true and isdeleted = false
-                      and product2.IsActive = true
-                      and pricebook2id = :opp.pricebook2id                 
-                      and CurrencyIsoCode = : opp.CurrencyIsoCode
-                      and product2.Applicable_Area__c =: 'USA' 
-                      and product2.ApplicationProductOppId__c = :opp.id
-                      //and Product2.RecordType.Name = 'Watt-based'
-                      //order by product2.Maximum_Power_at_STC_Pmax__c desc
-                     ] ) {
-                        catalog.add(new pricebookentryTableItem(p));
+                for (Pricebookentry p : [ Select id, 
+                                                Name, 
+                                                pricebook2id, 
+                                                product2id,
+                                                Product2.Name, 
+                                                unitprice,
+                                                productcode, 
+                                                CurrencyIsoCode,
+                                                IsActive,
+                                                product2.Description,
+                                                product2.Non_Modul__c,
+                                                product2.Family, 
+                                                product2.Cable_Length__c,
+                                                product2.Maximum_Power_at_STC_Pmax__c,
+                                                Product2.Maximum_Power_at_Current_Imp_A__c ,
+                                                Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
+                                                product2.IsActive,
+                                                product2.Product_Module_PM__c,
+                                                product2.Frame_Color_Cost_Black__c,
+                                                product2.Frame_Color_Cost_Silver__c,
+                                                product2.Back_Sheet_Color_Cost_Black_B__c,
+                                                product2.Back_sheet_Color_Cost_Black_W__c,
+                                                Product2.CreatedDate,
+                                                Product2.SAP_Materiel_No__c,
+                                                product2.Applicable_Area__c,
+                                                Product2.Cell_Type__c
+                                                from pricebookentry
+                                                where isactive = true and isdeleted = false
+                                                and product2.IsActive = true
+                                                and pricebook2id = :opp.pricebook2id                 
+                                                and CurrencyIsoCode = : opp.CurrencyIsoCode
+                                                and product2.ApplicationProductOppId__c = :''
+                                                //and Product2.RecordType.Name = 'Watt-based'
+                                                //order by product2.Maximum_Power_at_STC_Pmax__c desc
+                                                ] ) {                  
+                    if(p.product2.Applicable_Area__c.contains('USA') ){
+                        catalog.add(new pricebookentryTableItem(p));    
+                    }     
+                }
+                system.debug('======>>:' + catalog.size());
+                for (Pricebookentry p : [ Select id, 
+                                                Name, 
+                                                pricebook2id, 
+                                                product2id,
+                                                Product2.Name, 
+                                                unitprice,
+                                                productcode, 
+                                                CurrencyIsoCode,
+                                                IsActive,
+                                                product2.Description,
+                                                product2.Non_Modul__c,
+                                                product2.Family, 
+                                                product2.Cable_Length__c,
+                                                product2.Maximum_Power_at_STC_Pmax__c,
+                                                Product2.Maximum_Power_at_Current_Imp_A__c ,
+                                                Product2.Maximum_Power_at_Voltage_Vmp_V__c ,
+                                                product2.IsActive,
+                                                product2.Product_Module_PM__c,
+                                                product2.Frame_Color_Cost_Black__c,
+                                                product2.Frame_Color_Cost_Silver__c,
+                                                product2.Back_Sheet_Color_Cost_Black_B__c,
+                                                product2.Back_sheet_Color_Cost_Black_W__c,
+                                                Product2.CreatedDate,
+                                                Product2.SAP_Materiel_No__c,
+                                                product2.Applicable_Area__c,
+                                                Product2.Cell_Type__c
+                                                from pricebookentry
+                                                where isactive = true and isdeleted = false
+                                                and product2.IsActive = true
+                                                and pricebook2id = :opp.pricebook2id                 
+                                                and CurrencyIsoCode = : opp.CurrencyIsoCode
+                                                and product2.ApplicationProductOppId__c = :opp.id
+                                                //and Product2.RecordType.Name = 'Watt-based'
+                                                //order by product2.Maximum_Power_at_STC_Pmax__c desc
+                                                ] ) {
+                    if(p.product2.Applicable_Area__c.contains('USA') ){
+                        catalog.add(new pricebookentryTableItem(p));    
                     }
-                     
-                    system.debug('======>>:' + catalog.size());
+                }   
+                system.debug('======>>:' + catalog.size());
             }else if(opp.RecordType.Name == 'Energy Storage System'){
                 for (Pricebookentry p : [ Select id, 
                                                 Name, 

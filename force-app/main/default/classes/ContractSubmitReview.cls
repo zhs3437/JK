@@ -23,8 +23,8 @@ public class ContractSubmitReview {
     */
     public ContractSubmitReview(ApexPages.StandardController sd){
         Set<String> setEmailAddress = new Set<String>();
-        setEmailAddress.add(Label.JK_Contract_Legal_Public_Reviewer_Email);
-        setEmailAddress.add(Label.JK_Contract_Energy_Reviewer);
+        setEmailAddress.addAll(Label.JK_Contract_Legal_Public_Reviewer_Email.split(','));
+        setEmailAddress.addAll(Label.JK_Contract_Energy_Reviewer.split(','));
         Map<String, User> mapUserEmail = new Map<String, User>();
         for(User objUser : [SELECT Id, Email, Name, UserRole.Name FROM User WHERE Email IN:setEmailAddress]){
             mapUserEmail.put(objUser.Email, objUser);
@@ -44,80 +44,6 @@ public class ContractSubmitReview {
             set<Id> UserIds = new set<Id>();
             UserIds = SubmitReviewHelper.getContractReviewList(con.id);
             /* reviewers */
-            
-            /* if(japanRecord.size() > 0 && con.RecordTypeId == japanRecord[0].Id){//日本 record type
-for(GroupMember gm : [Select gm.UserOrGroupId 
-from GroupMember gm 
-where gm.GroupId IN (Select g.Id From Group g WHERE g.Name='Japan Review')]){
-User currUser = [SELECT u.Id,u.ManagerId, u.Contract_Review__c, u.BMO_specialist__c FROM USER u WHERE u.Id=:con.OwnerId];
-UserIds.add(gm.UserOrGroupId);
-UserIds.add(currUser.Contract_Review__c);
-}
-}else //if(con.RecordTypeId == AustraliaRecordTypeId){//澳大利亚 record type
-for(GroupMember gm : [Select gm.UserOrGroupId 
-from GroupMember gm 
-where gm.GroupId IN (Select g.Id From Group g WHERE g.Name='Australia Review')]){
-UserIds.add(gm.UserOrGroupId);
-}
-
-/*1MW update by jason*/ 
-            /* }else if(con.RecordTypeId == global1MWRecordTypeId ){
-for(GroupMember gm : [Select gm.UserOrGroupId 
-from GroupMember gm 
-where gm.GroupId IN (Select g.Id From Group g WHERE g.Name='Group 1MW Review')]){
-
-UserIds.add(gm.UserOrGroupId);
-}   
-}else if(con.RecordTypeId == japan1MWRecordTypeId){
-for(GroupMember gm : [Select gm.UserOrGroupId 
-from GroupMember gm 
-where gm.GroupId IN (Select g.Id From Group g WHERE g.Name='Japan Review')]){
-User currUser = [SELECT u.Id,u.ManagerId, u.Contract_Review__c, u.BMO_specialist__c FROM USER u WHERE u.Id=:con.OwnerId];
-UserIds.add(gm.UserOrGroupId);
-UserIds.add(currUser.Contract_Review__c);
-}
-}else{
-for(GroupMember gm : [Select gm.UserOrGroupId 
-from GroupMember gm 
-where gm.GroupId IN (Select g.Id From Group g WHERE g.Name='Review Users')]){
-UserIds.add(gm.UserOrGroupId);
-}
-}       
-
-if(con.RecordTypeId != AustraliaRecordTypeId){
-/* add Manage User and BMO ID to approverList*/
-            //User currUser = [SELECT u.Id,u.ManagerId, u.Contract_Review__c, u.BMO_specialist__c FROM USER u WHERE u.Id=:con.OwnerId];
-            
-            /*1MW update by jason*/
-            /* if(con.RecordTypeId == global1MWRecordTypeId || con.RecordTypeId == japan1MWRecordTypeId){
-if(currUser.Contract_Review__c !=null){
-UserIds.add(currUser.Contract_Review__c);  
-}
-}
-
-
-/* Add Start by David, 20130111, for work piece(20130111-00002) */
-            /*// add Contract Reviewer
-if(currUser.Contract_Review__c !=null){
-UserIds.add(currUser.Contract_Review__c);
-}
-/* Add End by David, 20130111, for work piece(20130111-00002) */
-            /*      
-// add BMO
-if(currUser.BMO_specialist__c !=null){
-UserIds.add(currUser.BMO_specialist__c);
-}
-/*
-// add Manager
-if(currUser.ManagerId != null){
-UserIds.add(currUser.ManagerId);
-}
-*/
-            //}
-            
-            
-            
-            
             /* Add End by David, 20140320 */
             RecordType rtp = [select r.Name, r.Id From RecordType r Where r.Name ='Intercompany Contract'];
             RecordType rtpInv = [select r.Name, r.Id From RecordType r Where r.Name ='Inventory Contract'];
@@ -125,19 +51,6 @@ UserIds.add(currUser.ManagerId);
             approverList = new List<Approver>();
             if(con.RecordTypeId != rtp.Id){
                 for(User u : [SELECT Id, Name, Email,UserRole.Name FROM USER WHERE Id in:UserIds]){
-                    /*
-                     if(u.UserRole.Name !='Technical Dept.' && u.UserRole.Name !='Finance Assistance'){
-                    approverList.add(new Approver(u.Email,u.Name,u.UserRole.Name));
-                     }else{
-                         if(u.UserRole.Name !='Finance Assistance'){
-                           if(con.RecordTypeId ==rtpInv.Id && con.Region__c=='North Asia' ){
-                             
-                         }else{
-                          approverList.add(new Approver(u.Email,u.Name,u.UserRole.Name));   
-                         }  
-                         }
-                         
-                     } */
                     if(u.UserRole.Name !='Technical Dept.' ){
                         approverList.add(new Approver(u.Email,u.Name,u.UserRole.Name));
                     }else{
@@ -157,6 +70,14 @@ UserIds.add(currUser.ManagerId);
                 }
             }
             
+            //储能
+            if(con.RecordTypeId == JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_ENERGY){
+                for(String strEmail : mapUserEmail.keySet()){
+                    User objEnergyReviewUser = mapUserEmail.get(strEmail);
+                    approverList.add(new Approver(objEnergyReviewUser.Email, objEnergyReviewUser.Name, objEnergyReviewUser.UserRole.Name));
+                }
+                return;
+            }
             if((con.recordType.Name=='1MW Global Standard Contract'  ||  con.recordType.Name=='Inventory Contract') && con.Region__c.contains('EU') ){
                 approverList.add(new Approver('lingling.yuan@jinkosolar.com','lingling.yuan','Ops'));
             }
@@ -166,18 +87,7 @@ UserIds.add(currUser.ManagerId);
             }
             if(con.Trade_term__c!=null){
                 if(con.Trade_term__c.startswith('C') || con.Trade_term__c.startswith('D')){
-                approverList.add(new Approver('logistic','logistic','logistic'));
-                }
-            }
-            //储能
-            if(con.RecordTypeId == JK_RecordTypeConstant.CONTRACT_RECORDTYPE_ID_ENERGY){
-                User objLegalPublic = mapUserEmail.get(Label.JK_Contract_Legal_Public_Reviewer_Email);
-                User objEnergyManager = mapUserEmail.get(Label.JK_Contract_Energy_Reviewer);
-                if(objLegalPublic != null){
-                    approverList.add(new Approver(objLegalPublic.Email, objLegalPublic.Name, objLegalPublic.UserRole.Name));
-                }
-                if(objEnergyManager != Null && !UserIds.contains(objEnergyManager.Id)){
-                    approverList.add(new Approver(objEnergyManager.Email, objEnergyManager.Name, objEnergyManager.UserRole.Name));
+                    approverList.add(new Approver('logistic','logistic','logistic'));
                 }
             }
             //2020/9/28
@@ -186,7 +96,9 @@ UserIds.add(currUser.ManagerId);
                 
             }
             // 3/2021 Add users to ApproverList with profile = PMC
-            List<User> users = [select Id, Name, Email, UserRole.Name from User where (Profile.Name = 'PMC' OR Profile.Name = 'TMC') and IsActive = true];
+            // 2021-4-10 remove PMC
+            Set<String> setOPMEmail = new Set<String>(Label.JK_Contract_Reviewer_TMC.split(','));
+            List<User> users = [select Id, Name, Email, UserRole.Name from User where  Profile.Name = 'TMC' and IsActive = true AND Email IN: setOPMEmail];
             for(User usr : users) {
                 Boolean hasUser = false;
                 for(Approver item : approverList) {
@@ -213,7 +125,7 @@ UserIds.add(currUser.ManagerId);
                         approverList.add(new Approver(setting.Approver__r.Email, setting.Approver__r.Name, setting.Approver__r.UserRole.Name));
                     }
                 }
-            }              
+            }                    
         }
         catch(DmlException e){
             for (Integer i = 0; i < e.getNumDml(); i++) {

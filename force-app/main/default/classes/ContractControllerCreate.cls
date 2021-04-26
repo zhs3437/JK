@@ -8,18 +8,18 @@ public class ContractControllerCreate {
     public String conRecordTypeId{get;set;}
 
     public ContractControllerCreate(ApexPages.Standardcontroller sd){
-            System.debug('################### ContractControllerCreate');
-            con = (Contract)sd.getRecord();
-            RecordType rt = [Select id,name from RecordType where name=:'Inventory Contract'];
-            String p = rt.id+'';
-            InventoryRecordTypeId = p.substring(0, 15);
-        
-            String coR = con.recordTypeId+'';
+        System.debug('################### ContractControllerCreate');
+        con = (Contract)sd.getRecord();
+        RecordType rt = [Select id,name from RecordType where name=:'Inventory Contract'];
+        String p = rt.id+'';
+        InventoryRecordTypeId = p.substring(0, 15);
+    
+        String coR = con.recordTypeId+'';
         system.debug('coR'+coR);
         if(con.recordTypeId!=null){
             conRecordTypeId = coR.substring(0, 15);
         }
-system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
+        system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
         system.debug('con'+con.recordTypeId);
         System.debug('con信息OPP:'+con.Opportunity__c);
         Opportunity usopp=[select id,RecordTypeId,Sales_Region__c,Region__c,Branch__c,Destination_Country__c,Ownerid,Today__c,Cross_Region__c from Opportunity where id =:con.Opportunity__c];
@@ -212,10 +212,10 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
     
     public PageReference onCreate(){
         system.debug('Start onCreate------>');
-       try{
+        try{
             System.debug('################### PageReference onCreate');
             String oppid;
-            op   = CvtOpps2Contract.initOpp(con.Opportunity__c);
+            op = CvtOpps2Contract.initOpp(con.Opportunity__c);
             op.Estimated_Gross_Margin_Rate_Old__c = op.Weighted_Gross_Margin_Rate__c;
             op.Estimated_Gross_Margin_Rate_Cheetah_Old__c = op.Weighted_Gross_Margin_Rate_Cheetah__c;
             op.Estimated_Gross_Margin_Rate_Connector_Ol__c = op.Weighted_Gross_Margin_Rate_Connector__c;
@@ -245,78 +245,78 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             op.Rate_Old__c = op.Rate__c;
             op.Land_Freight_China_Old__c = op.Land_Freight_China__c;
             op.Land_Freight_Oversea_Old__c = op.Land_Freight_Oversea__c;
-           op.Warehouse_Premium_Old__c = op.Warehouse_Premium__c;
-           // update op;
+            op.Warehouse_Premium_Old__c = op.Warehouse_Premium__c;
+            // update op;
            
-        if (op.RecordTypeId == Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Service').getRecordTypeId()) {
-            op.Price_Approval_Status__c = 'Approved';
-            op.Sales_manager_approval__c = 'Approved';
-            op.Cross_region_GM_approval__c = 'Approved';
-            OpportunityLineItemGrossMarginHandler.skipTrigger = true;
-            update op; 
-        }
+            if (op.RecordTypeId == Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Service').getRecordTypeId()) {
+                op.Price_Approval_Status__c = 'Approved';
+                op.Sales_manager_approval__c = 'Approved';
+                op.Cross_region_GM_approval__c = 'Approved';
+                OpportunityLineItemGrossMarginHandler.skipTrigger = true;
+                update op; 
+            }
             opls = CvtOpps2Contract.initOpls(con.Opportunity__c);
             //  return null as break , if no green channel no price approval
             // or if no credit approval no green channel
             //if( ! validation() ) return null;
- /*
+            /*
             Map<ID,RecordType> fullRecords  = new Map<Id,RecordType>([SELECT ID,Name FROM RecordType]);
             system.debug('~~~~~~>fullRecords:' + fullRecords);
-*/
+            */
            
-           List<OpportunityLineItem> oppItem =[SELECT id,
-                                                   Name,
-                                                   Opportunity.Id,
-                                               Product2.Name,
-                                               Commision_Rebate_Cost_Per_W_Old__c,
-                                               Commision_Rebate_Cost_Per_W__c,
-                                               Estimated_Gross_Margin_Old__c,
-                                               Estimated_Gross_Margin__c,
-                                               Free_Power_W__c,
-                                               Free_Power_W_Old__c,
-                                               Freight_Cost_Per_W_Old__c,
-                                               Freight_Cost_Per_W__c,
-                                               Gross_Margin_Rate_Old__c,
-                                               Gross_Margin_Rate__c,
-                                               Insurence_Cost_Per_W_Old__c,
-                                               Insurence_Cost_Per_W__c,
-                                               Payment_Cost_Per_W_Old__c,
-                                               Payment_Cost_Per_W__c,
-                                               Product_Cost_Old__c,
-                                               Product_Cost__c,
-                                               Special_Material_Cost_Per_W_Old__c,
-                                               Special_Material_Cost_Per_W__c,
-                                               Special_Material_Type_Old__c,
-                                               Special_Material_Type__c,
-                                               Third_Party_Test_Cost_Old__c,
-                                               Third_Party_Test_Cost__c,
-                                               Total_Gross_Margin_Old__c,
-                                               Total_Gross_Margin__c,
-                                               Transfer_Stock_Rate_Old__c,
-                                               Transfer_Stock_Rate__c,
-                                               Special_Material_Old__c,
-                                               Special_Material__c
-                                            FROM OpportunityLineItem
-                                            WHERE Opportunity.Id = :op.ID];
-           for(OpportunityLineItem o : oppItem){
-               o.Commision_Rebate_Cost_Per_W_Old__c = o.Commision_Rebate_Cost_Per_W__c;
-               o.Estimated_Gross_Margin_Old__c = o.Estimated_Gross_Margin__c;
-               o.Free_Power_W_Old__c = o.Free_Power_W__c;
-               o.Freight_Cost_Per_W_Old__c = o.Freight_Cost_Per_W__c;
-               o.Gross_Margin_Rate_Old__c = o.Gross_Margin_Rate__c;
-               o.Insurence_Cost_Per_W_Old__c = o.Insurence_Cost_Per_W__c;
-               o.Payment_Cost_Per_W_Old__c = o.Payment_Cost_Per_W__c;
-               o.Product_Cost_Old__c = o.Product_Cost__c;
-               o.Special_Material_Cost_Per_W_Old__c = o.Special_Material_Cost_Per_W__c;
-               o.Special_Material_Type_Old__c = o.Special_Material_Type__c;
-               o.Third_Party_Test_Cost_Old__c = o.Third_Party_Test_Cost__c;
-               o.Total_Gross_Margin_Old__c = o.Total_Gross_Margin__c;
-               o.Transfer_Stock_Rate_Old__c = o.Transfer_Stock_Rate__c;
-               o.Special_Material_Old__c = o.Special_Material__c;
-           }
-        //   update oppItem;
+            List<OpportunityLineItem> oppItem =[SELECT id,
+                                                        Name,
+                                                        Opportunity.Id,
+                                                        Product2.Name,
+                                                        Commision_Rebate_Cost_Per_W_Old__c,
+                                                        Commision_Rebate_Cost_Per_W__c,
+                                                        Estimated_Gross_Margin_Old__c,
+                                                        Estimated_Gross_Margin__c,
+                                                        Free_Power_W__c,
+                                                        Free_Power_W_Old__c,
+                                                        Freight_Cost_Per_W_Old__c,
+                                                        Freight_Cost_Per_W__c,
+                                                        Gross_Margin_Rate_Old__c,
+                                                        Gross_Margin_Rate__c,
+                                                        Insurence_Cost_Per_W_Old__c,
+                                                        Insurence_Cost_Per_W__c,
+                                                        Payment_Cost_Per_W_Old__c,
+                                                        Payment_Cost_Per_W__c,
+                                                        Product_Cost_Old__c,
+                                                        Product_Cost__c,
+                                                        Special_Material_Cost_Per_W_Old__c,
+                                                        Special_Material_Cost_Per_W__c,
+                                                        Special_Material_Type_Old__c,
+                                                        Special_Material_Type__c,
+                                                        Third_Party_Test_Cost_Old__c,
+                                                        Third_Party_Test_Cost__c,
+                                                        Total_Gross_Margin_Old__c,
+                                                        Total_Gross_Margin__c,
+                                                        Transfer_Stock_Rate_Old__c,
+                                                        Transfer_Stock_Rate__c,
+                                                        Special_Material_Old__c,
+                                                        Special_Material__c
+                                                        FROM OpportunityLineItem
+                                                        WHERE Opportunity.Id = :op.ID];
+            for(OpportunityLineItem o : oppItem){
+                o.Commision_Rebate_Cost_Per_W_Old__c = o.Commision_Rebate_Cost_Per_W__c;
+                o.Estimated_Gross_Margin_Old__c = o.Estimated_Gross_Margin__c;
+                o.Free_Power_W_Old__c = o.Free_Power_W__c;
+                o.Freight_Cost_Per_W_Old__c = o.Freight_Cost_Per_W__c;
+                o.Gross_Margin_Rate_Old__c = o.Gross_Margin_Rate__c;
+                o.Insurence_Cost_Per_W_Old__c = o.Insurence_Cost_Per_W__c;
+                o.Payment_Cost_Per_W_Old__c = o.Payment_Cost_Per_W__c;
+                o.Product_Cost_Old__c = o.Product_Cost__c;
+                o.Special_Material_Cost_Per_W_Old__c = o.Special_Material_Cost_Per_W__c;
+                o.Special_Material_Type_Old__c = o.Special_Material_Type__c;
+                o.Third_Party_Test_Cost_Old__c = o.Third_Party_Test_Cost__c;
+                o.Total_Gross_Margin_Old__c = o.Total_Gross_Margin__c;
+                o.Transfer_Stock_Rate_Old__c = o.Transfer_Stock_Rate__c;
+                o.Special_Material_Old__c = o.Special_Material__c;
+            }
+            //   update oppItem;
            
-        list<Payment__c> paymentList = [SELECT Percentage__c,
+            list<Payment__c> paymentList = [SELECT Percentage__c,
                                                 Amount__c,
                                                 Down_Balance_Payment__c,
                                                 Payment_Method__c,
@@ -327,36 +327,36 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
                                         FROM Payment__c
                                         WHERE Opportunity__r.Id = :op.ID];
     
-        for (OpportunityLineItem oppLineItem : oppItem) { 
-            System.debug('oppLineItem.Product2.Name-----@@@'+oppLineItem.Product2.Name);
-            if (oppLineItem.Product2.Name == 'EPD' ){
-                ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR,'You cannot create Contract when the product name contain "EPD"'));
-                return null;
+            for (OpportunityLineItem oppLineItem : oppItem) { 
+                System.debug('oppLineItem.Product2.Name-----@@@'+oppLineItem.Product2.Name);
+                if (oppLineItem.Product2.Name == 'EPD' ){
+                    ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR,'You cannot create Contract when the product name contain "EPD"'));
+                    return null;
+                }
             }
-        }
 
-        for (Payment__c payment : paymentList){
-            if (payment.Percentage__c == null ||
-                    payment.Amount__c == null ||
-                    payment.Down_Balance_Payment__c == '' ||
-                    payment.Payment_Method__c == '' ||
-                    payment.Days__c == null ||
-                    payment.Payment_Term__c == '' ||
-                    payment.PaymentDescription__c == ''
+            for (Payment__c payment : paymentList){
+                if (payment.Percentage__c == null ||
+                        payment.Amount__c == null ||
+                        payment.Down_Balance_Payment__c == '' ||
+                        payment.Payment_Method__c == '' ||
+                        payment.Days__c == null ||
+                        payment.Payment_Term__c == '' ||
+                        payment.PaymentDescription__c == ''
 
-            ){
-                ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR,'You cannot create Contract when payment field is null'));
-                return null;
+                ){
+                    ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR,'You cannot create Contract when payment field is null'));
+                    return null;
+                }
             }
-        }
            
            
            
            
             List<Apply_Inventory__c> appList = [SELECT ID,Name,Approval_Status__c,Opportunity__c FROM Apply_Inventory__c
-                WHERE Opportunity__c =: op.ID]; 
-             List<Account> accList = [SELECT Billingcity,Billingcountry,BillingStreet FROM Account
-                WHERE id =: op.AccountID]; 
+                                                WHERE Opportunity__c =: op.ID]; 
+            List<Account> accList = [SELECT Billingcity,Billingcountry,BillingStreet FROM Account
+                                    WHERE id =: op.AccountID]; 
             ID InventoryRecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Inventory Contract').getRecordTypeId();
             ID SampleOrder = '0126F000001vBpq';
             //ID AustraliaRecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('1MW Australia Contract').getRecordTypeId();
@@ -366,21 +366,19 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             //system.debug('------->AustraliaRecordTypeId:' + AustraliaRecordTypeId == con.RecordTypeId);
 
             //Added by Leo 2018/05/09  for Check the Payment term description Whether empty on Oppty
-             if(accList[0].BillingStreet ==null )
-            {
+             if(accList[0].BillingStreet ==null ){
                 //ApexPages.addMessages(new ApexPages.Message(ApexPages.Severity.ERROR,'Payment term description missing — please update before converting the opportunity into a contract'));
                  ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'Please fill in Buyer Billing address in Buyer detail page. Thanks.'));
                 return null;
             }
-            if(op.Payment_Term_Description__c == null && op.RecordTypeId != Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Service').getRecordTypeId())
-            {
+            if(op.Payment_Term_Description__c == null && op.RecordTypeId != Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Service').getRecordTypeId()){
                 //ApexPages.addMessages(new ApexPages.Message(ApexPages.Severity.ERROR,'Payment term description missing — please update before converting the opportunity into a contract'));
                  ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'Payment term description missing — please update before converting the opportunity into a contract.'));
                 return null;
             }
             //Snake 7/1 德国免费订单判断 非德国单子报错
-             if(con.RecordTypeId == SampleOrder && op.Region__c!='EU(Union)' && op.Region__c!='EU(Non-Eu)'){
-        ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'Your region does not support SampleOrder'));
+            if(con.RecordTypeId == SampleOrder && op.Region__c!='EU(Union)' && op.Region__c!='EU(Non-Eu)'){
+                ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, 'Your region does not support SampleOrder'));
                 return null;
             }
             // add by han 2018/05/07 North Asia bookStock EXW DDP 
@@ -427,9 +425,9 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             }
             //当业务机会小于日本区1MW时，GM只有审批通过才能生成合同
             system.debug('op.RecordType.Name ------------------>'+op.RecordType.Name );
-             system.debug('op.Sales_manager_approval__c  ------------------>'+op.Sales_manager_approval__c  );
-             system.debug('op.Cross_Region__c ------------------>'+op.Cross_Region__c );
-             system.debug('op.Total_MW__c ------------------>'+op.Total_MW__c );
+            system.debug('op.Sales_manager_approval__c  ------------------>'+op.Sales_manager_approval__c  );
+            system.debug('op.Cross_Region__c ------------------>'+op.Cross_Region__c );
+            system.debug('op.Total_MW__c ------------------>'+op.Total_MW__c );
             if(op.RecordType.Name == 'Japan' && op.Total_MW__c< 1 && (op.Sales_manager_approval__c !='Approved' || op.Sales_manager_approval__c == null) && op.Cross_Region__c ==false){
                   System.debug('11111');
                   
@@ -438,10 +436,10 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
                 return null;
                 
             }
-               //当为跨区业务机会时并且不满足快速流程，必须要两个GM和财务都审批同意后才能创建合同
+            //当为跨区业务机会时并且不满足快速流程，必须要两个GM和财务都审批同意后才能创建合同
             system.debug('跨区域开始');
-           //储能不走此流程？？？
-            if(op.Cross_Region__c == true && op.RecordType.name != 'Energy Storage System' && ((op.Price_Approval_Status__c!='Approved' && op.Total_MW__c>1) || op.Sales_manager_approval__c !='Approved'||op.Cross_region_GM_approval__c !='Approved')){
+            //储能不走此流程？？？
+            if(op.Cross_Region__c == true && ((op.Price_Approval_Status__c!='Approved' && op.Total_MW__c>1) || op.Sales_manager_approval__c !='Approved'||op.Cross_region_GM_approval__c !='Approved')){
                 String RegionHeadName ='';
                 String RegionHeadEmail ='';
                 if(op.Region__c =='EU(Union)'|| op.Region__c=='EU(Non-Eu)'){
@@ -607,11 +605,11 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
            
            
 
-           //ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.INFO, 'RecordTypeId:' + con.RecordTypeId));
-           system.debug('Charliy'+con);
-         //  OpportunityLineItemGrossMarginHandler.skipTrigger=false;
+            //ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.INFO, 'RecordTypeId:' + con.RecordTypeId));
+            system.debug('Charliy'+con);
+            //  OpportunityLineItemGrossMarginHandler.skipTrigger=false;
             insert con;
-         //  OpportunityLineItemGrossMarginHandler.skipTrigger=true;
+            //  OpportunityLineItemGrossMarginHandler.skipTrigger=true;
             List<CapacityReservation__c> caLst= new List<CapacityReservation__c>();
                caLst= [select id from CapacityReservation__c where Opportunity__c=:con.Opportunity__c];
             if(caLst.size()>0){
@@ -621,28 +619,27 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
                     }
                 update caLst;
             }
-        SyncContract.creatMDA(con.Opportunity__c,con.id);
-        /**
-        List<Component_Task_Book__c> mdaLst= new List<Component_Task_Book__c>();
-               mdalst= [select id from Component_Task_Book__c where Opportunity__c=:con.Opportunity__c];
-            if(mdalst.size()>0){
-                for(Component_Task_Book__c cr:mdalst)
-                    {
-                        cr.contract__c=con.id;
-                    }
-                update mdalst;
-            }
-**/
-          List<Reserve_inventory_information__c> RiiLstQ= new List<Reserve_inventory_information__c>();
-          RiiLstQ= Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Reserve_inventory_information__c) + ' ' +
+            SyncContract.creatMDA(con.Opportunity__c,con.id);
+            /**
+            List<Component_Task_Book__c> mdaLst= new List<Component_Task_Book__c>();
+                mdalst= [select id from Component_Task_Book__c where Opportunity__c=:con.Opportunity__c];
+                if(mdalst.size()>0){
+                    for(Component_Task_Book__c cr:mdalst)
+                        {
+                            cr.contract__c=con.id;
+                        }
+                    update mdalst;
+                }
+            **/
+            List<Reserve_inventory_information__c> RiiLstQ= new List<Reserve_inventory_information__c>();
+            RiiLstQ= Database.query(UtilClass.MakeSelectSql(Schema.SObjectType.Reserve_inventory_information__c) + ' ' +
                                                'Where  Opportunity__c=:oppid ');  
             if(RiiLstQ.size()>0){
-                for(Reserve_inventory_information__c rii:RiiLstQ)
-                    {
-                        rii.contract__c=con.id;
-                    }
+                for(Reserve_inventory_information__c rii:RiiLstQ){
+                    rii.contract__c=con.id;
+                }
             }
-                update RiiLstQ;
+            update RiiLstQ;
       
       
             
@@ -650,7 +647,7 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             Contract c = [Select id , RecordTypeId From Contract Where id =: '0126F000001BRq1'];
             if(c.RecordTypeId != null) con.Tax_Rate__c = 10;
             update con;
-      */
+            */
             system.debug('~~~~~~>con:' +con);
             //create the order line item according to the opportunity item
             Product_Detail__c[] pds = CvtOpps2Contract.CpyOppsLineItem(opls, con);
@@ -662,12 +659,12 @@ system.debug('InventoryRecordTypeId'+InventoryRecordTypeId);
             CvtOpps2Contract.updateProductionScheduled( op, con);
             CvtOpps2Contract.historyOpp(op.id);
             
-          //return to the order standard page
-          return new ApexPages.StandardController(con).view();
+            //return to the order standard page
+            return new ApexPages.StandardController(con).view();
        
-    }catch(Exception e){
-           ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, ' ' + e.getStackTraceString()));
-          ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, ' ' + e.getMessage()));
+        }catch(Exception e){
+            ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, ' ' + e.getStackTraceString()));
+            ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, ' ' + e.getMessage()));
         }  
         return null;
     }
